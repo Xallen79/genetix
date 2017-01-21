@@ -56,6 +56,7 @@ pipes.builtAppScriptsProd = function() {
 
     return es.merge(scriptedPartials, validatedAppScripts)
         .pipe(pipes.orderedAppScripts())
+        .pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.concat('app.min.js'))
         .pipe(plugins.uglify())
