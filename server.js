@@ -22,28 +22,3 @@ require('./devServer/routes')(app); // configure our routes
 app.listen(port); // startup our app at http://localhost:8080
 console.log('Starting sever on port ' + port); // shoutout to the user
 exports = module.exports = app; // expose app
-
-//List here the paths you do not want to be redirected to the angular application (scripts, stylesheets, templates, loopback REST API, ...)
-var ignoredPaths = ['/assets', '/css', '/js', '/fonts', '/views', '/components'];
-
-function startsWith(string, array) {
-
-    for (var i = 0; i < array.length; i++)
-        if (string.startsWith(array[i]))
-            return true;
-    return false;
-}
-
-app.all('/*', function(req, res, next) {
-    var paths = ignoredPaths;
-    var ip = req.connection.remoteAddress;
-    if (ip === '127.0.0.1' || ip === '72.241.153.36') {
-        paths.push('/admin');
-        paths.push('/explorer');
-    }
-    //Redirecting to index only the requests that do not start with ignored paths
-    if (!startsWith(req.url, paths)) {
-        res.sendFile('index.html', { root: path.resolve(__dirname, '..', 'client') });
-    } else
-        next();
-});

@@ -1,6 +1,6 @@
-var game = angular.module('bloqhead.genetixApp')
+var game = angular.module('bloqhead.genetixApp');
 game.component('bloqhead.components.mainGame', {
-    template: '<span ng-bind="ctrl.helloText"></span><span>FUCK YOU</span>',
+    template: '<span ng-bind="ctrl.helloText"></span>',
     controller: function() { this.helloText = "hello main game"; }, //'bloqhead.controllers.mainGame',
     controllerAs: 'ctrl'
 });

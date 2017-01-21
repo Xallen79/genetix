@@ -13,12 +13,13 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
                 name: 'main',
                 url: '/genetix',
                 component: 'bloqhead.components.mainGame'
+
             });
 
             states.forEach(function(state) {
                 $stateProvider.state(state);
             });
 
-            $locationProvider.html5Mode(true);
+
         }
     ]);
