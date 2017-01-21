@@ -1,7 +1,7 @@
 var game = angular.module('bloqhead.genetixApp');
 game.component('bloqhead.components.mainGame', {
-    template: '<span ng-bind="ctrl.helloText"></span>',
-    controller: function() { this.helloText = "hello main game"; }, //'bloqhead.controllers.mainGame',
+    templateUrl: "/components/mainGame/mainGame.html",
+    controller: 'bloqhead.controllers.mainGame',
     controllerAs: 'ctrl'
 });
 

@@ -10,8 +10,8 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
 
             });
             states.push({
-                name: 'main',
-                url: '/genetix',
+                name: 'home.main',
+                url: 'genetix',
                 component: 'bloqhead.components.mainGame'
 
             });
@@ -20,6 +20,6 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
                 $stateProvider.state(state);
             });
 
-
+            $locationProvider.html5Mode(true);
         }
     ]);
