@@ -8,7 +8,7 @@ require('prototypes');
 var port = process.env.PORT || 8080; // set our port
 var staticdir = process.env.NODE_ENV === 'production' ? 'dist.prod' : 'dist.dev'; // get static files dir
 
-var ignoredPaths = ['/bower_components', '/styles', '/components', '/fonts'];
+var ignoredPaths = ['/bower_components', '/styles', '/components', '/fonts', '/scripts'];
 
 function startsWith(string, array) {
 

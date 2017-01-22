@@ -1,1 +1,16 @@
-<span ng-bind="ctrl.helloText"></span>
+<i class="fa fa-leaf"></i><span ng-bind="ctrl.helloText"></span>
+<div class="row">
+    <fieldset>
+        <legend>Patriarch</legend>
+        <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes)}}" />&nbsp;</span>
+    </fieldset>
+</div>
+<div class="row">
+    <fieldset>
+        <legend>Offspring</legend>
+        <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes)}}" />&nbsp;</span>
+    </fieldset>
+</div>
+<div>
+    <button type="button" class="btn btn-primary" ng-click="ctrl.nextGeneration()">Next Generation</button>
+</div>

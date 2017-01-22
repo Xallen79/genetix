@@ -10,7 +10,7 @@ var Q = require('q');
 
 var paths = {
     scripts: 'app/**/*.js',
-    styles: ['./app/**/*.css', './app/**/*.scss'],
+    styles: ['./app/**/*.css', './app/**/*.scss', '!./app/**/*.css'],
     images: './images/**/*',
     fonts: './bower_components/components-font-awesome/fonts/**.*',
     index: './app/index.html',
@@ -55,7 +55,6 @@ pipes.builtAppScriptsProd = function() {
     var validatedAppScripts = pipes.validatedAppScripts();
 
     return es.merge(scriptedPartials, validatedAppScripts)
-        .pipe(pipes.orderedAppScripts())
         .pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.concat('app.min.js'))
@@ -109,10 +108,6 @@ pipes.builtStylesDev = function() {
         .pipe(gulp.dest(paths.distDev));
 };
 
-pipes.builtFontsDev = function() {
-    return gulp.src(paths.fonts)
-        .pipe(gulp.dest(paths.distDev + '/fonts/'));
-};
 
 pipes.builtStylesProd = function() {
     return gulp.src(paths.styles)
@@ -122,6 +117,16 @@ pipes.builtStylesProd = function() {
         .pipe(plugins.sourcemaps.write())
         .pipe(pipes.minifiedFileName())
         .pipe(gulp.dest(paths.distProd));
+};
+
+pipes.builtFontsDev = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distDev + '/fonts/'));
+};
+
+pipes.builtFontsProd = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distProd + '/fonts/'));
 };
 
 pipes.processedImagesDev = function() {
@@ -160,10 +165,10 @@ pipes.builtIndexDev = function() {
 };
 
 pipes.builtIndexProd = function() {
-
     var vendorScripts = pipes.builtVendorScriptsProd();
     var appScripts = pipes.builtAppScriptsProd();
     var appStyles = pipes.builtStylesProd();
+    pipes.builtFontsProd();
 
     return pipes.validatedIndex()
         .pipe(gulp.dest(paths.distProd)) // write first to get relative path for inject

@@ -1,7 +1,7 @@
 {
     "name": "bloqhead.genetix",
     "version": "0.0.1",
-    "authors": "Tim",
+    "authors": ["Tim", "Jeff"],
     "private": true,
     "dependencies": {
         "angular": "^1.6.1",
