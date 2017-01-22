@@ -10,7 +10,7 @@ var Q = require('q');
 
 var paths = {
     scripts: 'app/**/*.js',
-    styles: ['./app/**/*.css', './app/**/*.scss', '!./app/**/*.css'],
+    styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
     fonts: './bower_components/components-font-awesome/fonts/**.*',
     index: './app/index.html',

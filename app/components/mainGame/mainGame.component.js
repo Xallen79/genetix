@@ -25,7 +25,7 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
             generation: 0,
             genes: []
         };
-        for (var g = 0; g < 36; g++) {
+        for (var g = 0; g < 49; g++) {
             digger.genes.push([
                 Math.random() * 255,
                 Math.random() * 255,
@@ -37,11 +37,25 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
 
 
     self.getImage = function(genes, scale) {
-        var image = generateBitmapDataURL(self.addRows(genes, 6), scale);
+        var image = generateBitmapDataURL(self.addRows(self.convertRedGreen(genes), 7), scale);
         return image;
     };
 
+    self.convertRedGreen = function(genes) {
+        var result = []; //angular.copy(genes);
+        for (var i = 0; i < genes.length; i++) {
+            var r = genes[i][0];
+            var g = genes[i][1];
+            var bright = (Math.abs(r - g) / 255.0);
 
+            if (r > g) g = 0;
+            else r = 0;
+            r *= bright;
+            g *= bright;
+            result.push([r, g, 0]);
+        }
+        return result;
+    };
     self.addRows = function(genes, cols) {
         var result = [];
         for (var j = 0; j < (genes.length / cols); j++) {
@@ -55,15 +69,21 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
         return result;
     };
 
-
+    function randomIntFromInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
     self.crossover = function(g1, g2) {
         var crossover = Math.random();
         var mutation = Math.random();
-        var m = mutation <= self.geneticOptions.mutationrate ? Math.floor(Math.random() * self.geneticOptions.mutationsize / 2) - self.geneticOptions.mutationsize : 0;
-        var g = crossover <= self.geneticOptions.crossoverrate ? g1 : g2;
-        if (g + m < 0) g = 0;
-        else if (g + m > 255) g = 255;
-        else g += m;
+        var g = angular.copy(crossover <= self.geneticOptions.crossoverrate ? g1 : g2);
+        var m = mutation <= self.geneticOptions.mutationrate ? randomIntFromInterval(-1 * g[2] / 2, g[2] / 2) : 0;
+        if (g[0] + m < 0) g[0] = 0;
+        else if (g[0] + m > 255) g[0] = 255;
+        else g[0] += m;
+
+        if (g[1] + m < 0) g[1] = 0;
+        else if (g[1] + m > 255) g[1] = 255;
+        else g[1] += m;
 
         return g;
     };
@@ -80,10 +100,7 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
             for (var g = 0; g < p1.genes.length; g++) {
                 var p1g = p1.genes[g];
                 var p2g = p2.genes[g];
-                child.genes.push([]);
-                for (var i = 0; i < 3; i++) {
-                    child.genes[g].push(self.crossover(p1g[i], p2g[i]));
-                }
+                child.genes.push(self.crossover(p1g, p2g));
             }
             self.diggerOffspring.push(child);
         }
