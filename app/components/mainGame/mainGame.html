@@ -3,7 +3,7 @@
     <div class="col-xs-12">
         <fieldset>
             <legend>Parents</legend>
-            <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes,6)}}" />&nbsp;</span>
+            <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes,6)}}" />&nbsp;<img ng-src="{{ctrl.getBlueImage(digger.genes, 6)}}" />&nbsp;</span>
         </fieldset>
     </div>
 </div>
@@ -12,7 +12,7 @@
     <div class="col-xs-12">
         <fieldset>
             <legend>Offspring</legend>
-            <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes, 4)}}" />&nbsp;</span>
+            <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes, 3)}}" />&nbsp;<img ng-src="{{ctrl.getBlueImage(digger.genes, 3)}}" />&nbsp;</span>
         </fieldset>
     </div>
 </div>
@@ -28,8 +28,8 @@
     <div class="col-xs-12">
         <fieldset>
             <legend>Ancestors</legend>
-            <div class="col-xs-1" ng-repeat="ancestors in ctrl.diggerAncestors">
-                <div class="col-xs-12"><span ng-repeat="ancestor in ancestors"><img ng-src="{{ctrl.getImage(ancestor.genes, 5)}}" />&nbsp;</span></div>
+            <div class="col-xs-2" ng-repeat="ancestors in ctrl.diggerAncestors">
+                <span ng-repeat="digger in ancestors"><img ng-src="{{ctrl.getImage(digger.genes, 6)}}" />&nbsp;<img ng-src="{{ctrl.getBlueImage(digger.genes, 6)}}" />&nbsp;</span>
             </div>
 
         </fieldset>
