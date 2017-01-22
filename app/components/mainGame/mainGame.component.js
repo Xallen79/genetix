@@ -11,8 +11,13 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
     self.baseGene = [0, 0, 0];
     self.diggers = [];
     self.diggerOffspring = [];
-    self.crossoverrate = 0.5;
-    self.mutationrate = 0.1;
+    self.geneticOptions = {
+        crossoverrate: 0.5,
+        mutationrate: 0.1,
+        mutationsize: 50
+    };
+
+
     for (var d = 0; d < 2; d++) {
         var digger = {
             id: d,
@@ -30,8 +35,8 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
     }
 
 
-    self.getImage = function(genes) {
-        var image = generateBitmapDataURL(self.addRows(genes, 6), 6);
+    self.getImage = function(genes, scale) {
+        var image = generateBitmapDataURL(self.addRows(genes, 6), scale);
         return image;
     };
 
@@ -49,6 +54,19 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
         return result;
     };
 
+
+    self.crossover = function(g1, g2) {
+        var crossover = Math.random();
+        var mutation = Math.random();
+        var m = mutation <= self.geneticOptions.mutationrate ? Math.floor(Math.random() * self.geneticOptions.mutationsize / 2) - self.geneticOptions.mutationsize : 0;
+        var g = crossover <= self.geneticOptions.crossoverrate ? g1 : g2;
+        if (g + m < 0) g = 0;
+        else if (g + m > 255) g = 255;
+        else g += m;
+
+        return g;
+    };
+
     self.breed = function() {
 
         var p1 = self.diggers[0];
@@ -62,16 +80,12 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
             var p1g = p1.genes[g];
             var p2g = p2.genes[g];
             child.genes.push([]);
-            var crossover1 = Math.random();
-            var crossover2 = Math.random();
-            var crossover3 = Math.random();
-            child.genes[g].push(crossover1 > self.crossoverrate ? p1g[0] : p2g[0]);
-            child.genes[g].push(crossover2 > self.crossoverrate ? p1g[1] : p2g[1]);
-            child.genes[g].push(crossover3 > self.crossoverrate ? p1g[2] : p2g[2]);
-
+            for (var i = 0; i < 3; i++) {
+                child.genes[g].push(self.crossover(p1g[i], p2g[i]));
+            }
         }
         self.diggerOffspring.push(child);
-        self.breedTimer = $timeout(self.breed, 500, true);
+        self.breedTimer = $timeout(self.breed, 100, true);
     };
     self.breed();
 
@@ -79,11 +93,13 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', function
         $timeout.cancel(self.breedTimer);
         var rand1 = Math.floor(Math.random() * self.diggerOffspring.length);
         var rand2 = Math.floor(Math.random() * self.diggerOffspring.length);
+
         self.diggers = [];
         self.diggers.push(self.diggerOffspring[rand1]);
         self.diggers.push(self.diggerOffspring[rand2]);
         self.diggerOffspring = [];
         self.breed();
     };
+
 
 }]);

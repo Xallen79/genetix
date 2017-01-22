@@ -2,13 +2,13 @@
 <div class="row">
     <fieldset>
         <legend>Patriarch</legend>
-        <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes)}}" />&nbsp;</span>
+        <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes,6)}}" />&nbsp;</span>
     </fieldset>
 </div>
 <div class="row">
     <fieldset>
         <legend>Offspring</legend>
-        <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes)}}" />&nbsp;</span>
+        <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes, 4)}}" />&nbsp;</span>
     </fieldset>
 </div>
 <div>
