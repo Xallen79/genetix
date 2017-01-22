@@ -1,16 +1,37 @@
 <i class="fa fa-leaf"></i><span ng-bind="ctrl.helloText"></span>
 <div class="row">
-    <fieldset>
-        <legend>Patriarch</legend>
-        <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes,6)}}" />&nbsp;</span>
-    </fieldset>
+    <div class="col-xs-12">
+        <fieldset>
+            <legend>Parents</legend>
+            <span ng-repeat="digger in ctrl.diggers"><img ng-src="{{ctrl.getImage(digger.genes,6)}}" />&nbsp;</span>
+        </fieldset>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <fieldset>
+            <legend>Offspring</legend>
+            <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes, 4)}}" />&nbsp;</span>
+        </fieldset>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" ng-click="ctrl.nextGeneration()" value="Next Generation" />
+        </div>
+    </div>
 </div>
 <div class="row">
-    <fieldset>
-        <legend>Offspring</legend>
-        <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{ctrl.getImage(digger.genes, 4)}}" />&nbsp;</span>
-    </fieldset>
-</div>
-<div>
-    <button type="button" class="btn btn-primary" ng-click="ctrl.nextGeneration()">Next Generation</button>
+    <div class="col-xs-12">
+        <fieldset>
+            <legend>Ancestors</legend>
+            <div class="col-xs-1" ng-repeat="ancestors in ctrl.diggerAncestors">
+                <div class="col-xs-12"><span ng-repeat="ancestor in ancestors"><img ng-src="{{ctrl.getImage(ancestor.genes, 5)}}" />&nbsp;</span></div>
+            </div>
+
+        </fieldset>
+    </div>
 </div>
