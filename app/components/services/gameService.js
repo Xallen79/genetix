@@ -9,7 +9,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
     var self = this;
     self.init = function(config) {
         if (!angular.isDefined(config)) config = {};
-        self.stepTimeMs = config.stepTimeMs || 1000;
+        self.stepTimeMs = config.stepTimeMs || 100;
         self.lastTime = 0;
         self.diggers = [];
         self.diggerOffspring = [];
@@ -43,14 +43,16 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
         scope.$on('$destroy', handler);
     };
 
-    self.breed = function(step) {
-        if (self.diggerOffspring.length < self.maxOffspring) {
-            var child = self.diggers[0].breed(self.diggers[1], self.diggerOffspring.length);
-            self.diggerOffspring.push(child);
-            $rootScope.$emit('breedEvent', self.diggerOffspring);
-        } else {
-            self.nextGeneration();
-            $rootScope.$emit('newGenerationEvent', { Ancestors: self.diggerAncestors, Diggers: self.diggers });
+    self.breed = function(steps) {
+        for (var loops = 0; loops < steps; loops++) {
+            if (self.diggerOffspring.length < self.maxOffspring) {
+                var child = self.diggers[0].breed(self.diggers[1], self.diggerOffspring.length);
+                self.diggerOffspring.push(child);
+                $rootScope.$emit('breedEvent', self.diggerOffspring);
+            } else {
+                self.nextGeneration();
+                $rootScope.$emit('newGenerationEvent', { Ancestors: self.diggerAncestors, Diggers: self.diggers });
+            }
         }
     };
 
@@ -113,11 +115,12 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
 
     self.gameLoop = function(step) {
         var self = this;
-        //console.log(step);        
-        if (self.lastTime + step > self.stepTimeMs) {
-            self.lastTime = (self.lastTime - self.stepTimeMs);
-            self.breed();
+        var steps = 0;
+        while (self.lastTime + step > (self.stepTimeMs * (steps + 1))) {
+            steps++;
         }
+        self.lastTime = (self.lastTime - (self.stepTimeMs * steps));
+        self.breed(steps);
         $window.requestAnimationFrame(this.gameLoop.bind(this));
     };
 
