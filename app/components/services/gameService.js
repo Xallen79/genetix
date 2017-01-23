@@ -9,7 +9,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
     var self = this;
     self.init = function(config) {
         if (!angular.isDefined(config)) config = {};
-        self.stepTimeMs = config.stepTimeMs || 100;
+        self.stepTimeMs = config.stepTimeMs || 50;
         self.lastTime = 0;
         self.diggers = [];
         self.diggerOffspring = [];
@@ -22,11 +22,11 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
                 generation: 0,
                 scale: 6,
             });
-            for (var g = 0; g < 49; g++) {
+            for (var g = 0; g < 50; g++) {
                 digger.genes.push([
-                    randomIntFromInterval(0, 255),
-                    randomIntFromInterval(0, 255),
-                    randomIntFromInterval(10, 20),
+                    0,
+                    0,
+                    0,
                 ]);
             }
 
@@ -39,7 +39,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
                 digger.genes[42] = [255,0,0];
             }
             if(d==1) {
-                digger.genes[0] = [150, , 10];
+                digger.genes[0] = [150, 0, 10];
                 digger.genes[4] = [0, 200, 10];
                 digger.genes[5] = [0, 200, 10];
                 digger.genes[42] = [0,255,0];
@@ -75,7 +75,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
         self.diggerAncestors.push(self.diggers);
         if(self.diggerAncestors.length > self.maxOffspring) self.diggerAncestors = self.diggerAncestors.slice(1);
         self.diggers = [];
-        var newParents = self.determineNextParents(self.greenFitness);
+        var newParents = self.determineNextParents(self.blueFitness);
         self.diggers.push(newParents[0]);
         self.diggers.push(newParents[1]);
         self.diggerOffspring = [];

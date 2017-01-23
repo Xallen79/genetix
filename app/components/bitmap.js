@@ -79,10 +79,10 @@
 
     function _scaleRows(rows, scale) {
         // Simplest scaling possible
-        var real_w = rows.length,
-            scaled_w = parseInt(real_w * scale),
-            real_h = real_w ? rows[0].length : 0,
+        var real_h = rows.length,
             scaled_h = parseInt(real_h * scale),
+            real_w = real_h ? rows[0].length : 0,
+            scaled_w = parseInt(real_w * scale),
             new_rows = [],
             new_row, x, y;
 

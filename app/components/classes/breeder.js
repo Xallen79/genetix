@@ -33,7 +33,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
             var p2g = p2.genes[g];
             child.genes.push(crossover(p1g, p2g));
         }
-        child.update({ scale: 3 });
+        child.update({ scale: 6 });
         return child;
     };
     Breeder.prototype.getTraits = function() {
@@ -59,9 +59,9 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         var crossover = Math.random();
         var mutation = randomIntFromInterval(0, 255);
         var g = angular.copy(crossover <= geneticOptions.crossoverrate ? g1 : g2);
-        var mr = mutation <= g[2] ? randomIntFromInterval(-25, 25) : 0;
-        var mg = mutation <= g[2] ? randomIntFromInterval(-25, 25) : 0;
-        var mb = mutation <= g[2] ? randomIntFromInterval(-25, 25) : 0;
+        var mr = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
+        var mg = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
+        var mb = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
 
         if (g[0] + mr < 0) g[0] = 0;
         else if (g[0] + mr > 255) g[0] = 255;
@@ -79,11 +79,11 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     }
 
     function getRedGreenImage(genes, scale) {
-        return generateBitmapDataURL(addRows(convertRedGreenMap(genes), Math.sqrt(genes.length)), scale);
+        return generateBitmapDataURL(addRows(convertRedGreenMap(genes), genes.length), scale);
     }
 
     function getBlueImage(genes, scale) {
-        return generateBitmapDataURL(addRows(convertBlueMap(genes), Math.sqrt(genes.length)), scale);
+        return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), scale);
     }
 
     function convertRedGreenMap(genes) {
@@ -115,7 +115,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         for (var j = 0; j < (genes.length / cols); j++) {
             var row = [];
             for (var i = 0; i < cols; i++) {
-                row.push(genes[j + (i * cols)]);
+                row.push(genes[i + (j * cols)]);
             }
             result.push(row);
         }

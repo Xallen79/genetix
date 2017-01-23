@@ -56,6 +56,7 @@ game.constant('geneDefinitions',(function(){
     geneDefinitions[46] = {dom:'' ,rec:'', attr: ['LCK']};
     geneDefinitions[47] = {dom:'' ,rec:'', attr: ['LCK']};
     geneDefinitions[48] = {dom:'' ,rec:'', attr: ['LCK']};
+    geneDefinitions[49] = {dom:'' ,rec:'', attr: ['LCK']};
 
     return geneDefinitions;
 })());

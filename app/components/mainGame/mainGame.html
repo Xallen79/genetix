@@ -3,7 +3,7 @@
     <div class="col-xs-12">
         <fieldset>
             <legend>Parents</legend>
-            <span class="col-xs-1" ng-repeat="digger in ctrl.diggers"><img ng-src="{{digger.redGreenImage}}" />&nbsp;<img ng-src="{{digger.blueImage}}" />&nbsp;
+            <span class="col-xs-2" ng-repeat="digger in ctrl.diggers"><img class="img-responsive" ng-src="{{digger.redGreenImage}}" /><img class="img-responsive" ng-src="{{digger.blueImage}}" />
                                     <ul class="list-group">
                             <li ng-repeat="trait in digger.getTraits()" class="list-group-item" ng-bind="trait.name"></li>
                             <li ng-if="digger.getTraits().length == 0" class="list-group-item">No Traits</li>
@@ -13,13 +13,22 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12">
+<div class="row"> 
+    <div class="col-xs-12">  
         <fieldset>
             <legend>Offspring</legend>
-            <span ng-repeat="digger in ctrl.diggerOffspring"><img ng-src="{{digger.redGreenImage}}" />&nbsp;<img ng-src="{{digger.blueImage}}" />&nbsp;</span>
+            <span class="col-xs-4">
+                <div  ng-repeat="digger in ctrl.diggerOffspring">
+                <div class="col-xs-6">
+                    <img class="img-responsive" ng-src="{{digger.redGreenImage}}" />
+                </div>
+                <div class="col-xs-6">
+                    <img class="img-responsive" ng-src="{{digger.blueImage}}" />
+                </div>
+                </div>
+            </span>
         </fieldset>
-    </div>
+        </div>
 </div>
 <div class="row">&nbsp;</div>
 <!--<div class="row">
@@ -33,16 +42,18 @@
     <div class="col-xs-12">
         <fieldset>
             <legend>Ancestors</legend>
-            <div class="col-xs-2" ng-repeat="ancestors in ctrl.diggerAncestors">
-                <div>
-                    <span ng-repeat="digger in ancestors">
-                        <img ng-src="{{digger.redGreenImage}}" />&nbsp;
-                        <img ng-src="{{digger.blueImage}}" />&nbsp;
+            <div class="col-xs-4">
+                <div ng-repeat="ancestors in ctrl.diggerAncestors">
+                    <div class="col-xs-6"><img class="img-responsive" ng-src="{{ancestors[0].redGreenImage}}" /></div>
+                    <div class="col-xs-6"><img class="img-responsive" ng-src="{{ancestors[1].redGreenImage}}" /></div>
+                    <!--<span ng-repeat="digger in ancestors">
+                        <img class="img-responsive" ng-src="{{digger.redGreenImage}}" />
+                        <img class="img-responsive" ng-src="{{digger.blueImage}}" />
                         <ul class="list-group">
                             <li ng-repeat="trait in digger.getTraits()" class="list-group-item" ng-bind="trait.name"></li>
                             <li ng-if="digger.getTraits().length == 0" class="list-group-item">No Traits</li>
                         </ul>
-                    </span>
+                    </span>-->
 
                 </div>
             </div>
