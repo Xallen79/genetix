@@ -1,8 +1,12 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.factory('Breeder', function() {
+game.factory('Breeder', function(TraitInspector) {
+    
+    
+    
     /* constructor */
     var Breeder = function(config) {
+        this.traitInspector = new TraitInspector();
         this.update(config);
     };
     /* public functions */
@@ -31,6 +35,13 @@ game.factory('Breeder', function() {
         child.update({ scale: 3 });
         return child;
     };
+    Breeder.prototype.getTraits = function() {
+        return this.traitInspector.getTraits(this.genes);
+    }
+
+
+
+
 
     /* private members */
     var geneticOptions = {

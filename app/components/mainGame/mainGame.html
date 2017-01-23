@@ -29,7 +29,17 @@
         <fieldset>
             <legend>Ancestors</legend>
             <div class="col-xs-2" ng-repeat="ancestors in ctrl.diggerAncestors">
-                <span ng-repeat="digger in ancestors"><img ng-src="{{digger.redGreenImage}}" />&nbsp;<img ng-src="{{digger.blueImage}}" />&nbsp;</span>
+                <div>
+                    <span ng-repeat="digger in ancestors">
+                        <img ng-src="{{digger.redGreenImage}}" />&nbsp;
+                        <img ng-src="{{digger.blueImage}}" />&nbsp;
+                        <ul class="list-group">
+                            <li ng-repeat="trait in digger.getTraits()" class="list-group-item" ng-bind="trait.name"></li>
+                            <li ng-if="digger.getTraits().length == 0" class="list-group-item">No Traits</li>
+                        </ul>
+                    </span>
+
+                </div>
             </div>
 
         </fieldset>
