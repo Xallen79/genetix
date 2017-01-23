@@ -3,7 +3,7 @@ var game = angular.module('bloqhead.genetixApp');
 
 game.constant('geneDefinitions',(function(){
     var geneDefinitions = [];
-
+    //gene :r,g,b r:recessive, g:dominant, b:mutationrate
     geneDefinitions[0]  = {dom:'Broad Shoulders', rec:'Slender Shoulders',attr: ['STR']};
     geneDefinitions[1]  = {dom:'Thick Skull', rec:'Soft Skull', attr: ['STR']};
     geneDefinitions[2]  = {dom:'Large Arms', rec:'Small Arms', attr: ['STR']};
@@ -63,20 +63,30 @@ game.constant('geneDefinitions',(function(){
 game.constant('traitDefinitions',[
     {
         name: 'Handsome',
-        genes: [[0, -200,200], [5,50,255], [42, 1, 255]]
+        genes: [[0, -200,200], [5,50,255]],
+        requiredTraits: ['Male']
     },
     {
         name: 'Pretty',
-        genes: [[0,-200,-100],[4,20,240], [42,-255,0]]
+        genes: [[0,-200,-100], [4,20,240]],
+        requiredTraits: ['Female']
     },
     {
         name: 'Aggressive',
         genes: [[0,200,255],[2,200,255],[4,200,255],[5,200,255],[14,-255,-150]]
+    },
+    {
+        name: 'Female',
+        genes: [[42,0,255]]
+    },
+    {
+        name: 'Male',
+        genes: [[42,-255,-1]]
     }
 ]);
 
 
-game.factory('TraitInspector', function(geneDefinitions, traitDefinitions) {
+game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions', function($filter, geneDefinitions, traitDefinitions) {
     /* constructor */
     var TraitInspector = function(config) {
         this.update(config);
@@ -88,23 +98,38 @@ game.factory('TraitInspector', function(geneDefinitions, traitDefinitions) {
         //this.id = config.id || this.id || 0;
     };
 
-    TraitInspector.prototype.getTraits = function(genes) {
+    TraitInspector.prototype.getTraits = function(genes) {        
         var ret = [];
+        if(genes.length) {
+            for (var i = 0; i < traitDefinitions.length; i++) {
+                var td = traitDefinitions[i];
+                var met = true;
+                for (var h = 0; h < td.genes.length && met === true; h++) {
+                    var tdg = td.genes[h];
+                    var v = genes[tdg[0]][1] - genes[tdg[0]][0];
+                    if (v < tdg[1] || v > tdg[2])
+                        met = false;
+                }
 
-        for (var i = 0; i < traitDefinitions.length; i++) {
-            var td = traitDefinitions[i];
-            var met = true;
-            for (var h = 0; h < td.genes.length && met === true; h++) {
-                var tdg = td.genes[h];
-                var v = genes[tdg[0]][0] - genes[tdg[0]][1];
-                if (v < tdg[1] || v > tdg[2])
-                    met = false;
-            }
-
-            if (met) {
-                ret.push(td);
+                if (met) {
+                    ret.push(td);
+                }
             }
         }
+        ret = ret.filter(function(trait) {
+            if(angular.isDefined(trait.requiredTraits)) {
+                var allRequiredMet = true;
+                for(var rt=0;rt<trait.requiredTraits.length && allRequiredMet;rt++) {
+                    var required = trait.requiredTraits[rt];
+                    allRequiredMet = ret.filter(function(requiredTrait) {
+                        return requiredTrait.name == required;
+                    }).length > 0;
+                }
+                return allRequiredMet;
+            }
+            else 
+                return true;
+        });
 
         return ret;
     };
@@ -116,4 +141,4 @@ game.factory('TraitInspector', function(geneDefinitions, traitDefinitions) {
     /* private members */
 
     return TraitInspector;
-});
+}]);

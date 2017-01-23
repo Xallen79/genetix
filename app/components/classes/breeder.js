@@ -1,6 +1,6 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.factory('Breeder', function(TraitInspector) {
+game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitInspector) {
     
     
     
@@ -18,6 +18,7 @@ game.factory('Breeder', function(TraitInspector) {
         this.genes = config.genes || this.genes || [];
         this.redGreenImage = getRedGreenImage(this.genes, this.scale);
         this.blueImage = getBlueImage(this.genes, this.scale);
+        this.traits = this.traitInspector.getTraits(this.genes);
     };
     Breeder.prototype.breed = function(partner, newId) {
         var p1 = this;
@@ -36,9 +37,14 @@ game.factory('Breeder', function(TraitInspector) {
         return child;
     };
     Breeder.prototype.getTraits = function() {
-        return this.traitInspector.getTraits(this.genes);
+        return this.traits;
     }
-
+    Breeder.prototype.hasTrait = function(trait) {
+        var result = this.traits.filter(function(myTrait) {
+            return myTrait.name=== trait;
+        }).length;
+        return result > 0;
+    }
 
 
 
@@ -117,4 +123,4 @@ game.factory('Breeder', function(TraitInspector) {
     }
 
     return Breeder;
-});
+}]);
