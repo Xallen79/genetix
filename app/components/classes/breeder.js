@@ -1,9 +1,9 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitInspector) {
-    
-    
-    
+
+
+
     /* constructor */
     var Breeder = function(config) {
         this.traitInspector = new TraitInspector();
@@ -38,13 +38,13 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     };
     Breeder.prototype.getTraits = function() {
         return this.traits;
-    }
+    };
     Breeder.prototype.hasTrait = function(trait) {
         var result = this.traits.filter(function(myTrait) {
-            return myTrait.name=== trait;
+            return myTrait.name === trait;
         }).length;
         return result > 0;
-    }
+    };
 
 
 

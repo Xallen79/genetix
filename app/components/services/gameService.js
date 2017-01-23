@@ -30,19 +30,19 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
                 ]);
             }
 
-            if(d==0) {
+            if (d === 0) {
                 digger.genes[0] = [0, 200, 10];
                 digger.genes[2] = [0, 200, 10];
                 digger.genes[4] = [0, 200, 10];
                 digger.genes[5] = [0, 200, 10];
                 digger.genes[14] = [150, 0, 10];
-                digger.genes[42] = [255,0,0];
+                digger.genes[42] = [255, 0, 0];
             }
-            if(d==1) {
+            if (d == 1) {
                 digger.genes[0] = [150, 0, 10];
                 digger.genes[4] = [0, 200, 10];
                 digger.genes[5] = [0, 200, 10];
-                digger.genes[42] = [0,255,0];
+                digger.genes[42] = [0, 255, 0];
             }
             digger.update();
             self.diggers.push(digger);
@@ -73,7 +73,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
 
     self.nextGeneration = function() {
         self.diggerAncestors.push(self.diggers);
-        if(self.diggerAncestors.length > self.maxOffspring) self.diggerAncestors = self.diggerAncestors.slice(1);
+        if (self.diggerAncestors.length > self.maxOffspring) self.diggerAncestors = self.diggerAncestors.slice(1);
         self.diggers = [];
         var newParents = self.determineNextParents(self.blueFitness);
         self.diggers.push(newParents[0]);
@@ -92,7 +92,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
             };
         for (var i = 0; i < self.diggerOffspring.length; i++) {
             var digger = self.diggerOffspring[i];
-            var val = fitnessFunc(digger);            
+            var val = fitnessFunc(digger);
             if (digger.hasTrait('Male') && fitMale.value < val) {
                 fitMale.index = i;
                 fitMale.value = val;
