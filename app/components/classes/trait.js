@@ -99,24 +99,43 @@ game.constant('traitDefinitions', (function() {
             genes: [
                 [42, -255, -1]
             ]
+        },
+        {
+            name: 'Handsome Aggressive and something',
+            genes: [
+                [30, 0, 0]
+            ],
+            requiredTraits: ['Handsome', 'Aggressive']
         }
     ];
+
+    var checked = [];
+    var getTraitByName = function(name) {
+        return traits.filter(function(t) {
+            return name === t.name;
+        })[0];
+    };
+    var getRequiredGenesRecursive = function(trait) {
+        if (angular.isDefined(trait.requiredTraits)) {
+            for (var j = 0; j < trait.requiredTraits.length; j++) {
+                var requiredTrait = trait.requiredTraits[j];
+                var req = getTraitByName(requiredTrait);
+                if (checked.indexOf(req.name) === -1)
+                    getRequiredGenesRecursive(req);
+                for (var g = 0; g < req.genes.length; g++)
+                    trait.genes.push(req.genes[g]);
+            }
+        }
+        checked.push(trait.name);
+    };
 
     var buildTraits = function() {
         for (var i = 0; i < traits.length; i++) {
             var trait = traits[i];
-            if (angular.isDefined(trait.requiredTraits)) {
-                for (var j = 0; j < trait.requiredTraits.length; j++) {
-                    var requiredTrait = trait.requiredTraits[j];
-                    var req = traits.filter(function(t) {
-                        return requiredTrait === t.name;
-                    })[0];
-                    for (var g = 0; g < req.genes.length; g++)
-                        trait.genes.push(req.genes[g]);
-                }
-            }
-            return traits;
+            getRequiredGenesRecursive(trait);
         }
+        console.log(traits);
+        return traits;
     };
     return buildTraits();
 })());
