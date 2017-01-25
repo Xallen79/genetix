@@ -17,7 +17,7 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
             });
             states.push({
                 name: 'home.test',
-                url: 'genetix',
+                url: 'test',
                 component: 'bloqhead.components.testInterface'
 
             });

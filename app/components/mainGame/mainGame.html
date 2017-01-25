@@ -1,9 +1,9 @@
-<i class="fa fa-leaf"></i><span ng-bind="ctrl.helloText"></span>
+<i class="fa fa-leaf"></i><span ng-bind="$ctrl.helloText"></span>
 <div class="row">
     <div class="col-xs-12">
         <fieldset>
             <legend>Parents</legend>
-            <span class="col-xs-2" ng-repeat="digger in ctrl.diggers"><img class="img-responsive" ng-src="{{digger.redGreenImage}}" /><img class="img-responsive" ng-src="{{digger.blueImage}}" />
+            <span class="col-xs-2" ng-repeat="digger in $ctrl.diggers"><img class="img-responsive" ng-src="{{digger.redGreenImage}}" /><img class="img-responsive" ng-src="{{digger.blueImage}}" />
                                     <ul class="list-group">
                             <li ng-repeat="trait in digger.getTraits()" class="list-group-item" ng-bind="trait.name"></li>
                             <li ng-if="digger.getTraits().length == 0" class="list-group-item">No Traits</li>
@@ -18,7 +18,7 @@
         <fieldset>
             <legend>Offspring</legend>
             <span class="col-xs-4">
-                <div  ng-repeat="digger in ctrl.diggerOffspring">
+                <div  ng-repeat="digger in $ctrl.diggerOffspring">
                 <div class="col-xs-6">
                     <img class="img-responsive" ng-src="{{digger.redGreenImage}}" />
                 </div>
@@ -34,7 +34,7 @@
 <!--<div class="row">
     <div class="col-xs-12">
         <div class="form-group">
-            <input type="button" class="btn btn-primary" ng-click="ctrl.nextGeneration()" value="Next Generation" />
+            <input type="button" class="btn btn-primary" ng-click="$ctrl.nextGeneration()" value="Next Generation" />
         </div>
     </div>
 </div>-->
@@ -43,7 +43,7 @@
         <fieldset>
             <legend>Ancestors</legend>
             <div class="col-xs-4">
-                <div ng-repeat="ancestors in ctrl.diggerAncestors">
+                <div ng-repeat="ancestors in $ctrl.diggerAncestors">
                     <div class="col-xs-6"><img class="img-responsive" ng-src="{{ancestors[0].redGreenImage}}" /></div>
                     <div class="col-xs-6"><img class="img-responsive" ng-src="{{ancestors[1].redGreenImage}}" /></div>
                     <!--<span ng-repeat="digger in ancestors">

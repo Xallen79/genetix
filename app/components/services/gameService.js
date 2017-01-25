@@ -9,7 +9,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
     var self = this;
     self.init = function(config) {
         if (!angular.isDefined(config)) config = {};
-        self.stepTimeMs = config.stepTimeMs || 50;
+        self.stepTimeMs = config.stepTimeMs || 5000;
         self.lastTime = 0;
         self.diggers = [];
         self.diggerOffspring = [];
@@ -143,7 +143,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
             var dg = digger.genes[tdg[0]];
             var dgval = dg[1] - dg[0];
             var tdval = tdg[2] - tdg[1];
-            if (dg[0] == 0 && dg[1] == 0 && dg[2] == 0)
+            if (dg[0] === 0 && dg[1] === 0 && dg[2] === 0)
                 return -1; // shootin blanks for one of the genes necessary for the trait
             
             // best cast scenario is when the diggers gene is at the exact median of the range

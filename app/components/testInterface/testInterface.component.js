@@ -2,36 +2,33 @@ var app = angular.module('bloqhead.genetixApp');
 
 app.component('bloqhead.components.testInterface', {
     templateUrl: 'components/testInterface/testInterface.html',
-    controller: 'bloqhead.controllers.testInterface',
-    controllerAs: 'ctrl'
+    controller: 'bloqhead.controllers.testInterface'
 });
 
-app.directive('genomeEditor', ['geneDefinitions', function(geneDefinitions){
+app.component('genomeEditor',{
 
-    var link = function(scope, element, attrs) {
-
-    };
-
-    var ctrl = function($scope, geneDefinitions) {
-        var self = this;
-        self.geneDefinitions = geneDefinitions;
-    };
-
-
-
-
-  return {
-    restrict: 'E',
-    scope: {
-        genes: '='
+    bindings: {
+        genes: '<',
+        updateGene: '&'
     },
-    link: link,
-    controller: ['$scope', 'geneDefinitions', ctrl],
-    controllerAs: 'ctrl',
+    controller: ['geneDefinitions', function(geneDefinitions) {
+        var self = this;
+        self.$onInit = function() {
+            self.geneDefinitions = geneDefinitions;
+        };
+        self.randomize = function(index) {
+            var newValues = [];
+            newValues.push(randomIntFromInterval(0,255));
+            newValues.push(randomIntFromInterval(0,255));
+            newValues.push(randomIntFromInterval(0,255));
+            self.updateGene({$geneIndex: index, $values: newValues});
+        };
+        
+    }],
     templateUrl: 'components/testInterface/genomeEditor.html'
-  };
+  
 
-}]);
+});
 
 
 
@@ -41,7 +38,7 @@ app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gam
     self.geneDefinitions = geneDefinitions;
     self.traitDefinitions = traitDefinitions;
 
-    self.init = function() {
+    self.$onInit = function() {
         
         self.diggers = gameService.diggers;
         //self.diggerOffspring = [];
@@ -57,8 +54,11 @@ app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gam
             });
         });
 
+        self.updateGene = function(diggerIndex, geneIndex, values) {
+            self.diggers[diggerIndex].genes[geneIndex] = values;
+        };
+
 
     };
 
-    self.init();
 }]);

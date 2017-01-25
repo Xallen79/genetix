@@ -2,8 +2,7 @@ var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqhead.components.mainGame', {
     templateUrl: 'components/mainGame/mainGame.html',
-    controller: 'bloqhead.controllers.mainGame',
-    controllerAs: 'ctrl'
+    controller: 'bloqhead.controllers.mainGame'
 });
 
 

@@ -8,15 +8,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="gene in ctrl.geneDefinitions">
+        <tr ng-repeat="gene in $ctrl.geneDefinitions">
             <td ng-bind="gene.dom"></td>
             <td ng-bind="gene.rec"></td>
             <td>
-                R <input type="number" min="0" max="255" ng-model="genes[$index][0]" />
-                G <input type="number" min="0" max="255" ng-model="genes[$index][1]" />
-                B <input type="number" min="0" max="255" ng-model="genes[$index][2]" />
+                R <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][0]" />
+                G <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][1]" />
+                B <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][2]" />
             </td>
-            <td><button type="button" class="btn btn-xs btn-success" ng-click="randomize(gene);"><i class="fa fa-asterisk"></i></button></td>
+            <td><button type="button" class="btn btn-xs btn-success" ng-click="$ctrl.randomize($index);"><i class="fa fa-asterisk"></i></button></td>
         </tr>
     </tbody>
 </table>
