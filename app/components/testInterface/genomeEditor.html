@@ -12,9 +12,9 @@
             <td ng-bind="gene.dom"></td>
             <td ng-bind="gene.rec"></td>
             <td>
-                R <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][0]" />
-                G <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][1]" />
-                B <input type="number" min="0" max="255" ng-model="$ctrl.genes[$index][2]" />
+                R <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][0]" />
+                G <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][1]" />
+                B <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][2]" />
             </td>
             <td><button type="button" class="btn btn-xs btn-success" ng-click="$ctrl.randomize($index);"><i class="fa fa-asterisk"></i></button></td>
         </tr>

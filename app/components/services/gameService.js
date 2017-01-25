@@ -4,8 +4,14 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+game.constant('gameStates', {
+        PAUSED: 0,
+        RUNNING: 1
+});
 
-game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinitions', function($window, $rootScope, Breeder, geneDefinitions) {
+game.service('gameService', [
+    '$window', '$rootScope', 'Breeder', 'geneDefinitions', 'gameStates', 'traitDefinitions',
+    function($window, $rootScope, Breeder, geneDefinitions, gameStates, traitDefinitions) {
     var self = this;
     self.init = function(config) {
         if (!angular.isDefined(config)) config = {};
@@ -15,6 +21,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
         self.diggerOffspring = [];
         self.diggerAncestors = [];
         self.maxOffspring = config.maxOffspring || 30;
+        self.currentState = gameStates.RUNNING;
 
         for (var d = 0; d < 2; d++) {
             var digger = new Breeder({
@@ -26,22 +33,22 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
                 digger.genes.push([
                     0,
                     0,
-                    0,
+                    5,
                 ]);
             }
 
             if (d === 0) {
-                digger.genes[0] = [0, 200, 10];
+                /*digger.genes[0] = [0, 200, 10];
                 digger.genes[2] = [0, 200, 10];
                 digger.genes[4] = [0, 200, 10];
                 digger.genes[5] = [0, 200, 10];
-                digger.genes[14] = [150, 0, 10];
+digger.genes[14] = [150, 0, 10];*/
                 digger.genes[42] = [255, 0, 0];
             }
             if (d == 1) {
-                digger.genes[0] = [150, 0, 10];
+               /* digger.genes[0] = [150, 0, 10];
                 digger.genes[4] = [0, 200, 10];
-                digger.genes[5] = [0, 200, 10];
+digger.genes[5] = [0, 200, 10];*/
                 digger.genes[42] = [0, 255, 0];
             }
             digger.update();
@@ -60,7 +67,12 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
         var handler = $rootScope.$on('newGenerationEvent', callback);
         scope.$on('$destroy', handler);
     };
-
+    self.getState = function() {
+        return self.currentState;
+    };
+    self.setState = function(newState) {
+        self.currentState = newState;
+    };
     self.breed = function(steps) {
         for (var loops = 0; loops < steps; loops++) {
             if (self.diggerOffspring.length < self.maxOffspring) {
@@ -78,7 +90,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
         self.diggerAncestors.push(self.diggers);
         if (self.diggerAncestors.length > self.maxOffspring) self.diggerAncestors = self.diggerAncestors.slice(1);
         self.diggers = [];
-        var newParents = self.determineNextParents(self.blueFitness);
+        var newParents = self.determineNextParents(self.aggressive);
         self.diggers.push(newParents[0]);
         self.diggers.push(newParents[1]);
         self.diggerOffspring = [];
@@ -98,7 +110,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
             var val = fitnessFunc(digger);
             if (digger.hasTrait('Male') && fitMale.value < val) {
                 fitMale.index = i;
-                fitMale.value = val;
+                fitMale.value = val;                
             } else if (digger.hasTrait('Female') && fitFemale.value < val) {
                 fitFemale.index = i;
                 fitFemale.value = val;
@@ -132,6 +144,13 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
             val += digger.genes[g][2];
         return val;
     };
+    self.aggressive = function(digger) {
+        var traitDefinition = traitDefinitions.filter(function(trait) {
+            return trait.name ==='Aggressive';
+        })[0];
+
+        return self.traitFitness(digger, traitDefinition);
+    };
 
     // a value between 0 and 1, the higher the better. If its not possible
     // for the digger to ever have this trait, it will return -1.
@@ -142,7 +161,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
             var tdg = traitDefinition.genes[g];
             var dg = digger.genes[tdg[0]];
             var dgval = dg[1] - dg[0];
-            var tdval = tdg[2] - tdg[1];
+            var tdval = (tdg[2] + tdg[1])/2;
             if (dg[0] === 0 && dg[1] === 0 && dg[2] === 0)
                 return -1; // shootin blanks for one of the genes necessary for the trait
             
@@ -160,12 +179,14 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinition
 
     self.gameLoop = function(step) {
         var self = this;
-        var steps = 0;
+        var steps = 0;        
         while (self.lastTime + step > (self.stepTimeMs * (steps + 1))) {
             steps++;
         }
         self.lastTime = (self.lastTime - (self.stepTimeMs * steps));
-        self.breed(steps);
+        if(self.currentState == gameStates.RUNNING) {            
+            self.breed(steps);
+        }
         $window.requestAnimationFrame(this.gameLoop.bind(this));
     };
 

@@ -15,7 +15,7 @@
                 <div class="col-xs-4" ng-repeat="digger in $ctrl.diggers">
                     <!--<div style="height: 400px; overflow-y: scroll;">-->
                     <div style="border: 1px solid grey;">
-                        <genome-editor genes="digger.genes" update-gene="$ctrl.updateGene($index, $geneIndex, $values)"></genome-editor>
+                        <genome-editor unit="digger" update-gene="$ctrl.updateGene($index, $geneIndex, $values)"></genome-editor>
                     </div>
                 </div>
 

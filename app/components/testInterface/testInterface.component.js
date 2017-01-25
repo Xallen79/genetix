@@ -6,9 +6,8 @@ app.component('bloqhead.components.testInterface', {
 });
 
 app.component('genomeEditor',{
-
     bindings: {
-        genes: '<',
+        unit: '<',
         updateGene: '&'
     },
     controller: ['geneDefinitions', function(geneDefinitions) {
@@ -35,15 +34,11 @@ app.component('genomeEditor',{
 app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gameService', 'geneDefinitions', 'traitDefinitions', function($scope, $timeout, gameService, geneDefinitions, traitDefinitions) {
     var self = this;
 
-    self.geneDefinitions = geneDefinitions;
-    self.traitDefinitions = traitDefinitions;
-
     self.$onInit = function() {
-        
+        self.geneDefinitions = geneDefinitions;
+        self.traitDefinitions = traitDefinitions;
         self.diggers = gameService.diggers;
-        //self.diggerOffspring = [];
-        //self.diggerAncestors = [];
-
+        
         gameService.SubscribeBreedEvent($scope, function(event, offspring) {
             //$scope.$apply(function() { self.diggerOffspring = offspring; });
         });

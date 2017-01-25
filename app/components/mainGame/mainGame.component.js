@@ -9,7 +9,7 @@ game.component('bloqhead.components.mainGame', {
 
 game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', 'gameService', function($scope, $timeout, gameService) {
     var self = this;
-    self.init = function() {
+    self.$onInit = function() {
         self.helloText = "Hello main game";
         self.diggers = gameService.diggers;
         self.diggerOffspring = [];
@@ -28,5 +28,4 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', 'gameSer
 
     };
 
-    self.init();
 }]);

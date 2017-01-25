@@ -57,12 +57,33 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     /* private functions */
     function crossover(g1, g2) {
         var crossover = Math.random();
-        var mutation = randomIntFromInterval(0, 255);
+        //var mutation = randomIntFromInterval(0, 255);
         var g = angular.copy(crossover <= geneticOptions.crossoverrate ? g1 : g2);
-        var mr = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
-        var mg = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
-        var mb = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
-
+        var mutationRate = g[2] / 255.0;
+        //var mr = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
+        //var mg = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
+        //var mb = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
+        var bitStringR = '';
+        var bitStringG = '';
+        for(var i=0;i<8;i++) {            
+            if(Math.random() < mutationRate) {
+                bitStringR += '1';
+            } else {
+                bitStringR += '0';
+            }
+            if(Math.random() < mutationRate) {
+                bitStringG += '1';
+            } else {
+                bitStringG += '0';
+            }
+        }
+        var oldR = g[0];
+        var oldG = g[1];
+        g[0] ^= parseInt(bitStringR, 2);
+        g[1] ^= parseInt(bitStringG, 2);
+        //if(oldR !== g[0]) console.log('Mutation! R: '+oldR+' to '+g[0]);
+        //if(oldG !== g[1]) console.log('Mutation! G: '+oldG+' to '+g[1]);
+/*
         if (g[0] + mr < 0) g[0] = 0;
         else if (g[0] + mr > 255) g[0] = 255;
         else g[0] += mr;
@@ -74,7 +95,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         if (g[2] + mb < 0) g[2] = 0;
         else if (g[2] + mb > 255) g[2] = 255;
         else g[2] += mb;
-
+*/
         return g;
     }
 
