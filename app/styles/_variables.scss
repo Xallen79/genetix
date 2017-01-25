@@ -109,12 +109,12 @@ $table-condensed-cell-padding : 3px !default;
 //** Default background color used for all tables.
 $table-bg : transparent !default;
 //** Background color used for `.table-striped`.
-$table-bg-accent : $gray-light !default;
+$table-bg-accent : darken($gray-light, 6%) !default;
 //** Background color used for `.table-hover`.
 $table-bg-hover : darken($gray-light, 3%) !default;
 $table-bg-active : $table-bg-hover !default;
 //** Border color for table and cell borders.
-$table-border-color : $gray-light !default;
+$table-border-color : darken($gray-light, 6%) !default;
 //== Buttons
 //
 //## For each of Bootstrap's buttons, define text, background and border color.

@@ -1,0 +1,30 @@
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a data-target="#breeders" role="tab" data-toggle="tab">Breeders</a></li>
+    <li role="presentation"><a data-target="#other" role="tab" data-toggle="tab">Other</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="breeders">
+        <fieldset>
+            <div class="row">
+                
+                <div class="col-xs-4" ng-repeat="digger in ctrl.diggers">
+                    <!--<div style="height: 400px; overflow-y: scroll;">-->
+                    <div style="border: 1px solid grey;">
+                        <genome-editor genes="digger.genes"></genome-editor>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="other">
+        <div class="well"><h3>Nothing to see here.... </h3></div>
+    </div>
+  </div>
+
+</div>

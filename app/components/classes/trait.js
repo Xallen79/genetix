@@ -10,7 +10,7 @@ game.constant('geneDefinitions', (function() {
     geneDefinitions[3] = { dom: 'Large Legs', rec: 'Small Legs', attr: ['STR'] };
     geneDefinitions[4] = { dom: 'Big Chest', rec: 'Weak Chest', attr: ['STR'] };
     geneDefinitions[5] = { dom: 'Tough Jaw', rec: 'Weak Jaw', attr: ['STR'] };
-    geneDefinitions[6] = { dom: '', rec: '', attr: ['STR'] };
+    geneDefinitions[6] = { dom: 'Oafish', rec: 'Mousey', attr: ['STR'] };
     geneDefinitions[7] = { dom: '', rec: '', attr: ['STR'] };
     geneDefinitions[8] = { dom: '', rec: '', attr: ['STR'] };
     geneDefinitions[9] = { dom: '', rec: '', attr: ['STR'] };
@@ -21,7 +21,7 @@ game.constant('geneDefinitions', (function() {
 
     geneDefinitions[14] = { dom: 'Calculated Decisions', rec: 'Reckless', attr: ['INT'] };
     geneDefinitions[15] = { dom: 'Lateral Thinker', rec: 'Single Minded', attr: ['INT'] };
-    geneDefinitions[16] = { dom: '', rec: '', attr: ['INT'] };
+    geneDefinitions[16] = { dom: 'Quick Learner', rec: 'Forgetful', attr: ['INT'] };
     geneDefinitions[17] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[18] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[19] = { dom: '', rec: '', attr: ['INT'] };
@@ -34,10 +34,10 @@ game.constant('geneDefinitions', (function() {
     geneDefinitions[26] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[27] = { dom: '', rec: '', attr: ['INT'] };
 
-    geneDefinitions[28] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[29] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[30] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[31] = { dom: '', rec: '', attr: ['CHR'] };
+    geneDefinitions[28] = { dom: 'Full Lips', rec: 'Thin Lips', attr: ['CHR'] };
+    geneDefinitions[29] = { dom: 'Dark Skin', rec: 'Fair Skin', attr: ['CHR'] };
+    geneDefinitions[30] = { dom: 'Eloquent', rec: 'Catatonic', attr: ['CHR'] };
+    geneDefinitions[31] = { dom: 'Powerful Voice', rec: 'Quiet Voice', attr: ['CHR'] };
     geneDefinitions[32] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[33] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[34] = { dom: '', rec: '', attr: ['CHR'] };
@@ -134,7 +134,7 @@ game.constant('traitDefinitions', (function() {
             var trait = traits[i];
             getRequiredGenesRecursive(trait);
         }
-        console.log(traits);
+        //console.log(traits);
         return traits;
     };
     return buildTraits();

@@ -15,6 +15,12 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
                 component: 'bloqhead.components.mainGame'
 
             });
+            states.push({
+                name: 'home.test',
+                url: 'genetix',
+                component: 'bloqhead.components.testInterface'
+
+            });
 
             states.forEach(function(state) {
                 $stateProvider.state(state);

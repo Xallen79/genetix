@@ -5,7 +5,7 @@ function randomIntFromInterval(min, max) {
 }
 
 
-game.service('gameService', ['$window', '$rootScope', 'Breeder', function($window, $rootScope, Breeder) {
+game.service('gameService', ['$window', '$rootScope', 'Breeder', 'geneDefinitions', function($window, $rootScope, Breeder, geneDefinitions) {
     var self = this;
     self.init = function(config) {
         if (!angular.isDefined(config)) config = {};
@@ -22,7 +22,7 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
                 generation: 0,
                 scale: 6,
             });
-            for (var g = 0; g < 50; g++) {
+            for (var g = 0; g < geneDefinitions.length; g++) {
                 digger.genes.push([
                     0,
                     0,
@@ -47,6 +47,9 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
             digger.update();
             self.diggers.push(digger);
         }
+        
+        // we need to be able to pause this, it keeps
+        // locking up my browser if i leave it open
         self.gameLoop(0);
     };
     self.SubscribeBreedEvent = function(scope, callback) {
@@ -129,6 +132,31 @@ game.service('gameService', ['$window', '$rootScope', 'Breeder', function($windo
             val += digger.genes[g][2];
         return val;
     };
+
+    // a value between 0 and 1, the higher the better. If its not possible
+    // for the digger to ever have this trait, it will return -1.
+    self.traitFitness = function(digger, traitDefinition) {
+        var numgenes = traitDefinition.genes.length;
+        var val = 1; // the inverse of this will be returned
+        for (var g = 0; g < numgenes; g++) {
+            var tdg = traitDefinition.genes[g];
+            var dg = digger.genes[tdg[0]];
+            var dgval = dg[1] - dg[0];
+            var tdval = tdg[2] - tdg[1];
+            if (dg[0] == 0 && dg[1] == 0 && dg[2] == 0)
+                return -1; // shootin blanks for one of the genes necessary for the trait
+            
+            // best cast scenario is when the diggers gene is at the exact median of the range
+            // required for the trait, since val would remain the same, making them more fit
+            if (dgval != tdval)
+                val *= Math.abs(dgval - tdval);
+        }
+        return  1 / val;
+
+    };
+
+
+
 
     self.gameLoop = function(step) {
         var self = this;
