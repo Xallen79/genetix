@@ -176,7 +176,7 @@ pipes.builtIndexProd = function() {
         .pipe(gulp.dest(paths.distProd)) // write first to get relative path for inject
         .pipe(plugins.inject(vendorScripts, { relative: true, name: 'bower', addPrefix: 'genetix' }))
         .pipe(plugins.inject(appScripts, { relative: true, addPrefix: 'genetix' }))
-        .pipe(plugins.inject(appStyles, { relative: true, addPrefix: 'genetix' }))
+        .pipe(plugins.inject(appStyles, { relative: true }))
         .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(gulp.dest(paths.distProd));
 };
