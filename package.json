@@ -43,7 +43,8 @@
     "scripts": {
         "postinstall": "bower install",
         "prestart": "npm install",
-        "start": "node server.js"
+        "start": "node server.js",
+        "deploy": "git subtree push --prefix dist.prod origin gh-pages"
     },
     "dependencies": {
         "prototypes": "^2.2.0"
