@@ -49,7 +49,7 @@ game.constant('geneDefinitions', (function() {
     geneDefinitions[40] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[41] = { dom: '', rec: '', attr: ['CHR'] };
 
-    geneDefinitions[42] = { dom: 'Female', rec: 'Male', attr: ['LCK'] };
+    geneDefinitions[42] = { dom: 'Female', rec: 'Male', attr: ['LCK']};
     geneDefinitions[43] = { dom: '', rec: '', attr: ['LCK'] };
     geneDefinitions[44] = { dom: '', rec: '', attr: ['LCK'] };
     geneDefinitions[45] = { dom: '', rec: '', attr: ['LCK'] };

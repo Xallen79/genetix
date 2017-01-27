@@ -1,5 +1,6 @@
 var game = angular.module('bloqhead.genetixApp');
 
+
 game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitInspector) {
 
 
@@ -8,6 +9,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     var Breeder = function(config) {
         this.traitInspector = new TraitInspector();
         this.update(config);
+        this.setRandomName();
     };
     /* public functions */
     Breeder.prototype.update = function(config) {
@@ -45,7 +47,24 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         }).length;
         return result > 0;
     };
+    Breeder.prototype.setRandomName = function(){
+        this.name = this.getRandomName();
+    };
+    Breeder.prototype.getRandomName = function(){
+        if (!this.genes || this.genes.length == 0) {
+            return 'Unknown Gender';
+        }
+        
+        var firstName = (this.hasTrait('Male'))
+            ? nameList1[randomIntFromInterval(0,nameList1.length-1)]
+            : nameList2[randomIntFromInterval(0,nameList2.length-1)];
 
+        var lastName = nameList3[randomIntFromInterval(0,nameList3.length-1)]
+            + nameList4[randomIntFromInterval(0,nameList4.length-1)]
+            + nameList5[randomIntFromInterval(0,nameList5.length-1)];
+        
+        return firstName + lastName;
+    };
 
 
 
@@ -53,6 +72,26 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     var geneticOptions = {
         crossoverrate: 0.5
     };
+    
+
+
+
+    // male first names
+    var nameList1 = ['Diggy ','Dean ','Duke ','Doyle ','Dirk ','Dag ','Dimitri ','Dru '];
+    // female first names
+    var nameList2 = ['Daggy ','Daisy ','Dinah ','Dharma ','Dee ','Daphne ','Dixie ','Darcy '];
+    // last name prefixes (empty strings and dupes are for controlling the odds)
+    var nameList3 = ['','','','','','Van ','Von ','O\'','Mc','Mc'];
+    // last names
+    var nameList4 = ['Doog','Dibb','Dabb','Dig','Dang','Dugg'];
+    // last name suffixes (empty strings and dupes are for controlling the odds)
+    var nameList5 = ['','','','ler','ler','er','er','er','wuerst','erwuerst','erton', 'erton','ski'];
+    
+    
+
+
+
+
 
     /* private functions */
     function crossover(g1, g2) {

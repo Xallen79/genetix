@@ -1,3 +1,12 @@
+(function($){
+    $(function(){
+        $('body').tooltip({
+            selector: '[rel=tooltip]'
+        });
+    });
+})(jQuery);
+
+
 angular.module('bloqhead.genetixApp', ['ui.router'])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
         function($stateProvider, $urlRouterProvider, $locationProvider) {
