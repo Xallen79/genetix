@@ -19,9 +19,9 @@
                 <td ng-bind="gene.dom"></td>
                 <td ng-bind="gene.rec"></td>
                 <td>
+                    D <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][1]" ng-change="$ctrl.unit.update()" />
                     R <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][0]" ng-change="$ctrl.unit.update()" />
-                    G <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][1]" ng-change="$ctrl.unit.update()" />
-                    B <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][2]" ng-change="$ctrl.unit.update()" />
+                    M <input type="number" min="0" max="255" ng-model="$ctrl.unit.genes[$index][2]" ng-change="$ctrl.unit.update()" />
                 </td>
                 <td><button type="button" class="btn btn-xs btn-success" ng-click="$ctrl.randomize($index);"><i class="fa fa-asterisk"></i></button></td>
             </tr>
