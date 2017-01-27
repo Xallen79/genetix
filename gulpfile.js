@@ -5,6 +5,7 @@ var es = require('event-stream');
 var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var Q = require('q');
+var streamqueue = require('streamqueue');
 
 // == PATH STRINGS ========
 
@@ -54,8 +55,9 @@ pipes.builtAppScriptsProd = function() {
     var scriptedPartials = pipes.scriptedPartials();
     var validatedAppScripts = pipes.validatedAppScripts();
 
-    return es.merge(scriptedPartials, validatedAppScripts)
-        .pipe(pipes.orderedAppScripts())
+    return streamqueue({ objectMode: true }, validatedAppScripts, scriptedPartials)
+        //es.merge(scriptedPartials, validatedAppScripts)
+        //.pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.concat('app.min.js'))
         .pipe(plugins.uglify())
@@ -158,9 +160,9 @@ pipes.builtIndexDev = function() {
 
     return pipes.validatedIndex()
         .pipe(gulp.dest(paths.distDev)) // write first to get relative path for inject
-        .pipe(plugins.inject(orderedVendorScripts, { relative: true, name: 'bower' }))
-        .pipe(plugins.inject(orderedAppScripts, { relative: true }))
-        .pipe(plugins.inject(appStyles, { relative: true }))
+        .pipe(plugins.inject(orderedVendorScripts, { relative: true, name: 'bower', addRootSlash: true }))
+        .pipe(plugins.inject(orderedAppScripts, { relative: true, addRootSlash: true }))
+        .pipe(plugins.inject(appStyles, { relative: true, addRootSlash: true }))
         .pipe(gulp.dest(paths.distDev));
 };
 
@@ -172,9 +174,9 @@ pipes.builtIndexProd = function() {
 
     return pipes.validatedIndex()
         .pipe(gulp.dest(paths.distProd)) // write first to get relative path for inject
-        .pipe(plugins.inject(vendorScripts, { relative: true, name: 'bower' }))
-        .pipe(plugins.inject(appScripts, { relative: true }))
-        .pipe(plugins.inject(appStyles, { relative: true }))
+        .pipe(plugins.inject(vendorScripts, { relative: true, name: 'bower', addRootSlash: true }))
+        .pipe(plugins.inject(appScripts, { relative: true, addRootSlash: true }))
+        .pipe(plugins.inject(appStyles, { relative: true, addRootSlash: true }))
         .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(gulp.dest(paths.distProd));
 };
