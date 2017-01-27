@@ -35,7 +35,7 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
                 $stateProvider.state(state);
             });
 
-            $locationProvider.html5Mode(true);
+            //$locationProvider.html5Mode(true);
         }
     ]).run(['gameService', function(gameService) {
         gameService.init();
