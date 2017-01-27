@@ -160,9 +160,9 @@ pipes.builtIndexDev = function() {
 
     return pipes.validatedIndex()
         .pipe(gulp.dest(paths.distDev)) // write first to get relative path for inject
-        .pipe(plugins.inject(orderedVendorScripts, { relative: true, name: 'bower', addRootSlash: true }))
-        .pipe(plugins.inject(orderedAppScripts, { relative: true, addRootSlash: true }))
-        .pipe(plugins.inject(appStyles, { relative: true, addRootSlash: true }))
+        .pipe(plugins.inject(orderedVendorScripts, { relative: true, name: 'bower' }))
+        .pipe(plugins.inject(orderedAppScripts, { relative: true }))
+        .pipe(plugins.inject(appStyles, { relative: true }))
         .pipe(gulp.dest(paths.distDev));
 };
 
@@ -174,9 +174,9 @@ pipes.builtIndexProd = function() {
 
     return pipes.validatedIndex()
         .pipe(gulp.dest(paths.distProd)) // write first to get relative path for inject
-        .pipe(plugins.inject(vendorScripts, { relative: true, name: 'bower', addRootSlash: true }))
-        .pipe(plugins.inject(appScripts, { relative: true, addRootSlash: true }))
-        .pipe(plugins.inject(appStyles, { relative: true, addRootSlash: true }))
+        .pipe(plugins.inject(vendorScripts, { relative: true, name: 'bower' }))
+        .pipe(plugins.inject(appScripts, { relative: true }))
+        .pipe(plugins.inject(appStyles, { relative: true }))
         .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(gulp.dest(paths.distProd));
 };

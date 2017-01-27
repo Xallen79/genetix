@@ -1,5 +1,5 @@
-(function($){
-    $(function(){
+(function($) {
+    $(function() {
         $('body').tooltip({
             selector: '[rel=tooltip]'
         });
@@ -20,7 +20,7 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
             });
             states.push({
                 name: 'home.main',
-                url: 'genetix',
+                url: 'main',
                 component: 'bloqhead.components.mainGame'
 
             });
