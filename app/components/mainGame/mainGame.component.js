@@ -16,12 +16,8 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService',
         populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
     };
 
-    self.updateGene = function(breederIndex, geneIndex, geneValues, parent) {
-        if (parent) {
-            var unit = self.breeders[breederIndex];
-            unit.genes[geneIndex] = geneValues;
-            unit.update();
-        }
+    self.updateGene = function(id, geneIndex, geneValues) {
+        populationService.updateMember(id, geneIndex, geneValues);
     };
 
     self.addBreeder = function(unitid) {

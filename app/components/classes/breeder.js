@@ -35,7 +35,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
             var p2g = p2.genes[g];
             child.genes.push(crossover(p1g, p2g));
         }
-        child.update({ scale: 6 });
+        child.update({ scale: 20 });
         return child;
     };
     Breeder.prototype.getTraits = function() {
@@ -139,7 +139,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     }
 
     function getRedGreenImage(genes, scale) {
-        return generateBitmapDataURL(addRows(convertRedGreenMap(genes), genes.length), scale);
+        return generateBitmapDataURL(addRows(convertRedGreenMap(genes), genes.length), 20);
     }
 
     function getBlueImage(genes, scale) {

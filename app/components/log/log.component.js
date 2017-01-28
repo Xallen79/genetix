@@ -26,7 +26,7 @@ app.service('logService', ['$rootScope', function($rootScope) {
     self.logMessage = function(message) {
         self.messages.push(message);
         if (self.messages.length > 100)
-            self.messages.splice(1, 1);
+            self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);
     };
 

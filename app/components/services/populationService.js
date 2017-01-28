@@ -48,7 +48,12 @@ game.service('populationService', [
                 self.logService.logMessage("Breeder removed: " + self.population.getById(id).name);
             }
         };
-
+        self.updateMember = function(id, geneIndex, geneValues) {
+            var member = self.population.getById(id);
+            member.genes[geneIndex] = geneValues;
+            member.update();
+            $rootScope.$emit('populationUpdateEvent', self.population.members);
+        };
 
         self.SubscribeBreederUpdateEvent = function(scope, callback) {
             var handler = $rootScope.$on('breederUpdateEvent', callback);
