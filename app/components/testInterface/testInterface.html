@@ -1,44 +1,44 @@
 <div>
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a data-target="#breeders" role="tab" data-toggle="tab">Breeders</a></li>
-    <li role="presentation"><a data-target="#other" role="tab" data-toggle="tab">Other</a></li>
-  </ul>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a data-target="#breeders" role="tab" data-toggle="tab">Breeders</a></li>
+        <li role="presentation"><a data-target="#other" role="tab" data-toggle="tab">Other</a></li>
+    </ul>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="breeders">
-        <fieldset>
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-info btn-group" ng-click="$ctrl.addNewBreeder()">Add new Breeder</button> 
-                        <div class="dropdown btn-group">
-                            <div type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Gender: {{$ctrl.newBreederGender}} <span class="caret"></span></div>
-                            <ul class="dropdown-menu">
-                                <li><a data-target="" ng-click="$ctrl.newBreederGender = 'Male'">Male</a></li>
-                                <li><a data-target="" ng-click="$ctrl.newBreederGender = 'Female'">Female</a></li>
-                            </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="breeders">
+            <fieldset>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-info btn-group" ng-click="$ctrl.addNewBreeder()">Add new Breeder</button>
+                            <div class="dropdown btn-group">
+                                <div type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Gender: {{$ctrl.newBreederGender}} <span class="caret"></span></div>
+                                <ul class="dropdown-menu">
+                                    <li><a data-target="" ng-click="$ctrl.newBreederGender = 'Male'">Male</a></li>
+                                    <li><a data-target="" ng-click="$ctrl.newBreederGender = 'Female'">Female</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-xs-4" ng-repeat="digger in $ctrl.diggers">
-                    <div style="border: 1px solid grey;">
+
+                <div class="row">
+                    <div class="col-xs-4" ng-repeat="digger in $ctrl.diggers">
                         <button type="button" class="close" ng-click="$ctrl.killBreeder(digger)"><span>&times;</span></button>
                         <genome-editor unit="digger" update-gene="$ctrl.updateGene($index, $geneIndex, $values)"></genome-editor>
                     </div>
-                </div>
 
+                </div>
+            </fieldset>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="other">
+            <div class="well">
+                <h3>Nothing to see here.... </h3>
             </div>
-        </fieldset>
+        </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="other">
-        <div class="well"><h3>Nothing to see here.... </h3></div>
-    </div>
-  </div>
 
 </div>

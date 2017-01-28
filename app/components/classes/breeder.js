@@ -47,22 +47,22 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         }).length;
         return result > 0;
     };
-    Breeder.prototype.setRandomName = function(){
+    Breeder.prototype.setRandomName = function() {
         this.name = this.getRandomName();
     };
-    Breeder.prototype.getRandomName = function(){
-        if (!this.genes || this.genes.length == 0) {
+    Breeder.prototype.getRandomName = function() {
+        if (!this.genes || this.genes.length === 0) {
             return 'Unknown Gender';
         }
-        
-        var firstName = (this.hasTrait('Male'))
-            ? nameList1[randomIntFromInterval(0,nameList1.length-1)]
-            : nameList2[randomIntFromInterval(0,nameList2.length-1)];
 
-        var lastName = nameList3[randomIntFromInterval(0,nameList3.length-1)]
-            + nameList4[randomIntFromInterval(0,nameList4.length-1)]
-            + nameList5[randomIntFromInterval(0,nameList5.length-1)];
-        
+        var firstName = (this.hasTrait('Male')) ?
+            nameList1[randomIntFromInterval(0, nameList1.length - 1)] :
+            nameList2[randomIntFromInterval(0, nameList2.length - 1)];
+
+        var lastName = nameList3[randomIntFromInterval(0, nameList3.length - 1)] +
+            nameList4[randomIntFromInterval(0, nameList4.length - 1)] +
+            nameList5[randomIntFromInterval(0, nameList5.length - 1)];
+
         return firstName + lastName;
     };
 
@@ -72,22 +72,22 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     var geneticOptions = {
         crossoverrate: 0.5
     };
-    
+
 
 
 
     // male first names
-    var nameList1 = ['Diggy ','Dean ','Duke ','Doyle ','Dirk ','Dag ','Dimitri ','Dru '];
+    var nameList1 = ['Diggy ', 'Dean ', 'Duke ', 'Doyle ', 'Dirk ', 'Dag ', 'Dimitri ', 'Dru '];
     // female first names
-    var nameList2 = ['Daggy ','Daisy ','Dinah ','Dharma ','Dee ','Daphne ','Dixie ','Darcy '];
+    var nameList2 = ['Daggy ', 'Daisy ', 'Dinah ', 'Dharma ', 'Dee ', 'Daphne ', 'Dixie ', 'Darcy '];
     // last name prefixes (empty strings and dupes are for controlling the odds)
-    var nameList3 = ['','','','','','Van ','Von ','O\'','Mc','Mc'];
+    var nameList3 = ['', '', '', '', '', 'Van ', 'Von ', 'O\'', 'Mc', 'Mc'];
     // last names
-    var nameList4 = ['Doog','Dibb','Dabb','Dig','Dang','Dugg'];
+    var nameList4 = ['Doog', 'Dibb', 'Dabb', 'Dig', 'Dang', 'Dugg'];
     // last name suffixes (empty strings and dupes are for controlling the odds)
-    var nameList5 = ['','','','ler','ler','er','er','er','wuerst','erwuerst','erton', 'erton','ski'];
-    
-    
+    var nameList5 = ['', '', '', 'ler', 'ler', 'er', 'er', 'er', 'wuerst', 'erwuerst', 'erton', 'erton', 'ski'];
+
+
 
 
 
@@ -104,13 +104,13 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         //var mb = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
         var bitStringR = '';
         var bitStringG = '';
-        for(var i=0;i<8;i++) {            
-            if(Math.random() < mutationRate) {
+        for (var i = 0; i < 8; i++) {
+            if (Math.random() < mutationRate) {
                 bitStringR += '1';
             } else {
                 bitStringR += '0';
             }
-            if(Math.random() < mutationRate) {
+            if (Math.random() < mutationRate) {
                 bitStringG += '1';
             } else {
                 bitStringG += '0';
@@ -122,19 +122,19 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         g[1] ^= parseInt(bitStringG, 2);
         //if(oldR !== g[0]) console.log('Mutation! R: '+oldR+' to '+g[0]);
         //if(oldG !== g[1]) console.log('Mutation! G: '+oldG+' to '+g[1]);
-/*
-        if (g[0] + mr < 0) g[0] = 0;
-        else if (g[0] + mr > 255) g[0] = 255;
-        else g[0] += mr;
+        /*
+                if (g[0] + mr < 0) g[0] = 0;
+                else if (g[0] + mr > 255) g[0] = 255;
+                else g[0] += mr;
 
-        if (g[1] + mg < 0) g[1] = 0;
-        else if (g[1] + mg > 255) g[1] = 255;
-        else g[1] += mg;
+                if (g[1] + mg < 0) g[1] = 0;
+                else if (g[1] + mg > 255) g[1] = 255;
+                else g[1] += mg;
 
-        if (g[2] + mb < 0) g[2] = 0;
-        else if (g[2] + mb > 255) g[2] = 255;
-        else g[2] += mb;
-*/
+                if (g[2] + mb < 0) g[2] = 0;
+                else if (g[2] + mb > 255) g[2] = 255;
+                else g[2] += mb;
+        */
         return g;
     }
 

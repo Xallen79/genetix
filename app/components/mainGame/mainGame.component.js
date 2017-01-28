@@ -7,25 +7,35 @@ game.component('bloqhead.components.mainGame', {
 
 
 
-game.controller('bloqhead.controllers.mainGame', ['$scope', '$timeout', 'gameService', function($scope, $timeout, gameService) {
+game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService', function($scope, populationService) {
     var self = this;
     self.$onInit = function() {
-        self.helloText = "Hello main game";
-        self.diggers = gameService.diggers;
-        self.diggerOffspring = [];
-        self.diggerAncestors = [];
-
-        gameService.SubscribeBreedEvent($scope, function(event, offspring) {
-            $scope.$apply(function() { self.diggerOffspring = offspring; });
-        });
-        gameService.SubscribeNewGenerationEvent($scope, function(event, data) {
-            $scope.$apply(function() {
-                self.diggers = data.Diggers;
-                self.diggerAncestors = data.Ancestors;
-            });
-        });
-
-
+        self.breeders = [];
+        self.population = [];
+        populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
+        populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
     };
 
+    self.updateGene = function(breederIndex, geneIndex, geneValues, parent) {
+        if (parent) {
+            var unit = self.breeders[breederIndex];
+            unit.genes[geneIndex] = geneValues;
+            unit.update();
+        }
+    };
+
+    self.addBreeder = function(unitid) {
+        populationService.addBreeder(unitid);
+    };
+
+    self.removeBreeder = function(unitid) {
+        populationService.removeBreeder(unitid);
+    };
+
+    self.updateBreeders = function(event, breeders) {
+        self.breeders = breeders;
+    };
+    self.updatePopulation = function(event, population) {
+        self.population = population;
+    };
 }]);

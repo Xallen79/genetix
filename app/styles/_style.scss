@@ -2,12 +2,16 @@ fieldset {
     min-height: 250px;
 }
 
-
 .genomeEditor {
-
     font-size: .7em;
     input {
         color: black;
         width: 43px;
     }
+}
+
+.bloqhead-component {
+    border: 1px solid grey;
+    padding: 2px 2px;
+    margin-bottom: 2px;
 }
