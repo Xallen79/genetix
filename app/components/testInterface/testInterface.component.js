@@ -5,10 +5,62 @@ app.component('bloqhead.components.testInterface', {
     controller: 'bloqhead.controllers.testInterface'
 });
 
-app.component('genomeEditor', {
+// tab components
+app.component('breederTab', {
     bindings: {
-        unit: '<',
-        updateGene: '&'
+        units: '=',
+    },
+    controller: ['Breeder', 'geneDefinitions', 'traitDefinitions', function(Breeder, geneDefinitions, traitDefinitions) {
+        var self = this;
+
+        self.lastBreederID = 0;
+        self.newBreederGender = 'Male';
+        
+        self.killBreeder = function(unit) {
+            self.units.splice(self.units.indexOf(unit), 1);
+        };
+
+
+        self.addNewBreeder = function() {
+            var genes = [];
+            for (var g = 0; g < geneDefinitions.length; g++) {
+                genes.push([0,0,0]);
+            }
+
+            var gender = (self.newBreederGender == 'Male') ? 255 : 0;
+            genes[42] = [gender, 255 - gender, 0];
+
+            var unit = new Breeder({
+                id: self.lastBreederID++,
+                generation: 0,
+                scale: 6,
+                genes: genes
+            });
+
+            unit.update();
+            self.units.unshift(unit);
+            
+        };
+
+    }],
+    templateUrl: 'components/testInterface/breederTab.html'
+});
+app.component('matingTab', {
+    bindings: {
+        units: '=',
+    },
+    controller: ['Breeder', 'geneDefinitions', 'traitDefinitions', function(Breeder, geneDefinitions, traitDefinitions) {
+        var self = this;
+
+    }],
+    templateUrl: 'components/testInterface/matingTab.html'
+});
+
+
+
+app.component('genomeEditor',{
+    bindings: {
+        unit: '='
     },
     controller: ['geneDefinitions', function(geneDefinitions) {
         var self = this;
@@ -16,28 +68,23 @@ app.component('genomeEditor', {
             self.geneDefinitions = geneDefinitions;
             self.expando = false;
         };
+        self.randomizeName = function() {
+            self.unit.name = self.unit.getRandomName();
+        };
         self.randomize = function(index) {
-            var newValues = [];
-            newValues.push(randomIntFromInterval(0, 255));
-            newValues.push(randomIntFromInterval(0, 255));
-            newValues.push(randomIntFromInterval(0, 255));
-            self.updateGene({ $geneIndex: index, $values: newValues });
+            self.unit.genes[index] = [randomIntFromInterval(0,255),randomIntFromInterval(0,255),randomIntFromInterval(0,255)];
         };
         self.randomizeAll = function() {
             for (var i = 0; i < self.unit.genes.length; i++)
                 self.randomize(i);
 
-            var gender = randomIntFromInterval(0, 1) === 0 ? 'Male' : 'Female';
-            var r = (gender == 'Male') ? 255 : 0;
-            var g = (gender == 'Male') ? 0 : 255;
-            self.updateGene({ $geneIndex: 42, $values: [r, g, 0] });
-            self.unit.setRandomName();
+            var gender = randomIntFromInterval(0,1) === 0 ? 255 : 0;
+            self.unit.genes[42] = [gender, 255 - gender, 0];
+            self.unit.update();
         };
-
+        
     }],
     templateUrl: 'components/testInterface/genomeEditor.html'
-
-
 });
 
 
@@ -45,45 +92,15 @@ app.component('genomeEditor', {
 app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gameService', 'Breeder', 'geneDefinitions', 'traitDefinitions', function($scope, $timeout, gameService, Breeder, geneDefinitions, traitDefinitions) {
     var self = this;
 
-    self.lastBreederID = 0;
-    self.newBreederGender = 'Male';
 
-    self.killBreeder = function(digger) {
-        self.diggers.splice(self.diggers.indexOf(digger), 1);
-    };
-
-
-    self.addNewBreeder = function() {
-        var genes = [];
-        for (var g = 0; g < geneDefinitions.length; g++) {
-            genes.push([0, 0, 0]);
-        }
-        var rv = (self.newBreederGender == 'Male') ? 255 : 0;
-        var gv = (self.newBreederGender == 'Male') ? 0 : 255;
-
-        genes[42][0] = rv;
-        genes[42][1] = gv;
-
-
-        var digger = new Breeder({
-            id: self.lastBreederID++,
-            generation: 0,
-            scale: 6,
-            genes: genes
-        });
-
-        digger.update();
-        self.diggers.unshift(digger);
-
-    };
 
 
     self.$onInit = function() {
         self.geneDefinitions = geneDefinitions;
         self.traitDefinitions = traitDefinitions;
         //self.diggers = gameService.diggers;
-        self.diggers = [];
-
+        self.units = [];
+        
         //gameService.SubscribeBreedEvent($scope, function(event, offspring) {
         //    //$scope.$apply(function() { self.diggerOffspring = offspring; });
         //});
@@ -94,12 +111,13 @@ app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gam
         //    });
         //});
 
+        /*
         self.updateGene = function(diggerIndex, geneIndex, values) {
-            var digger = self.diggers[diggerIndex];
+            var unit = self.units[diggerIndex];
             digger.genes[geneIndex] = values;
             digger.update();
         };
-
+        */
 
     };
 
