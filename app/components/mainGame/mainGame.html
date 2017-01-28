@@ -17,6 +17,17 @@
         </div>
         <div class="col-xs-8">
             <div class="row">
+                <div class="col-xs-6">
+                    <bloqhead-player-box title="Log">
+                        <bloqhead-log></bloqhead-log>
+                    </bloqhead-player-box>
+                </div>
+                <div class="col-xs-6">
+                    <bloqhead-player-box title="???"></bloqhead-player-box>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-xs-6" ng-repeat="breederid in $ctrl.breeders">
                     <bloqhead-player-box title="Breeder">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
@@ -30,9 +41,10 @@
             <bloqhead-player-box title="Population">
                 <div ng-repeat="child in $ctrl.population">
                     <genome-editor unit="child" update-gene="$ctrl.updateGene($index, $geneIndex, $values, false)"></genome-editor>
-                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.addBreeder($index)">Breed Me</button>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.addBreeder(child.id)">Breed Me</button>
                 </div>
             </bloqhead-player-box>
         </div>
     </div>
+
 </div>

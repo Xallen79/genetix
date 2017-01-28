@@ -12,7 +12,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         if (typeof(config) == 'undefined') config = {};
         this.geneDefinitions = geneDefinitions;
         this.currentGeneration = config.currentGeneration || this.currentGeneration || 0;
-        this.population = config.population | this.population || this.createInitialPopulation(config.size);
+        this.members = config.members | this.members || this.createInitialPopulation(config.size);
         this.breeders = config.breeders | this.breeders || [];
     };
 
@@ -57,13 +57,13 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
     };
 
     Population.prototype.getById = function(id) {
-        return this.population.filter(function(unit) {
+        return this.members.filter(function(unit) {
             return unit.id === id;
         })[0];
     };
 
     Population.prototype.getByGeneration = function(generation) {
-        return this.population.filter(function(unit) {
+        return this.members.filter(function(unit) {
             return unit.generation === generation;
         });
     };

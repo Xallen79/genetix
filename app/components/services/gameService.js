@@ -10,8 +10,8 @@ game.constant('gameStates', {
 });
 
 game.service('gameService', [
-    '$window', '$rootScope', 'gameStates',
-    function($window, $rootScope, gameStates) {
+    '$window', '$rootScope', 'gameStates', 'logService',
+    function($window, $rootScope, gameStates, logService) {
         var self = this;
         self.init = function(config) {
             if (!angular.isDefined(config)) config = {};
@@ -26,6 +26,8 @@ game.service('gameService', [
         };
         self.setState = function(newState) {
             self.currentState = newState;
+            if (newState === gameStates.PAUSED) logService.logMessage("Game paused.");
+            else logService.logMessage("Game resumed.");
         };
 
         self.gameLoop = function(step) {

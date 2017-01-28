@@ -1,7 +1,7 @@
 var game = angular.module('bloqhead.genetixApp');
 game.service('populationService', [
-    '$rootScope', 'gameService', 'Population',
-    function($rootScope, gameService, Population) {
+    '$rootScope', 'gameService', 'Population', 'logService',
+    function($rootScope, gameService, Population, logService) {
         var self = this;
         self.init = function(config) {
             if (!angular.isDefined(config)) config = {};
@@ -10,6 +10,7 @@ game.service('populationService', [
             self.stepsSinceBreed = 0;
 
             self.population = config.population || new Population({ size: 10 });
+            self.logService = logService;
 
             gameService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
         };
@@ -24,7 +25,8 @@ game.service('populationService', [
                 while (self.stepsSinceBreed >= self.breedSteps) {
                     self.stepsSinceBreed -= self.breedSteps;
                     console.log("BREED!");
-                    $rootScope.$emit('populationUpdateEvent', self.population.population);
+                    $rootScope.$apply(self.logService.logMessage("BREED!"));
+                    $rootScope.$emit('populationUpdateEvent', self.population.members);
                 }
             }
 
@@ -34,6 +36,7 @@ game.service('populationService', [
             if (self.population.breeders.indexOf(id) === -1) {
                 self.population.breeders.push(id);
                 $rootScope.$emit('breederUpdateEvent', self.population.breeders);
+                self.logService.logMessage("Breeder added: " + self.population.getById(id).name);
             }
         };
         self.removeBreeder = function(id) {
@@ -42,6 +45,7 @@ game.service('populationService', [
                 self.population.breeders.splice(index, 1);
                 if (!self.population.isBreeding()) self.stepsSinceBreed = 0;
                 $rootScope.$emit('breederUpdateEvent', self.population.breeders);
+                self.logService.logMessage("Breeder removed: " + self.population.getById(id).name);
             }
         };
 
@@ -55,7 +59,7 @@ game.service('populationService', [
         self.SubscribePopulationUpdateEvent = function(scope, callback) {
             var handler = $rootScope.$on('populationUpdateEvent', callback.bind(this));
             scope.$on('$destroy', handler);
-            $rootScope.$emit('populationUpdateEvent', self.population.population);
+            $rootScope.$emit('populationUpdateEvent', self.population.members);
         };
     }
 ]);
