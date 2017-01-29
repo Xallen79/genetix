@@ -28,12 +28,16 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         this.mother = config.mother || this.mother || null;
         this.father = config.father || this.father || null;
         this.generation = config.generation || this.generation || 0;
-        this.scale = config.scale || this.scale || 6;
         this.genes = config.genes || this.genes || [];
-        this.redGreenImage = getRedGreenImage(this.genes, this.scale);
-        this.blueImage = getBlueImage(this.genes, this.scale);
+        //(max number of bits that can mutate, limits the max/min values for each gene)
+        // 4 = max 15, 5 = max 31... 8 = max 255
+        this.mutationBits = config.mutationBits || this.mutationBits || 4;
+
+        this.redGreenImage = getRedGreenImage(this.genes, this.mutationBits);
+        this.blueImage = getBlueImage(this.genes);
         this.traits = this.traitInspector.getTraits(this.genes);
         this.attributes = this.traitInspector.getAttributes(this.genes);
+
     };
     Breeder.prototype.breed = function(partner, newId) {
         var p1 = this;
@@ -52,10 +56,10 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         for (var g = 0; g < p1.genes.length; g++) {
             var p1g = p1.genes[g];
             var p2g = p2.genes[g];
-            child.genes.push(crossover(p1g, p2g));
+            child.genes.push(crossover(p1g, p2g, this.mutationBits));
         }
         child.name = child.getRandomName();
-        child.update({ scale: 20 });
+        child.update();
         return child;
     };
     Breeder.prototype.getTraits = function() {
@@ -168,17 +172,13 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
 
 
     /* private functions */
-    function crossover(g1, g2) {
+    function crossover(g1, g2, maxBits) {
         var crossover = Math.random();
-        //var mutation = randomIntFromInterval(0, 255);
         var g = angular.copy(crossover <= geneticOptions.crossoverrate ? g1 : g2);
         var mutationRate = g[2] / 255.0;
-        //var mr = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
-        //var mg = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
-        //var mb = mutation < g[2] ? randomIntFromInterval(-25, 25) : 0;
         var bitStringR = '';
         var bitStringG = '';
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < maxBits; i++) {
             if (Math.random() < mutationRate) {
                 bitStringR += '1';
             } else {
@@ -194,43 +194,39 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         var oldG = g[1];
         g[0] ^= parseInt(bitStringR, 2);
         g[1] ^= parseInt(bitStringG, 2);
-        //if(oldR !== g[0]) console.log('Mutation! R: '+oldR+' to '+g[0]);
-        //if(oldG !== g[1]) console.log('Mutation! G: '+oldG+' to '+g[1]);
-        /*
-                if (g[0] + mr < 0) g[0] = 0;
-                else if (g[0] + mr > 255) g[0] = 255;
-                else g[0] += mr;
-
-                if (g[1] + mg < 0) g[1] = 0;
-                else if (g[1] + mg > 255) g[1] = 255;
-                else g[1] += mg;
-
-                if (g[2] + mb < 0) g[2] = 0;
-                else if (g[2] + mb > 255) g[2] = 255;
-                else g[2] += mb;
-        */
         return g;
     }
 
-    function getRedGreenImage(genes, scale) {
-        return generateBitmapDataURL(addRows(convertRedGreenMap(genes), genes.length), 20);
+    function getRedGreenImage(genes, mutationBits) {
+        return generateBitmapDataURL(addRows(convertRedGreenMap(genes, mutationBits), genes.length), 20);
     }
 
-    function getBlueImage(genes, scale) {
-        return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), scale);
+    function getBlueImage(genes) {
+        return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 20);
     }
 
-    function convertRedGreenMap(genes) {
+    function convertRedGreenMap(genes, mutationBits) {
         var result = [];
+        var minColor = 50;
+        var factor = 255 / (Math.pow(2, mutationBits) - 1);
         for (var i = 0; i < genes.length; i++) {
             var r = genes[i][0];
             var g = genes[i][1];
-            var bright = (Math.abs(r - g) / 255.0);
-
-            if (r > g) g = 0;
-            else r = 0;
+            var bright = Math.abs(r - g) / 255;
+            bright *= factor;
+            if (r > g) {
+                g = 0;
+            } else {
+                r = 0;
+            }
             r *= bright;
             g *= bright;
+
+            if (r > 0) r += minColor;
+            if (g > 0) g += minColor;
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+
             result.push([r, g, 0]);
         }
         return result;

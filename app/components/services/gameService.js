@@ -9,16 +9,34 @@ game.constant('gameStates', {
     RUNNING: 1
 });
 
+game.constant("defaultConfig", {
+    gameServiceConfig: {
+        stempTimeMs: 100
+    },
+    populationServiceConfig: {
+        breedSteps: 6,
+        populationConfig: {
+            initialSize: 2,
+            maxSize: 20,
+            breederMutationBits: 5,
+            breederGenesUnlocked: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 42],
+            breederMuatationChance: 10
+        }
+    }
+});
+
 game.service('gameService', [
-    '$window', '$rootScope', 'gameStates', 'logService',
-    function($window, $rootScope, gameStates, logService) {
+    '$window', '$rootScope', 'gameStates', 'logService', 'defaultConfig',
+    function($window, $rootScope, gameStates, logService, defaultConfig) {
         var self = this;
         self.init = function(config) {
-            if (!angular.isDefined(config)) config = {};
-            self.stepTimeMs = config.stepTimeMs || 1000;
+            config = config || defaultConfig;
+
+            self.stepTimeMs = config.gameServiceConfig.stepTimeMs || 1000;
             self.lastTime = 0;
             self.currentState = gameStates.PAUSED;
-            self.gameLoop(0);
+            self.startGame(config);
+
         };
 
         self.getState = function() {
@@ -46,6 +64,18 @@ game.service('gameService', [
         self.SubscribeGameLoopEvent = function(scope, callback) {
             var handler = $rootScope.$on('gameLoopEvent', callback.bind(this));
             scope.$on('$destroy', handler);
+        };
+        self.SubscribeInitializeEvent = function(scope, callback) {
+            var handler = $rootScope.$on('initializeEvent', callback.bind(this));
+            scope.$on('$destroy', handler);
+        };
+        self.startGame = function(config) {
+            config = config || defaultConfig;
+            self.currentState = gameStates.PAUSED;
+            logService.init(false);
+            $rootScope.$emit('initializeEvent', config);
+            self.gameLoop(0);
+            self.currentState = gameStates.RUNNING;
         };
 
     }

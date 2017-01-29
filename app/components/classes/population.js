@@ -9,12 +9,18 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
     };
     /* public functions */
     Population.prototype.update = function(config) {
-        if (typeof(config) == 'undefined') config = {};
+        config = config || {};
         this.geneDefinitions = geneDefinitions;
         this.currentGeneration = config.currentGeneration || this.currentGeneration || 0;
-        this.members = config.members | this.members || this.createInitialPopulation(config.size);
         this.breeders = config.breeders | this.breeders || [];
-        this.maxSize = config.maxSize | this.maxSize || 5;
+        this.maxSize = config.maxSize | this.maxSize || 10;
+        this.breederMutationBits = config.breederMutationBits;
+        this.breederMutationChance = config.breederMutiationChance || 5;
+        this.breederGenesUnlocked = config.breederGenesUnlocked || [];
+
+
+
+        this.members = config.members | this.members || this.createInitialPopulation(config.initialSize || 2);
     };
 
     Population.prototype.createInitialPopulation = function(count) {
@@ -24,7 +30,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
             var genes = [];
             for (var gn = 0; gn < self.geneDefinitions.length; gn++) {
                 genes.push([0, 0, 0]);
-                if (gn % 5 === 0) genes[gn][2] = 10;
+                if (self.breederGenesUnlocked.indexOf(gn) !== -1) genes[gn][2] = self.breederMutationChance;
             }
 
             var r = i % 2 === 0 ? 255 : 0;
@@ -32,12 +38,13 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
 
             genes[42][0] = r;
             genes[42][1] = g;
+            genes[42][2] = 0;
 
             var unit = new Breeder({
                 id: i,
                 generation: 0,
-                scale: 6,
-                genes: angular.copy(genes)
+                genes: angular.copy(genes),
+                mutationBits: self.breederMutationBits
             });
             unit.update();
             population.push(unit);

@@ -1,7 +1,7 @@
 <div class="log-component">
     <ul class="list-group">
         <li ng-repeat="item in $ctrl.messages track by $index" ng-class="$ctrl.getLogClass(item.type)">
-            [<span ng-bind="item.timestamp|date:'MM/dd/yyyy hh:mm:ss.sss a'"></span>]&nbsp;
+            [<span ng-bind="item.timestamp|date:'MM/dd HH:mm:ss'"></span>]&nbsp;
             <span ng-bind="item.message"></span>
         </li>
     </ul>

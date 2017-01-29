@@ -3,19 +3,21 @@ game.service('populationService', [
     '$rootScope', 'gameService', 'Population', 'logService',
     function($rootScope, gameService, Population, logService) {
         var self = this;
-        self.init = function(config) {
-            if (!angular.isDefined(config)) config = {};
 
-            self.breedSteps = config.breedSteps || self.breedSteps || 6;
+        self.init = function(event, config) {
+            config = config || {};
+            var myConfig = config.populationServiceConfig || {};
+
+            self.breedSteps = myConfig.breedSteps || self.breedSteps || 6;
             self.stepsSinceBreed = 0;
 
-            self.population = config.population || new Population({ size: 2 });
+            self.population = new Population(myConfig.populationConfig);
             self.logService = logService;
 
-            gameService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
         };
 
         self.handleGameLoop = function(event, steps) {
+            var popUpdated = false;
             if (event.name !== 'gameLoopEvent') {
                 console.log('populateService.handleGameLoop - Invalid event: ' + event);
                 return;
@@ -25,9 +27,13 @@ game.service('populationService', [
                 while (self.stepsSinceBreed >= self.breedSteps) {
                     self.stepsSinceBreed -= self.breedSteps;
                     var offspring = self.population.breed();
-                    logService.logBreedMessage("New offspring! " + offspring.name);
-                    $rootScope.$emit('populationUpdateEvent', self.population.members);
+                    if (offspring !== null) {
+                        logService.logBreedMessage("New offspring! " + offspring.name);
+                        popUpdated = true;
+                    }
                 }
+                if (popUpdated)
+                    $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize });
             }
 
         };
@@ -64,7 +70,10 @@ game.service('populationService', [
         self.SubscribePopulationUpdateEvent = function(scope, callback) {
             var handler = $rootScope.$on('populationUpdateEvent', callback.bind(this));
             scope.$on('$destroy', handler);
-            $rootScope.$emit('populationUpdateEvent', self.population.members);
+            $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize });
         };
+
+        gameService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
+        gameService.SubscribeInitializeEvent($rootScope, self.init);
     }
 ]);

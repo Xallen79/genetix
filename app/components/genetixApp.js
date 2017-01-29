@@ -39,6 +39,6 @@ angular.module('bloqhead.genetixApp', ['ui.router'])
         }
     ]).run(['gameService', 'populationService', 'logService', function(gameService, populationService, logService) {
         gameService.init();
-        populationService.init();
-        logService.init();
+        //populationService.init();
+        //logService.init();
     }]);

@@ -205,11 +205,11 @@ game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions'
                 else
                     lckBase += genes[g][1] - genes[g][0];
             }
-            ret.STR = Math.floor(Math.sqrt(Math.abs(strBase) / 25)) * (strBase < 0 ? -1 : 1);
-            ret.INT = Math.floor(Math.sqrt(Math.abs(intBase) / 25)) * (intBase < 0 ? -1 : 1);
-            ret.END = Math.floor(Math.sqrt(Math.abs(endBase) / 25)) * (endBase < 0 ? -1 : 1);
-            ret.CHR = Math.floor(Math.sqrt(Math.abs(chrBase) / 25)) * (chrBase < 0 ? -1 : 1);
-            ret.LCK = Math.floor(Math.sqrt(Math.abs(lckBase) / 25)) * (lckBase < 0 ? -1 : 1);
+            ret.STR = Math.floor(Math.sqrt((Math.abs(strBase) + 20) / 25)) * (strBase < 0 ? -1 : 1);
+            ret.INT = Math.floor(Math.sqrt((Math.abs(intBase) + 20) / 25)) * (intBase < 0 ? -1 : 1);
+            ret.END = Math.floor(Math.sqrt((Math.abs(endBase) + 20) / 25)) * (endBase < 0 ? -1 : 1);
+            ret.CHR = Math.floor(Math.sqrt((Math.abs(chrBase) + 20) / 25)) * (chrBase < 0 ? -1 : 1);
+            ret.LCK = Math.floor(Math.sqrt((Math.abs(lckBase) + 20) / 25)) * (lckBase < 0 ? -1 : 1);
         }
         return ret;
     };

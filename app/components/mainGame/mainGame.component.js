@@ -12,6 +12,7 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService',
     self.$onInit = function() {
         self.breeders = [];
         self.population = [];
+        self.maxPopulation = 0;
         populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
         populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
     };
@@ -31,8 +32,9 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService',
     self.updateBreeders = function(event, breeders) {
         self.breeders = breeders;
     };
-    self.updatePopulation = function(event, population) {
-        self.population = population;
+    self.updatePopulation = function(event, data) {
+        self.population = data.population;
+        self.maxPopulation = data.maxSize;
     };
 }]);
 
@@ -50,4 +52,4 @@ game.controller("bloqheader.controllers.breeder", function() {
     self.$onInit = function() {
 
     };
-})
+});

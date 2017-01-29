@@ -1,6 +1,6 @@
 <div class="col-xs-12">
     <div class="row">
-        <div class="col-xs-2">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3">
             <div class="row">
                 <div class="col-xs-12">
                     <bloqhead-player-box title="Goals">
@@ -15,20 +15,20 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-6">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-lg-8">
                     <bloqhead-player-box title="Log">
                         <bloqhead-log></bloqhead-log>
                     </bloqhead-player-box>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-lg-4">
                     <bloqhead-player-box title="???"></bloqhead-player-box>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-6" ng-repeat="breederid in $ctrl.breeders">
+                <div class="col-xs-12 col-lg-6" ng-repeat="breederid in $ctrl.breeders">
                     <bloqhead-player-box title="Breeder">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
                         <bloqhead-breeder unit="$ctrl.population[breederid]"></bloqhead-breeder>
@@ -37,8 +37,8 @@
             </div>
         </div>
 
-        <div class="col-xs-2">
-            <bloqhead-player-box title="Population">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3">
+            <bloqhead-player-box title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ">
                 <div ng-repeat="child in $ctrl.population">
                     <bloqhead-breeder unit="child" update-gene="$ctrl.updateGene($index, $geneIndex, $values, false)"></bloqhead-breeder>
                     <button class="btn btn-sm btn-primary" ng-click="$ctrl.addBreeder(child.id)">Breed Me</button>
