@@ -14,6 +14,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         this.currentGeneration = config.currentGeneration || this.currentGeneration || 0;
         this.members = config.members | this.members || this.createInitialPopulation(config.size);
         this.breeders = config.breeders | this.breeders || [];
+        this.maxSize = config.maxSize | this.maxSize || 5;
     };
 
     Population.prototype.createInitialPopulation = function(count) {
@@ -23,6 +24,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
             var genes = [];
             for (var gn = 0; gn < self.geneDefinitions.length; gn++) {
                 genes.push([0, 0, 0]);
+                if (gn % 5 === 0) genes[gn][2] = 10;
             }
 
             var r = i % 2 === 0 ? 255 : 0;
@@ -44,6 +46,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
     };
 
     Population.prototype.isBreeding = function() {
+        if (this.members.length >= this.maxSize) return false;
         // make sure there are at least 1 male and 1 female in the breeders
         var hasMale = false,
             hasFemale = false;
@@ -67,5 +70,16 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
             return unit.generation === generation;
         });
     };
+
+    Population.prototype.breed = function() {
+        var self = this;
+        if (!self.isBreeding()) return null;
+        var p1 = self.getById(self.breeders[0]);
+        var p2 = self.getById(self.breeders[1]);
+        var child = p1.breed(p2, self.members.length);
+        self.members.push(child);
+        return child;
+    };
+
     return Population;
 }]);

@@ -1,15 +1,39 @@
-var app = angular.module('bloqhead.genetixApp');
+var game = angular.module('bloqhead.genetixApp');
 
-app.component('bloqheadLog', {
+game.component('bloqheadLog', {
     templateUrl: 'components/log/log.html',
     controller: 'bloqhead.controllers.log'
 });
 
-app.controller('bloqhead.controllers.log', ['$scope', 'logService', function($scope, logService) {
+game.constant('logTypes', {
+    GENERAL: 1,
+    BREED: 2
+});
+
+
+
+game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes', function($scope, logService, logTypes) {
     var self = this;
     self.$onInit = function() {
         self.messages = [];
         logService.SubscribeNewMessageEvent($scope, self.receiveMessages);
+    };
+
+    self.getLogClass = function(type) {
+        var prefix = 'list-group-item-';
+        var a = '';
+        switch (type) {
+            case logTypes.GENERAL:
+                a = 'success';
+                break;
+            case logTypes.BREED:
+                a = 'info';
+                break;
+            default:
+                a = 'none';
+                break;
+        }
+        return prefix + a;
     };
 
     self.receiveMessages = function(event, messages) {
@@ -17,14 +41,20 @@ app.controller('bloqhead.controllers.log', ['$scope', 'logService', function($sc
     };
 }]);
 
-app.service('logService', ['$rootScope', function($rootScope) {
+game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTypes) {
     var self = this;
     self.init = function() {
         self.messages = [];
-        self.messages.push("Welcome to Genetix!");
+        self.logGeneralMessage("Welcome to Genetix!");
     };
-    self.logMessage = function(message) {
-        self.messages.push(message);
+    self.logGeneralMessage = function(message) {
+        self.messages.push({ type: logTypes.GENERAL, timestamp: Date.now(), message: message });
+        if (self.messages.length > 100)
+            self.messages.splice(0, 1);
+        $rootScope.$emit('newMessageEvent', self.messages);
+    };
+    self.logBreedMessage = function(message) {
+        self.messages.push({ type: logTypes.BREED, timestamp: Date.now(), message: message });
         if (self.messages.length > 100)
             self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);

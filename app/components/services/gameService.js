@@ -26,8 +26,8 @@ game.service('gameService', [
         };
         self.setState = function(newState) {
             self.currentState = newState;
-            if (newState === gameStates.PAUSED) logService.logMessage("Game paused.");
-            else logService.logMessage("Game resumed.");
+            if (newState === gameStates.PAUSED) logService.logGeneralMessage("Game paused.");
+            else logService.logGeneralMessage("Game resumed.");
         };
 
         self.gameLoop = function(step) {
@@ -38,7 +38,7 @@ game.service('gameService', [
             }
             self.lastTime = (self.lastTime - (self.stepTimeMs * steps));
             if (self.currentState == gameStates.RUNNING && steps > 0) {
-                $rootScope.$emit('gameLoopEvent', steps);
+                $rootScope.$apply($rootScope.$emit('gameLoopEvent', steps));
             }
             $window.requestAnimationFrame(this.gameLoop.bind(this));
         };

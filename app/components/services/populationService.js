@@ -9,7 +9,7 @@ game.service('populationService', [
             self.breedSteps = config.breedSteps || self.breedSteps || 6;
             self.stepsSinceBreed = 0;
 
-            self.population = config.population || new Population({ size: 10 });
+            self.population = config.population || new Population({ size: 2 });
             self.logService = logService;
 
             gameService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
@@ -24,8 +24,8 @@ game.service('populationService', [
                 self.stepsSinceBreed += steps;
                 while (self.stepsSinceBreed >= self.breedSteps) {
                     self.stepsSinceBreed -= self.breedSteps;
-                    console.log("BREED!");
-                    $rootScope.$apply(self.logService.logMessage("BREED!"));
+                    var offspring = self.population.breed();
+                    logService.logBreedMessage("New offspring! " + offspring.name);
                     $rootScope.$emit('populationUpdateEvent', self.population.members);
                 }
             }
@@ -36,7 +36,7 @@ game.service('populationService', [
             if (self.population.breeders.indexOf(id) === -1) {
                 self.population.breeders.push(id);
                 $rootScope.$emit('breederUpdateEvent', self.population.breeders);
-                self.logService.logMessage("Breeder added: " + self.population.getById(id).name);
+                self.logService.logBreedMessage("Breeder added: " + self.population.getById(id).name);
             }
         };
         self.removeBreeder = function(id) {
@@ -45,7 +45,7 @@ game.service('populationService', [
                 self.population.breeders.splice(index, 1);
                 if (!self.population.isBreeding()) self.stepsSinceBreed = 0;
                 $rootScope.$emit('breederUpdateEvent', self.population.breeders);
-                self.logService.logMessage("Breeder removed: " + self.population.getById(id).name);
+                self.logService.logBreedMessage("Breeder removed: " + self.population.getById(id).name);
             }
         };
         self.updateMember = function(id, geneIndex, geneValues) {

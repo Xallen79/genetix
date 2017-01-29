@@ -1,0 +1,23 @@
+<div class="bloqhead-component">
+    <h4>
+        {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" data-toggle="tooltip" rel="tooltip" title="{{trait.name}}"></i>
+    </h4>
+    <img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" />
+    <div class="row">
+        <div class="col-xs-2">
+            STR: <span ng-bind="$ctrl.unit.attributes.STR"></span>
+        </div>
+        <div class="col-xs-2">
+            INT: <span ng-bind="$ctrl.unit.attributes.INT"></span>
+        </div>
+        <div class="col-xs-2">
+            END: <span ng-bind="$ctrl.unit.attributes.END"></span>
+        </div>
+        <div class="col-xs-2">
+            CHR: <span ng-bind="$ctrl.unit.attributes.CHR"></span>
+        </div>
+        <div class="col-xs-2">
+            LCK: <span ng-bind="$ctrl.unit.attributes.LCK"></span>
+        </div>
+    </div>
+</div>

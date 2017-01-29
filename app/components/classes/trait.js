@@ -14,42 +14,43 @@ game.constant('geneDefinitions', (function() {
     geneDefinitions[7] = { dom: '', rec: '', attr: ['STR'] };
     geneDefinitions[8] = { dom: '', rec: '', attr: ['STR'] };
     geneDefinitions[9] = { dom: '', rec: '', attr: ['STR'] };
-    geneDefinitions[10] = { dom: '', rec: '', attr: ['STR'] };
-    geneDefinitions[11] = { dom: '', rec: '', attr: ['STR'] };
-    geneDefinitions[12] = { dom: '', rec: '', attr: ['STR'] };
-    geneDefinitions[13] = { dom: '', rec: '', attr: ['STR'] };
 
+    geneDefinitions[10] = { dom: '', rec: '', attr: ['INT'] };
+    geneDefinitions[11] = { dom: '', rec: '', attr: ['INT'] };
+    geneDefinitions[12] = { dom: '', rec: '', attr: ['INT'] };
+    geneDefinitions[13] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[14] = { dom: 'Calculated Decisions', rec: 'Reckless', attr: ['INT'] };
     geneDefinitions[15] = { dom: 'Lateral Thinker', rec: 'Single Minded', attr: ['INT'] };
     geneDefinitions[16] = { dom: 'Quick Learner', rec: 'Forgetful', attr: ['INT'] };
     geneDefinitions[17] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[18] = { dom: '', rec: '', attr: ['INT'] };
     geneDefinitions[19] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[20] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[21] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[22] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[23] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[24] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[25] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[26] = { dom: '', rec: '', attr: ['INT'] };
-    geneDefinitions[27] = { dom: '', rec: '', attr: ['INT'] };
 
-    geneDefinitions[28] = { dom: 'Full Lips', rec: 'Thin Lips', attr: ['CHR'] };
-    geneDefinitions[29] = { dom: 'Dark Skin', rec: 'Fair Skin', attr: ['CHR'] };
+    geneDefinitions[20] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[21] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[22] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[23] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[24] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[25] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[26] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[27] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[28] = { dom: '', rec: '', attr: ['END'] };
+    geneDefinitions[29] = { dom: '', rec: '', attr: ['END'] };
+
     geneDefinitions[30] = { dom: 'Eloquent', rec: 'Catatonic', attr: ['CHR'] };
     geneDefinitions[31] = { dom: 'Powerful Voice', rec: 'Quiet Voice', attr: ['CHR'] };
-    geneDefinitions[32] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[33] = { dom: '', rec: '', attr: ['CHR'] };
+    geneDefinitions[32] = { dom: 'Full Lips', rec: 'Thin Lips', attr: ['CHR'] };
+    geneDefinitions[33] = { dom: 'Dark Skin', rec: 'Fair Skin', attr: ['CHR'] };
     geneDefinitions[34] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[35] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[36] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[37] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[38] = { dom: '', rec: '', attr: ['CHR'] };
     geneDefinitions[39] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[40] = { dom: '', rec: '', attr: ['CHR'] };
-    geneDefinitions[41] = { dom: '', rec: '', attr: ['CHR'] };
 
-    geneDefinitions[42] = { dom: 'Female', rec: 'Male', attr: ['LCK']};
+    geneDefinitions[40] = { dom: '', rec: '', attr: ['LCK'] };
+    geneDefinitions[41] = { dom: '', rec: '', attr: ['LCK'] };
+    geneDefinitions[42] = { dom: 'Female', rec: 'Male', attr: ['LCK'] };
     geneDefinitions[43] = { dom: '', rec: '', attr: ['LCK'] };
     geneDefinitions[44] = { dom: '', rec: '', attr: ['LCK'] };
     geneDefinitions[45] = { dom: '', rec: '', attr: ['LCK'] };
@@ -177,6 +178,42 @@ game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions'
 
         return ret;
     };
+
+    TraitInspector.prototype.getAttributes = function(genes) {
+        var ret = {
+            "STR": 0,
+            "INT": 0,
+            "END": 0,
+            "CHR": 0,
+            "LCK": 0
+        };
+        if (genes.length) {
+            var strBase = 0,
+                intBase = 0,
+                endBase = 0,
+                chrBase = 0,
+                lckBase = 0;
+            for (var g = 0; g < genes.length; g++) {
+                if (g < 10)
+                    strBase += genes[g][1] - genes[g][0];
+                else if (g < 20)
+                    intBase += genes[g][1] - genes[g][0];
+                else if (g < 30)
+                    endBase += genes[g][1] - genes[g][0];
+                else if (g < 40)
+                    chrBase += genes[g][1] - genes[g][0];
+                else
+                    lckBase += genes[g][1] - genes[g][0];
+            }
+            ret.STR = Math.floor(Math.sqrt(Math.abs(strBase) / 25)) * (strBase < 0 ? -1 : 1);
+            ret.INT = Math.floor(Math.sqrt(Math.abs(intBase) / 25)) * (intBase < 0 ? -1 : 1);
+            ret.END = Math.floor(Math.sqrt(Math.abs(endBase) / 25)) * (endBase < 0 ? -1 : 1);
+            ret.CHR = Math.floor(Math.sqrt(Math.abs(chrBase) / 25)) * (chrBase < 0 ? -1 : 1);
+            ret.LCK = Math.floor(Math.sqrt(Math.abs(lckBase) / 25)) * (lckBase < 0 ? -1 : 1);
+        }
+        return ret;
+    };
+
 
     /* private members */
 

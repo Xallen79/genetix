@@ -35,3 +35,19 @@ game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService',
         self.population = population;
     };
 }]);
+
+
+game.component("bloqheadBreeder", {
+    templateUrl: "components/mainGame/breeder.html",
+    controller: "bloqheader.controllers.breeder",
+    bindings: {
+        unit: '<'
+    }
+});
+
+game.controller("bloqheader.controllers.breeder", function() {
+    var self = this;
+    self.$onInit = function() {
+
+    };
+})
