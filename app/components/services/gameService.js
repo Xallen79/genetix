@@ -8,7 +8,7 @@ game.constant('gameStates', {
     PAUSED: 0,
     RUNNING: 1
 });
-
+// this should probably have a name specific to gameService
 game.constant("defaultConfig", {
     gameServiceConfig: {
         stempTimeMs: 100

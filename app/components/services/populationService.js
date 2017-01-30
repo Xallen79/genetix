@@ -1,7 +1,7 @@
 var game = angular.module('bloqhead.genetixApp');
 game.service('populationService', [
-    '$rootScope', 'gameService', 'Population', 'logService',
-    function($rootScope, gameService, Population, logService) {
+    '$rootScope', 'gameService', 'Population', 'logService', 'achievementService',
+    function($rootScope, gameService, Population, logService, achievementService) {
         var self = this;
 
         self.init = function(event, config) {
@@ -29,6 +29,7 @@ game.service('populationService', [
                     var offspring = self.population.breed();
                     if (offspring !== null) {
                         logService.logBreedMessage("New offspring! " + offspring.name);
+                        achievementService.updateProgress('A_BIRTHS', 1);
                         popUpdated = true;
                     }
                 }

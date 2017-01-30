@@ -7,7 +7,8 @@ game.component('bloqheadLog', {
 
 game.constant('logTypes', {
     GENERAL: 1,
-    BREED: 2
+    BREED: 2,
+    ACHIEVEMENT: 3
 });
 
 
@@ -25,6 +26,9 @@ game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes',
         switch (type) {
             case logTypes.GENERAL:
                 a = 'success';
+                break;
+            case logTypes.ACHIEVEMENT:
+                a = 'default';
                 break;
             case logTypes.BREED:
                 a = 'info';
@@ -55,6 +59,12 @@ game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTy
     };
     self.logBreedMessage = function(message) {
         self.messages.push({ type: logTypes.BREED, timestamp: Date.now(), message: message });
+        if (self.messages.length > 100)
+            self.messages.splice(0, 1);
+        $rootScope.$emit('newMessageEvent', self.messages);
+    };
+    self.logAchievementMessage = function(message) {
+        self.messages.push({ type: logTypes.ACHIEVEMENT, timestamp: Date.now(), message: message });
         if (self.messages.length > 100)
             self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);
