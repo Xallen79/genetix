@@ -18,8 +18,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     /* constructor */
     var Breeder = function(config) {
         this.traitInspector = new TraitInspector();
-        this.update(config);
-        this.name = this.getRandomName();
+        this.update(config);        
     };
     /* public functions */
     Breeder.prototype.update = function(config) {
@@ -35,8 +34,11 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
 
         this.redGreenImage = getRedGreenImage(this.genes, this.mutationBits);
         this.blueImage = getBlueImage(this.genes);
+
         this.traits = this.traitInspector.getTraits(this.genes);
         this.attributes = this.traitInspector.getAttributes(this.genes);
+
+        this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
 
     };
     Breeder.prototype.breed = function(partner, newId) {
@@ -58,8 +60,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
             var p2g = p2.genes[g];
             child.genes.push(crossover(p1g, p2g, this.mutationBits));
         }
-        child.name = child.getRandomName();
-        child.update();
+        child.update();     
         return child;
     };
     Breeder.prototype.getTraits = function() {

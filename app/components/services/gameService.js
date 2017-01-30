@@ -11,13 +11,13 @@ game.constant('gameStates', {
 // this should probably have a name specific to gameService
 game.constant("defaultConfig", {
     gameServiceConfig: {
-        stempTimeMs: 100
+        stepTimeMs: 1000
     },
     populationServiceConfig: {
         breedSteps: 6,
         populationConfig: {
             initialSize: 2,
-            maxSize: 20,
+            maxSize: 22,
             breederMutationBits: 5,
             breederGenesUnlocked: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 42],
             breederMuatationChance: 10

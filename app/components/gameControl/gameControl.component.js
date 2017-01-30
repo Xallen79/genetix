@@ -1,7 +1,7 @@
 var app = angular.module('bloqhead.genetixApp');
 
 app.component('bloqheadGameControl', {
-    template: '<div class="bloqhead-component"><button type="button" class="btn btn-xs btn-danger" ng-click="$ctrl.toggleState();"><i class="fa" ng-class="$ctrl.getIcon()"></i></button></div>',
+    template: '<div class=""><button type="button" class="btn btn-xs btn-primary" ng-click="$ctrl.toggleState();"><i class="fa" ng-class="$ctrl.getIcon()"></i></button></div>',
     controller: ['gameService', 'gameStates', function(gameService, gameStates) {
         var self = this;
         self.$onInit = function() {
