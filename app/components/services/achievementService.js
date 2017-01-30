@@ -11,7 +11,7 @@ game.constant('achievementSetup', {
                 ['R_GOLD', 100],
                 ['R_WOOD', 100]
             ]],
-            [20, [
+            [18, [
                 ['M_HAPPINESS']
             ]]
         ]
@@ -23,11 +23,11 @@ game.constant('achievementSetup', {
         once: true
     }, {
         pid: 'R_GOLD',
-        name: 'Earned Bonus Resources: GOLD',
+        name: 'Earned Bonus Resources: Gold',
         desc: '[%1] gold has been added to your coffers.'
     }, {
         pid: 'R_WOOD',
-        name: 'Earned Bonus Resources: WOOD',
+        name: 'Earned Bonus Resources: Wood',
         desc: '[%1] wood has been added to your coffers.'
     }]
 });
@@ -46,21 +46,21 @@ game.service('achievementService', [
 
         self.updateProgress = function(aid, amount) {
             var progressSearch = $filter('filter')(self.progress.achievements, { aid: aid });
-            var achievementProgress;
+            var achProgress;
             if (progressSearch.length === 0) {
-                achievementProgress = {
+                achProgress = {
                     aid: aid,
                     amount: 0
                 };
-                self.progress.achievements.push(achievementProgress);
+                self.progress.achievements.push(achProgress);
             } else {
-                achievementProgress = progressSearch[0];
+                achProgress = progressSearch[0];
             }
 
-            var oldval = achievementProgress.amount;
-            achievementProgress.amount += amount;
-            var newval = achievementProgress.amount;
+            var oldval = achProgress.amount;
+            var newval = achProgress.amount + amount;
 
+            achProgress.amount = newval;
 
             var achSetup = $filter('filter')(achievementSetup.achievements, { aid: aid })[0];
             for (var rc = 0; rc < achSetup.ranks.length; rc++) {
@@ -68,7 +68,7 @@ game.service('achievementService', [
                 if (amountRequired > oldval && amountRequired <= newval) {
 
                     // log the message
-                    logService.logAchievementMessage('Achievement Earned - ' + achSetup.name + ' - ' + amountRequired);
+                    logService.logAchievementMessage('Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')');
 
                     // process the perks
                     for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {

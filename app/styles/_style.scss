@@ -19,4 +19,16 @@ fieldset {
 .log-component {
     height: 200px;
     overflow-y: scroll;
+    .color-general {
+        color: #83997E;
+        background-color: #374C32;
+    }
+    .color-breed {
+        color: #7E7F99;
+        background-color: #32334C;
+    }
+    .color-achievement {
+        color: #994C46;
+        background-color: #4C0701;
+    }
 }

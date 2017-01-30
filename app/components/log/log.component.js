@@ -25,19 +25,19 @@ game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes',
         var a = '';
         switch (type) {
             case logTypes.GENERAL:
-                a = 'success';
+                a = 'color-general';
                 break;
             case logTypes.ACHIEVEMENT:
-                a = 'default';
+                a = 'color-achievement';
                 break;
             case logTypes.BREED:
-                a = 'info';
+                a = 'color-breed';
                 break;
             default:
-                a = 'none';
+                a = prefix + 'none';
                 break;
         }
-        return prefix + a;
+        return a;
     };
 
     self.receiveMessages = function(event, messages) {
