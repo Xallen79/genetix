@@ -3,44 +3,58 @@ var game = angular.module('bloqhead.genetixApp');
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
+game.constant('gameSaveKey', "GENETIX_SAVE")
 game.constant('gameStates', {
     PAUSED: 0,
     RUNNING: 1
 });
-// this should probably have a name specific to gameService
-game.constant("defaultConfig", {
-    gameServiceConfig: {
+
+game.constant("defaultState", {
+
+    clearLog: true,
+    autoSaveSteps: 30,
+    gameLoopServiceState: {
         stepTimeMs: 1000
     },
-    populationServiceConfig: {
+    populationServiceState: {
         breedSteps: 6,
-        populationConfig: {
+        populationState: {
             initialSize: 2,
             maxSize: 22,
             breederMutationBits: 5,
             breederGenesUnlocked: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 42],
             breederMuatationChance: 10
         }
+    },
+    achievementServiceState: {
+        achievements: [],
+        perks: []
     }
+
 });
 
-game.service('gameService', [
-    '$window', '$rootScope', 'gameStates', 'logService', 'defaultConfig',
-    function($window, $rootScope, gameStates, logService, defaultConfig) {
+game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logService',
+    function($window, $rootScope, gameStates, logService) {
         var self = this;
-        self.init = function(config) {
-            config = config || defaultConfig;
-
-            self.stepTimeMs = config.gameServiceConfig.stepTimeMs || 1000;
+        self.initialized = false;
+        self.init = function(state) {
+            state = state || {};
+            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 1000;
             self.lastTime = 0;
             self.currentState = gameStates.PAUSED;
-            self.startGame(config);
+            if (!self.initialized) {
+                self.initialized = true;
+                self.gameLoop(0);
+            }
 
+            self.currentState = state.currentState || self.currentState || gameStates.RUNNING;
         };
 
         self.getState = function() {
-            return self.currentState;
+            return {
+                stepTimeMs: self.stepTimeMs,
+                currentState: self.currentState
+            };
         };
         self.setState = function(newState) {
             self.currentState = newState;
@@ -65,18 +79,48 @@ game.service('gameService', [
             var handler = $rootScope.$on('gameLoopEvent', callback.bind(this));
             scope.$on('$destroy', handler);
         };
-        self.SubscribeInitializeEvent = function(scope, callback) {
-            var handler = $rootScope.$on('initializeEvent', callback.bind(this));
-            scope.$on('$destroy', handler);
+
+    }
+]);
+
+game.service('gameService', [
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'LZString',
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, LZString) {
+        var self = this;
+        self.init = function(state) {
+            var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
+            var savedState = (json) ? angular.fromJson(json) : undefined;
+            self.gameState = state || savedState || defaultState;
+            self.autoSaveSteps = self.gameState.autoSaveSteps || self.autoSaveSteps || 10;
+            self.startGame();
+            self.stepsSinceSave = 0;
+
         };
-        self.startGame = function(config) {
-            config = config || defaultConfig;
-            self.currentState = gameStates.PAUSED;
-            logService.init(false);
-            $rootScope.$emit('initializeEvent', config);
-            self.gameLoop(0);
-            self.currentState = gameStates.RUNNING;
+        self.startGame = function() {
+            logService.init(self.gameState.clearLog);
+            populationService.init(self.gameState.populationServiceState || {});
+            achievementService.init(self.gameState.achievementServiceState || {});
+            gameLoopService.init(self.gameState.gameLoopServiceState || {});
         };
+        self.hardReset = function() {
+            localStorage.removeItem(gameSaveKey);
+            self.init();
+        };
+
+        gameLoopService.SubscribeGameLoopEvent($rootScope, function(event, steps) {
+            self.stepsSinceSave += steps;
+            if (self.stepsSinceSave > self.autoSaveSteps) {
+                var saveState = angular.copy(self.gameState);
+                saveState.populationServiceState = angular.copy(populationService.getState());
+                saveState.achievementServiceState = angular.copy(achievementService.getState());
+                saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
+                var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
+                localStorage.setItem(gameSaveKey, save);
+
+                logService.logGeneralMessage('Game autosaved.');
+                self.stepsSinceSave = 0;
+            }
+        });
 
     }
 ]);

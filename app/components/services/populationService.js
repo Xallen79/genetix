@@ -1,20 +1,29 @@
 var game = angular.module('bloqhead.genetixApp');
 game.service('populationService', [
-    '$rootScope', 'gameService', 'Population', 'logService', 'achievementService',
-    function($rootScope, gameService, Population, logService, achievementService) {
+    '$rootScope', 'gameLoopService', 'Population', 'logService', 'achievementService',
+    function($rootScope, gameLoopService, Population, logService, achievementService) {
         var self = this;
 
-        self.init = function(event, config) {
-            config = config || {};
-            var myConfig = config.populationServiceConfig || {};
+        self.init = function(state) {
+            state = state || {};
+            self.breedSteps = state.breedSteps || state.breedSteps || 6;
+            self.stepsSinceBreed = state.stepsSinceBreed || self.stepsSinceBreed || 0;
+            self.populationState = state.populationState || self.populationState;
+            self.population = (self.populationState) ? new Population(self.populationState) : self.population || new Population();
 
-            self.breedSteps = myConfig.breedSteps || self.breedSteps || 6;
-            self.stepsSinceBreed = 0;
-
-            self.population = new Population(myConfig.populationConfig);
             self.logService = logService;
+            $rootScope.$emit('breederUpdateEvent', self.population.breeders);
+            $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize });
 
         };
+        self.getState = function() {
+            var state = {
+                breedSteps: self.breedSteps,
+                stepsSinceBreed: self.stepsSinceBreed
+            }
+            state.populationState = self.population.getState();
+            return state;
+        }
 
         self.handleGameLoop = function(event, steps) {
             var popUpdated = false;
@@ -74,7 +83,6 @@ game.service('populationService', [
             $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize });
         };
 
-        gameService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
-        gameService.SubscribeInitializeEvent($rootScope, self.init);
+        gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
     }
 ]);

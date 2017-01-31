@@ -4,23 +4,61 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
 
 
     /* constructor */
-    var Population = function(config) {
-        this.update(config);
+    var Population = function(state) {
+        this.update(state);
     };
     /* public functions */
-    Population.prototype.update = function(config) {
-        config = config || {};
+    Population.prototype.update = function(state) {
+        state = state || {};
         this.geneDefinitions = geneDefinitions;
-        this.currentGeneration = config.currentGeneration || this.currentGeneration || 0;
-        this.breeders = config.breeders | this.breeders || [];
-        this.maxSize = config.maxSize | this.maxSize || 10;
-        this.breederMutationBits = config.breederMutationBits;
-        this.breederMutationChance = config.breederMutiationChance || 5;
-        this.breederGenesUnlocked = config.breederGenesUnlocked || [];
+        this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
+        this.breeders = state.breeders || this.breeders || [];
+        this.maxSize = state.maxSize || this.maxSize || 10;
+        this.breederMutationBits = state.breederMutationBits || this.breederMutationBits || 4;
+        this.breederMutationChance = state.breederMutationChance || this.breederMutationChance || 5;
+        this.breederGenesUnlocked = state.breederGenesUnlocked || this.breederGenesUnlocked || [42];
+        this.initialSize = state.initialSize || this.initialSize || 2;
+        if (state.members) {
+            this.members = [];
+            for (var m = 0; m < state.members.length; m++) {
+                var member = state.members[m];
+                var unit = new Breeder({
+                    id: member.id,
+                    mother: member.mother || null,
+                    father: member.father || null,
+                    generation: member.generation,
+                    genes: member.genes,
+                    mutationBits: member.mutationBits,
+                    name: member.name,
+                });
+                unit.update();
+                this.members.push(unit);
 
-
-
-        this.members = config.members | this.members || this.createInitialPopulation(config.initialSize || 2);
+            }
+        } else this.members = this.members || this.createInitialPopulation(this.initialSize);
+    };
+    Population.prototype.getState = function() {
+        var state = {
+            currentGeneration: this.currentGeneration,
+            breeders: this.breeders,
+            maxSize: this.maxSize,
+            breederMutationBits: this.breederMutationBits,
+            breederMutationChance: this.breederMutationChance,
+            breederGenesUnlocked: this.breederGenesUnlocked,
+            initialSize: this.initialSize,
+            members: []
+        };
+        for (var m = 0; m < this.members.length; m++) {
+            var member = this.members[m];
+            state.members.push({
+                id: member.id,
+                generation: member.generation,
+                genes: member.genes,
+                mutationBits: member.mutationBits,
+                name: member.name
+            });
+        }
+        return state;
     };
 
     Population.prototype.createInitialPopulation = function(count) {

@@ -39,10 +39,19 @@ game.service('achievementService', [
     function($filter, logService, achievementSetup) {
         var self = this;
 
-        self.init = function(progress) {
-            self.progress = progress || { achievements: [], perks: [] };
-        };
+        self.init = function(state) {
 
+            if (state)
+                self.progress = { achievements: state.achievements, perks: state.perks };
+            else
+                self.progress = { achievements: [], perks: [] };
+        };
+        self.getState = function() {
+            return {
+                achievements: self.progress.achievements,
+                perks: self.progress.perks
+            };
+        };
 
         self.updateProgress = function(aid, amount) {
             var progressSearch = $filter('filter')(self.progress.achievements, { aid: aid });
@@ -108,8 +117,5 @@ game.service('achievementService', [
             }
         };
 
-
-
-        self.init();
     }
 ]);

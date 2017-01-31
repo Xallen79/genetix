@@ -7,7 +7,7 @@
 })(jQuery);
 
 
-angular.module('bloqhead.genetixApp', ['ui.router'])
+angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string'])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
         function($stateProvider, $urlRouterProvider, $locationProvider) {
             $urlRouterProvider.otherwise('/');

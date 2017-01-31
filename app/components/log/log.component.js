@@ -47,9 +47,11 @@ game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes',
 
 game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTypes) {
     var self = this;
-    self.init = function() {
-        self.messages = [];
-        self.logGeneralMessage("Welcome to Genetix!");
+    self.init = function(clearLog) {
+        if (clearLog) {
+            self.messages = [];
+            self.logGeneralMessage("Welcome to Genetix!");
+        }
     };
     self.logGeneralMessage = function(message) {
         self.messages.push({ type: logTypes.GENERAL, timestamp: Date.now(), message: message });
