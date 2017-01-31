@@ -42,6 +42,7 @@ game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes',
 
     self.receiveMessages = function(event, messages) {
         self.messages = messages;
+        $('.log-component')[0].scrollTop = $('.log-component')[0].scrollHeight;
     };
 }]);
 

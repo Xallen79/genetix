@@ -3,7 +3,7 @@ var game = angular.module('bloqhead.genetixApp');
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-game.constant('gameSaveKey', "GENETIX_SAVE")
+game.constant('gameSaveKey', "GENETIX_SAVE");
 game.constant('gameStates', {
     PAUSED: 0,
     RUNNING: 1

@@ -3,40 +3,54 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 game.constant('achievementSetup', {
-    achievements: [{
-        aid: 'A_BIRTHS',
-        name: 'The Chosen One',
-        ranks: [
-            [1, [
-                ['R_GOLD', 100],
-                ['R_WOOD', 100]
-            ]],
-            [18, [
-                ['M_HAPPINESS']
-            ]]
-        ]
-    }],
-    perks: [{
-        pid: 'M_HAPPINESS',
-        name: 'New Mechanic: Happiness',
-        desc: 'Happiness is a representation of how content your population is.',
-        once: true
-    }, {
-        pid: 'R_GOLD',
-        name: 'Earned Bonus Resources: Gold',
-        desc: '[%1] gold has been added to your coffers.'
-    }, {
-        pid: 'R_WOOD',
-        name: 'Earned Bonus Resources: Wood',
-        desc: '[%1] wood has been added to your coffers.'
-    }]
+    achievements: {
+        A_BIRTHS: {
+            aid: 'A_BIRTHS',
+            name: 'The Chosen One',
+            desc: 'Create a new unit',
+            ranks: [
+                [5, [
+                    ['P_R_GOLD', 100],
+                    ['P_R_WOOD', 100]
+                ]],
+                [20, [
+                    ['P_M_HAPPINESS'],
+                    ['P_G_ENHANCED', 14, 10]
+                ]]
+            ]
+        }
+    },
+    perks: {
+        P_M_HAPPINESS: {
+            pid: 'P_M_HAPPINESS',
+            name: 'New Mechanic: Happiness',
+            desc: 'Happiness is a representation of how content your population is.',
+            once: true
+        },
+        P_R_GOLD: {
+            pid: 'P_R_GOLD',
+            name: 'Earned Bonus Resources: Gold',
+            desc: '[%1] gold has been added to your coffers.'
+        },
+        P_R_WOOD: {
+            pid: 'P_R_WOOD',
+            name: 'Earned Bonus Resources: Wood',
+            desc: '[%1] wood has been added to your coffers.'
+        },
+        P_G_ENHANCED: {
+            pid: 'P_G_ENHANCED',
+            name: 'Gene Enhancement',
+            desc: 'The boundary has been increased by [%amt] for one of your [%attr] genes. ([%dom]/[%rec])'
+        }
+    }
+
 });
 
 
 
 game.service('achievementService', [
-    '$filter', 'logService', 'achievementSetup',
-    function($filter, logService, achievementSetup) {
+    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions',
+    function($rootScope, $filter, logService, achievementSetup, geneDefinitions) {
         var self = this;
 
         self.init = function(state) {
@@ -53,17 +67,15 @@ game.service('achievementService', [
             };
         };
 
+
         self.updateProgress = function(aid, amount) {
-            var progressSearch = $filter('filter')(self.progress.achievements, { aid: aid });
-            var achProgress;
-            if (progressSearch.length === 0) {
+            var achProgress = self.progress.achievements[aid];
+            if (!achProgress) {
                 achProgress = {
                     aid: aid,
                     amount: 0
                 };
-                self.progress.achievements.push(achProgress);
-            } else {
-                achProgress = progressSearch[0];
+                self.progress.achievements[aid] = achProgress;
             }
 
             var oldval = achProgress.amount;
@@ -71,18 +83,30 @@ game.service('achievementService', [
 
             achProgress.amount = newval;
 
-            var achSetup = $filter('filter')(achievementSetup.achievements, { aid: aid })[0];
+            var achSetup = achievementSetup.achievements[aid];
             for (var rc = 0; rc < achSetup.ranks.length; rc++) {
                 var amountRequired = achSetup.ranks[rc][0];
                 if (amountRequired > oldval && amountRequired <= newval) {
+
+                    var reward = {
+                        achievement: achSetup,
+                        amountRequired: amountRequired,
+                        perks: []
+                    };
 
                     // log the message
                     logService.logAchievementMessage('Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')');
 
                     // process the perks
                     for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {
-                        self.applyPerk(achSetup.ranks[rc][1][pc]);
+                        var p = self.applyPerk(achSetup.ranks[rc][1][pc]);
+                        if (p !== null)
+                        {
+                            reward.perks.push(p);
+                        }
                     }
+
+                    $rootScope.$emit('newRewardEvent', reward);
 
                 }
             }
@@ -90,24 +114,39 @@ game.service('achievementService', [
 
         self.applyPerk = function(arr) {
             var pid = arr[0];
-            var perkSetup = $filter('filter')(achievementSetup.perks, { pid: pid })[0];
+            var perkSetup = achievementSetup.perks[pid];
 
             // if this perk can only be earned once and the player has earned it already,
             // we do not have to do anything
-            if (perkSetup.once || false) {
+            if (perkSetup.once) {
                 var perkSearch = $filter('filter')(self.progress.perks, { pid: pid });
                 if (perkSearch.length !== 0)
-                    return;
+                    return null;
             }
 
             // log the message
             var msg = perkSetup.name + ' - ' + perkSetup.desc;
-            for (var i = 1; i < arr.length; i++)
-                msg = msg.replace('[%' + i + ']', arr[i]);
+            switch (perkSetup.pid) {
+                case 'P_G_ENHANCED':
+                    var gene = geneDefinitions[arr[1]];
+                    msg = msg.replace('[%dom]', gene.dom);
+                    msg = msg.replace('[%rec]', gene.rec);
+                    msg = msg.replace('[%attr]', gene.attr[0]);
+                    msg = msg.replace('[%amt]', arr[2]);
+                    break;
+                default:
+                    for (var i = 1; i < arr.length; i++)
+                        msg = msg.replace('[%' + i + ']', arr[i]);
+                    break;
+            }
+
             logService.logAchievementMessage(msg);
 
             // do the work
             switch (pid) {
+                case 'P_G_ENHANCED':
+                    // enhance the gene
+                    break;
                 case 'R_GOLD':
                     // increase player gold by arr[1]
                     break;
@@ -115,7 +154,25 @@ game.service('achievementService', [
                     // increase player wood by arr[1]
                     break;
             }
+            
+            var ret = {
+                pid: pid,
+                msg: msg,
+                arr: arr,
+                dt: (new Date()).toUTCString()
+            };
+            self.progress.perks.push(ret);
+            return ret;
+
         };
 
+
+        self.SubscribeNewRewardEvent = function(scope, callback) {
+            var handler = $rootScope.$on('newRewardEvent', callback.bind(this));
+            scope.$on('$destroy', handler);
+        };
+
+
+        self.init();
     }
 ]);

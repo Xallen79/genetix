@@ -7,36 +7,45 @@ game.component('bloqhead.components.mainGame', {
 
 
 
-game.controller('bloqhead.controllers.mainGame', ['$scope', 'populationService', function($scope, populationService) {
-    var self = this;
-    self.$onInit = function() {
-        self.breeders = [];
-        self.population = [];
-        self.maxPopulation = 0;
-        populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
-        populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
-    };
+game.controller('bloqhead.controllers.mainGame', [
+    '$scope', 'populationService', 'achievementService',
+    function($scope, populationService, achievementService) {
+        var self = this;
+        self.$onInit = function() {
+            self.breeders = [];
+            self.population = [];
+            self.maxPopulation = 0;
+            populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
+            populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
 
-    self.updateGene = function(id, geneIndex, geneValues) {
-        populationService.updateMember(id, geneIndex, geneValues);
-    };
+            achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
+        };
 
-    self.addBreeder = function(unitid) {
-        populationService.addBreeder(unitid);
-    };
+        self.rewardEarned = function(event, reward) {
+            console.log(reward);
+        };
 
-    self.removeBreeder = function(unitid) {
-        populationService.removeBreeder(unitid);
-    };
+        self.updateGene = function(id, geneIndex, geneValues) {
+            populationService.updateMember(id, geneIndex, geneValues);
+        };
 
-    self.updateBreeders = function(event, breeders) {
-        self.breeders = breeders;
-    };
-    self.updatePopulation = function(event, data) {
-        self.population = data.population;
-        self.maxPopulation = data.maxSize;
-    };
-}]);
+        self.addBreeder = function(unitid) {
+            populationService.addBreeder(unitid);
+        };
+
+        self.removeBreeder = function(unitid) {
+            populationService.removeBreeder(unitid);
+        };
+
+        self.updateBreeders = function(event, breeders) {
+            self.breeders = breeders;
+        };
+        self.updatePopulation = function(event, data) {
+            self.population = data.population;
+            self.maxPopulation = data.maxSize;
+        };
+    }
+]);
 
 
 game.component("bloqheadBreeder", {
