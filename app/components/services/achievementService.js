@@ -100,8 +100,7 @@ game.service('achievementService', [
                     // process the perks
                     for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {
                         var p = self.applyPerk(achSetup.ranks[rc][1][pc]);
-                        if (p !== null)
-                        {
+                        if (p !== null) {
                             reward.perks.push(p);
                         }
                     }
@@ -154,7 +153,7 @@ game.service('achievementService', [
                     // increase player wood by arr[1]
                     break;
             }
-            
+
             var ret = {
                 pid: pid,
                 msg: msg,
@@ -172,7 +171,5 @@ game.service('achievementService', [
             scope.$on('$destroy', handler);
         };
 
-
-        self.init();
     }
 ]);
