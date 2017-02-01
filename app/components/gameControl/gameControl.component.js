@@ -8,7 +8,7 @@ app.component('bloqheadGameControl', {
     controller: ['$scope', 'gameService', 'gameLoopService', 'gameStates', function($scope, gameService, gameLoopService, gameStates) {
         var self = this;
         self.$onInit = function() {
-            self.currentState = gameLoopService.getState();
+            self.currentState = gameLoopService.getState().currentState;
         };
         self.toggleState = function() {
             self.currentState = (self.currentState === gameStates.RUNNING ? gameStates.PAUSED : gameStates.RUNNING);

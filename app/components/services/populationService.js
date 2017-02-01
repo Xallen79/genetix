@@ -20,10 +20,10 @@ game.service('populationService', [
             var state = {
                 breedSteps: self.breedSteps,
                 stepsSinceBreed: self.stepsSinceBreed
-            }
+            };
             state.populationState = self.population.getState();
             return state;
-        }
+        };
 
         self.handleGameLoop = function(event, steps) {
             var popUpdated = false;

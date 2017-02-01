@@ -3,7 +3,7 @@ var game = angular.module('bloqhead.genetixApp');
 game.component('bloqheadPlayerBox', {
     transclude: true,
     require: {
-        mainCtrl: "^bloqhead.components.mainGame"
+        mainCtrl: "^bloqhead.components.home"
     },
     templateUrl: 'components/playerBox/playerBox.html',
     controller: 'bloqhead.controllers.playerBox',

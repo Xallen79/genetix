@@ -1,8 +1,8 @@
 <div class="bloqhead-component">
     <h4>
         {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" data-toggle="tooltip" rel="tooltip" title="{{trait.name}}"></i>
-    </h4>   
-    <img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" /> 
+    </h4>
+    <img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" />
     <table class="table table-bordered table-condensed genomeEditor">
         <thead>
             <tr>
@@ -47,4 +47,14 @@
             </tr>
         </tbody>
     </table>
+    <button class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
+    <div class="btn-group">
+        <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Work <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a>Mine</a></li>
+            <li><a>Farm</a></li>
+        </ul>
+    </div>
 </div>

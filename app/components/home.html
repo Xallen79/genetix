@@ -1,11 +1,30 @@
 <!-- comment -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-<div class="container-fluid">
-<ul class="nav navbar-nav">   
-    <li><a ui-sref="home.main">Main</a></li>
-    <li><a ui-sref="home.test">Test Interface</a></li>    
-</ul>
-<bloqhead-game-control class="navbar-brand navbar-right"></bloqhead-game-control>    
+
+<div class="row">
+    <div class="col-xs-6 col-lg-4">
+        <div class="row">
+            <div class="col-xs-12">
+                <bloqhead-player-box title="Log">
+                    <bloqhead-log></bloqhead-log>
+                </bloqhead-player-box>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <bloqhead-player-box title="Goals">
+                    <bloqhead-goal-list></bloqhead-goal-list>
+                </bloqhead-player-box>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <bloqhead-player-box title="Resources">
+                </bloqhead-player-box>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-6 col-lg-8">
+        <div ui-view=""></div>
+    </div>
 </div>
-</nav>
-<div ui-view=""></div>

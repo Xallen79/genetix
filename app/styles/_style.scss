@@ -1,7 +1,7 @@
-fieldset {
-    min-height: 250px;
+body {
+    padding-top: 70px;
+    padding-bottom: 10px;
 }
-body { padding-top: 70px; }
 
 .genomeEditor {
     font-size: .7em;
@@ -19,7 +19,7 @@ body { padding-top: 70px; }
 
 .log-component {
     height: 200px;
-    overflow-y: scroll;
+    overflow-y: auto;
     .color-general {
         color: #83997E;
         background-color: #374C32;
@@ -32,4 +32,11 @@ body { padding-top: 70px; }
         color: #994C46;
         background-color: #4C0701;
     }
+}
+
+bloqhead-player-box .panel-body {
+    min-height: 200px;
+    max-height: 315px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

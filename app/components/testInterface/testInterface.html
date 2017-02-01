@@ -1,19 +1,19 @@
-<div>
+<div class="col-xs-12">
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a data-target="#breeders" role="tab" data-toggle="tab">Breeders</a></li>
-    <li role="presentation"><a data-target="#mating" role="tab" data-toggle="tab">Mating</a></li>
-  </ul>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a data-target="#breeders" role="tab" data-toggle="tab">Breeders</a></li>
+        <li role="presentation"><a data-target="#mating" role="tab" data-toggle="tab">Mating</a></li>
+    </ul>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="breeders">
-        <breeder-tab units="$ctrl.units"></breeder-tab>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="breeders">
+            <breeder-tab units="$ctrl.units"></breeder-tab>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="mating">
+            <mating-tab units="$ctrl.units"></mating-tab>
+        </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="mating">
-        <mating-tab units="$ctrl.units"></mating-tab>
-    </div>
-  </div>
 
 </div>

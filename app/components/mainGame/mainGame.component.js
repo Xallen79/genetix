@@ -1,5 +1,17 @@
 var game = angular.module('bloqhead.genetixApp');
 
+game.component('bloqhead.components.home', {
+    templateUrl: 'components/home.html',
+    controller: 'bloqhead.controllers.home'
+});
+game.controller('bloqhead.controllers.home', function() {
+    this.$onInit = function() {
+
+    };
+});
+
+
+
 game.component('bloqhead.components.mainGame', {
     templateUrl: 'components/mainGame/mainGame.html',
     controller: 'bloqhead.controllers.mainGame'
@@ -52,7 +64,8 @@ game.component("bloqheadBreeder", {
     templateUrl: "components/mainGame/breeder.html",
     controller: "bloqheader.controllers.breeder",
     bindings: {
-        unit: '<'
+        unit: '<',
+        assign: '&'
     }
 });
 
@@ -60,5 +73,8 @@ game.controller("bloqheader.controllers.breeder", function() {
     var self = this;
     self.$onInit = function() {
 
+    };
+    self.assignMe = function() {
+        self.assign({ $id: self.unit.id });
     };
 });

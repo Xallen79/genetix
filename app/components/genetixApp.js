@@ -15,13 +15,19 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string'])
             states.push({
                 name: 'home',
                 url: '/',
-                templateUrl: 'components/home.html'
+                component: 'bloqhead.components.home'
 
             });
             states.push({
                 name: 'home.main',
                 url: 'main',
                 component: 'bloqhead.components.mainGame'
+
+            });
+            states.push({
+                name: 'home.achievements',
+                url: 'achievements',
+                component: 'bloqhead.components.achievementsUI'
 
             });
             states.push({
