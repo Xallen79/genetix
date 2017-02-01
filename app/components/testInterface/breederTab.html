@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-xs-6">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-info btn-group" ng-click="$ctrl.addNewBreeder()">Add new Breeder</button> 
+            <button type="button" class="btn btn-info btn-group" ng-click="$ctrl.addNewBreeder()">Add new Breeder</button>
             <div class="dropdown btn-group">
                 <div type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Gender: {{$ctrl.newBreederGender}} <span class="caret"></span></div>
                 <ul class="dropdown-menu">
@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="unit in $ctrl.units">
 		<button type="button" class="close" ng-click="$ctrl.killBreeder(unit)"><span>&times;</span></button>
-		<genome-editor unit="unit"></genome-editor>
+        <genome-editor unit="unit"></genome-editor>
     </div>
 
 </div>

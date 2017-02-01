@@ -1,3 +1,12 @@
+@mixin gradient {
+    background: $gray-light;
+    background: opacify($gray-light, 0.4);
+    background: -moz-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-dark, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
+    background: -webkit-gradient(left top, right bottom, color-stop(0%, opacify($gray-light, 0.4)), color-stop(30%, opacify($gray-dark, 0.4)), color-stop(100%, opacify($gray-dark, 0.4)));
+    background: -webkit-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-light, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
+    border: 1px solid black;
+}
+
 body {
     padding-top: 70px;
     padding-bottom: 10px;
@@ -11,10 +20,22 @@ body {
     }
 }
 
+.breeder-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    [class*="col-"] {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        margin-bottom: 10px;
+    }
+}
+
 .bloqhead-component {
-    border: 1px solid grey;
-    padding: 2px 2px;
-    margin-bottom: 2px;
+    @include gradient;
+    padding: 5px;
+    -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
 }
 
 .log-component {

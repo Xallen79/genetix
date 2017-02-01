@@ -29,6 +29,16 @@ game.constant("defaultState", {
     achievementServiceState: {
         achievements: [],
         perks: []
+    },
+    resourceServiceState: {
+        resources: {
+            dirt: [0, 0],
+            water: [0, 0],
+            wood: [0, 0],
+            gold: [0, 0],
+            bricks: [0, 0],
+            happiness: [0, 0]
+        }
     }
 
 });
@@ -84,8 +94,8 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'LZString',
-    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, LZString) {
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'LZString',
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, LZString) {
         var self = this;
         self.init = function(state) {
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
@@ -99,8 +109,10 @@ game.service('gameService', [
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
             populationService.init(self.gameState.populationServiceState || {});
+            resourceService.init(self.gameState.resourceServiceState || {});
             achievementService.init(self.gameState.achievementServiceState || {});
             gameLoopService.init(self.gameState.gameLoopServiceState || {});
+
         };
         self.hardReset = function() {
             localStorage.removeItem(gameSaveKey);
@@ -112,6 +124,7 @@ game.service('gameService', [
             if (self.stepsSinceSave > self.autoSaveSteps) {
                 var saveState = angular.copy(self.gameState);
                 saveState.populationServiceState = angular.copy(populationService.getState());
+                saveState.resourceServiceState = angular.copy(resourceService.getState());
                 saveState.achievementServiceState = angular.copy(achievementService.getState());
                 saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
                 var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));

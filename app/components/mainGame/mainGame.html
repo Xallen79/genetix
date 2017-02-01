@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <bloqhead-player-box title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
-                <div class="row">
+                <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
                         <bloqhead-breeder unit="child" assign="$ctrl.addBreeder($id)"></bloqhead-breeder>
                     </div>
@@ -13,8 +13,8 @@
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
             <bloqhead-player-box title="Breeders [# / #]">
-                <div class="row" ng-repeat="breederid in $ctrl.breeders">
-                    <div class="col-xs-12 col-lg-12">
+                <div class="row breeder-container">
+                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
                         <bloqhead-breeder unit="$ctrl.population[breederid]"></bloqhead-breeder>
                     </div>

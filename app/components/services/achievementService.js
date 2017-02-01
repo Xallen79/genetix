@@ -10,32 +10,54 @@ game.constant('achievementSetup', {
             desc: 'Create a new unit',
             ranks: [
                 [5, [
-                    ['P_R_GOLD', 100],
-                    ['P_R_WOOD', 100]
+                    ['P_R_BONUS', 'gold', 50],
+                    ['P_R_BONUS', 'wood', 100]
                 ]],
                 [20, [
+                    ['P_R_BONUS', 'gold', 50],
                     ['P_M_HAPPINESS'],
                     ['P_G_ENHANCED', 14, 10]
+                ]]
+            ]
+        },
+        A_GOLD: {
+            aid: 'A_GOLD',
+            name: 'Oooohhh Shiiiiiny',
+            desc: 'Earn gold.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_GOLD_C: {
+            aid: 'A_GOLD_C',
+            name: 'Gold Hoarder',
+            desc: 'Aquire gold... lots and lots of gold!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
                 ]]
             ]
         }
     },
     perks: {
+        // mechanics
         P_M_HAPPINESS: {
             pid: 'P_M_HAPPINESS',
             name: 'New Mechanic: Happiness',
             desc: 'Happiness is a representation of how content your population is.',
             once: true
         },
-        P_R_GOLD: {
-            pid: 'P_R_GOLD',
-            name: 'Earned Bonus Resources: Gold',
-            desc: '[%1] gold has been added to your coffers.'
+        P_R_MULTIPLIER: {
+            pid: 'P_R_MULTIPLIER',
+            name: 'Resource Muliplier',
+            desc: 'The rate that you aquire [%1] has been increased by [%2]x.'
         },
-        P_R_WOOD: {
-            pid: 'P_R_WOOD',
-            name: 'Earned Bonus Resources: Wood',
-            desc: '[%1] wood has been added to your coffers.'
+        P_R_BONUS: {
+            pid: 'P_R_BONUS',
+            name: 'Bonus Resources',
+            desc: '[%2] [%1] has been added to your coffers.'
         },
         P_G_ENHANCED: {
             pid: 'P_G_ENHANCED',
@@ -49,8 +71,8 @@ game.constant('achievementSetup', {
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions',
-    function($rootScope, $filter, logService, achievementSetup, geneDefinitions) {
+    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions' /*, 'resourceService' , 'resourceTypes'*/ ,
+    function($rootScope, $filter, logService, achievementSetup, geneDefinitions /*, resourceService , resourceTypes*/ ) {
         var self = this;
 
         self.init = function(state) {
@@ -146,11 +168,8 @@ game.service('achievementService', [
                 case 'P_G_ENHANCED':
                     // enhance the gene
                     break;
-                case 'R_GOLD':
-                    // increase player gold by arr[1]
-                    break;
-                case 'R_WOOD':
-                    // increase player wood by arr[1]
+                case 'P_R_BONUS':
+                    //resourceService.addResource(arr[0], arr[1]);
                     break;
             }
 
