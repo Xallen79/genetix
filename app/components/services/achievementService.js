@@ -26,7 +26,7 @@ game.constant('achievementSetup', {
             desc: 'Earn dirt.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -36,7 +36,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire dirt... lots and lots of dirt!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
@@ -46,7 +46,7 @@ game.constant('achievementSetup', {
             desc: 'Earn bricks.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -56,7 +56,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire bricks... lots and lots of bricks!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
@@ -66,7 +66,7 @@ game.constant('achievementSetup', {
             desc: 'Earn water.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -76,7 +76,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire water... lots and lots of water!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
@@ -86,7 +86,7 @@ game.constant('achievementSetup', {
             desc: 'Earn wood.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -96,7 +96,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire wood... lots and lots of wood!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
@@ -106,7 +106,7 @@ game.constant('achievementSetup', {
             desc: 'Earn gold.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -116,7 +116,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire gold... lots and lots of gold!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
@@ -126,7 +126,7 @@ game.constant('achievementSetup', {
             desc: 'Earn happiness.',
             ranks: [
                 [50, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
                 ]]
             ]
         },
@@ -136,7 +136,7 @@ game.constant('achievementSetup', {
             desc: 'Aquire happiness... lots and lots of happiness!',
             ranks: [
                 [100, [
-                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         }
@@ -171,8 +171,8 @@ game.constant('achievementSetup', {
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions',
-    function($rootScope, $filter, logService, achievementSetup, geneDefinitions) {
+    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions', 'resourceTypes',
+    function($rootScope, $filter, logService, achievementSetup, geneDefinitions, resourceTypes) {
         var self = this;
 
         self.init = function(state) {
@@ -254,6 +254,11 @@ game.service('achievementService', [
                     msg = msg.replace('[%rec]', gene.rec);
                     msg = msg.replace('[%attr]', gene.attr[0]);
                     msg = msg.replace('[%amt]', arr[2]);
+                    break;
+                case 'P_R_BONUS':
+                case 'P_R_MULTIPLIER':
+                    msg = msg.replace('[%1]', resourceTypes[arr[1]]);
+                    msg = msg.replace('[%2]', arr[2]);
                     break;
                 default:
                     for (var i = 1; i < arr.length; i++)
