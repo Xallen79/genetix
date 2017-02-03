@@ -6,7 +6,7 @@ var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var Q = require('q');
 var streamqueue = require('streamqueue');
-
+var nodemon;
 // == PATH STRINGS ========
 
 var paths = {
@@ -106,7 +106,13 @@ pipes.scriptedPartials = function() {
 
 pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
-        .pipe(plugins.sass())
+        .pipe(plugins.sass().on('error', function(error) {
+            console.error(error);
+            if(typeof(nodemon) != 'undefined')
+                nodemon.emit('restart');
+            else
+                throw error;
+        }))
         .pipe(gulp.dest(paths.distDev));
 };
 
@@ -264,7 +270,7 @@ gulp.task('clean-build-app-prod', ['clean-prod'], pipes.builtAppProd);
 // clean, build, and watch live changes to the dev environment
 gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], function() {
     // start nodemon to auto-reload the dev server
-    plugins.nodemon({ script: 'server.js', ext: 'js', watch: ['devServer/'], env: { NODE_ENV: 'development' } })
+    nodemon = plugins.nodemon({ script: 'server.js', ext: 'js', watch: ['devServer/'], env: { NODE_ENV: 'development' } })
         .on('change', ['validate-devserver-scripts'])
         .on('restart', function() {
             console.log('[nodemon] restarted dev server');
@@ -294,7 +300,7 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     // watch styles
     gulp.watch(paths.styles, function() {
         return pipes.builtStylesDev()
-            .pipe(plugins.livereload());
+            .pipe(plugins.livereload())
     });
 
 });
