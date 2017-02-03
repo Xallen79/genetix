@@ -1,9 +1,9 @@
 <div class="bloqhead-component">
-    <h4>
+    <h5>
         {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" data-toggle="tooltip" rel="tooltip" title="{{trait.name}}"></i>
-    </h4>
+    </h5>
     <img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" />
-    <table class="table table-bordered table-condensed genomeEditor">
+    <table class="genomeEditor">
         <thead>
             <tr>
                 <th style="width: 20%">

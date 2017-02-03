@@ -47,6 +47,9 @@ body {
         padding-right: 5px !important;
         margin-bottom: 10px;
     }
+    h5 {
+        margin: 2px 0px 1px 0px;
+    }
     button.btn-primary {
         @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
     }
@@ -54,6 +57,7 @@ body {
         @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
     }
     table.genomeEditor {
+        margin-bottom: 8px;
         width: 100%;
         th,
         td {
@@ -97,7 +101,7 @@ body {
 
 .log-component {
     height: 200px;
-    overflow-y: auto;
+    overflow-y: scroll;
     .color-general {
         color: #83997E;
         background-color: #374C32;
