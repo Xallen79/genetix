@@ -43,8 +43,6 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string'])
 
             //$locationProvider.html5Mode(true);
         }
-    ]).run(['gameService', 'populationService', 'logService', function(gameService, populationService, logService) {
+    ]).run(['gameService', function(gameService) {
         gameService.init();
-        //populationService.init();
-        //logService.init();
     }]);

@@ -108,10 +108,10 @@ game.service('gameService', [
         };
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
-            populationService.init(self.gameState.populationServiceState || {});
-            resourceService.init(self.gameState.resourceServiceState || {});
-            achievementService.init(self.gameState.achievementServiceState || {});
-            gameLoopService.init(self.gameState.gameLoopServiceState || {});
+            populationService.init(self.gameState.populationServiceState || defaultState.populationServiceState);
+            resourceService.init(self.gameState.resourceServiceState || defaultState.resourceServiceState);
+            achievementService.init(self.gameState.achievementServiceState || defaultState.achievementServiceState);
+            gameLoopService.init(self.gameState.gameLoopServiceState || defaultState.gameLoopServiceState);
 
         };
         self.hardReset = function() {
