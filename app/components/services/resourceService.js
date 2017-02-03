@@ -62,12 +62,9 @@ game.service('resourceService', [
             r[0] += amount;
             if (r[0] > r[1]) r[0] = r[1];
             if (r[0] < 0) r[0] = 0;
-            switch (resourceType) {
-                case resourceTypes.GOLD:
-                    achievementService.updateProgress('A_GOLD', amount);
-                    achievementService.updateProgress('A_GOLD_C', r[0]);
-                    break;
-            }
+            achievementService.updateProgress('A_' + resourceType, amount);
+            achievementService.updateProgress('A_' + resourceType + '_C', r[0]);
+
             $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
         };
         self.increaseResourceLimit = function(resourceType, amount) {

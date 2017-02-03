@@ -20,6 +20,86 @@ game.constant('achievementSetup', {
                 ]]
             ]
         },
+        A_DIRT: {
+            aid: 'A_DIRT',
+            name: 'Its Dirt....',
+            desc: 'Earn dirt.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_DIRT_C: {
+            aid: 'A_DIRT_C',
+            name: 'Dirt Hoarder',
+            desc: 'Aquire dirt... lots and lots of dirt!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                ]]
+            ]
+        },
+        A_BRICKS: {
+            aid: 'A_BRICKS',
+            name: 'bricks',
+            desc: 'Earn bricks.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_BRICKS_C: {
+            aid: 'A_BRICKS_C',
+            name: 'Brick Hoarder',
+            desc: 'Aquire bricks... lots and lots of bricks!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                ]]
+            ]
+        },
+        A_WATER: {
+            aid: 'A_WATER',
+            name: 'omnomnom',
+            desc: 'Earn water.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_WATER_C: {
+            aid: 'A_WATER_C',
+            name: 'Water Hoarder',
+            desc: 'Aquire water... lots and lots of water!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                ]]
+            ]
+        },
+        A_WOOD: {
+            aid: 'A_WOOD',
+            name: 'tree guts',
+            desc: 'Earn wood.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_WOOD_C: {
+            aid: 'A_WOOD_C',
+            name: 'Wood Hoarder',
+            desc: 'Aquire wood... lots and lots of wood!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                ]]
+            ]
+        },
         A_GOLD: {
             aid: 'A_GOLD',
             name: 'Oooohhh Shiiiiiny',
@@ -34,6 +114,26 @@ game.constant('achievementSetup', {
             aid: 'A_GOLD_C',
             name: 'Gold Hoarder',
             desc: 'Aquire gold... lots and lots of gold!',
+            ranks: [
+                [100, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.2]
+                ]]
+            ]
+        },
+        A_HAPPINESS: {
+            aid: 'A_HAPPINESS',
+            name: 'be happy mon',
+            desc: 'Earn happiness.',
+            ranks: [
+                [50, [
+                    ['P_R_MULTIPLIER', 'happiness', 0.1]
+                ]]
+            ]
+        },
+        A_HAPPINESS_C: {
+            aid: 'A_HAPPINESS_C',
+            name: 'Happyness',
+            desc: 'Aquire happiness... lots and lots of happiness!',
             ranks: [
                 [100, [
                     ['P_R_MULTIPLIER', 'happiness', 0.2]
