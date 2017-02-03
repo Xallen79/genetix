@@ -20,8 +20,8 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', 'populationService', 'achievementService',
-    function($scope, populationService, achievementService) {
+    '$scope', 'populationService', 'achievementService', 'resourceService',
+    function($scope, populationService, achievementService, resourceService) {
         var self = this;
         self.$onInit = function() {
             self.breeders = [];
@@ -29,11 +29,11 @@ game.controller('bloqhead.controllers.mainGame', [
             self.maxPopulation = 0;
             populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
             populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
-
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
         };
 
         self.rewardEarned = function(event, reward) {
+            // eventually this will show a popup
             console.log(reward);
         };
 

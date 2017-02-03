@@ -1,10 +1,29 @@
 @mixin gradient {
-    background: $gray-light;
+    //background: $gray-light;
     background: opacify($gray-light, 0.4);
     background: -moz-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-dark, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
     background: -webkit-gradient(left top, right bottom, color-stop(0%, opacify($gray-light, 0.4)), color-stop(30%, opacify($gray-dark, 0.4)), color-stop(100%, opacify($gray-dark, 0.4)));
     background: -webkit-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-light, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
-    border: 1px solid black;
+}
+
+/// Test if `$value` is a valid direction
+/// @param {*} $value - Value to test
+/// @return {Bool}
+@function is-direction($value) {
+    $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+    $is-angle: type-of($value)=='number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+    @return $is-keyword or $is-angle;
+}
+
+@mixin linear-gradient($direction, $color-stops...) {
+    // Direction has been omitted and happens to be a color-stop
+    @if is-direction($direction)==false {
+        $color-stops: $direction, $color-stops;
+        $direction: 180deg;
+    }
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: linear-gradient($direction, $color-stops);
 }
 
 body {
@@ -28,10 +47,48 @@ body {
         padding-right: 5px !important;
         margin-bottom: 10px;
     }
+    button.btn-primary {
+        @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
+    }
+    button.btn-primary:hover {
+        @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
+    }
+    table.genomeEditor {
+        width: 100%;
+        th,
+        td {
+            text-align: center;
+        }
+        thead {
+            th:nth-child(1) {
+                @include linear-gradient(180deg, $attr-str 15%, black 100%)
+            }
+            th:nth-child(2) {
+                @include linear-gradient(180deg, $attr-int 15%, black 100%)
+            }
+            th:nth-child(3) {
+                @include linear-gradient(180deg, $attr-end 15%, black 100%)
+            }
+            th:nth-child(4) {
+                @include linear-gradient(180deg, $attr-chr 15%, black 100%)
+            }
+            th:nth-child(5) {
+                @include linear-gradient(180deg, $attr-lck 15%, black 100%)
+            }
+        }
+        tbody {
+            td {
+                background-color: black;
+                font-family: "Courier New", Courier, monospace;
+            }
+        }
+    }
 }
 
 .bloqhead-component {
-    @include gradient;
+    //@include gradient;
+    @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+    border: 1px solid black;
     padding: 5px;
     -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);

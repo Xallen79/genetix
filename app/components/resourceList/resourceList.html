@@ -1,0 +1,8 @@
+<table class="table table-condensed">
+    <tbody>
+        <tr ng-repeat="(key, value) in $ctrl.resources">
+            <td ng-bind="$ctrl.resourceTypes[key]"></td>
+            <td ng-bind="(value[0] + ' / ' + value[1])"></td>
+        </tr>
+    </tbody>
+</table>

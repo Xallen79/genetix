@@ -1,12 +1,12 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.constant('resourceTypes', {
-    DIRT: 'dirt',
-    WATER: 'water',
-    WOOD: 'wood',
-    GOLD: 'gold',
-    BRICKS: 'bricks',
-    HAPPINESS: 'happiness',
+    DIRT: 'Dirt',
+    WATER: 'Water',
+    WOOD: 'Wood',
+    GOLD: 'Gold',
+    BRICKS: 'Bricks',
+    HAPPINESS: 'Happiness',
 });
 
 
@@ -15,6 +15,7 @@ game.service('resourceService', [
     '$rootScope', '$filter', 'defaultState', 'logService', 'geneDefinitions', 'resourceTypes', 'achievementService',
     function($rootScope, $filter, defaultState, logService, geneDefinitions, resourceTypes, achievementService) {
         var self = this;
+        var initialized = false;
 
         self.init = function(state) {
             if (state) {
@@ -22,15 +23,39 @@ game.service('resourceService', [
             } else {
                 self.state = defaultState.resourceServiceState;
             }
+
+            if (!initialized) {
+                achievementService.SubscribeNewRewardEvent($rootScope, self.rewardEarned);
+            }
+            initialized = true;
+
+            for (var resourceType in resourceTypes) {
+                if (resourceTypes.hasOwnProperty(resourceType)) {
+                    var r = self.state.resources[resourceType];
+                    $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
+                    $rootScope.$emit('resourceLimitChangedEvent', resourceType, r[1]);
+                }
+            }
+
+
+
         };
         self.getState = function() {
             return self.state;
         };
 
-        self.getResource = function(resourceType) {
-            return self.state.resouces[resourceType];
+        self.rewardEarned = function(event, reward) {
+            for (var p = 0; p < reward.perks.length; p++) {
+                var perk = reward.perks[p];
+                if (perk.pid === 'P_R_BONUS') {
+                    self.addResource(perk.arr[1], perk.arr[2]);
+                }
+            }
         };
 
+        self.getResourcesSnapshot = function() {
+            return angular.copy(self.state.resources);
+        };
 
         self.addResource = function(resourceType, amount) {
             var r = self.state.resources[resourceType];
@@ -53,11 +78,11 @@ game.service('resourceService', [
 
         self.SubscribeResourceChangedEvent = function(scope, callback) {
             var handler = $rootScope.$on('resourceChangedEvent', callback.bind(this));
-            scope.$on('$destroy', handler);
+            if (scope) scope.$on('$destroy', handler);
         };
         self.SubscribeResourceLimitChangedEvent = function(scope, callback) {
             var handler = $rootScope.$on('resourceLimitChangedEvent', callback.bind(this));
-            scope.$on('$destroy', handler);
+            if (scope) scope.$on('$destroy', handler);
         };
 
 

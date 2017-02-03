@@ -13,38 +13,41 @@ game.constant('logTypes', {
 
 
 
-game.controller('bloqhead.controllers.log', ['$scope', 'logService', 'logTypes', function($scope, logService, logTypes) {
-    var self = this;
-    self.$onInit = function() {
-        self.messages = [];
-        logService.SubscribeNewMessageEvent($scope, self.receiveMessages);
-    };
+game.controller('bloqhead.controllers.log', [
+    '$scope', 'logService', 'logTypes',
+    function($scope, logService, logTypes) {
+        var self = this;
+        self.$onInit = function() {
+            self.messages = [];
+            logService.SubscribeNewMessageEvent($scope, self.receiveMessages);
+        };
 
-    self.getLogClass = function(type) {
-        var prefix = 'list-group-item-';
-        var a = '';
-        switch (type) {
-            case logTypes.GENERAL:
-                a = 'color-general';
-                break;
-            case logTypes.ACHIEVEMENT:
-                a = 'color-achievement';
-                break;
-            case logTypes.BREED:
-                a = 'color-breed';
-                break;
-            default:
-                a = prefix + 'none';
-                break;
-        }
-        return a;
-    };
+        self.getLogClass = function(type) {
+            var prefix = 'list-group-item-';
+            var a = '';
+            switch (type) {
+                case logTypes.GENERAL:
+                    a = 'color-general';
+                    break;
+                case logTypes.ACHIEVEMENT:
+                    a = 'color-achievement';
+                    break;
+                case logTypes.BREED:
+                    a = 'color-breed';
+                    break;
+                default:
+                    a = prefix + 'none';
+                    break;
+            }
+            return a;
+        };
 
-    self.receiveMessages = function(event, messages) {
-        self.messages = messages;
-        $('.log-component')[0].scrollTop = $('.log-component')[0].scrollHeight;
-    };
-}]);
+        self.receiveMessages = function(event, messages) {
+            self.messages = messages;
+            $('.log-component')[0].scrollTop = $('.log-component')[0].scrollHeight;
+        };
+    }
+]);
 
 game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTypes) {
     var self = this;

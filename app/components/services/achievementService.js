@@ -9,12 +9,12 @@ game.constant('achievementSetup', {
             name: 'The Chosen One',
             desc: 'Create a new unit',
             ranks: [
-                [5, [
-                    ['P_R_BONUS', 'gold', 50],
-                    ['P_R_BONUS', 'wood', 100]
+                [1, [
+                    ['P_R_BONUS', 'GOLD', 50],
+                    ['P_R_BONUS', 'WOOD', 100]
                 ]],
                 [20, [
-                    ['P_R_BONUS', 'gold', 50],
+                    ['P_R_BONUS', 'GOLD', 50],
                     ['P_M_HAPPINESS'],
                     ['P_G_ENHANCED', 14, 10]
                 ]]
@@ -71,8 +71,8 @@ game.constant('achievementSetup', {
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions' /*, 'resourceService' , 'resourceTypes'*/ ,
-    function($rootScope, $filter, logService, achievementSetup, geneDefinitions /*, resourceService , resourceTypes*/ ) {
+    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions',
+    function($rootScope, $filter, logService, achievementSetup, geneDefinitions) {
         var self = this;
 
         self.init = function(state) {
@@ -163,16 +163,6 @@ game.service('achievementService', [
 
             logService.logAchievementMessage(msg);
 
-            // do the work
-            switch (pid) {
-                case 'P_G_ENHANCED':
-                    // enhance the gene
-                    break;
-                case 'P_R_BONUS':
-                    //resourceService.addResource(arr[0], arr[1]);
-                    break;
-            }
-
             var ret = {
                 pid: pid,
                 msg: msg,
@@ -183,7 +173,6 @@ game.service('achievementService', [
             return ret;
 
         };
-
 
         self.SubscribeNewRewardEvent = function(scope, callback) {
             var handler = $rootScope.$on('newRewardEvent', callback.bind(this));

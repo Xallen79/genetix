@@ -1,5 +1,13 @@
 <div class="col-xs-12">
     <div class="row">
-        I could display achievements...if someone coded me.
+        <div class="col-xs-12">
+            <bloqhead-player-box title="Achievements">
+                <div class="row breeder-container">
+                    <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
+                        <bloqhead-breeder unit="child" assign="$ctrl.addBreeder($id)"></bloqhead-breeder>
+                    </div>
+                </div>
+            </bloqhead-player-box>
+        </div>
     </div>
 </div>

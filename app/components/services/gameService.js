@@ -32,12 +32,12 @@ game.constant("defaultState", {
     },
     resourceServiceState: {
         resources: {
-            dirt: [0, 0],
-            water: [0, 0],
-            wood: [0, 0],
-            gold: [0, 0],
-            bricks: [0, 0],
-            happiness: [0, 0]
+            DIRT: [0, 25000],
+            BRICKS: [0, 25000],
+            WATER: [0, 1000],
+            WOOD: [0, 1000],
+            GOLD: [0, 1000],
+            HAPPINESS: [0, 10]
         }
     }
 
