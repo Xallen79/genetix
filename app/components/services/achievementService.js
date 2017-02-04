@@ -10,8 +10,9 @@ game.constant('achievementSetup', {
             desc: 'Create a new unit',
             ranks: [
                 [1, [
-                    ['P_R_BONUS', 'GOLD', 50],
-                    ['P_R_BONUS', 'WOOD', 100]
+                    ['P_R_BONUS', 'GOLD', 5],
+                    ['P_R_BONUS', 'WOOD', 100],
+                    ['P_R_BONUS', 'DIRT', 500],
                 ]],
                 [20, [
                     ['P_R_BONUS', 'GOLD', 50],
@@ -257,7 +258,7 @@ game.service('achievementService', [
                     break;
                 case 'P_R_BONUS':
                 case 'P_R_MULTIPLIER':
-                    msg = msg.replace('[%1]', resourceTypes[arr[1]]);
+                    msg = msg.replace('[%1]', resourceTypes[arr[1]].name);
                     msg = msg.replace('[%2]', arr[2]);
                     break;
                 default:

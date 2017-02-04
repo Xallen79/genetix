@@ -1,9 +1,22 @@
+@mixin strokeme($color) {
+    text-shadow: -1px -1px 0 $color, 1px -1px 0 $color, -1px 1px 0 $color, 1px 1px 0 $color;
+}
+
 @mixin gradient {
     //background: $gray-light;
     background: opacify($gray-light, 0.4);
     background: -moz-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-dark, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
     background: -webkit-gradient(left top, right bottom, color-stop(0%, opacify($gray-light, 0.4)), color-stop(30%, opacify($gray-dark, 0.4)), color-stop(100%, opacify($gray-dark, 0.4)));
     background: -webkit-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-light, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
+}
+
+@mixin maximize-row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    [class*="col-"] {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
 }
 
 /// Test if `$value` is a valid direction
@@ -32,21 +45,77 @@ body {
 }
 
 .genomeEditor {
-    font-size: .7em;
+    font-size: .8em;
     input {
         color: black;
         width: 4em;
     }
 }
 
-.breeder-container {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    [class*="col-"] {
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-        margin-bottom: 10px;
+.resource-list {
+    @include maximize-row();
+    font-size: .8em;
+    h5 {
+        margin: 8px 0px 1px 0px;
     }
+    .progress-bar {
+        font-weight: bold;
+        font-size: 1.2em;
+        min-width: 2%;
+        font-family: "Courier New", Courier, monospace;
+    }
+    div[data-attr="STR"] {
+        .progress {
+            background-color: lighten($attr-str, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-str;
+            @include strokeme($attr-str)
+        }
+    }
+    div[data-attr="INT"] {
+        .progress {
+            background-color: lighten($attr-int, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-int;
+            @include strokeme($attr-int)
+        }
+    }
+    div[data-attr="END"] {
+        .progress {
+            background-color: lighten($attr-end, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-end;
+            @include strokeme($attr-end)
+        }
+    }
+    div[data-attr="CHR"] {
+        .progress {
+            background-color: lighten($attr-chr, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-chr;
+            @include strokeme($attr-chr)
+        }
+    }
+    div[data-attr="LCK"] {
+        .progress {
+            background-color: lighten($attr-lck, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-lck;
+            @include strokeme($attr-lck)
+        }
+    }
+    .progress {
+        margin: 5px 0px 5px 0px;
+    }
+}
+
+.breeder-container {
+    @include maximize-row();
     h5 {
         margin: 2px 0px 1px 0px;
     }
@@ -92,6 +161,7 @@ body {
 .bloqhead-component {
     //@include gradient;
     @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+    margin-bottom: 10px;
     border: 1px solid black;
     padding: 5px;
     -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);

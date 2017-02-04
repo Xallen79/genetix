@@ -31,14 +31,7 @@ game.constant("defaultState", {
         perks: []
     },
     resourceServiceState: {
-        resources: {
-            DIRT: [0, 25000],
-            BRICKS: [0, 25000],
-            WATER: [0, 1000],
-            WOOD: [0, 1000],
-            GOLD: [0, 1000],
-            HAPPINESS: [0, 10]
-        }
+        resources: {}
     }
 
 });
