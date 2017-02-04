@@ -58,11 +58,20 @@ body {
     h5 {
         margin: 8px 0px 1px 0px;
     }
+    .progress {
+        position: relative;
+    }
     .progress-bar {
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.5em;
         min-width: 2%;
         font-family: "Courier New", Courier, monospace;
+        >span {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            right: 5px;
+        }
     }
     div[data-attr="STR"] {
         .progress {
@@ -70,7 +79,7 @@ body {
         }
         .progress-bar {
             background-color: $attr-str;
-            @include strokeme($attr-str)
+            @include strokeme(black)
         }
     }
     div[data-attr="INT"] {
@@ -79,7 +88,7 @@ body {
         }
         .progress-bar {
             background-color: $attr-int;
-            @include strokeme($attr-int)
+            @include strokeme(black)
         }
     }
     div[data-attr="END"] {
@@ -88,7 +97,7 @@ body {
         }
         .progress-bar {
             background-color: $attr-end;
-            @include strokeme($attr-end)
+            @include strokeme(black)
         }
     }
     div[data-attr="CHR"] {
@@ -97,7 +106,7 @@ body {
         }
         .progress-bar {
             background-color: $attr-chr;
-            @include strokeme($attr-chr)
+            @include strokeme(black)
         }
     }
     div[data-attr="LCK"] {

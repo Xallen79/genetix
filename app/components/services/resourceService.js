@@ -61,13 +61,13 @@ game.service('resourceService', [
 
             var defaultLimits = {
                 DIRT: [0, 25000, true],
-                BRICKS: [0, 25000, false],
-                WATER: [0, 1000, false],
-                WOOD: [0, 1000, false],
-                GOLD: [0, 1000, false],
-                HAPPINESS: [0, 10, false],
-                SCIENCE: [0, 1000, false],
-                STEEL: [0, 10000, false]
+                BRICKS: [0, 25000, true],
+                WATER: [0, 1000, true],
+                WOOD: [0, 1000, true],
+                GOLD: [0, 1000, true],
+                HAPPINESS: [0, 10, true],
+                SCIENCE: [0, 1000, true],
+                STEEL: [0, 10000, true]
             };
 
             for (var resourceType in resourceTypes) {

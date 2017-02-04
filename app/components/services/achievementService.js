@@ -12,7 +12,7 @@ game.constant('achievementSetup', {
                 [1, [
                     ['P_R_BONUS', 'GOLD', 5],
                     ['P_R_BONUS', 'WOOD', 100],
-                    ['P_R_BONUS', 'DIRT', 500],
+                    ['P_R_BONUS', 'DIRT', 5000],
                 ]],
                 [20, [
                     ['P_R_BONUS', 'GOLD', 50],
