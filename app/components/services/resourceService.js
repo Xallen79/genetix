@@ -6,7 +6,16 @@ game.constant('resourceTypes', {
         desc: 'Used in construction and mining.',
         attr: 'STR'
     },
-
+    BRICKS: {
+        name: 'Bricks',
+        desc: 'Used in construction and smelting.',
+        attr: 'STR'
+    },
+    STEEL: {
+        name: 'Steel',
+        desc: 'Used in advanced construction.',
+        attr: 'STR'
+    },
     WATER: {
         name: 'Water',
         desc: 'Used in construction, mining and population expansion.',
@@ -22,16 +31,6 @@ game.constant('resourceTypes', {
         desc: 'Used for purchasing gene research technologies.',
         attr: 'INT'
     },
-    BRICKS: {
-        name: 'Bricks',
-        desc: 'Used in construction and smelting.',
-        attr: 'STR'
-    },
-    STEEL: {
-        name: 'Steel',
-        desc: 'Used in advanced construction.',
-        attr: 'STR'
-    },
     SCIENCE: {
         name: 'Science',
         desc: 'Used in genetic modification and advanced construction.',
@@ -41,6 +40,11 @@ game.constant('resourceTypes', {
         name: 'Happiness',
         desc: 'Good things happen to those that are happy...',
         attr: 'CHR'
+    },
+    EVOCOIN: {
+        name: 'Evo-Coins',
+        desc: 'A rare commodity indeed. Used to discover traits.',
+        attr: 'LCK'
     }
 });
 
@@ -59,15 +63,19 @@ game.service('resourceService', [
             }
             initialized = true;
 
+            // this will turn them all on for testing purposes
+            var overrideAllOn = false;
+
             var defaultLimits = {
-                DIRT: [0, 25000, true],
-                BRICKS: [0, 25000, true],
-                WATER: [0, 1000, true],
-                WOOD: [0, 1000, true],
-                GOLD: [0, 1000, true],
-                HAPPINESS: [0, 10, true],
-                SCIENCE: [0, 1000, true],
-                STEEL: [0, 10000, true]
+                DIRT: [0, 25000, true || overrideAllOn],
+                BRICKS: [0, 25000, false || overrideAllOn],
+                WATER: [0, 1000, false || overrideAllOn],
+                WOOD: [0, 1000, false || overrideAllOn],
+                GOLD: [0, 1000, false || overrideAllOn],
+                HAPPINESS: [0, 10, false || overrideAllOn],
+                SCIENCE: [0, 1000, false || overrideAllOn],
+                STEEL: [0, 10000, false || overrideAllOn],
+                EVOCOIN: [0, 10, false || overrideAllOn]
             };
 
             for (var resourceType in resourceTypes) {

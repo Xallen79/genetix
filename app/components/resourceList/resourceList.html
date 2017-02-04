@@ -1,7 +1,7 @@
 <div class="resource-list col-xs-12">
     <div class="row" ng-repeat="(key, value) in $ctrl.resources" ng-if="value[2] === true" data-attr="{{$ctrl.resourceTypes[key].attr}}">
         <div class="col-xs-12 col-sm-2">
-            <h5 rel="tooltip" data-toggle="tooltip" data-placement="right" title="{{$ctrl.resourceTypes[key].desc}}">{{$ctrl.resourceTypes[key].name}}</h5>
+            <h5 rel="tooltip" data-toggle="tooltip" data-container="body" data-placement="top" title="{{$ctrl.resourceTypes[key].desc}}">{{$ctrl.resourceTypes[key].name}}</h5>
         </div>
         <div class="col-xs-12 col-sm-10">
             <div class="progress">

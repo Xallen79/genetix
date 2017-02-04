@@ -54,18 +54,25 @@ body {
 
 .resource-list {
     @include maximize-row();
-    font-size: .8em;
+    overflow-y: scroll;
+    height: 200px;
     h5 {
         margin: 8px 0px 1px 0px;
+        font-size: .8em;
     }
     .progress {
         position: relative;
+        border: 1px solid black;
+        -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
     }
     .progress-bar {
         font-weight: bold;
-        font-size: 1.5em;
+        font-size: 1.25em;
         min-width: 2%;
         font-family: "Courier New", Courier, monospace;
+        border-right: 1px solid black;
         >span {
             overflow-x: visible;
             white-space: nowrap;
@@ -93,7 +100,7 @@ body {
     }
     div[data-attr="END"] {
         .progress {
-            background-color: lighten($attr-end, 60%);
+            background-color: lighten($attr-end, 25%);
         }
         .progress-bar {
             background-color: $attr-end;
@@ -102,11 +109,11 @@ body {
     }
     div[data-attr="CHR"] {
         .progress {
-            background-color: lighten($attr-chr, 60%);
+            background-color: lighten($attr-chr, 40%);
         }
         .progress-bar {
             background-color: $attr-chr;
-            @include strokeme(black)
+            @include strokeme(black);
         }
     }
     div[data-attr="LCK"] {
