@@ -13,6 +13,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         this.geneDefinitions = geneDefinitions;
         this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
         this.breeders = state.breeders || this.breeders || [];
+        this.breederLimit = state.breederLimit || this.breederLimit || 0;
         this.maxSize = state.maxSize || this.maxSize || 10;
         this.breederMutationBits = state.breederMutationBits || this.breederMutationBits || 4;
         this.breederMutationChance = state.breederMutationChance || this.breederMutationChance || 5;
@@ -41,6 +42,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         var state = {
             currentGeneration: this.currentGeneration,
             breeders: this.breeders,
+            breederLimit: this.breederLimit,
             maxSize: this.maxSize,
             breederMutationBits: this.breederMutationBits,
             breederMutationChance: this.breederMutationChance,

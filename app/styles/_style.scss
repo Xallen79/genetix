@@ -185,26 +185,39 @@ body {
     box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
 }
 
-.log-component {
-    height: 200px;
-    overflow-y: scroll;
-    .color-general {
-        color: #83997E;
-        background-color: #374C32;
-    }
-    .color-breed {
-        color: #7E7F99;
-        background-color: #32334C;
-    }
-    .color-achievement {
-        color: #994C46;
-        background-color: #4C0701;
+bloqhead-log {
+    .log-component {
+        height: 200px;
+        overflow-y: scroll;
+        .color-general {
+            color: #83997E;
+            background-color: #374C32;
+        }
+        .color-breed {
+            color: #7E7F99;
+            background-color: #32334C;
+        }
+        .color-achievement {
+            color: #994C46;
+            background-color: #4C0701;
+        }
     }
 }
 
-bloqhead-player-box .panel-body {
-    min-height: 200px;
-    max-height: 340px;
-    overflow-y: auto;
-    overflow-x: hidden;
+bloqhead-building-list {
+    h5 {
+        margin: 8px 0px 1px 0px;
+        font-size: .8em;
+    }
+}
+
+bloqhead-player-box {
+    .panel-body {
+        border-top: 1px solid black;
+        min-height: 200px;
+        max-height: 340px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 0 1px 1px;
+    }
 }

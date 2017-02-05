@@ -67,15 +67,15 @@ game.service('resourceService', [
             var overrideAllOn = false;
 
             var defaultLimits = {
-                DIRT: [0, 25000, true || overrideAllOn],
-                BRICKS: [0, 25000, false || overrideAllOn],
-                WATER: [0, 1000, false || overrideAllOn],
-                WOOD: [0, 1000, false || overrideAllOn],
-                GOLD: [0, 1000, false || overrideAllOn],
-                HAPPINESS: [0, 10, false || overrideAllOn],
-                SCIENCE: [0, 1000, false || overrideAllOn],
-                STEEL: [0, 10000, false || overrideAllOn],
-                EVOCOIN: [0, 10, false || overrideAllOn]
+                DIRT: [0, 0, true || overrideAllOn],
+                BRICKS: [0, 0, false || overrideAllOn],
+                WATER: [0, 0, false || overrideAllOn],
+                WOOD: [0, 0, false || overrideAllOn],
+                GOLD: [0, 0, false || overrideAllOn],
+                HAPPINESS: [0, -1, false || overrideAllOn],
+                SCIENCE: [0, -1, false || overrideAllOn],
+                STEEL: [0, 0, false || overrideAllOn],
+                EVOCOIN: [0, -1, false || overrideAllOn]
             };
 
             for (var resourceType in resourceTypes) {
@@ -117,8 +117,14 @@ game.service('resourceService', [
 
         self.addResource = function(resourceType, amount) {
             var r = self.state.resources[resourceType];
+            if (r[2] === false && r[1] !== -1) {
+                console.error(resourceType + " is not enabled, cannot increase amount.");
+                return;
+            }
+
+
             r[0] += amount;
-            if (r[0] > r[1]) r[0] = r[1];
+            if (r[1] != -1 && r[0] > r[1]) r[0] = r[1];
             if (r[0] < 0) r[0] = 0;
             achievementService.updateProgress('A_' + resourceType, amount);
             achievementService.updateProgress('A_' + resourceType + '_C', r[0]);
@@ -130,9 +136,17 @@ game.service('resourceService', [
 
             $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
         };
-        self.increaseResourceLimit = function(resourceType, amount) {
+        self.setResourceLimit = function(resourceType, amount) {
             var r = self.state.resources[resourceType];
-            r[1] += amount;
+            if (r[1] === -1) {
+                console.error("Cannot set resource limit on: " + resourceType);
+                return;
+            }
+            r[1] = amount;
+            if (r[2] === false && (amount > 0)) {
+                r[2] = true;
+                $rootScope.$emit('resourceEnabledEvent', resourceType, true);
+            }
             $rootScope.$emit('resourceLimitChangedEvent', resourceType, r[1]);
         };
 

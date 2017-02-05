@@ -12,21 +12,18 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <bloqhead-player-box title="Breeders [# / #]">
-                <div class="row breeder-container">
-                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
-                        <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
-                        <bloqhead-breeder unit="$ctrl.population[breederid]"></bloqhead-breeder>
-                    </div>
-                </div>
+            <bloqhead-player-box title="Buildings">
+                <bloqhead-building-list></bloqhead-building-list>
             </bloqhead-player-box>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <bloqhead-player-box title="Tasks">
-                <ul class="list-group">
-                    <li>Miners: 0</li>
-                    <li>Farmers: 0</li>
-                </ul>
+            <bloqhead-player-box title="Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]">
+                <div class="row breeder-container">
+                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
+                        <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
+                        <bloqhead-breeder unit="$ctrl.population[breederid]" allow-assign="false"></bloqhead-breeder>
+                    </div>
+                </div>
             </bloqhead-player-box>
         </div>
     </div>

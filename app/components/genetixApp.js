@@ -1,15 +1,15 @@
-(function($) {
-    $(function() {
-        $('body').tooltip({
-            selector: '[rel=tooltip]'
-        });
-    });
-})(jQuery);
+// (function($) {
+//     $(function() {
+//         $('body').tooltip({
+//             selector: '[rel=tooltip]'
+//         });
+//     });
+// })(jQuery);
 
 
-angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string'])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
-        function($stateProvider, $urlRouterProvider, $locationProvider) {
+angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap'])
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider',
+        function($stateProvider, $urlRouterProvider, $locationProvider, $uibTooltipProvider) {
             $urlRouterProvider.otherwise('/');
             var states = [];
             states.push({
@@ -42,6 +42,12 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string'])
             });
 
             //$locationProvider.html5Mode(true);
+
+            $uibTooltipProvider.options({
+                appendToBody: true,
+                placement: 'top-left',
+                popupCloseDelay: 2
+            });
         }
     ]).run(['gameService', function(gameService) {
         gameService.init();

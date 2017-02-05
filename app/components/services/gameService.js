@@ -20,10 +20,10 @@ game.constant("defaultState", {
         breedSteps: 6,
         populationState: {
             initialSize: 2,
-            maxSize: 22,
-            breederMutationBits: 5,
-            breederGenesUnlocked: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 42],
-            breederMuatationChance: 10
+            maxSize: 5,
+            breederGeneCap: 100,
+            breederGenesUnlocked: [0, 42],
+            breederMutationChance: 10
         }
     },
     achievementServiceState: {
@@ -32,6 +32,16 @@ game.constant("defaultState", {
     },
     resourceServiceState: {
         resources: {}
+    },
+    buildingServiceState: {
+        // storageSizeMultiplier: 1.5,
+        // breedingSizeMultiplier: 5,
+        // housingSizeMultiplier: 0.5,
+        buildings: {
+            // SODHOUSE: {
+            //     multiplier: 2
+            // }
+        }
     }
 
 });
@@ -87,8 +97,8 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'LZString',
-    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, LZString) {
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString',
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString) {
         var self = this;
         self.init = function(state) {
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
@@ -97,14 +107,42 @@ game.service('gameService', [
             self.autoSaveSteps = self.gameState.autoSaveSteps || self.autoSaveSteps || 10;
             self.startGame();
             self.stepsSinceSave = 0;
-
         };
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
-            populationService.init(self.gameState.populationServiceState || defaultState.populationServiceState);
-            resourceService.init(self.gameState.resourceServiceState || defaultState.resourceServiceState);
-            achievementService.init(self.gameState.achievementServiceState || defaultState.achievementServiceState);
-            gameLoopService.init(self.gameState.gameLoopServiceState || defaultState.gameLoopServiceState);
+            populationService.init(
+                angular.merge({},
+                    defaultState.populationServiceState,
+                    self.gameState.populationServiceState
+                )
+            );
+
+            resourceService.init(
+                angular.merge({},
+                    defaultState.resourceServiceState,
+                    self.gameState.resourceServiceState
+                )
+            );
+
+            achievementService.init(
+                angular.merge({},
+                    defaultState.achievementServiceState,
+                    self.gameState.achievementServiceState
+                )
+            );
+
+            buildingService.init(
+                angular.merge({},
+                    defaultState.buildingServiceState,
+                    self.gameState.buildingServiceState)
+            );
+
+            gameLoopService.init(
+                angular.merge({},
+                    defaultState.gameLoopServiceState,
+                    self.gameState.gameLoopServiceState
+                )
+            );
 
         };
         self.hardReset = function() {
@@ -119,6 +157,7 @@ game.service('gameService', [
                 saveState.populationServiceState = angular.copy(populationService.getState());
                 saveState.resourceServiceState = angular.copy(resourceService.getState());
                 saveState.achievementServiceState = angular.copy(achievementService.getState());
+                saveState.buildingServiceState = angular.copy(buildingService.getState());
                 saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
                 var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
                 localStorage.setItem(gameSaveKey, save);

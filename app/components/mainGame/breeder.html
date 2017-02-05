@@ -49,14 +49,18 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
-    <div class="btn-group">
-        <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div ng-show="$ctrl.allowAssign">
+        <button class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
+        <div class="btn-group" role="menu" data-container="body">
+            <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Work <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
-            <li><a>Mine</a></li>
-            <li><a>Farm</a></li>
-        </ul>
+            <ul class="dropdown-menu">
+                <li ng-repeat="job in ['Dig', 'Farm', 'Chop', 'Build']">
+                    <a ng-bind="job"></a>
+                </li>
+            </ul>
+        </div>
     </div>
+
 </div>

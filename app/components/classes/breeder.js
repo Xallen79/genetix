@@ -18,7 +18,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
     /* constructor */
     var Breeder = function(config) {
         this.traitInspector = new TraitInspector();
-        this.update(config);        
+        this.update(config);
     };
     /* public functions */
     Breeder.prototype.update = function(config) {
@@ -28,12 +28,10 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         this.father = config.father || this.father || null;
         this.generation = config.generation || this.generation || 0;
         this.genes = config.genes || this.genes || [];
-        //(max number of bits that can mutate, limits the max/min values for each gene)
-        // 4 = max 15, 5 = max 31... 8 = max 255
-        this.mutationBits = config.mutationBits || this.mutationBits || 4;
+        this.breederGeneCap = config.breederGeneCap || this.breederGeneCap || 25;
 
-        this.redGreenImage = getRedGreenImage(this.genes, this.mutationBits);
-        this.blueImage = getBlueImage(this.genes);
+        this.redGreenImage = getRedGreenImage(this.genes, this.breederGeneCap);
+        //this.blueImage = getBlueImage(this.genes);
 
         this.traits = this.traitInspector.getTraits(this.genes);
         this.attributes = this.traitInspector.getAttributes(this.genes);
@@ -58,9 +56,9 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         for (var g = 0; g < p1.genes.length; g++) {
             var p1g = p1.genes[g];
             var p2g = p2.genes[g];
-            child.genes.push(crossover(p1g, p2g, this.mutationBits));
+            child.genes.push(crossover(p1g, p2g, this.breederGeneCap));
         }
-        child.update();     
+        child.update();
         return child;
     };
     Breeder.prototype.getTraits = function() {
@@ -173,13 +171,17 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
 
 
     /* private functions */
-    function crossover(g1, g2, maxBits) {
+    function crossover(g1, g2, geneCap) {
         var crossover = Math.random();
+        var geneRatio = geneCap / 255.0;
         var g = angular.copy(crossover <= geneticOptions.crossoverrate ? g1 : g2);
+        g[0] /= geneRatio;
+        g[1] /= geneRatio;
         var mutationRate = g[2] / 255.0;
         var bitStringR = '';
         var bitStringG = '';
-        for (var i = 0; i < maxBits; i++) {
+
+        for (var i = 0; i < 8; i++) {
             if (Math.random() < mutationRate) {
                 bitStringR += '1';
             } else {
@@ -195,36 +197,38 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         var oldG = g[1];
         g[0] ^= parseInt(bitStringR, 2);
         g[1] ^= parseInt(bitStringG, 2);
+        g[0] *= geneRatio;
+        g[1] *= geneRatio;
         return g;
     }
 
-    function getRedGreenImage(genes, mutationBits) {
-        return generateBitmapDataURL(addRows(convertRedGreenMap(genes, mutationBits), genes.length), 20);
+    function getRedGreenImage(genes, breederGeneCap) {
+        return generateBitmapDataURL(addRows(convertRedGreenMap(genes, breederGeneCap), genes.length), 20);
     }
 
     function getBlueImage(genes) {
         return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 20);
     }
 
-    function convertRedGreenMap(genes, mutationBits) {
+    function convertRedGreenMap(genes, breederGeneCap) {
         var result = [];
-        var minColor = 50;
-        var factor = 255 / (Math.pow(2, mutationBits) - 1);
+        var minColorRatio = 1 + breederGeneCap / 50.0;
+        var colorRatio = 205.0 / breederGeneCap;
         for (var i = 0; i < genes.length; i++) {
             var r = genes[i][0];
             var g = genes[i][1];
-            var bright = Math.abs(r - g) / 255;
-            bright *= factor;
+            var bright = Math.abs(r - g) * colorRatio;
             if (r > g) {
+                r = bright;
+                r *= minColorRatio;
                 g = 0;
             } else {
                 r = 0;
+                g = bright;
+                g *= minColorRatio;
             }
-            r *= bright;
-            g *= bright;
-
-            if (r > 0) r += minColor;
-            if (g > 0) g += minColor;
+            //if (r > 0) r += minColor;
+            //if (g > 0) g += minColor;
             if (r > 255) r = 255;
             if (g > 255) g = 255;
 

@@ -27,6 +27,7 @@ game.controller('bloqhead.controllers.mainGame', [
             self.breeders = [];
             self.population = [];
             self.maxPopulation = 0;
+            self.maxBreeders = 0;
             populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
             populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
@@ -55,6 +56,7 @@ game.controller('bloqhead.controllers.mainGame', [
         self.updatePopulation = function(event, data) {
             self.population = data.population;
             self.maxPopulation = data.maxSize;
+            self.breederLimit = data.breederLimit;
         };
     }
 ]);
@@ -65,6 +67,7 @@ game.component("bloqheadBreeder", {
     controller: "bloqheader.controllers.breeder",
     bindings: {
         unit: '<',
+        allowAssign: '<',
         assign: '&'
     }
 });
@@ -72,9 +75,11 @@ game.component("bloqheadBreeder", {
 game.controller("bloqheader.controllers.breeder", function() {
     var self = this;
     self.$onInit = function() {
+        self.allowAssign = angular.isDefined(self.allowAssign) ? self.allowAssign : true;
 
     };
     self.assignMe = function() {
         self.assign({ $id: self.unit.id });
     };
+
 });
