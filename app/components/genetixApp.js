@@ -10,7 +10,7 @@
 angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap'])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider',
         function($stateProvider, $urlRouterProvider, $locationProvider, $uibTooltipProvider) {
-            $urlRouterProvider.otherwise('/');
+            $urlRouterProvider.otherwise('/main');
             var states = [];
             states.push({
                 name: 'home',
@@ -46,7 +46,8 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap']
             $uibTooltipProvider.options({
                 appendToBody: true,
                 placement: 'top-left',
-                popupCloseDelay: 2
+                popupCloseDelay: 250,
+                popupDelay: 250
             });
         }
     ]).run(['gameService', function(gameService) {

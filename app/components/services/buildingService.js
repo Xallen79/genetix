@@ -100,6 +100,7 @@ game.service('buildingService', [
                         snapshot.push({
                             name: building.name,
                             description: self.formatDescription(building),
+                            size: self.getSize(building),
                             owned: building.purchased + building.gifted,
                             costToBuild: self.calculateNextCost(building)
 
@@ -112,14 +113,18 @@ game.service('buildingService', [
         self.formatDescription = function(building) {
             var description = building.description;
             if (description.indexOf('{size}') !== -1) {
-                var size = building.size * (building.multiplier || 1);
-                if (building.use === 'breeding') size *= (self.state.breedingSizeMultiplier || 1);
-                if (building.use === 'storage') size *= (self.state.storageSizeMultiplier || 1);
-                if (building.use === 'housing') size *= (self.state.housingSizeMultiplier || 1);
+                var size = self.getSize(building);
                 description = description.replace(/{size}/g, size);
             }
 
             return description;
+        };
+        self.getSize = function(building) {
+            var size = building.size * (building.multiplier || 1);
+            if (building.use === 'breeding') size *= (self.state.breedingSizeMultiplier || 1);
+            if (building.use === 'storage') size *= (self.state.storageSizeMultiplier || 1);
+            if (building.use === 'housing') size *= (self.state.housingSizeMultiplier || 1);
+            return size;
         };
         self.calculateNextCost = function(building) {
             var costs = [];

@@ -209,6 +209,12 @@ bloqhead-building-list {
         margin: 8px 0px 1px 0px;
         font-size: .8em;
     }
+    button.btn-primary {
+        @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
+    }
+    button.btn-primary:hover {
+        @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
+    }
 }
 
 bloqhead-player-box {
@@ -220,4 +226,110 @@ bloqhead-player-box {
         overflow-x: hidden;
         padding: 0 0 1px 1px;
     }
+    .progress {
+        position: relative;
+        border: 1px solid black;
+        -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+    }
+    .progress-bar {
+        font-weight: bold;
+        font-size: 1.25em;
+        min-width: 2%;
+        font-family: "Courier New", Courier, monospace;
+        border-right: 1px solid black;
+        >span {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            right: 5px;
+        }
+        >i {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            left: 5px;
+        }
+    }
+    div[data-attr="STR"] {
+        .progress {
+            background-color: lighten($attr-str, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-str;
+            @include strokeme(black)
+        }
+    }
+    div[data-attr="INT"] {
+        .progress {
+            background-color: lighten($attr-int, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-int;
+            @include strokeme(black)
+        }
+    }
+    div[data-attr="END"] {
+        .progress {
+            background-color: lighten($attr-end, 25%);
+        }
+        .progress-bar {
+            background-color: $attr-end;
+            @include strokeme(black)
+        }
+    }
+    div[data-attr="CHR"] {
+        .progress {
+            background-color: lighten($attr-chr, 40%);
+        }
+        .progress-bar {
+            background-color: $attr-chr;
+            @include strokeme(black);
+        }
+    }
+    div[data-attr="LCK"] {
+        .progress {
+            background-color: lighten($attr-lck, 60%);
+        }
+        .progress-bar {
+            background-color: $attr-lck;
+            @include strokeme($attr-lck)
+        }
+    }
+    div {
+        .progress {
+            background-color: lighten($brand-primary, 60%);
+        }
+        .progress-bar {
+            background-color: $brand-primary;
+            @include strokeme($brand-primary)
+        }
+    }
+    .progress {
+        margin: 5px 0px 5px 0px;
+    }
+}
+
+
+/* Specify styling for tooltip contents */
+
+.tooltip .tooltip-inner {
+    @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+    border: 1px solid black;
+    -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+}
+
+.tooltip .tooltip-inner .list-group-item {
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0;
+}
+
+
+/* Hide arrow */
+
+.tooltip .tooltip-arrow {
+    display: none;
 }

@@ -1,19 +1,23 @@
 <div class="col-xs-12" title="">
     <div class="row">
-        <div class="col-xs-2">Building</div>
-        <div class="col-xs-offset-1 col-xs-2">Owned</div>
-        <div class="col-xs-4">Cost to Build</div>
+        <div class="col-xs-5">Building</div>
+        <div class="col-xs-2">Owned</div>
     </div>
-    <div class="row" ng-repeat="building in $ctrl.buildings">
+    <div class="row" ng-repeat="building in $ctrl.buildings" style="padding-bottom: 5px">
         <div class="col-xs-5">
             <h5 uib-tooltip="{{building.description}}">{{building.name}}</h5>
         </div>
-        <div class="col-xs-offset-1 col-xs-2">
-            <span ng-bind="building.owned"></span>
+        <div class="col-xs-2">
+            <h5 ng-bind="building.owned"></h5>
         </div>
         <div class="col-xs-4">
-            <button class="btn btn-sm btn-primary" uib-tooltip="{{building.tooltip}}">Build</button>
+            <button class="btn btn-sm btn-primary" tooltip-placement="top" uib-tooltip-template="'resourceTooltip.html'">Build</button>
         </div>
     </div>
-
+    <script type="text/ng-template" id="resourceTooltip.html">
+        <div>
+            <h5>Requires</h5>
+            <div ng-repeat="cost in building.costToBuild"><span ng-bind="cost.resource"></span>: <span ng-bind="cost.amount"></span></div>
+        </div>
+    </script>
 </div>

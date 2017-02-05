@@ -18,6 +18,15 @@
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
             <bloqhead-player-box title="Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]">
+                <div class="row">
+                    <div class="col-xs-12 col-lg-12">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
+                                <span ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span><i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row breeder-container">
                     <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>

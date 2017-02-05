@@ -50,8 +50,11 @@ game.controller('bloqhead.controllers.mainGame', [
             populationService.removeBreeder(unitid);
         };
 
-        self.updateBreeders = function(event, breeders) {
-            self.breeders = breeders;
+        self.updateBreeders = function(event, data) {
+            self.breeders = data.breeders;
+            self.isBreeding = data.isBreeding;
+            self.stepsSinceBreed = data.stepsSinceBreed;
+            self.breedSteps = data.breedSteps;
         };
         self.updatePopulation = function(event, data) {
             self.population = data.population;

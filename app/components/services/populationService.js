@@ -61,6 +61,7 @@ game.service('populationService', [
                         popUpdated = true;
                     }
                 }
+                self.sendBreederUpdateEvent();
                 if (popUpdated)
                     self.sendPopulationUpdateEvent();
             }
@@ -98,7 +99,7 @@ game.service('populationService', [
             self.sendPopulationUpdateEvent();
         };
         self.sendBreederUpdateEvent = function() {
-            $rootScope.$emit('breederUpdateEvent', self.population.breeders);
+            $rootScope.$emit('breederUpdateEvent', { breeders: self.population.breeders, isBreeding: self.population.isBreeding(), stepsSinceBreed: self.stepsSinceBreed, breedSteps: self.breedSteps });
         };
         self.sendPopulationUpdateEvent = function() {
             $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize, breederLimit: self.population.breederLimit });
