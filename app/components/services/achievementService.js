@@ -10,24 +10,26 @@ game.constant('achievementSetup', {
             desc: 'Create a new unit',
             ranks: [
                 [1, [
-                    ['P_R_BONUS', 'GOLD', 5],
-                    ['P_R_BONUS', 'WOOD', 100],
-                    ['P_R_BONUS', 'DIRT', 5000],
+                    ['P_R_BONUS', 'WOOD', 5],
+                    ['P_R_BONUS', 'DIRT', 20],
                 ]],
-                [20, [
-                    ['P_R_BONUS', 'GOLD', 50],
+                [3, [
+                    ['P_R_BONUS', 'GOLD', 1],
                     ['P_M_HAPPINESS'],
                     ['P_G_ENHANCED', 14, 10]
                 ]]
             ]
         },
-        A_DIRT: {
-            aid: 'A_DIRT',
+        A_DIRT_E: {
+            aid: 'A_DIRT_E',
             name: 'Its Dirt....',
             desc: 'Earn dirt.',
             ranks: [
-                [50, [
+                [5, [
                     ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
+                ]],
+                [25, [
+                    ['P_R_MULTIPLIER', 'DIRT', 0.2]
                 ]]
             ]
         },
@@ -36,13 +38,24 @@ game.constant('achievementSetup', {
             name: 'Dirt Hoarder',
             desc: 'Aquire dirt... lots and lots of dirt!',
             ranks: [
-                [100, [
+                [10, [
+                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
+                ]]
+            ],
+            cumulative: true
+        },
+        A_DIRT_S: {
+            aid: 'A_DIRT_S',
+            name: 'Dirt Eater',
+            desc: 'Spend dirt to do stuff',
+            ranks: [
+                [20, [
                     ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
                 ]]
             ]
         },
-        A_BRICKS: {
-            aid: 'A_BRICKS',
+        A_BRICKS_E: {
+            aid: 'A_BRICKS_E',
             name: 'bricks',
             desc: 'Earn bricks.',
             ranks: [
@@ -61,8 +74,8 @@ game.constant('achievementSetup', {
                 ]]
             ]
         },
-        A_WATER: {
-            aid: 'A_WATER',
+        A_WATER_E: {
+            aid: 'A_WATER_E',
             name: 'omnomnom',
             desc: 'Earn water.',
             ranks: [
@@ -81,8 +94,8 @@ game.constant('achievementSetup', {
                 ]]
             ]
         },
-        A_WOOD: {
-            aid: 'A_WOOD',
+        A_WOOD_E: {
+            aid: 'A_WOOD_E',
             name: 'tree guts',
             desc: 'Earn wood.',
             ranks: [
@@ -101,8 +114,8 @@ game.constant('achievementSetup', {
                 ]]
             ]
         },
-        A_GOLD: {
-            aid: 'A_GOLD',
+        A_GOLD_E: {
+            aid: 'A_GOLD_E',
             name: 'Oooohhh Shiiiiiny',
             desc: 'Earn gold.',
             ranks: [
@@ -121,8 +134,8 @@ game.constant('achievementSetup', {
                 ]]
             ]
         },
-        A_HAPPINESS: {
-            aid: 'A_HAPPINESS',
+        A_HAPPINESS_E: {
+            aid: 'A_HAPPINESS_E',
             name: 'be happy mon',
             desc: 'Earn happiness.',
             ranks: [
@@ -176,60 +189,79 @@ game.service('achievementService', [
     function($rootScope, $filter, logService, achievementSetup, geneDefinitions, resourceTypes) {
         var self = this;
 
+
         self.init = function(state) {
 
-            if (state)
-                self.progress = { achievements: state.achievements, perks: state.perks };
-            else
-                self.progress = { achievements: [], perks: [] };
+            self.state = state || {};
+
+            if (!self.state.hasOwnProperty('progress')) {
+                self.state = {
+                    progress: {
+                        achievements: [],
+                        perks: []
+                    }
+                };
+            }
         };
         self.getState = function() {
-            return {
-                achievements: self.progress.achievements,
-                perks: self.progress.perks
-            };
+            return self.state;
         };
 
 
         self.updateProgress = function(aid, amount) {
-            var achProgress = self.progress.achievements[aid];
+            var achProgress = self.state.progress.achievements[aid];
+            var achSetup = achievementSetup.achievements[aid];
             if (!achProgress) {
                 achProgress = {
                     aid: aid,
                     amount: 0
                 };
-                self.progress.achievements[aid] = achProgress;
+                self.state.progress.achievements[aid] = achProgress;
             }
 
             var oldval = achProgress.amount;
-            var newval = achProgress.amount + amount;
+            var newval = oldval;
+            if (achSetup.cumulative === true) {
+                if (amount > oldval) {
+                    newval = amount;
+                }
+            } else {
+                // we should never take away something they have achieved
+                if (amount > 0) {
+                    newval = achProgress.amount + amount;
+                }
+            }
 
             achProgress.amount = newval;
 
-            var achSetup = achievementSetup.achievements[aid];
-            for (var rc = 0; rc < achSetup.ranks.length; rc++) {
-                var amountRequired = achSetup.ranks[rc][0];
-                if (amountRequired > oldval && amountRequired <= newval) {
+            if (oldval != newval) {
+                for (var rc = 0; rc < achSetup.ranks.length; rc++) {
+                    var amountRequired = achSetup.ranks[rc][0];
+                    if (amountRequired > oldval && amountRequired <= newval) {
 
-                    var reward = {
-                        achievement: achSetup,
-                        amountRequired: amountRequired,
-                        perks: []
-                    };
+                        var msg = 'Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')';
 
-                    // log the message
-                    logService.logAchievementMessage('Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')');
+                        var reward = {
+                            achievement: achSetup,
+                            amountRequired: amountRequired,
+                            msg: msg,
+                            perks: []
+                        };
 
-                    // process the perks
-                    for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {
-                        var p = self.applyPerk(achSetup.ranks[rc][1][pc]);
-                        if (p !== null) {
-                            reward.perks.push(p);
+                        // log the message
+                        logService.logAchievementMessage(msg);
+
+                        // process the perks
+                        for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {
+                            var p = self.applyPerk(achSetup.ranks[rc][1][pc]);
+                            if (p !== null) {
+                                reward.perks.push(p);
+                            }
                         }
+
+                        $rootScope.$emit('newRewardEvent', reward);
+
                     }
-
-                    $rootScope.$emit('newRewardEvent', reward);
-
                 }
             }
         };
@@ -275,7 +307,7 @@ game.service('achievementService', [
                 arr: arr,
                 dt: (new Date()).toUTCString()
             };
-            self.progress.perks.push(ret);
+            self.state.progress.perks.push(ret);
             return ret;
 
         };

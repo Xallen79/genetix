@@ -26,10 +26,7 @@ game.constant("defaultState", {
             breederMutationChance: 10
         }
     },
-    achievementServiceState: {
-        achievements: [],
-        perks: []
-    },
+    achievementServiceState: null,
     resourceServiceState: {
         resources: {}
     },
@@ -152,6 +149,14 @@ game.service('gameService', [
 
         gameLoopService.SubscribeGameLoopEvent($rootScope, function(event, steps) {
             self.stepsSinceSave += steps;
+
+            // testing
+            var d = resourceService.getResource('DIRT');
+            if (d >= 3)
+                resourceService.changeResource("DIRT", -d);
+            else
+                resourceService.changeResource("DIRT", 1);
+
             if (self.stepsSinceSave > self.autoSaveSteps) {
                 var saveState = angular.copy(self.gameState);
                 saveState.populationServiceState = angular.copy(populationService.getState());
@@ -161,7 +166,6 @@ game.service('gameService', [
                 saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
                 var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
                 localStorage.setItem(gameSaveKey, save);
-
                 logService.logGeneralMessage('Game autosaved.');
                 self.stepsSinceSave = 0;
             }

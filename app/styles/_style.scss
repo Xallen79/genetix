@@ -54,8 +54,8 @@ body {
 
 .resource-list {
     @include maximize-row();
-    overflow-y: scroll;
-    height: 200px;
+    //overflow-y: scroll;
+    height: 280px;
     h5 {
         margin: 8px 0px 1px 0px;
         font-size: .8em;
@@ -70,7 +70,8 @@ body {
     .progress-bar {
         font-weight: bold;
         font-size: 1.25em;
-        min-width: 2%;
+        //min-width: 2%;
+        min-width: 2px;
         font-family: "Courier New", Courier, monospace;
         border-right: 1px solid black;
         >span {
@@ -109,7 +110,7 @@ body {
     }
     div[data-attr="CHR"] {
         .progress {
-            background-color: lighten($attr-chr, 40%);
+            background-color: lighten($attr-chr, 35%);
         }
         .progress-bar {
             background-color: $attr-chr;
@@ -118,7 +119,7 @@ body {
     }
     div[data-attr="LCK"] {
         .progress {
-            background-color: lighten($attr-lck, 60%);
+            background-color: lighten($attr-lck, 55%);
         }
         .progress-bar {
             background-color: $attr-lck;
@@ -175,7 +176,6 @@ body {
 }
 
 .bloqhead-component {
-    //@include gradient;
     @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
     margin-bottom: 10px;
     border: 1px solid black;

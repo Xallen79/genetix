@@ -82,7 +82,8 @@ game.service('resourceService', [
                 if (resourceTypes.hasOwnProperty(resourceType)) {
                     var r = self.state.resources[resourceType];
                     if (typeof r == 'undefined') {
-                        r = defaultLimits[resourceType] || [0, 911, false];
+                        // if there is no default, instead of failing we are just going to add it with a max of 911 so that we are aware of the problem
+                        r = defaultLimits[resourceType] || [0, 911, overrideAllOn];
                         self.state.resources[resourceType] = r;
                     }
                     $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
@@ -115,19 +116,26 @@ game.service('resourceService', [
             return angular.copy(self.state.resources);
         };
 
-        self.addResource = function(resourceType, amount) {
+        self.getResource = function(resourceType) {
+            return self.state.resources[resourceType][0];
+        }
+
+        self.changeResource = function(resourceType, amount) {
             var r = self.state.resources[resourceType];
             if (r[2] === false && r[1] !== -1) {
                 console.error(resourceType + " is not enabled, cannot increase amount.");
                 return;
             }
 
-
             r[0] += amount;
             if (r[1] != -1 && r[0] > r[1]) r[0] = r[1];
             if (r[0] < 0) r[0] = 0;
-            achievementService.updateProgress('A_' + resourceType, amount);
-            achievementService.updateProgress('A_' + resourceType + '_C', r[0]);
+
+            if (amount > 0)
+                achievementService.updateProgress('A_' + resourceType + '_E', amount); // earning achievement
+            if (amount < 0)
+                achievementService.updateProgress('A_' + resourceType + '_S', -amount); // spending achievement
+            achievementService.updateProgress('A_' + resourceType + '_C', r[0]); // cumulative achievement
 
             if (r[2] === false) {
                 $rootScope.$emit('resourceEnabledEvent', resourceType, true);
@@ -135,6 +143,7 @@ game.service('resourceService', [
             }
 
             $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
+            return r[0];
         };
         self.setResourceLimit = function(resourceType, amount) {
             var r = self.state.resources[resourceType];
