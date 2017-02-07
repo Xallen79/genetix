@@ -94,8 +94,8 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString',
-    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString) {
+    '$rootScope', '$http', '$q', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString',
+    function($rootScope, $http, $q, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString) {
         var self = this;
         self.init = function(state) {
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
@@ -107,39 +107,54 @@ game.service('gameService', [
         };
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
-            populationService.init(
-                angular.merge({},
-                    defaultState.populationServiceState,
-                    self.gameState.populationServiceState
-                )
-            );
 
-            resourceService.init(
-                angular.merge({},
-                    defaultState.resourceServiceState,
-                    self.gameState.resourceServiceState
-                )
-            );
+            // asynchronously load settings for each service, might want to cache these?
+            var settings = {};
+            var settingsRequests = [];
+            settingsRequests.push($http.get('/components/services/achievementService.settings.json').then(
+                function(response) {
+                    settings.achievementService = response.data;
+                }));
 
-            achievementService.init(
-                angular.merge({},
-                    defaultState.achievementServiceState,
-                    self.gameState.achievementServiceState
-                )
-            );
+            $q.all(settingsRequests).then(function() {
 
-            buildingService.init(
-                angular.merge({},
-                    defaultState.buildingServiceState,
-                    self.gameState.buildingServiceState)
-            );
+                populationService.init(
+                    angular.merge({},
+                        defaultState.populationServiceState,
+                        self.gameState.populationServiceState
+                    ), settings.populationService
+                );
 
-            gameLoopService.init(
-                angular.merge({},
-                    defaultState.gameLoopServiceState,
-                    self.gameState.gameLoopServiceState
-                )
-            );
+                resourceService.init(
+                    angular.merge({},
+                        defaultState.resourceServiceState,
+                        self.gameState.resourceServiceState
+                    ), settings.resourceService
+                );
+
+                achievementService.init(
+                    angular.merge({},
+                        defaultState.achievementServiceState,
+                        self.gameState.achievementServiceState
+                    ), settings.achievementService
+                );
+
+                buildingService.init(
+                    angular.merge({},
+                        defaultState.buildingServiceState,
+                        self.gameState.buildingServiceState
+                    ), settings.buildingService
+                );
+
+                gameLoopService.init(
+                    angular.merge({},
+                        defaultState.gameLoopServiceState,
+                        self.gameState.gameLoopServiceState
+                    ), settings.gameLoopService
+                );
+            });
+
+
 
         };
         self.hardReset = function() {

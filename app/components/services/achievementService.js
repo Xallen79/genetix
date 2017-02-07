@@ -2,197 +2,16 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 
-game.constant('achievementSetup', {
-    achievements: {
-        A_BIRTHS: {
-            aid: 'A_BIRTHS',
-            name: 'The Chosen One',
-            desc: 'Create a new unit',
-            ranks: [
-                [1, [
-                    ['P_R_BONUS', 'WOOD', 5],
-                    ['P_R_BONUS', 'DIRT', 20],
-                ]],
-                [3, [
-                    ['P_R_BONUS', 'GOLD', 1],
-                    ['P_M_HAPPINESS'],
-                    ['P_G_ENHANCED', 14, 10]
-                ]]
-            ]
-        },
-        A_DIRT_E: {
-            aid: 'A_DIRT_E',
-            name: 'Its Dirt....',
-            desc: 'Earn dirt.',
-            ranks: [
-                [5, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]],
-                [25, [
-                    ['P_R_MULTIPLIER', 'DIRT', 0.2]
-                ]]
-            ]
-        },
-        A_DIRT_C: {
-            aid: 'A_DIRT_C',
-            name: 'Dirt Hoarder',
-            desc: 'Aquire dirt... lots and lots of dirt!',
-            ranks: [
-                [10, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ],
-            cumulative: true
-        },
-        A_DIRT_S: {
-            aid: 'A_DIRT_S',
-            name: 'Dirt Eater',
-            desc: 'Spend dirt to do stuff',
-            ranks: [
-                [20, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        },
-        A_BRICKS_E: {
-            aid: 'A_BRICKS_E',
-            name: 'bricks',
-            desc: 'Earn bricks.',
-            ranks: [
-                [50, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]]
-            ]
-        },
-        A_BRICKS_C: {
-            aid: 'A_BRICKS_C',
-            name: 'Brick Hoarder',
-            desc: 'Aquire bricks... lots and lots of bricks!',
-            ranks: [
-                [100, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        },
-        A_WATER_E: {
-            aid: 'A_WATER_E',
-            name: 'omnomnom',
-            desc: 'Earn water.',
-            ranks: [
-                [50, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]]
-            ]
-        },
-        A_WATER_C: {
-            aid: 'A_WATER_C',
-            name: 'Water Hoarder',
-            desc: 'Aquire water... lots and lots of water!',
-            ranks: [
-                [100, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        },
-        A_WOOD_E: {
-            aid: 'A_WOOD_E',
-            name: 'tree guts',
-            desc: 'Earn wood.',
-            ranks: [
-                [50, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]]
-            ]
-        },
-        A_WOOD_C: {
-            aid: 'A_WOOD_C',
-            name: 'Wood Hoarder',
-            desc: 'Aquire wood... lots and lots of wood!',
-            ranks: [
-                [100, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        },
-        A_GOLD_E: {
-            aid: 'A_GOLD_E',
-            name: 'Oooohhh Shiiiiiny',
-            desc: 'Earn gold.',
-            ranks: [
-                [50, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]]
-            ]
-        },
-        A_GOLD_C: {
-            aid: 'A_GOLD_C',
-            name: 'Gold Hoarder',
-            desc: 'Aquire gold... lots and lots of gold!',
-            ranks: [
-                [100, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        },
-        A_HAPPINESS_E: {
-            aid: 'A_HAPPINESS_E',
-            name: 'be happy mon',
-            desc: 'Earn happiness.',
-            ranks: [
-                [50, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.1]
-                ]]
-            ]
-        },
-        A_HAPPINESS_C: {
-            aid: 'A_HAPPINESS_C',
-            name: 'Happyness',
-            desc: 'Aquire happiness... lots and lots of happiness!',
-            ranks: [
-                [100, [
-                    ['P_R_MULTIPLIER', 'HAPPINESS', 0.2]
-                ]]
-            ]
-        }
-    },
-    perks: {
-        // mechanics
-        P_M_HAPPINESS: {
-            pid: 'P_M_HAPPINESS',
-            name: 'New Mechanic: Happiness',
-            desc: 'Happiness is a representation of how content your population is.',
-            once: true
-        },
-        P_R_MULTIPLIER: {
-            pid: 'P_R_MULTIPLIER',
-            name: 'Resource Muliplier',
-            desc: 'The rate that you aquire [%1] has been increased by [%2]x.'
-        },
-        P_R_BONUS: {
-            pid: 'P_R_BONUS',
-            name: 'Bonus Resources',
-            desc: '[%2] [%1] has been added to your coffers.'
-        },
-        P_G_ENHANCED: {
-            pid: 'P_G_ENHANCED',
-            name: 'Gene Enhancement',
-            desc: 'The boundary has been increased by [%amt] for one of your [%attr] genes. ([%dom]/[%rec])'
-        }
-    }
-
-});
-
-
-
 game.service('achievementService', [
-    '$rootScope', '$filter', 'logService', 'achievementSetup', 'geneDefinitions', 'resourceTypes',
-    function($rootScope, $filter, logService, achievementSetup, geneDefinitions, resourceTypes) {
+    '$rootScope', '$filter', 'logService', 'geneDefinitions', 'resourceTypes',
+    function($rootScope, $filter, logService, geneDefinitions, resourceTypes) {
         var self = this;
 
 
-        self.init = function(state) {
+        self.init = function(state, achievementSetup) {
 
             self.state = state || {};
+            self.achievementSetup = achievementSetup || {};
 
             if (!self.state.hasOwnProperty('progress')) {
                 self.state = {
@@ -210,7 +29,7 @@ game.service('achievementService', [
 
         self.updateProgress = function(aid, amount) {
             var achProgress = self.state.progress.achievements[aid];
-            var achSetup = achievementSetup.achievements[aid];
+            var achSetup = self.achievementSetup.achievements[aid];
             if (!achProgress) {
                 achProgress = {
                     aid: aid,

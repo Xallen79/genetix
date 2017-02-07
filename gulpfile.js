@@ -11,6 +11,7 @@ var nodemon;
 
 var paths = {
     scripts: 'app/**/*.js',
+    settings: 'app/**/*.json',
     styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
     fonts: './bower_components/components-font-awesome/fonts/**.*',
@@ -46,6 +47,9 @@ pipes.validatedAppScripts = function() {
         .pipe(plugins.jshint.reporter('jshint-stylish'));
 };
 
+pipes.builtAppSettingsDev = function() {
+    return gulp.src(paths.settings).pipe(gulp.dest(paths.distDev));
+};
 pipes.builtAppScriptsDev = function() {
     return pipes.validatedAppScripts()
         .pipe(gulp.dest(paths.distDev));
@@ -108,7 +112,7 @@ pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
         .pipe(plugins.sass().on('error', function(error) {
             console.error(error);
-            if(typeof(nodemon) != 'undefined')
+            if (typeof(nodemon) != 'undefined')
                 nodemon.emit('restart');
             else
                 throw error;
@@ -160,6 +164,8 @@ pipes.builtIndexDev = function() {
 
     var orderedAppScripts = pipes.builtAppScriptsDev()
         .pipe(pipes.orderedAppScripts());
+
+    pipes.builtAppSettingsDev();
 
     var appStyles = pipes.builtStylesDev();
     pipes.builtFontsDev();
@@ -231,6 +237,9 @@ gulp.task('validate-app-scripts', pipes.validatedAppScripts);
 // moves app scripts into the dev environment
 gulp.task('build-app-scripts-dev', pipes.builtAppScriptsDev);
 
+// moves json files into the dev environment
+gulp.task('build-app-settings-dev', pipes.builtAppSettingsDev);
+
 // concatenates, uglifies, and moves app scripts and partials into the prod environment
 gulp.task('build-app-scripts-prod', pipes.builtAppScriptsProd);
 
@@ -288,6 +297,12 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     // watch app scripts
     gulp.watch(paths.scripts, function() {
         return pipes.builtAppScriptsDev()
+            .pipe(plugins.livereload());
+    });
+
+    // watch settings
+    gulp.watch(paths.settings, function() {
+        return pipes.builtAppSettingsDev()
             .pipe(plugins.livereload());
     });
 
