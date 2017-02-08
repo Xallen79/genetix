@@ -1,13 +1,20 @@
 <div class="col-xs-12">
-    <div class="row">
-        <div class="col-xs-12">
-            <bloqhead-player-box title="Achievements">
-                <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
-                        <bloqhead-breeder unit="child" assign="$ctrl.addBreeder($id)"></bloqhead-breeder>
+    <bloqhead-player-box title="Achievements">
+        <div class="row">
+
+        </div>
+        <div class="row" ng-repeat="ag in $ctrl.achievementSetup.achievementGroups">
+            <div class="col-xs-12">
+                <h6 ng-bind="ag.name"></h6>
+                <div class="row achievement-list" ng-repeat="aid in ag.aids">
+                    <div class="col-xs-4 achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])">
+                        <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
+                    </div>
+                    <div class="col-xs-1 achievement-rank-cell" ng-repeat="ar in $ctrl.achievementSetup.achievements[aid].ranks" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
+                        <p ng-bind="ar[0]" />
                     </div>
                 </div>
-            </bloqhead-player-box>
+            </div>
         </div>
-    </div>
+    </bloqhead-player-box>
 </div>

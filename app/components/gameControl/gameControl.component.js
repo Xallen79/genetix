@@ -2,6 +2,7 @@ var app = angular.module('bloqhead.genetixApp');
 
 app.component('bloqheadGameControl', {
     template: '<div>' +
+        '<button title="Save Game" type="button" class="btn btn-xs btn-primary" ng-click="$ctrl.saveGame();"><i class="fa fa-floppy-o"></i></button>' +
         '<button title="Hard Reset" type="button" class="btn btn-xs btn-primary" ng-click="$ctrl.resetSave();"><i class="fa fa-recycle"></i></button>' +
         '<button title="Play/Pause" type="button" class="btn btn-xs btn-primary" ng-click="$ctrl.toggleState();"><i class="fa" ng-class="$ctrl.getIcon()"></i></button>' +
         '</div>',
@@ -19,6 +20,9 @@ app.component('bloqheadGameControl', {
         };
         self.resetSave = function() {
             gameService.hardReset();
+        };
+        self.saveGame = function() {
+            gameService.saveGame();
         };
     }]
 });

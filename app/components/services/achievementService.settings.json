@@ -15,7 +15,8 @@
                     "A_WOOD_E", "A_WOOD_C", "A_WOOD_S",
                     "A_GOLD_E", "A_GOLD_C", "A_GOLD_S",
                     "A_SCIENCE_E", "A_SCIENCE_C", "A_SCIENCE_S",
-                    "A_EVOCOIN_E", "A_EVOCOIN_C", "A_EVOCOIN_S"
+                    "A_EVOCOIN_E",
+                    "A_HAPPINESS_E"
                 ]
             }],
             "achievements": {
@@ -32,13 +33,18 @@
                             ["P_R_BONUS", "GOLD", 1],
                             ["P_M_HAPPINESS"],
                             ["P_G_ENHANCED", 14, 10]
+                        ]],
+                        [5, [
+                            ["P_R_BONUS", "EVOCOIN", 1],
+                            ["P_G_ENHANCED", 15, 10]
                         ]]
                     ]
                 },
                 "A_DIRT_E": {
                     "aid": "A_DIRT_E",
-                    "name": "Its Dirt....",
-                    "desc": "Earn dirt.",
+                    "name": "Earn Dirt",
+                    "desc": "Earn Dirt Desc",
+                    "res": "DIRT",
                     "ranks": [
                         [5, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
@@ -50,8 +56,9 @@
                 },
                 "A_DIRT_C": {
                     "aid": "A_DIRT_C",
-                    "name": "Dirt Hoarder",
-                    "desc": "Aquire dirt... lots and lots of dirt!",
+                    "name": "Stockpile Dirt",
+                    "desc": "Stockpile Dirt Desc",
+                    "res": "DIRT",
                     "ranks": [
                         [10, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -61,8 +68,9 @@
                 },
                 "A_DIRT_S": {
                     "aid": "A_DIRT_S",
-                    "name": "Dirt Eater",
-                    "desc": "Spend dirt to do stuff",
+                    "name": "Spend Dirt",
+                    "desc": "Spend Dirt Description",
+                    "res": "DIRT",
                     "ranks": [
                         [20, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -71,8 +79,9 @@
                 },
                 "A_BRICKS_E": {
                     "aid": "A_BRICKS_E",
-                    "name": "bricks",
-                    "desc": "Earn bricks.",
+                    "name": "Earn Bricks",
+                    "desc": "Earn Bricks Desc",
+                    "res": "BRICKS",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
@@ -81,8 +90,53 @@
                 },
                 "A_BRICKS_C": {
                     "aid": "A_BRICKS_C",
-                    "name": "Brick Hoarder",
-                    "desc": "Aquire bricks... lots and lots of bricks!",
+                    "name": "Stockpile Bricks",
+                    "desc": "Stockpile Bricks Desc",
+                    "res": "BRICKS",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_BRICKS_S": {
+                    "aid": "A_BRICKS_S",
+                    "name": "Spend Bricks",
+                    "desc": "Spend Bricks Desc",
+                    "res": "BRICKS",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_STEEL_E": {
+                    "aid": "A_STEEL_E",
+                    "name": "Earn Steel",
+                    "desc": "Earn Sttel Desc",
+                    "res": "STEEL",
+                    "ranks": [
+                        [50, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
+                        ]]
+                    ]
+                },
+                "A_STEEL_C": {
+                    "aid": "A_STEEL_C",
+                    "name": "Stockpile Steel",
+                    "desc": "Stockpile Steel Desc",
+                    "res": "STEEL",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_STEEL_S": {
+                    "aid": "A_STEEL_S",
+                    "name": "Spend Steel",
+                    "desc": "Spend Steel Desc",
+                    "res": "STEEL",
                     "ranks": [
                         [100, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -91,8 +145,9 @@
                 },
                 "A_WATER_E": {
                     "aid": "A_WATER_E",
-                    "name": "omnomnom",
-                    "desc": "Earn water.",
+                    "name": "Earn Water",
+                    "desc": "Earn Water Desc",
+                    "res": "WATER",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
@@ -101,8 +156,20 @@
                 },
                 "A_WATER_C": {
                     "aid": "A_WATER_C",
-                    "name": "Water Hoarder",
-                    "desc": "Aquire water... lots and lots of water!",
+                    "name": "Stockpile Water",
+                    "desc": "Stockpile Water Desc",
+                    "res": "WATER",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_WATER_S": {
+                    "aid": "A_WATER_S",
+                    "name": "Spend Water",
+                    "desc": "Spend Water Desc",
+                    "res": "WATER",
                     "ranks": [
                         [100, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -111,8 +178,9 @@
                 },
                 "A_WOOD_E": {
                     "aid": "A_WOOD_E",
-                    "name": "tree guts",
-                    "desc": "Earn wood.",
+                    "name": "Earn Wood",
+                    "desc": "Earn Wood Desc",
+                    "res": "WOOD",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
@@ -121,8 +189,20 @@
                 },
                 "A_WOOD_C": {
                     "aid": "A_WOOD_C",
-                    "name": "Wood Hoarder",
-                    "desc": "Aquire wood... lots and lots of wood!",
+                    "name": "Stockpile Wood",
+                    "desc": "Stockpile Wood Desc",
+                    "res": "WOOD",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_WOOD_S": {
+                    "aid": "A_WOOD_S",
+                    "name": "Spend Wood",
+                    "desc": "Spend Wood Desc",
+                    "res": "WOOD",
                     "ranks": [
                         [100, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -131,8 +211,9 @@
                 },
                 "A_GOLD_E": {
                     "aid": "A_GOLD_E",
-                    "name": "Oooohhh Shiiiiiny",
-                    "desc": "Earn gold.",
+                    "name": "Earn Gold",
+                    "desc": "Earn Gold Desc",
+                    "res": "GOLD",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
@@ -141,8 +222,53 @@
                 },
                 "A_GOLD_C": {
                     "aid": "A_GOLD_C",
-                    "name": "Gold Hoarder",
-                    "desc": "Aquire gold... lots and lots of gold!",
+                    "name": "Stockpile Gold",
+                    "desc": "Stockpile Gold Desc",
+                    "res": "GOLD",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_GOLD_S": {
+                    "aid": "A_GOLD_S",
+                    "name": "Spend Gold",
+                    "desc": "Spend Gold Desc",
+                    "res": "GOLD",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_SCIENCE_E": {
+                    "aid": "A_SCIENCE_E",
+                    "name": "Earn Science",
+                    "desc": "Earn Science Desc",
+                    "res": "SCIENCE",
+                    "ranks": [
+                        [50, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
+                        ]]
+                    ]
+                },
+                "A_SCIENCE_C": {
+                    "aid": "A_SCIENCE_C",
+                    "name": "Stockpile Science",
+                    "desc": "Stockpile Science Desc",
+                    "res": "SCIENCE",
+                    "ranks": [
+                        [100, [
+                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
+                        ]]
+                    ]
+                },
+                "A_SCIENCE_S": {
+                    "aid": "A_SCIENCE_S",
+                    "name": "Spend Science",
+                    "desc": "Spend Science Desc",
+                    "res": "SCIENCE",
                     "ranks": [
                         [100, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
@@ -151,18 +277,20 @@
                 },
                 "A_HAPPINESS_E": {
                     "aid": "A_HAPPINESS_E",
-                    "name": "be happy mon",
-                    "desc": "Earn happiness.",
+                    "name": "Happiness",
+                    "desc": "Happiness Desc",
+                    "res": "HAPPINESS",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
                         ]]
                     ]
                 },
-                "A_HAPPINESS_C": {
-                    "aid": "A_HAPPINESS_C",
-                    "name": "Happyness",
-                    "desc": "Aquire happiness... lots and lots of happiness!",
+                "A_EVOCOIN_E": {
+                    "aid": "A_EVOCOIN_E",
+                    "name": "Earn EVO-Coins",
+                    "desc": "Earn EVO-COins Desc",
+                    "res": "EVOCOIN",
                     "ranks": [
                         [100, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.2]

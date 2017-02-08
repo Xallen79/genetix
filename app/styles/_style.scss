@@ -131,6 +131,44 @@ body {
     }
 }
 
+.achievement-list {
+    @include maximize-row();
+    font-size: .75em;
+    .achievement-cell,
+    .achievement-rank-cell {
+        border: 1px solid black;
+        padding: 5px;
+        -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        float: left;
+        margin: 5px;
+        height: 30px;
+    }
+    .achievement-cell {
+        @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+        width: 120px;
+    }
+    .achievement-rank-cell {
+        @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+    }
+    .achievement-rank-STR {
+        @include linear-gradient(180deg, $attr-str 15%, black 100%)
+    }
+    .achievement-rank-INT {
+        @include linear-gradient(180deg, $attr-int 15%, black 100%)
+    }
+    .achievement-rank-END {
+        @include linear-gradient(180deg, $attr-end 15%, black 100%)
+    }
+    .achievement-rank-CHR {
+        @include linear-gradient(180deg, $attr-chr 15%, black 100%)
+    }
+    .achievement-rank-LCK {
+        @include linear-gradient(180deg, $attr-lck 15%, black 100%)
+    }
+}
+
 .breeder-container {
     @include maximize-row();
     h5 {

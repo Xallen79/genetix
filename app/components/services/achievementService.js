@@ -16,7 +16,7 @@ game.service('achievementService', [
             if (!self.state.hasOwnProperty('progress')) {
                 self.state = {
                     progress: {
-                        achievements: [],
+                        achievements: {},
                         perks: []
                     }
                 };
@@ -26,6 +26,10 @@ game.service('achievementService', [
             return self.state;
         };
 
+        self.getProgressSnapshot = function() {
+            return angular.copy(self.state.progress);
+        };
+
 
         self.updateProgress = function(aid, amount) {
             var achProgress = self.state.progress.achievements[aid];
@@ -33,7 +37,8 @@ game.service('achievementService', [
             if (!achProgress) {
                 achProgress = {
                     aid: aid,
-                    amount: 0
+                    amount: 0,
+                    lastRank: 0
                 };
                 self.state.progress.achievements[aid] = achProgress;
             }
@@ -56,9 +61,11 @@ game.service('achievementService', [
             if (oldval != newval) {
                 for (var rc = 0; rc < achSetup.ranks.length; rc++) {
                     var amountRequired = achSetup.ranks[rc][0];
-                    if (amountRequired > oldval && amountRequired <= newval) {
+                    if (amountRequired > achProgress.lastRank && amountRequired > oldval && amountRequired <= newval) {
 
                         var msg = 'Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')';
+
+                        achProgress.lastRank = amountRequired;
 
                         var reward = {
                             achievement: achSetup,

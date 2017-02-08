@@ -112,6 +112,22 @@ game.service('gameService', [
             self.init();
         };
 
+        self.saveGame = function(autosave) {
+            var saveState = angular.copy(self.gameState);
+            saveState.populationServiceState = angular.copy(populationService.getState());
+            saveState.resourceServiceState = angular.copy(resourceService.getState());
+            saveState.achievementServiceState = angular.copy(achievementService.getState());
+            saveState.buildingServiceState = angular.copy(buildingService.getState());
+            saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
+            var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
+            localStorage.setItem(gameSaveKey, save);
+            if (autosave)
+                logService.logGeneralMessage('Game autosaved.');
+            else
+                logService.logGeneralMessage('Game saved.');
+        };
+
+
         gameLoopService.SubscribeGameLoopEvent($rootScope, function(event, steps) {
             self.stepsSinceSave += steps;
 
@@ -123,14 +139,7 @@ game.service('gameService', [
                 resourceService.changeResource("DIRT", 1);
 
             if (self.stepsSinceSave > self.autoSaveSteps) {
-                var saveState = angular.copy(self.gameState);
-                saveState.populationServiceState = angular.copy(populationService.getState());
-                saveState.resourceServiceState = angular.copy(resourceService.getState());
-                saveState.achievementServiceState = angular.copy(achievementService.getState());
-                saveState.buildingServiceState = angular.copy(buildingService.getState());
-                saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
-                var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
-                localStorage.setItem(gameSaveKey, save);
+                self.saveGame(true);
                 logService.logGeneralMessage('Game autosaved.');
                 self.stepsSinceSave = 0;
             }
