@@ -94,7 +94,7 @@ game.service('resourceService', [
                 r[2] = true;
             }
 
-            $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
+            $rootScope.$emit('resourceChangedEvent', resourceType, r[0], self.getResourcesSnapshot());
             return r[0];
         };
         self.setResourceLimit = function(resourceType, amount) {

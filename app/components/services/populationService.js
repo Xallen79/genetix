@@ -28,7 +28,7 @@ game.service('populationService', [
         self.handleGameLoop = function(event, steps) {
             var popUpdated = false;
             if (event.name !== 'gameLoopEvent') {
-                console.log('populateService.handleGameLoop - Invalid event: ' + event);
+                console.error('populateService.handleGameLoop - Invalid event: ' + event);
                 return;
             }
             if (self.population.isBreeding()) {
@@ -38,25 +38,6 @@ game.service('populationService', [
                     var offspring = self.population.breed();
                     if (offspring !== null) {
                         logService.logBreedMessage("New offspring! " + offspring.name);
-                        var strBase = 0,
-                            intBase = 0,
-                            endBase = 0,
-                            chrBase = 0,
-                            lckBase = 0;
-                        var genes = offspring.genes;
-                        for (var g = 0; g < genes.length; g++) {
-                            if (g < 10)
-                                strBase += genes[g][1] - genes[g][0];
-                            else if (g < 20)
-                                intBase += genes[g][1] - genes[g][0];
-                            else if (g < 30)
-                                endBase += genes[g][1] - genes[g][0];
-                            else if (g < 40)
-                                chrBase += genes[g][1] - genes[g][0];
-                            else
-                                lckBase += genes[g][1] - genes[g][0];
-                        }
-                        console.log(strBase);
                         achievementService.updateProgress('A_BIRTHS', 1);
                         popUpdated = true;
                     }

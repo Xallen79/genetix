@@ -71,6 +71,7 @@ game.component("bloqheadBreeder", {
     bindings: {
         unit: '<',
         allowAssign: '<',
+        canBreed: '<',
         assign: '&'
     }
 });

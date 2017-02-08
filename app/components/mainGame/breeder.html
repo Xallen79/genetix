@@ -50,7 +50,7 @@
         </tbody>
     </table>
     <div ng-show="$ctrl.allowAssign">
-        <button class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
+        <button ng-disabled="!$ctrl.canBreed" class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
         <div class="btn-group" role="menu" data-container="body">
             <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Work <span class="caret"></span>

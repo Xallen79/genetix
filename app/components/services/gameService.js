@@ -117,7 +117,7 @@ game.service('gameService', [
 
             // testing
             var d = resourceService.getResource('DIRT');
-            if (d >= 3)
+            if (d >= 13)
                 resourceService.changeResource("DIRT", -d);
             else
                 resourceService.changeResource("DIRT", 1);

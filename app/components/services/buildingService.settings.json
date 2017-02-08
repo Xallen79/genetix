@@ -3,14 +3,10 @@
         "defaultBuildings": {
             "BUNGALOW": {
                 "name": "Breeding Bungalow",
-                "description": "A private bungalow where the magic happens.",
+                "description": "A private bungalow where the magic happens. Due to the magic nature of this building, it cannot be built directly.",
                 "use": "breeding",
                 "size": 2,
-                "baseCost": [{
-                    "resource": "DIRT",
-                    "amount": 25,
-                    "costMultiplier": 1.05
-                }],
+                "baseCost": [],
                 "purchased": 0,
                 "gifted": 1,
                 "unlocked": 1

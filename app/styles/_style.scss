@@ -333,3 +333,10 @@ bloqhead-player-box {
 .tooltip .tooltip-arrow {
     display: none;
 }
+
+
+/* Needed for tooltips to work with disabled buttons */
+
+[disabled] {
+    pointer-events: none;
+}

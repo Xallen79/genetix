@@ -11,7 +11,9 @@
             <h5 ng-bind="building.owned"></h5>
         </div>
         <div class="col-xs-4">
-            <button class="btn btn-sm btn-primary" tooltip-placement="top" uib-tooltip-template="'resourceTooltip.html'">Build</button>
+            <div style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'resourceTooltip.html'">
+                <button ng-disabled="!building.canBuild" ng-if="building.costToBuild.length > 0" class="btn btn-sm btn-primary">Build</button>
+            </div>
         </div>
     </div>
     <script type="text/ng-template" id="resourceTooltip.html">
