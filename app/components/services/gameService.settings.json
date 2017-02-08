@@ -1,0 +1,34 @@
+{
+    "constants": {
+        "defaultState": {
+            "clearLog": true,
+            "autoSaveSteps": 30,
+            "gameLoopServiceState": {
+                "stepTimeMs": 1000
+            },
+            "populationServiceState": {
+                "breedSteps": 6,
+                "populationState": {
+                    "initialSize": 2,
+                    "maxSize": 5,
+                    "breederGeneCap": 100,
+                    "breederGenesUnlocked": [0, 42],
+                    "breederMutationChance": 10
+                }
+            },
+            "achievementServiceState": null,
+            "resourceServiceState": {
+                "resources": {}
+            },
+            "buildingServiceState": {
+                "buildings": {}
+            }
+
+        },
+        "gameSaveKey": "GENETIX_SAVE",
+        "gameStates": {
+            "PAUSED": 0,
+            "RUNNING": 1
+        }
+    }
+}

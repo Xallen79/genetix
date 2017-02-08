@@ -1,0 +1,154 @@
+{
+    "constants": {
+        "geneDefinitions": [
+            { "dom": "Broad Shoulders", "rec": "Slender Shoulders", "attr": ["STR"] },
+            { "dom": "Thick Skull", "rec": "Soft Skull", "attr": ["STR"] },
+            { "dom": "Large Arms", "rec": "Small Arms", "attr": ["STR"] },
+            { "dom": "Large Legs", "rec": "Small Legs", "attr": ["STR"] },
+            { "dom": "Big Chest", "rec": "Weak Chest", "attr": ["STR"] },
+            { "dom": "Tough Jaw", "rec": "Weak Jaw", "attr": ["STR"] },
+            { "dom": "Oafish", "rec": "Mousey", "attr": ["STR"] },
+            { "dom": "", "rec": "", "attr": ["STR"] },
+            { "dom": "", "rec": "", "attr": ["STR"] },
+            { "dom": "", "rec": "", "attr": ["STR"] },
+
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "Calculated Decisions", "rec": "Reckless", "attr": ["INT"] },
+            { "dom": "Lateral Thinker", "rec": "Single Minded", "attr": ["INT"] },
+            { "dom": "Quick Learner", "rec": "Forgetful", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+            { "dom": "", "rec": "", "attr": ["INT"] },
+
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+            { "dom": "", "rec": "", "attr": ["END"] },
+
+            { "dom": "Eloquent", "rec": "Catatonic", "attr": ["CHR"] },
+            { "dom": "Powerful Voice", "rec": "Quiet Voice", "attr": ["CHR"] },
+            { "dom": "Full Lips", "rec": "Thin Lips", "attr": ["CHR"] },
+            { "dom": "Dark Skin", "rec": "Fair Skin", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+            { "dom": "", "rec": "", "attr": ["CHR"] },
+
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "Female", "rec": "Male", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] },
+            { "dom": "", "rec": "", "attr": ["LCK"] }
+        ],
+        "traitDefinitions": [{
+                "name": "Handsome",
+                "genes": [
+                    [
+                        0, -200,
+                        200
+                    ],
+                    [
+                        5,
+                        50,
+                        255
+                    ]
+                ],
+                "requiredTraits": [
+                    "Male"
+                ]
+            },
+            {
+                "name": "Pretty",
+                "genes": [
+                    [
+                        0, -200, -100
+                    ],
+                    [
+                        4,
+                        20,
+                        240
+                    ]
+                ],
+                "requiredTraits": [
+                    "Female"
+                ]
+            },
+            {
+                "name": "Aggressive",
+                "genes": [
+                    [
+                        0,
+                        200,
+                        255
+                    ],
+                    [
+                        2,
+                        200,
+                        255
+                    ],
+                    [
+                        4,
+                        200,
+                        255
+                    ],
+                    [
+                        5,
+                        200,
+                        255
+                    ],
+                    [
+                        14, -255, -150
+                    ]
+                ]
+            },
+            {
+                "name": "Female",
+                "genes": [
+                    [
+                        42,
+                        0,
+                        255
+                    ]
+                ]
+            },
+            {
+                "name": "Male",
+                "genes": [
+                    [
+                        42, -255, -1
+                    ]
+                ]
+            },
+            {
+                "name": "Handsome Aggressive and something",
+                "genes": [
+                    [
+                        30,
+                        0,
+                        0
+                    ]
+                ],
+                "requiredTraits": [
+                    "Handsome",
+                    "Aggressive"
+                ]
+            }
+        ]
+    }
+}

@@ -5,11 +5,6 @@ game.component('bloqheadLog', {
     controller: 'bloqhead.controllers.log'
 });
 
-game.constant('logTypes', {
-    GENERAL: 1,
-    BREED: 2,
-    ACHIEVEMENT: 3
-});
 
 
 

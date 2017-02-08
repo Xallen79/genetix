@@ -7,6 +7,7 @@ var print = require('gulp-print');
 var Q = require('q');
 var streamqueue = require('streamqueue');
 var nodemon;
+var ngConstant = require('gulp-ng-constant');
 // == PATH STRINGS ========
 
 var paths = {
@@ -48,18 +49,49 @@ pipes.validatedAppScripts = function() {
 };
 
 pipes.builtAppSettingsDev = function() {
-    return gulp.src(paths.settings).pipe(gulp.dest(paths.distDev));
+    return gulp.src(paths.settings)
+        .pipe(ngConstant({
+            space: '    ',
+            name: "bloqhead.genetixApp",
+            deps: false,
+            wrap: false
+        }).on('error', function(error) {
+            console.error(error);
+            if (typeof(nodemon) != 'undefined')
+                nodemon.emit('restart');
+            else
+                throw error;
+        }));
 };
+
+pipes.builtAppSettingsProd = function() {
+    return gulp.src(paths.settings)
+        .pipe(ngConstant({
+            name: "bloqhead.genetixApp",
+            deps: false,
+            wrap: false
+        }).on('error', function(error) {
+            console.error(error);
+            if (typeof(nodemon) != 'undefined')
+                nodemon.emit('restart');
+            else
+                throw error;
+        }));
+};
+
 pipes.builtAppScriptsDev = function() {
-    return pipes.validatedAppScripts()
+    var validatedApps = pipes.validatedAppScripts();
+    var appSettings = pipes.builtAppSettingsDev();
+    return streamqueue({ objectMode: true }, validatedApps, appSettings)
         .pipe(gulp.dest(paths.distDev));
 };
 
 pipes.builtAppScriptsProd = function() {
     var scriptedPartials = pipes.scriptedPartials();
     var validatedAppScripts = pipes.validatedAppScripts();
+    var appSettings = pipes.builtAppSettingsProd();
 
-    return streamqueue({ objectMode: true }, validatedAppScripts, scriptedPartials)
+    return streamqueue({ objectMode: true }, validatedAppScripts, scriptedPartials, appSettings)
         //es.merge(scriptedPartials, validatedAppScripts)
         //.pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
@@ -163,9 +195,7 @@ pipes.builtIndexDev = function() {
         .pipe(pipes.orderedVendorScripts());
 
     var orderedAppScripts = pipes.builtAppScriptsDev()
-        .pipe(pipes.orderedAppScripts());
-
-    pipes.builtAppSettingsDev();
+        .pipe(pipes.orderedAppScripts())
 
     var appStyles = pipes.builtStylesDev();
     pipes.builtFontsDev();
@@ -237,7 +267,7 @@ gulp.task('validate-app-scripts', pipes.validatedAppScripts);
 // moves app scripts into the dev environment
 gulp.task('build-app-scripts-dev', pipes.builtAppScriptsDev);
 
-// moves json files into the dev environment
+// creates angular constants from json files and moves into dev enviroment
 gulp.task('build-app-settings-dev', pipes.builtAppSettingsDev);
 
 // concatenates, uglifies, and moves app scripts and partials into the prod environment
@@ -251,6 +281,9 @@ gulp.task('build-fonts-dev', pipes.builtFontsDev);
 
 // compiles and minifies app sass to css and moves to the prod environment
 gulp.task('build-styles-prod', pipes.builtStylesProd);
+
+// creates angular constants from json files and moves into prod enviroment
+gulp.task('build-app-settings-prod', pipes.builtAppSettingsProd);
 
 // moves vendor scripts into the dev environment
 gulp.task('build-vendor-scripts-dev', pipes.builtVendorScriptsDev);
@@ -302,7 +335,7 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
 
     // watch settings
     gulp.watch(paths.settings, function() {
-        return pipes.builtAppSettingsDev()
+        return pipes.builtAppScriptsDev()
             .pipe(plugins.livereload());
     });
 
@@ -341,6 +374,12 @@ gulp.task('watch-prod', ['clean-build-app-prod', 'validate-devserver-scripts'], 
 
     // watch app scripts
     gulp.watch(paths.scripts, function() {
+        return pipes.builtAppScriptsProd()
+            .pipe(plugins.livereload());
+    });
+
+    // watch settings
+    gulp.watch(paths.settings, function() {
         return pipes.builtAppScriptsProd()
             .pipe(plugins.livereload());
     });

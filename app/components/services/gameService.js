@@ -3,45 +3,6 @@ var game = angular.module('bloqhead.genetixApp');
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-game.constant('gameSaveKey', "GENETIX_SAVE");
-game.constant('gameStates', {
-    PAUSED: 0,
-    RUNNING: 1
-});
-
-game.constant("defaultState", {
-
-    clearLog: true,
-    autoSaveSteps: 30,
-    gameLoopServiceState: {
-        stepTimeMs: 1000
-    },
-    populationServiceState: {
-        breedSteps: 6,
-        populationState: {
-            initialSize: 2,
-            maxSize: 5,
-            breederGeneCap: 100,
-            breederGenesUnlocked: [0, 42],
-            breederMutationChance: 10
-        }
-    },
-    achievementServiceState: null,
-    resourceServiceState: {
-        resources: {}
-    },
-    buildingServiceState: {
-        // storageSizeMultiplier: 1.5,
-        // breedingSizeMultiplier: 5,
-        // housingSizeMultiplier: 0.5,
-        buildings: {
-            // SODHOUSE: {
-            //     multiplier: 2
-            // }
-        }
-    }
-
-});
 
 game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logService',
     function($window, $rootScope, gameStates, logService) {
@@ -94,8 +55,8 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', '$http', '$q', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString',
-    function($rootScope, $http, $q, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString) {
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString', 'traitDefinitions',
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString, traitDefinitions) {
         var self = this;
         self.init = function(state) {
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
@@ -108,51 +69,40 @@ game.service('gameService', [
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
 
-            // asynchronously load settings for each service, might want to cache these?
-            var settings = {};
-            var settingsRequests = [];
-            settingsRequests.push($http.get('/components/services/achievementService.settings.json').then(
-                function(response) {
-                    settings.achievementService = response.data;
-                }));
+            populationService.init(
+                angular.merge({},
+                    defaultState.populationServiceState,
+                    self.gameState.populationServiceState
+                )
+            );
 
-            $q.all(settingsRequests).then(function() {
+            resourceService.init(
+                angular.merge({},
+                    defaultState.resourceServiceState,
+                    self.gameState.resourceServiceState
+                )
+            );
 
-                populationService.init(
-                    angular.merge({},
-                        defaultState.populationServiceState,
-                        self.gameState.populationServiceState
-                    ), settings.populationService
-                );
+            achievementService.init(
+                angular.merge({},
+                    defaultState.achievementServiceState,
+                    self.gameState.achievementServiceState
+                )
+            );
 
-                resourceService.init(
-                    angular.merge({},
-                        defaultState.resourceServiceState,
-                        self.gameState.resourceServiceState
-                    ), settings.resourceService
-                );
+            buildingService.init(
+                angular.merge({},
+                    defaultState.buildingServiceState,
+                    self.gameState.buildingServiceState
+                )
+            );
 
-                achievementService.init(
-                    angular.merge({},
-                        defaultState.achievementServiceState,
-                        self.gameState.achievementServiceState
-                    ), settings.achievementService
-                );
-
-                buildingService.init(
-                    angular.merge({},
-                        defaultState.buildingServiceState,
-                        self.gameState.buildingServiceState
-                    ), settings.buildingService
-                );
-
-                gameLoopService.init(
-                    angular.merge({},
-                        defaultState.gameLoopServiceState,
-                        self.gameState.gameLoopServiceState
-                    ), settings.gameLoopService
-                );
-            });
+            gameLoopService.init(
+                angular.merge({},
+                    defaultState.gameLoopServiceState,
+                    self.gameState.gameLoopServiceState
+                )
+            );
 
 
 

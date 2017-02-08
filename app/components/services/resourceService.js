@@ -1,53 +1,5 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.constant('resourceTypes', {
-    DIRT: {
-        name: 'Dirt',
-        desc: 'Used in construction and mining.',
-        attr: 'STR'
-    },
-    BRICKS: {
-        name: 'Bricks',
-        desc: 'Used in construction and smelting.',
-        attr: 'STR'
-    },
-    STEEL: {
-        name: 'Steel',
-        desc: 'Used in advanced construction.',
-        attr: 'STR'
-    },
-    WATER: {
-        name: 'Water',
-        desc: 'Used in construction, mining and population expansion.',
-        attr: 'END'
-    },
-    WOOD: {
-        name: 'Wood',
-        desc: 'Used in construction and mining.',
-        attr: 'END'
-    },
-    GOLD: {
-        name: 'Gold',
-        desc: 'Used for purchasing gene research technologies.',
-        attr: 'INT'
-    },
-    SCIENCE: {
-        name: 'Science',
-        desc: 'Used in genetic modification and advanced construction.',
-        attr: 'INT'
-    },
-    HAPPINESS: {
-        name: 'Happiness',
-        desc: 'Good things happen to those that are happy...',
-        attr: 'CHR'
-    },
-    EVOCOIN: {
-        name: 'Evo-Coins',
-        desc: 'A rare commodity indeed. Used to discover traits.',
-        attr: 'LCK'
-    }
-});
-
 game.service('resourceService', [
     '$rootScope', '$filter', 'logService', 'geneDefinitions', 'resourceTypes', 'achievementService',
     function($rootScope, $filter, logService, geneDefinitions, resourceTypes, achievementService) {
@@ -103,7 +55,7 @@ game.service('resourceService', [
             for (var p = 0; p < reward.perks.length; p++) {
                 var perk = reward.perks[p];
                 if (perk.pid === 'P_R_BONUS') {
-                    self.addResource(perk.arr[1], perk.arr[2]);
+                    self.changeResource(perk.arr[1], perk.arr[2]);
                 }
                 if (perk.pid === 'P_M_HAPPINESS') {
                     self.state.resources.HAPPINESS[2] = true;
@@ -118,7 +70,7 @@ game.service('resourceService', [
 
         self.getResource = function(resourceType) {
             return self.state.resources[resourceType][0];
-        }
+        };
 
         self.changeResource = function(resourceType, amount) {
             var r = self.state.resources[resourceType];

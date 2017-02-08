@@ -3,12 +3,12 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'logService', 'geneDefinitions', 'resourceTypes',
-    function($rootScope, $filter, logService, geneDefinitions, resourceTypes) {
+    '$rootScope', '$filter', 'achievementSetup', 'logService', 'geneDefinitions', 'resourceTypes',
+    function($rootScope, $filter, achievementSetup, logService, geneDefinitions, resourceTypes) {
         var self = this;
 
 
-        self.init = function(state, achievementSetup) {
+        self.init = function(state) {
 
             self.state = state || {};
             self.achievementSetup = achievementSetup || {};
@@ -92,7 +92,7 @@ game.service('achievementService', [
             // if this perk can only be earned once and the player has earned it already,
             // we do not have to do anything
             if (perkSetup.once) {
-                var perkSearch = $filter('filter')(self.progress.perks, { pid: pid });
+                var perkSearch = $filter('filter')(self.state.progress.perks, { pid: pid });
                 if (perkSearch.length !== 0)
                     return null;
             }

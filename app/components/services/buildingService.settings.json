@@ -1,0 +1,69 @@
+{
+    "constants": {
+        "defaultBuildings": {
+            "BUNGALOW": {
+                "name": "Breeding Bungalow",
+                "description": "A private bungalow where the magic happens.",
+                "use": "breeding",
+                "size": 2,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 25,
+                    "costMultiplier": 1.05
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": 1
+
+            },
+            "DIRTPILE": {
+                "name": "Dirt pile",
+                "description": "Where else would you store dirt?",
+                "use": "storage",
+                "stores": "DIRT",
+                "size": 25,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 10,
+                    "costMultiplier": 1.25
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": 1
+            },
+            "SODHOUSE": {
+                "name": "Sod house",
+                "description": "Provides minimal shelter for {size} things.",
+                "use": "housing",
+                "size": 5,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 5,
+                    "costMultiplier": 1.05
+                }, {
+                    "resource": "WATER",
+                    "amount": 5,
+                    "costMultiplier": 1.05
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": 1
+            },
+            "WELL": {
+                "name": "Well",
+                "description": "Used for water production.",
+                "use": "production",
+                "produces": "WATER",
+                "size": 5,
+                "baseCost": [{
+                    "resource": "BRICKS",
+                    "amount": 100,
+                    "costMultiplier": 1.05
+                }],
+                "purchased": 0,
+                "gifted": 0,
+                "unlocked": 0
+            }
+        }
+    }
+}

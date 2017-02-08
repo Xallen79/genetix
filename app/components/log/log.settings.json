@@ -1,0 +1,9 @@
+{
+    "constants": {
+        "logTypes": {
+            "GENERAL": 1,
+            "BREED": 2,
+            "ACHIEVEMENT": 3
+        }
+    }
+}
