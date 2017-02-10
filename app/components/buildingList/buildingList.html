@@ -12,7 +12,7 @@
         </div>
         <div class="col-xs-4">
             <div style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'resourceTooltip.html'">
-                <button ng-disabled="!building.canBuild" ng-if="building.costToBuild.length > 0" class="btn btn-sm btn-primary">Build</button>
+                <button ng-disabled="!building.canBuild" ng-if="building.costToBuild.length > 0" class="btn btn-sm btn-primary" ng-click="$ctrl.build(building.type)">Build</button>
             </div>
         </div>
     </div>

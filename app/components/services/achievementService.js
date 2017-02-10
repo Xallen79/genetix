@@ -126,47 +126,44 @@ game.service('achievementService', [
         self.getAchievementMessage = function(aid, amountRequired, prop) {
             var achSetup = achievementSetup.achievements[aid];
             var msg = (achSetup[prop] || achSetup.logmsg);
-
-            if (prop != 'name') {
-                // avoid rescursive blackhole
-                msg = msg.replace('[%name]', self.getAchievementMessage(aid, amountRequired, 'name'));
-            }
-            msg = msg.replace('[%req]', amountRequired);
-
-            return msg;
+            var params = {
+                name: achSetup.name, 
+                req: amountRequired
+            };
+            params.name = $filter('fmt')(params.name, params);
+            return $filter('fmt')(msg, params);
         };
 
         self.getPerkMessage = function(arr, prop) {
             var pid = arr[0];
             var perkSetup = achievementSetup.perks[pid];
             var msg = (perkSetup[prop] || perkSetup.logmsg);
-
-            if (prop != 'name') {
-                // avoid rescursive blackhole
-                msg = msg.replace('[%name]', self.getPerkMessage(arr, 'name'));
+            var params = {
+                name: perkSetup.name
             }
             switch (perkSetup.pid) {
                 case 'P_G_ENHANCED':
                     var gene = geneDefinitions[arr[1]];
-                    msg = msg.replace('[%dom]', gene.dom);
-                    msg = msg.replace('[%rec]', gene.rec);
-                    msg = msg.replace('[%attr]', gene.attr[0]);
-                    msg = msg.replace('[%amt]', arr[2]);
+                    params.dom = gene.dom;
+                    params.rec = gene.rec;     
+                    params.attr = gene.attr[0];
+                    params.amt = arr[2];
                     break;
                 case 'P_R_BONUS':
                 case 'P_R_MULTIPLIER':
-                    msg = msg.replace('[%1]', resourceTypes[arr[1]].name);
-                    msg = msg.replace('[%2]', arr[2]);
+                    params.res = resourceTypes[arr[1]].name;
+                    params.amt = arr[2];
                     break;
                 case 'P_M_RESOURCE':
-                    msg = msg.replace('[%res]', resourceTypes[arr[1]].name);
+                    params.res = resourceTypes[arr[1]].name;
                     break;
                 default:
                     for (var i = 1; i < arr.length; i++)
-                        msg = msg.replace('[%' + i + ']', arr[i]);
+                        params[i] = arr[i];
                     break;
             }
-            return msg;
+            params.name = $filter('fmt')(params.name, params);
+            return $filter('fmt')(msg, params);
         };
 
 

@@ -71,7 +71,7 @@ game.service('gameService', [
 
             populationService.init(
                 angular.merge({},
-                    defaultState.populationServiceState,
+                    defaultState.populationServiceState,                    
                     self.gameState.populationServiceState
                 )
             );

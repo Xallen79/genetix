@@ -81,7 +81,11 @@ game.service('resourceService', [
 
             r[0] += amount;
             if (r[1] != -1 && r[0] > r[1]) r[0] = r[1];
-            if (r[0] < 0) r[0] = 0;
+            // if this puts us negative, we cannot deduct the amount, reset and return -1 to indicate failure.
+            if (r[0] < 0) {
+                r[0] -= amount;
+                return -1;
+            }
 
             if (amount > 0)
                 achievementService.updateProgress('A_' + resourceType + '_E', amount); // earning achievement

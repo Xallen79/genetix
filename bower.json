@@ -15,14 +15,15 @@
     "angular-bootstrap": "^2.4.0",
     "seedrandom": "^2.4.2",
     "seiyria-bootstrap-slider": "~9.7.0",
-    "angular-lz-string": "^1.0.5"
+    "angular-lz-string": "^1.0.5",
+    "sprintf": "~1.0.3"
   },
   "devDependencies": {
     "angular-mocks": "^1.2.23"
   },
   "overrides": {
-    "foundation-sites": {
-      "main": "js/foundation.core.js"
-    }
+    "sprintf": {
+      "main": ["dist/sprintf.min.js", "dist/angular-sprintf.min.js"]
+    } 
   }
 }

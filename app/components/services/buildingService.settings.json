@@ -3,7 +3,7 @@
         "defaultBuildings": {
             "BUNGALOW": {
                 "name": "Breeding Bungalow",
-                "description": "A private bungalow where the magic happens. Due to the magic nature of this building, it cannot be built directly.",
+                "description": "A private bungalow for %(size)d where the magic happens. Due to the magic nature of this building, it cannot be built directly.",
                 "use": "breeding",
                 "size": 2,
                 "baseCost": [],
@@ -14,7 +14,7 @@
             },
             "DIRTPILE": {
                 "name": "Dirt pile",
-                "description": "Where else would you store dirt?",
+                "description": "Where else would you store dirt? Holds %(size)d.",
                 "use": "storage",
                 "stores": "DIRT",
                 "size": 25,
@@ -29,7 +29,7 @@
             },
             "SODHOUSE": {
                 "name": "Sod house",
-                "description": "Provides minimal shelter for {size} things.",
+                "description": "Provides minimal shelter for %(size)d things.",
                 "use": "housing",
                 "size": 5,
                 "baseCost": [{

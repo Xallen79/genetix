@@ -155,28 +155,28 @@
             "perks": {
                 "P_M_RESOURCE": {
                     "pid": "P_M_RESOURCE",
-                    "name": "New Resource: [%res]",
-                    "desc": "Unlocks the [%res] resource.",
-                    "logmsg": "The [%res] resource has been unlocks",
+                    "name": "New Resource: %(res)s",
+                    "desc": "Unlocks the %(res)s resource.",
+                    "logmsg": "The %(res)s resource has been unlocked.",
                     "once": true
                 },
                 "P_R_MULTIPLIER": {
                     "pid": "P_R_MULTIPLIER",
                     "name": "Resource Muliplier",
-                    "desc": "Increases the rate at which you aquire [%1] by [%2]x.",
-                    "logmsg": "Earned [%name] - The rate that you aquire [%1] has been increased by [%2]x."
+                    "desc": "Increases the rate at which you aquire %(res)s by %(amt).2fx.",
+                    "logmsg": "Earned %(name)s - The rate that you aquire %(res)s has been increased by %(amt).2fx."
                 },
                 "P_R_BONUS": {
                     "pid": "P_R_BONUS",
                     "name": "Bonus Resources",
-                    "desc": "[%2] [%1] will be added to your storage.",
-                    "logmsg": "[%2] [%1] has been added to your storage."
+                    "desc": "%(amt)d %(res)s will be added to your storage.",
+                    "logmsg": "%(amt)d %(res)s has been added to your storage."
                 },
                 "P_G_ENHANCED": {
                     "pid": "P_G_ENHANCED",
                     "name": "New Gene Enhancement",
-                    "desc": "Will increase the boundary by [%amt] for your [%attr] [%dom]/[%rec] gene.",
-                    "logmsg": "The boundary has been increased by [%amt] for one of your [%attr] genes. ([%dom]/[%rec])"
+                    "desc": "Will increase the boundary by %(amt)d for your %(attr)s %(dom)s/%(rec)s gene.",
+                    "logmsg": "The boundary has been increased by %(amt)d for one of your %(attr)s genes. (%(dom)s/%(rec)s)"
                 }
             }
 

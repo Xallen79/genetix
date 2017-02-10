@@ -7,8 +7,8 @@ game.component('bloqheadBuildingList', {
 
 
 game.controller('bloqhead.controllers.buildingList', [
-    '$scope', 'buildingService', '$sce',
-    function($scope, buildingService, $sce) {
+    '$scope', 'buildingService',
+    function($scope, buildingService) {
         var self = this;
         self.$onInit = function() {
             self.buildings = []; //buildingService.getBuildingSnapshot();
@@ -16,18 +16,10 @@ game.controller('bloqhead.controllers.buildingList', [
         };
         self.updateBuildings = function(event, buildings) {
             self.buildings = buildings;
-            for (var i = 0; i < buildings.length; i++) {
-                buildings[i].tooltip = $sce.trustAsHtml(self.getCostTooltip(buildings[i].costToBuild));
-            }
-            console.log(buildings);
         };
-        self.getCostTooltip = function(costToBuild) {
-            var tooltip = '\'<ul class="list-group">';
-            for (var i = 0; i < costToBuild.length; i++) {
-                tooltip += '<li class="list-group-item"><span>' + costToBuild[i].amount + '</span> <span>' + costToBuild[i].resource + '</span></li>';
-            }
-            tooltip += '</ul>\'';
-            return tooltip;
+
+        self.build = function(type) {
+            buildingService.build(type);
         };
 
     }

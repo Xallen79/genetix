@@ -1,25 +1,36 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('buildingService', [
-    '$rootScope', 'defaultBuildings', 'resourceTypes', 'resourceService', 'populationService',
-    function($rootScope, defaultBuildings, resourceTypes, resourceService, populationService) {
+    '$rootScope', '$filter', 'defaultBuildings', 'resourceTypes', 'resourceService', 'populationService',
+    function($rootScope, $filter, defaultBuildings, resourceTypes, resourceService, populationService) {
         /* private members */
         var self = this;
         var state;
         var lastSnapshot;
         self.init = function(loadState) {
+            loadState.buildings = angular.merge({}, defaultBuildings, loadState.buildings);
             state = angular.merge({}, state, loadState);
-            state.buildings = angular.merge({}, defaultBuildings, state.buildings);
-            self.updateStorage();
-            self.updateBreeders();
-            self.updateHousing();
-            resourceService.SubscribeResourceChangedEvent($rootScope, handleResourceChange);
-            self.getBuildingSnapshot();
+            self.update('all');
+            resourceService.SubscribeResourceChangedEvent($rootScope, handleResourceChange);            
         };
 
         self.getState = function() {
-            return state;
+            var saveState = {
+                buildings: {}
+            };
+            for (var key in state.buildings) {
+                if (state.buildings.hasOwnProperty(key)) {
+                    var building = state.buildings[key];
+                    saveState.buildings[key] = {
+                        purchased: building.purchased,
+                        gifted: building.gifted,
+                        unlocked: building.unlocked
+                    };
+                }
+            }
+            return saveState;
         };
+
 
         self.getBuildingSnapshot = function() {
             var snapshot = [];
@@ -30,8 +41,9 @@ game.service('buildingService', [
                         var nextCost = calculateNextCost(building);
                         var size = getSize(building);
                         snapshot.push({
+                            type: key,
                             name: building.name,
-                            description: formatDescription(building, size),
+                            description: formatDescription(building, {size: size}),
                             size: size,
                             owned: building.purchased + building.gifted,
                             costToBuild: nextCost,
@@ -47,7 +59,23 @@ game.service('buildingService', [
             lastSnapshot = snapshot;
             return angular.copy(snapshot);
         };
-
+        self.update = function(use) {
+            if(!angular.isDefined(use) || use === 'all') {
+                self.updateStorage();
+                self.updateBreeders();
+                self.updateHousing();
+            } else if(use === 'storage') {
+                self.updateStorage();
+            } else if (use === 'housing') {
+                self.updateHousing();                
+            } else if (use ==='breeding') {
+                self.updateBreeders();
+            }
+            else if (use==='production') {
+                angular.noop();
+            }
+            self.getBuildingSnapshot();
+        }
         self.updateBreeders = function() {
             var max = 0;
             var typeMult = state.breedingSizeMultiplier || 1;
@@ -75,7 +103,7 @@ game.service('buildingService', [
                         rt.push(building.stores);
                         var multiplier = building.multiplier || 1;
                         resources[building.stores].newAmount = resources[building.stores].newAmount || 0;
-                        resources[building.stores].newAmount += Math.floor((building.size * multiplier));
+                        resources[building.stores].newAmount += Math.floor((building.size *(building.purchased + building.gifted)* multiplier));
                     }
                 }
 
@@ -102,6 +130,36 @@ game.service('buildingService', [
             populationService.setPopulationLimit(Math.floor(max * typeMult));
         };
 
+        self.build = function(type) {
+            var built = true;
+            var spent = [];
+            var building = state.buildings[type];
+            var nextCost = calculateNextCost(building);
+            if(canBuild(building, nextCost)){
+                for(var c=0;c<nextCost.length;c++) {
+                    var ret = resourceService.changeResource(nextCost[c].resourceType, -1*nextCost[c].amount);
+                    if(ret === -1) {
+                        built = false;
+                        break;
+                    } else {
+                        spent.push({
+                            resource: nextCost[c].resourceType,
+                            amount: nextCost[c].amount
+                        });
+                    }
+                }
+
+            }
+            if(built) {
+                state.buildings[type].purchased++;
+                self.update(building.use);
+            } else {
+                for(var s=0;s<spent.length;s++) {
+                    resourceService.changeResource(spent[s].resourceType, nextCost[s].amount);
+                }
+            }
+        };
+
         self.SubscribeBuildingsChangedEvent = function(scope, callback) {
             var handler = $rootScope.$on('buildingsChangedEvent', callback.bind(this));
             if (scope) scope.$on('$destroy', handler);
@@ -109,11 +167,9 @@ game.service('buildingService', [
         };
 
         /* Private functions */
-        var formatDescription = function(building, size) {
+        var formatDescription = function(building, format) {
             var description = building.description;
-            if (description.indexOf('{size}') !== -1) {
-                description = description.replace(/{size}/g, size);
-            }
+            description = $filter('fmt')(description, format);
 
             return description;
         };
@@ -130,12 +186,15 @@ game.service('buildingService', [
             var costs = [];
             for (var i = 0; i < building.baseCost.length; i++) {
                 var cost = building.baseCost[i];
-                var nextAmount = cost.amount * Math.pow(cost.costMultiplier, building.purchased);
+                var nextAmount = Math.floor(cost.amount * Math.pow(cost.costMultiplier, building.purchased));
                 costs.push({ resource: resourceTypes[cost.resource].name, resourceType: cost.resource, amount: nextAmount });
             }
             return costs;
         };
         var canBuild = function(building, nextCost) {
+            if(!angular.isDefined(nextCost)) {
+                nextCost = calculateNextCost(building);
+            }
             var resources = resourceService.getResourcesSnapshot();
             for (var c = 0; c < nextCost.length; c++) {
                 var r = resources[nextCost[c].resourceType];
