@@ -127,7 +127,7 @@ game.service('achievementService', [
             var achSetup = achievementSetup.achievements[aid];
             var msg = (achSetup[prop] || achSetup.logmsg || achSetup.desc || achSetup.name || 'Unknown');
             var params = {
-                name: achSetup.name, 
+                name: achSetup.name,
                 req: amountRequired
             };
             params.name = $filter('fmt')(params.name, params);
@@ -140,12 +140,12 @@ game.service('achievementService', [
             var msg = (perkSetup[prop] || perkSetup.logmsg || perkSetup.desc || perkSetup.name || 'Unknown');
             var params = {
                 name: perkSetup.name
-            }
+            };
             switch (perkSetup.pid) {
                 case 'P_G_ENHANCED':
                     var gene = geneDefinitions[arr[1]];
                     params.dom = gene.dom;
-                    params.rec = gene.rec;     
+                    params.rec = gene.rec;
                     params.attr = gene.attr[0];
                     params.amt = arr[2];
                     break;

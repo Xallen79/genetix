@@ -11,7 +11,7 @@ game.service('buildingService', [
             loadState.buildings = angular.merge({}, defaultBuildings, loadState.buildings);
             state = angular.merge({}, state, loadState);
             self.update('all');
-            resourceService.SubscribeResourceChangedEvent($rootScope, handleResourceChange);            
+            resourceService.SubscribeResourceChangedEvent($rootScope, handleResourceChange);
         };
 
         self.getState = function() {
@@ -43,7 +43,7 @@ game.service('buildingService', [
                         snapshot.push({
                             type: key,
                             name: building.name,
-                            description: formatDescription(building, {size: size}),
+                            description: formatDescription(building, { size: size }),
                             size: size,
                             owned: building.purchased + building.gifted,
                             costToBuild: nextCost,
@@ -60,22 +60,21 @@ game.service('buildingService', [
             return angular.copy(snapshot);
         };
         self.update = function(use) {
-            if(!angular.isDefined(use) || use === 'all') {
+            if (!angular.isDefined(use) || use === 'all') {
                 self.updateStorage();
                 self.updateBreeders();
                 self.updateHousing();
-            } else if(use === 'storage') {
+            } else if (use === 'storage') {
                 self.updateStorage();
             } else if (use === 'housing') {
-                self.updateHousing();                
-            } else if (use ==='breeding') {
+                self.updateHousing();
+            } else if (use === 'breeding') {
                 self.updateBreeders();
-            }
-            else if (use==='production') {
+            } else if (use === 'production') {
                 angular.noop();
             }
             self.getBuildingSnapshot();
-        }
+        };
         self.updateBreeders = function() {
             var max = 0;
             var typeMult = state.breedingSizeMultiplier || 1;
@@ -103,7 +102,7 @@ game.service('buildingService', [
                         rt.push(building.stores);
                         var multiplier = building.multiplier || 1;
                         resources[building.stores].newAmount = resources[building.stores].newAmount || 0;
-                        resources[building.stores].newAmount += Math.floor((building.size *(building.purchased + building.gifted)* multiplier));
+                        resources[building.stores].newAmount += Math.floor((building.size * (building.purchased + building.gifted) * multiplier));
                     }
                 }
 
@@ -135,10 +134,10 @@ game.service('buildingService', [
             var spent = [];
             var building = state.buildings[type];
             var nextCost = calculateNextCost(building);
-            if(canBuild(building, nextCost)){
-                for(var c=0;c<nextCost.length;c++) {
-                    var ret = resourceService.changeResource(nextCost[c].resourceType, -1*nextCost[c].amount);
-                    if(ret === -1) {
+            if (canBuild(building, nextCost)) {
+                for (var c = 0; c < nextCost.length; c++) {
+                    var ret = resourceService.changeResource(nextCost[c].resourceType, -1 * nextCost[c].amount);
+                    if (ret === -1) {
                         built = false;
                         break;
                     } else {
@@ -150,11 +149,11 @@ game.service('buildingService', [
                 }
 
             }
-            if(built) {
+            if (built) {
                 state.buildings[type].purchased++;
                 self.update(building.use);
             } else {
-                for(var s=0;s<spent.length;s++) {
+                for (var s = 0; s < spent.length; s++) {
                     resourceService.changeResource(spent[s].resourceType, nextCost[s].amount);
                 }
             }
@@ -192,7 +191,7 @@ game.service('buildingService', [
             return costs;
         };
         var canBuild = function(building, nextCost) {
-            if(!angular.isDefined(nextCost)) {
+            if (!angular.isDefined(nextCost)) {
                 nextCost = calculateNextCost(building);
             }
             var resources = resourceService.getResourcesSnapshot();
