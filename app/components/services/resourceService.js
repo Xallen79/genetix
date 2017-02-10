@@ -85,9 +85,9 @@ game.service('resourceService', [
 
             if (amount > 0)
                 achievementService.updateProgress('A_' + resourceType + '_E', amount); // earning achievement
-            if (amount < 0)
-                achievementService.updateProgress('A_' + resourceType + '_S', -amount); // spending achievement
-            achievementService.updateProgress('A_' + resourceType + '_C', r[0]); // cumulative achievement
+            //if (amount < 0)
+            //    achievementService.updateProgress('A_' + resourceType + '_S', -amount); // spending achievement
+            //achievementService.updateProgress('A_' + resourceType + '_C', r[0]); // cumulative achievement
 
             if (r[2] === false) {
                 $rootScope.$emit('resourceEnabledEvent', resourceType, true);

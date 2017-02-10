@@ -8,13 +8,13 @@
             }, {
                 "name": "Resources",
                 "aids": [
-                    "A_DIRT_E", "A_DIRT_C", "A_DIRT_S",
-                    "A_BRICKS_E", "A_BRICKS_C", "A_BRICKS_S",
-                    "A_STEEL_E", "A_STEEL_C", "A_STEEL_S",
-                    "A_WATER_E", "A_WATER_C", "A_WATER_S",
-                    "A_WOOD_E", "A_WOOD_C", "A_WOOD_S",
-                    "A_GOLD_E", "A_GOLD_C", "A_GOLD_S",
-                    "A_SCIENCE_E", "A_SCIENCE_C", "A_SCIENCE_S",
+                    "A_DIRT_E",
+                    "A_BRICKS_E",
+                    "A_STEEL_E",
+                    "A_WATER_E",
+                    "A_WOOD_E",
+                    "A_GOLD_E",
+                    "A_SCIENCE_E",
                     "A_EVOCOIN_E",
                     "A_HAPPINESS_E"
                 ]
@@ -31,7 +31,7 @@
                         ]],
                         [3, [
                             ["P_R_BONUS", "GOLD", 1],
-                            ["P_M_HAPPINESS"],
+                            ["P_M_RESOURCE", "HAPPINESS"],
                             ["P_G_ENHANCED", 14, 10]
                         ]],
                         [5, [
@@ -44,6 +44,7 @@
                     "aid": "A_DIRT_E",
                     "name": "Earn Dirt",
                     "desc": "Earn Dirt Desc",
+                    "logmsg": "Earn Dirt Log",
                     "res": "DIRT",
                     "ranks": [
                         [5, [
@@ -54,92 +55,27 @@
                         ]]
                     ]
                 },
-                "A_DIRT_C": {
-                    "aid": "A_DIRT_C",
-                    "name": "Stockpile Dirt",
-                    "desc": "Stockpile Dirt Desc",
-                    "res": "DIRT",
-                    "ranks": [
-                        [10, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ],
-                    "cumulative": true
-                },
-                "A_DIRT_S": {
-                    "aid": "A_DIRT_S",
-                    "name": "Spend Dirt",
-                    "desc": "Spend Dirt Description",
-                    "res": "DIRT",
-                    "ranks": [
-                        [20, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
                 "A_BRICKS_E": {
                     "aid": "A_BRICKS_E",
                     "name": "Earn Bricks",
                     "desc": "Earn Bricks Desc",
+                    "logmsg": "Earn Bricks Log",
                     "res": "BRICKS",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
-                        ]]
-                    ]
-                },
-                "A_BRICKS_C": {
-                    "aid": "A_BRICKS_C",
-                    "name": "Stockpile Bricks",
-                    "desc": "Stockpile Bricks Desc",
-                    "res": "BRICKS",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_BRICKS_S": {
-                    "aid": "A_BRICKS_S",
-                    "name": "Spend Bricks",
-                    "desc": "Spend Bricks Desc",
-                    "res": "BRICKS",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
                         ]]
                     ]
                 },
                 "A_STEEL_E": {
                     "aid": "A_STEEL_E",
                     "name": "Earn Steel",
-                    "desc": "Earn Sttel Desc",
+                    "desc": "Earn Steel Desc",
+                    "logmsg": "Earn Steel Log",
                     "res": "STEEL",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
-                        ]]
-                    ]
-                },
-                "A_STEEL_C": {
-                    "aid": "A_STEEL_C",
-                    "name": "Stockpile Steel",
-                    "desc": "Stockpile Steel Desc",
-                    "res": "STEEL",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_STEEL_S": {
-                    "aid": "A_STEEL_S",
-                    "name": "Spend Steel",
-                    "desc": "Spend Steel Desc",
-                    "res": "STEEL",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
                         ]]
                     ]
                 },
@@ -147,32 +83,11 @@
                     "aid": "A_WATER_E",
                     "name": "Earn Water",
                     "desc": "Earn Water Desc",
+                    "logmsg": "Earn Water Log",
                     "res": "WATER",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
-                        ]]
-                    ]
-                },
-                "A_WATER_C": {
-                    "aid": "A_WATER_C",
-                    "name": "Stockpile Water",
-                    "desc": "Stockpile Water Desc",
-                    "res": "WATER",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_WATER_S": {
-                    "aid": "A_WATER_S",
-                    "name": "Spend Water",
-                    "desc": "Spend Water Desc",
-                    "res": "WATER",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
                         ]]
                     ]
                 },
@@ -180,32 +95,11 @@
                     "aid": "A_WOOD_E",
                     "name": "Earn Wood",
                     "desc": "Earn Wood Desc",
+                    "logmsg": "Earn Wood Log",
                     "res": "WOOD",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
-                        ]]
-                    ]
-                },
-                "A_WOOD_C": {
-                    "aid": "A_WOOD_C",
-                    "name": "Stockpile Wood",
-                    "desc": "Stockpile Wood Desc",
-                    "res": "WOOD",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_WOOD_S": {
-                    "aid": "A_WOOD_S",
-                    "name": "Spend Wood",
-                    "desc": "Spend Wood Desc",
-                    "res": "WOOD",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
                         ]]
                     ]
                 },
@@ -213,32 +107,11 @@
                     "aid": "A_GOLD_E",
                     "name": "Earn Gold",
                     "desc": "Earn Gold Desc",
+                    "logmsg": "Earn Gold Log",
                     "res": "GOLD",
                     "ranks": [
                         [50, [
                             ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
-                        ]]
-                    ]
-                },
-                "A_GOLD_C": {
-                    "aid": "A_GOLD_C",
-                    "name": "Stockpile Gold",
-                    "desc": "Stockpile Gold Desc",
-                    "res": "GOLD",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_GOLD_S": {
-                    "aid": "A_GOLD_S",
-                    "name": "Spend Gold",
-                    "desc": "Spend Gold Desc",
-                    "res": "GOLD",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
                         ]]
                     ]
                 },
@@ -246,6 +119,7 @@
                     "aid": "A_SCIENCE_E",
                     "name": "Earn Science",
                     "desc": "Earn Science Desc",
+                    "logmsg": "Earn Science Log",
                     "res": "SCIENCE",
                     "ranks": [
                         [50, [
@@ -253,32 +127,11 @@
                         ]]
                     ]
                 },
-                "A_SCIENCE_C": {
-                    "aid": "A_SCIENCE_C",
-                    "name": "Stockpile Science",
-                    "desc": "Stockpile Science Desc",
-                    "res": "SCIENCE",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
-                "A_SCIENCE_S": {
-                    "aid": "A_SCIENCE_S",
-                    "name": "Spend Science",
-                    "desc": "Spend Science Desc",
-                    "res": "SCIENCE",
-                    "ranks": [
-                        [100, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.2]
-                        ]]
-                    ]
-                },
                 "A_HAPPINESS_E": {
                     "aid": "A_HAPPINESS_E",
-                    "name": "Happiness",
-                    "desc": "Happiness Desc",
+                    "name": "Earn Happiness",
+                    "desc": "Earn Happiness Desc",
+                    "logmsg": "Earn Happiness Log",
                     "res": "HAPPINESS",
                     "ranks": [
                         [50, [
@@ -289,7 +142,8 @@
                 "A_EVOCOIN_E": {
                     "aid": "A_EVOCOIN_E",
                     "name": "Earn EVO-Coins",
-                    "desc": "Earn EVO-COins Desc",
+                    "desc": "Earn EVO-Coins Desc",
+                    "logmsg": "Earn EVO-Coins Log",
                     "res": "EVOCOIN",
                     "ranks": [
                         [100, [
@@ -299,26 +153,30 @@
                 }
             },
             "perks": {
-                "P_M_HAPPINESS": {
-                    "pid": "P_M_HAPPINESS",
-                    "name": "New Mechanic: Happiness",
-                    "desc": "Happiness is a representation of how content your population is.",
+                "P_M_RESOURCE": {
+                    "pid": "P_M_RESOURCE",
+                    "name": "New Resource: [%res]",
+                    "desc": "Unlocks the [%res] resource.",
+                    "logmsg": "The [%res] resource has been unlocks",
                     "once": true
                 },
                 "P_R_MULTIPLIER": {
                     "pid": "P_R_MULTIPLIER",
                     "name": "Resource Muliplier",
-                    "desc": "The rate that you aquire [%1] has been increased by [%2]x."
+                    "desc": "Increases the rate at which you aquire [%1] by [%2]x.",
+                    "logmsg": "Earned [%name] - The rate that you aquire [%1] has been increased by [%2]x."
                 },
                 "P_R_BONUS": {
                     "pid": "P_R_BONUS",
                     "name": "Bonus Resources",
-                    "desc": "[%2] [%1] has been added to your coffers."
+                    "desc": "[%2] [%1] will be added to your storage.",
+                    "logmsg": "[%2] [%1] has been added to your storage."
                 },
                 "P_G_ENHANCED": {
                     "pid": "P_G_ENHANCED",
-                    "name": "Gene Enhancement",
-                    "desc": "The boundary has been increased by [%amt] for one of your [%attr] genes. ([%dom]/[%rec])"
+                    "name": "New Gene Enhancement",
+                    "desc": "Will increase the boundary by [%amt] for your [%attr] [%dom]/[%rec] gene.",
+                    "logmsg": "The boundary has been increased by [%amt] for one of your [%attr] genes. ([%dom]/[%rec])"
                 }
             }
 

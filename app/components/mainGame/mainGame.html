@@ -1,7 +1,7 @@
 <div class="col-xs-12">
     <div class="row">
         <div class="col-xs-12">
-            <bloqhead-player-box title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
+            <bloqhead-player-box box-title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
                 <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
                         <bloqhead-breeder can-breed="$ctrl.breeders.length < $ctrl.breederLimit" unit="child" assign="$ctrl.addBreeder($id)"></bloqhead-breeder>
@@ -12,12 +12,12 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <bloqhead-player-box title="Buildings">
+            <bloqhead-player-box box-title="Buildings">
                 <bloqhead-building-list></bloqhead-building-list>
             </bloqhead-player-box>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <bloqhead-player-box title="Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]">
+            <bloqhead-player-box box-title="Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]">
                 <div class="row">
                     <div class="col-xs-12 col-lg-12">
                         <div class="progress">

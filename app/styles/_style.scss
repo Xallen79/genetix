@@ -19,47 +19,7 @@
     }
 }
 
-/// Test if `$value` is a valid direction
-/// @param {*} $value - Value to test
-/// @return {Bool}
-@function is-direction($value) {
-    $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
-    $is-angle: type-of($value)=='number' and index('deg' 'grad' 'turn' 'rad', unit($value));
-    @return $is-keyword or $is-angle;
-}
-
-@mixin linear-gradient($direction, $color-stops...) {
-    // Direction has been omitted and happens to be a color-stop
-    @if is-direction($direction)==false {
-        $color-stops: $direction, $color-stops;
-        $direction: 180deg;
-    }
-    background: nth(nth($color-stops, 1), 1);
-    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
-    background: linear-gradient($direction, $color-stops);
-}
-
-body {
-    padding-top: 70px;
-    padding-bottom: 10px;
-}
-
-.genomeEditor {
-    font-size: .8em;
-    input {
-        color: black;
-        width: 4em;
-    }
-}
-
-.resource-list {
-    @include maximize-row();
-    //overflow-y: scroll;
-    height: 280px;
-    h5 {
-        margin: 8px 0px 1px 0px;
-        font-size: .8em;
-    }
+@mixin attribute-progress-bars {
     .progress {
         position: relative;
         border: 1px solid black;
@@ -79,6 +39,12 @@ body {
             white-space: nowrap;
             position: absolute;
             right: 5px;
+        }
+        >i {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            left: 5px;
         }
     }
     div[data-attr="STR"] {
@@ -126,8 +92,60 @@ body {
             @include strokeme($attr-lck)
         }
     }
+    div {
+        .progress {
+            background-color: lighten($brand-primary, 60%);
+        }
+        .progress-bar {
+            background-color: $brand-primary;
+            @include strokeme($brand-primary)
+        }
+    }
     .progress {
         margin: 5px 0px 5px 0px;
+    }
+}
+
+/// Test if `$value` is a valid direction
+/// @param {*} $value - Value to test
+/// @return {Bool}
+@function is-direction($value) {
+    $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+    $is-angle: type-of($value)=='number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+    @return $is-keyword or $is-angle;
+}
+
+@mixin linear-gradient($direction, $color-stops...) {
+    // Direction has been omitted and happens to be a color-stop
+    @if is-direction($direction)==false {
+        $color-stops: $direction, $color-stops;
+        $direction: 180deg;
+    }
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: linear-gradient($direction, $color-stops);
+}
+
+body {
+    padding-top: 70px;
+    padding-bottom: 10px;
+}
+
+.genomeEditor {
+    font-size: .8em;
+    input {
+        color: black;
+        width: 4em;
+    }
+}
+
+.resource-list {
+    @include maximize-row();
+    //overflow-y: scroll;
+    height: 280px;
+    h5 {
+        margin: 8px 0px 1px 0px;
+        font-size: .8em;
     }
 }
 
@@ -146,11 +164,12 @@ body {
         height: 30px;
     }
     .achievement-cell {
-        @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+        @include linear-gradient(180deg, $gray-dark 15%, black 100%);
         width: 120px;
     }
     .achievement-rank-cell {
         @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
+        text-align: center;
     }
     .achievement-rank-STR {
         @include linear-gradient(180deg, $attr-str 15%, black 100%)
@@ -255,7 +274,20 @@ bloqhead-building-list {
     }
 }
 
+bloqhead-achievement-box {
+    @include attribute-progress-bars;
+    .panel-body {
+        border-top: 1px solid black;
+        min-height: 200px;
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 0 1px 1px;
+    }
+}
+
 bloqhead-player-box {
+    @include attribute-progress-bars;
     .panel-body {
         border-top: 1px solid black;
         min-height: 200px;
@@ -263,89 +295,6 @@ bloqhead-player-box {
         overflow-y: auto;
         overflow-x: hidden;
         padding: 0 0 1px 1px;
-    }
-    .progress {
-        position: relative;
-        border: 1px solid black;
-        -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-    .progress-bar {
-        font-weight: bold;
-        font-size: 1.25em;
-        min-width: 2%;
-        font-family: "Courier New", Courier, monospace;
-        border-right: 1px solid black;
-        >span {
-            overflow-x: visible;
-            white-space: nowrap;
-            position: absolute;
-            right: 5px;
-        }
-        >i {
-            overflow-x: visible;
-            white-space: nowrap;
-            position: absolute;
-            left: 5px;
-        }
-    }
-    div[data-attr="STR"] {
-        .progress {
-            background-color: lighten($attr-str, 60%);
-        }
-        .progress-bar {
-            background-color: $attr-str;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="INT"] {
-        .progress {
-            background-color: lighten($attr-int, 60%);
-        }
-        .progress-bar {
-            background-color: $attr-int;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="END"] {
-        .progress {
-            background-color: lighten($attr-end, 25%);
-        }
-        .progress-bar {
-            background-color: $attr-end;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="CHR"] {
-        .progress {
-            background-color: lighten($attr-chr, 40%);
-        }
-        .progress-bar {
-            background-color: $attr-chr;
-            @include strokeme(black);
-        }
-    }
-    div[data-attr="LCK"] {
-        .progress {
-            background-color: lighten($attr-lck, 60%);
-        }
-        .progress-bar {
-            background-color: $attr-lck;
-            @include strokeme($attr-lck)
-        }
-    }
-    div {
-        .progress {
-            background-color: lighten($brand-primary, 60%);
-        }
-        .progress-bar {
-            background-color: $brand-primary;
-            @include strokeme($brand-primary)
-        }
-    }
-    .progress {
-        margin: 5px 0px 5px 0px;
     }
 }
 

@@ -1,11 +1,12 @@
-// (function($) {
-//     $(function() {
-//         $('body').tooltip({
-//             selector: '[rel=tooltip]'
-//         });
-//     });
-// })(jQuery);
-
+/*
+ (function($) {
+     $(function() {
+         $('body').tooltip({
+             selector: '[rel=tooltip]'
+         });
+     });
+ })(jQuery);
+*/
 
 angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap'])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider',

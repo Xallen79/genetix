@@ -8,8 +8,9 @@ game.component('bloqheadPlayerBox', {
     templateUrl: 'components/playerBox/playerBox.html',
     controller: 'bloqhead.controllers.playerBox',
     bindings: {
-        title: '@',
-        footer: '@'
+        boxTitle: '@',
+        footer: '@',
+        maxHeight: '@'
     }
 });
 
@@ -18,5 +19,12 @@ game.controller('bloqhead.controllers.playerBox', function() {
     var self = this;
     self.$onInit = function() {
         self.unit = self.mainCtrl.unit;
+    };
+    self.maxHeightOveride = function() {
+        var ret = {};
+        if (typeof(self.maxHeight) != 'undefined') {
+            ret.maxHeight = self.maxHeight;
+        }
+        return ret;
     };
 });

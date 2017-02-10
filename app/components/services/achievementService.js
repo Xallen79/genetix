@@ -45,7 +45,7 @@ game.service('achievementService', [
 
             var oldval = achProgress.amount;
             var newval = oldval;
-            if (achSetup.cumulative === true) {
+            if ((achSetup.cumulative || false) === true) {
                 if (amount > oldval) {
                     newval = amount;
                 }
@@ -63,7 +63,10 @@ game.service('achievementService', [
                     var amountRequired = achSetup.ranks[rc][0];
                     if (amountRequired > achProgress.lastRank && amountRequired > oldval && amountRequired <= newval) {
 
-                        var msg = 'Achievement Earned - ' + achSetup.name + ' (' + amountRequired + ')';
+                        // log the message
+                        var msg = self.getAchievementMessage(achSetup.aid, amountRequired);
+                        logService.logAchievementMessage(msg);
+
 
                         achProgress.lastRank = amountRequired;
 
@@ -74,8 +77,7 @@ game.service('achievementService', [
                             perks: []
                         };
 
-                        // log the message
-                        logService.logAchievementMessage(msg);
+
 
                         // process the perks
                         for (var pc = 0; pc < achSetup.ranks[rc][1].length; pc++) {
@@ -105,7 +107,44 @@ game.service('achievementService', [
             }
 
             // log the message
-            var msg = perkSetup.name + ' - ' + perkSetup.desc;
+            var msg = self.getPerkMessage(arr, perkSetup);
+            logService.logAchievementMessage(msg);
+
+            var ret = {
+                pid: pid,
+                msg: msg,
+                arr: arr,
+                dt: (new Date()).toUTCString()
+            };
+            self.state.progress.perks.push(ret);
+            return ret;
+
+        };
+
+
+
+        self.getAchievementMessage = function(aid, amountRequired, prop) {
+            var achSetup = achievementSetup.achievements[aid];
+            var msg = (achSetup[prop] || achSetup.logmsg);
+
+            if (prop != 'name') {
+                // avoid rescursive blackhole
+                msg = msg.replace('[%name]', self.getAchievementMessage(aid, amountRequired, 'name'));
+            }
+            msg = msg.replace('[%req]', amountRequired);
+
+            return msg;
+        };
+
+        self.getPerkMessage = function(arr, prop) {
+            var pid = arr[0];
+            var perkSetup = achievementSetup.perks[pid];
+            var msg = (perkSetup[prop] || perkSetup.logmsg);
+
+            if (prop != 'name') {
+                // avoid rescursive blackhole
+                msg = msg.replace('[%name]', self.getPerkMessage(arr, 'name'));
+            }
             switch (perkSetup.pid) {
                 case 'P_G_ENHANCED':
                     var gene = geneDefinitions[arr[1]];
@@ -119,24 +158,17 @@ game.service('achievementService', [
                     msg = msg.replace('[%1]', resourceTypes[arr[1]].name);
                     msg = msg.replace('[%2]', arr[2]);
                     break;
+                case 'P_M_RESOURCE':
+                    msg = msg.replace('[%res]', resourceTypes[arr[1]].name);
+                    break;
                 default:
                     for (var i = 1; i < arr.length; i++)
                         msg = msg.replace('[%' + i + ']', arr[i]);
                     break;
             }
-
-            logService.logAchievementMessage(msg);
-
-            var ret = {
-                pid: pid,
-                msg: msg,
-                arr: arr,
-                dt: (new Date()).toUTCString()
-            };
-            self.state.progress.perks.push(ret);
-            return ret;
-
+            return msg;
         };
+
 
         self.SubscribeNewRewardEvent = function(scope, callback) {
             var handler = $rootScope.$on('newRewardEvent', callback.bind(this));
