@@ -156,11 +156,12 @@ body {
     .achievement-rank-cell {
         border: 1px solid black;
         padding: 5px;
-        -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
-        box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        //-webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        //-moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
+        //box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
         float: left;
-        margin: 5px;
+        //margin: 5px;
+        margin: 2px;
         height: 30px;
     }
     .achievement-cell {
