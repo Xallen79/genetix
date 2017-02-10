@@ -125,7 +125,7 @@ game.service('achievementService', [
 
         self.getAchievementMessage = function(aid, amountRequired, prop) {
             var achSetup = achievementSetup.achievements[aid];
-            var msg = (achSetup[prop] || achSetup.logmsg);
+            var msg = (achSetup[prop] || achSetup.logmsg || achSetup.desc || achSetup.name || 'Unknown');
             var params = {
                 name: achSetup.name, 
                 req: amountRequired
@@ -137,7 +137,7 @@ game.service('achievementService', [
         self.getPerkMessage = function(arr, prop) {
             var pid = arr[0];
             var perkSetup = achievementSetup.perks[pid];
-            var msg = (perkSetup[prop] || perkSetup.logmsg);
+            var msg = (perkSetup[prop] || perkSetup.logmsg || perkSetup.desc || perkSetup.name || 'Unknown');
             var params = {
                 name: perkSetup.name
             }
