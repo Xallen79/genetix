@@ -18,6 +18,11 @@
                     "A_EVOCOIN_E",
                     "A_HAPPINESS_E"
                 ]
+            }, {
+                "name": "Buildings",
+                "aids": [
+
+                ]
             }],
             "achievements": {
                 "A_BIRTHS": {
@@ -50,6 +55,71 @@
                             ["P_R_MULTIPLIER", "DIRT", 0.1]
                         ]],
                         [25, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [40, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [50, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [60, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [80, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [100, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [250, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [350, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [550, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [1000, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [2000, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [3000, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [4000, [
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
+                        ]],
+                        [5000, [
                             ["P_R_UNLOCK", "WATER"],
                             ["P_B_UNLOCK", "WATERHOLE"],
                             ["P_B_BONUS", "WATERHOLE", 1]
@@ -163,7 +233,7 @@
                 },
                 "P_R_MULTIPLIER": {
                     "pid": "P_R_MULTIPLIER",
-                    "name": "Resource Muliplier",
+                    "name": "Resource Multiplier",
                     "desc": "Increases the rate at which you aquire %(res)s by %(amt).2fx.",
                     "logmsg": "Earned %(name)s - The rate that you aquire %(res)s has been increased by %(amt).2fx."
                 },

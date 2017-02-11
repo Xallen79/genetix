@@ -6,18 +6,31 @@
         </div>
     </div>
     -->
-    <bloqhead-player-box box-title="Achievements" max-height="600px">
+    <bloqhead-player-box box-title="Achievements">
         <div class="row" ng-repeat="ag in $ctrl.achievementSetup.achievementGroups">
             <div class="col-xs-12">
                 <h6 ng-bind="ag.name"></h6>
                 <div class="row achievement-list" ng-repeat="aid in ag.aids">
-                    <div class="col-xs-4 achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'achievementTooltip.html'">
-                        <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
+
+                    <div class="col-xs-12 col-md-2 col-sm-1">
+                        <!-- achievement -->
+                        <div class="achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" tooltip-placement="top" uib-tooltip-template="'achievementTooltip.html'" tooltip-class="achievement-tooltip">
+                            <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
+                        </div>
                     </div>
-                    <div class="col-xs-1 achievement-rank-cell" ng-repeat="ar in $ctrl.achievementSetup.achievements[aid].ranks" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
-                        <span ng-bind="ar[0]"></span>&nbsp;
-                        <div ng-repeat="p in ar[1]" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'perkTooltip.html'">
-                            <i class="fa fa-gift"></i>
+                    <div class="col-xs-12 col-md-10 col-sm-11">
+                        <div class="row achievement-rank-row">
+                            <!-- ranks -->
+                            <div class="col-xs-6 col-sm-3 col-lg-1" ng-repeat="ar in $ctrl.achievementSetup.achievements[aid].ranks">
+                                <div class="achievement-rank-cell" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
+                                    <span ng-bind="ar[0]"></span><br />
+                                    <!-- perks -->
+                                    <div ng-repeat="p in ar[1]" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'perkTooltip.html'" tooltip-class="perk-tooltip">
+                                        <i class="fa fa-gift"></i>&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -26,8 +39,15 @@
     </bloqhead-player-box>
     <script type="text/ng-template" id="achievementTooltip.html">
         <div>
-            <p ng-bind="$ctrl.achievementSetup.achievements[aid].desc" />
-            <p ng-bind="'Total Progress: ' + ($ctrl.achievementService.state.progress.achievements[aid].amount || 0)" />
+            <h5 ng-bind="$ctrl.achievementSetup.achievements[aid].desc"></h5>
+            <p ng-bind="'Total Progress: ' + ($ctrl.achievementService.state.progress.achievements[aid].amount || 0)"></p>
+            <p ng-if="$ctrl.achievementService.state.progress.achievements[aid].nextRank != -1" ng-bind="'Next Rank: ' + ($ctrl.achievementService.state.progress.achievements[aid].nextRank || 0)"></p>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.achievementService.state.progress.achievements[aid].amount}}" aria-valuemin="{{$ctrl.achievementService.state.progress.achievements[aid].lastRank}}" aria-valuemax="{{$ctrl.achievementService.state.progress.achievements[aid].nextRank}}"
+                    ng-style="{width: (100*(($ctrl.achievementService.state.progress.achievements[aid].amount - $ctrl.achievementService.state.progress.achievements[aid].lastRank) / ($ctrl.achievementService.state.progress.achievements[aid].nextRank-$ctrl.achievementService.state.progress.achievements[aid].lastRank))) + '%'}">
+
+                </div>
+            </div>
         </div>
     </script>
     <script type="text/ng-template" id="perkTooltip.html">

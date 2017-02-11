@@ -131,6 +131,7 @@ body {
     padding-bottom: 10px;
 }
 
+@include attribute-progress-bars;
 .genomeEditor {
     font-size: .8em;
     input {
@@ -149,26 +150,43 @@ body {
     }
 }
 
+.perk-tooltip,
+.achievement-tooltip {
+    p {
+        margin: 3px;
+    }
+    h5 {
+        margin: 3px;
+        color: lightblue;
+    }
+    max-width: 250px;
+    width: 250px;
+}
+
 .achievement-list {
-    @include maximize-row();
-    font-size: .75em;
+    margin: 5px;
+    padding: 2px;
+    //border: 1px solid black;
+    //background-color: $gray;
+    .achievement-rank-row {
+        @include maximize-row();
+    }
     .achievement-cell,
     .achievement-rank-cell {
         border: 1px solid black;
-        padding: 5px;
-        //-webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
-        //-moz-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
-        //box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
-        float: left;
-        //margin: 5px;
-        margin: 2px;
-        height: 30px;
+        padding: 2px;
+        min-height: 30px;
+        font-size: .75em;
     }
     .achievement-cell {
         @include linear-gradient(180deg, $gray-dark 15%, black 100%);
-        width: 120px;
+        padding: 5px;
+        margin: 2px;
     }
     .achievement-rank-cell {
+        line-height: 1.1em;
+        padding: 2px;
+        margin-bottom: 3px;
         @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
         text-align: center;
     }
@@ -276,24 +294,11 @@ bloqhead-worker-list {
     }
 }
 
-bloqhead-achievement-box {
-    @include attribute-progress-bars;
-    .panel-body {
-        border-top: 1px solid black;
-        min-height: 200px;
-        max-height: 200px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 0 0 1px 1px;
-    }
-}
-
 bloqhead-player-box {
-    @include attribute-progress-bars;
     .panel-body {
         border-top: 1px solid black;
         min-height: 200px;
-        max-height: 340px;
+        //max-height: 340px;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 0 0 1px 1px;

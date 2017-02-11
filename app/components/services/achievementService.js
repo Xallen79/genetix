@@ -38,7 +38,8 @@ game.service('achievementService', [
                 achProgress = {
                     aid: aid,
                     amount: 0,
-                    lastRank: 0
+                    lastRank: 0,
+                    nextRank: self.getNextRankAmount(aid, 0)
                 };
                 self.state.progress.achievements[aid] = achProgress;
             }
@@ -69,6 +70,7 @@ game.service('achievementService', [
 
 
                         achProgress.lastRank = amountRequired;
+                        achProgress.nextRank = self.getNextRankAmount(aid, achProgress.amount);
 
                         var reward = {
                             achievement: achSetup,
@@ -121,7 +123,25 @@ game.service('achievementService', [
 
         };
 
+        self.getNextRankAmount = function(aid, currentAmount) {
+            var ranks = achievementSetup.achievements[aid].ranks;
+            var progress = self.state.progress.achievements[aid];
 
+            // no progress and at least one rank
+            if (!progress && ranks.length > 0) {
+                return ranks[0][0];
+            }
+
+            // get the first rank above the current amount
+            for (var i = 0; i < ranks.length; i++) {
+                if (ranks[i][0] > progress.amount) {
+                    return ranks[i][0];
+                }
+            }
+
+            // no more ranks
+            return -1;
+        };
 
         self.getAchievementMessage = function(aid, amountRequired, prop) {
             var achSetup = achievementSetup.achievements[aid];
