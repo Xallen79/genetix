@@ -1,0 +1,14 @@
+<div class="col-xs-12" title="">
+    <div class="row">
+        <div class="col-xs-5">Job</div>
+        <div class="col-xs-2">Workers</div>
+    </div>
+    <div class="row" ng-repeat="worker in $ctrl.workers" style="padding-bottom: 5px">
+        <div class="col-xs-5">
+            <h5 uib-tooltip="{{worker.description}}">{{worker.name}}</h5>
+        </div>
+        <div class="col-xs-2">
+            <h5 ng-bind="worker.count"></h5>
+        </div>
+    </div>
+</div>

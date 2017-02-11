@@ -1,6 +1,6 @@
 <div class="bloqhead-component">
     <h5>
-        {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" data-container="body" data-toggle="tooltip" rel="tooltip" data-placement="top" title="{{trait.name}}"></i>
+        {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" tooltip-placement="top" uib-tooltip="{{trait.name}}"></i>
     </h5>
     <table class="genomeEditor">
         <thead>
@@ -51,16 +51,24 @@
     </table>
     <div ng-show="$ctrl.allowAssign">
         <button ng-disabled="!$ctrl.canBreed" class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
-        <div class="btn-group" role="menu" data-container="body">
+        <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
+            <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>Work <span class="caret"></span></button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li ng-repeat="job in $ctrl.jobs">
+                    <a href="#" ng-bind="job.name" ng-click="$ctrl.assignMe(job.type)"></a>
+                </li>
+            </ul>
+        </div>
+        <!--<div class="btn-group" role="menu" data-container="body">
             <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Work <span class="caret"></span>
         </button>
             <ul class="dropdown-menu">
-                <li ng-repeat="job in ['Dig', 'Farm', 'Chop', 'Build']">
-                    <a ng-bind="job"></a>
+                <li ng-repeat="job in $ctrl.jobs">
+                    <a ng-bind="job.name" ng-click=></a>
                 </li>
             </ul>
-        </div>
+        </div>-->
     </div>
 
 </div>

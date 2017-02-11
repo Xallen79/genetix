@@ -24,7 +24,6 @@
                     "aid": "A_BIRTHS",
                     "name": "The Chosen One",
                     "desc": "Create a new unit",
-
                     "ranks": [
                         [1, [
                             ["P_R_BONUS", "WOOD", 5],
@@ -32,7 +31,6 @@
                         ]],
                         [3, [
                             ["P_R_BONUS", "GOLD", 1],
-                            ["P_M_RESOURCE", "HAPPINESS"],
                             ["P_G_ENHANCED", 14, 10]
                         ]],
                         [5, [
@@ -49,10 +47,12 @@
                     "res": "DIRT",
                     "ranks": [
                         [5, [
-                            ["P_R_MULTIPLIER", "HAPPINESS", 0.1]
+                            ["P_R_MULTIPLIER", "DIRT", 0.1]
                         ]],
                         [25, [
-                            ["P_R_MULTIPLIER", "DIRT", 0.2]
+                            ["P_R_UNLOCK", "WATER"],
+                            ["P_B_UNLOCK", "WATERHOLE"],
+                            ["P_B_BONUS", "WATERHOLE", 1]
                         ]]
                     ]
                 },
@@ -154,8 +154,8 @@
                 }
             },
             "perks": {
-                "P_M_RESOURCE": {
-                    "pid": "P_M_RESOURCE",
+                "P_R_UNLOCK": {
+                    "pid": "P_R_UNLOCK",
                     "name": "New Resource: %(res)s",
                     "desc": "Unlocks the %(res)s resource.",
                     "logmsg": "The %(res)s resource has been unlocked.",
@@ -178,6 +178,18 @@
                     "name": "New Gene Enhancement",
                     "desc": "Will increase the boundary by %(amt)d for your %(attr)s %(dom)s/%(rec)s gene.",
                     "logmsg": "The boundary has been increased by %(amt)d for one of your %(attr)s genes. (%(dom)s/%(rec)s)"
+                },
+                "P_B_UNLOCK": {
+                    "pid": "P_B_UNLOCK",
+                    "name": "New building: %(buildingType)s",
+                    "desc": "Unlocks the %(buildingType)s building.",
+                    "logmsg": "The %(buildingType)s building has been unlocked."
+                },
+                "P_B_BONUS": {
+                    "pid": "P_B_GIFT",
+                    "name": "Bonus Buildings",
+                    "desc": "%(amt)d free %(buildingType)s%(plural)s for you to use.",
+                    "logmsg": "You have been given %(amt)d %(buildingType)s%(plural)s."
                 }
             }
 

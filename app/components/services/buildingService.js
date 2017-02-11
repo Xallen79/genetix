@@ -1,17 +1,22 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('buildingService', [
-    '$rootScope', '$filter', 'defaultBuildings', 'resourceTypes', 'resourceService', 'populationService',
-    function($rootScope, $filter, defaultBuildings, resourceTypes, resourceService, populationService) {
+    '$rootScope', '$filter', 'defaultBuildings', 'resourceTypes', 'resourceService', 'populationService', 'achievementService',
+    function($rootScope, $filter, defaultBuildings, resourceTypes, resourceService, populationService, achievementService) {
         /* private members */
         var self = this;
         var state;
         var lastSnapshot;
+        var initialized = false;
         self.init = function(loadState) {
             loadState.buildings = angular.merge({}, defaultBuildings, loadState.buildings);
             state = angular.merge({}, state, loadState);
             self.update('all');
             resourceService.SubscribeResourceChangedEvent($rootScope, handleResourceChange);
+            if (!initialized) {
+                achievementService.SubscribeNewRewardEvent($rootScope, self.rewardEarned);
+            }
+            initialized = true;
         };
 
         self.getState = function() {
@@ -83,7 +88,7 @@ game.service('buildingService', [
                     var building = state.buildings[key];
                     if (building.use === 'breeding') {
                         var multiplier = building.sizeMultiplier || 1;
-                        max += Math.floor(building.size * multiplier);
+                        max += Math.floor(building.size * (building.purchased + building.gifted) * multiplier);
                     }
                 }
             }
@@ -122,7 +127,7 @@ game.service('buildingService', [
                     var building = state.buildings[key];
                     if (building.use === 'housing') {
                         var multiplier = building.multiplier || 1;
-                        max += Math.floor(building.size * multiplier);
+                        max += Math.floor(building.size * (building.gifted + building.purchased) * multiplier);
                     }
                 }
             }
@@ -158,6 +163,22 @@ game.service('buildingService', [
                 }
             }
         };
+
+        self.rewardEarned = function(event, reward) {
+            for (var p = 0; p < reward.perks.length; p++) {
+                var perk = reward.perks[p];
+                var building = state.buildings[perk.arr[1]];
+                if (perk.pid === 'P_B_BONUS') {
+                    building.gifted++;
+                    self.update(building.use);
+                }
+                if (perk.pid === 'P_B_UNLOCK') {
+                    building.unlocked = 1;
+                    self.update(building.use);
+                }
+            }
+        };
+
 
         self.SubscribeBuildingsChangedEvent = function(scope, callback) {
             var handler = $rootScope.$on('buildingsChangedEvent', callback.bind(this));

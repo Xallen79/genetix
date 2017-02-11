@@ -57,9 +57,9 @@ game.service('resourceService', [
                 if (perk.pid === 'P_R_BONUS') {
                     self.changeResource(perk.arr[1], perk.arr[2]);
                 }
-                if (perk.pid === 'P_M_HAPPINESS') {
-                    self.state.resources.HAPPINESS[2] = true;
-                    $rootScope.$emit('resourceEnabledEvent', 'HAPPINESS', true);
+                if (perk.pid === 'P_R_UNLOCK') {
+                    self.state.resources[perk.arr[1]][2] = true;
+                    $rootScope.$emit('resourceEnabledEvent', perk.arr[1], true);
                 }
             }
         };
@@ -80,23 +80,19 @@ game.service('resourceService', [
             }
 
             r[0] += amount;
-            if (r[1] != -1 && r[0] > r[1]) r[0] = r[1];
+            var actualAmount = amount;
+            if (r[1] != -1 && r[0] > r[1]) {
+                actualAmount = amount - r[1] - r[0];
+                r[0] = r[1];
+            }
             // if this puts us negative, we cannot deduct the amount, reset and return -1 to indicate failure.
             if (r[0] < 0) {
                 r[0] -= amount;
                 return -1;
             }
 
-            if (amount > 0)
-                achievementService.updateProgress('A_' + resourceType + '_E', amount); // earning achievement
-            //if (amount < 0)
-            //    achievementService.updateProgress('A_' + resourceType + '_S', -amount); // spending achievement
-            //achievementService.updateProgress('A_' + resourceType + '_C', r[0]); // cumulative achievement
-
-            if (r[2] === false) {
-                $rootScope.$emit('resourceEnabledEvent', resourceType, true);
-                r[2] = true;
-            }
+            if (actualAmount > 0)
+                achievementService.updateProgress('A_' + resourceType + '_E', actualAmount); // earning achievement
 
             $rootScope.$emit('resourceChangedEvent', resourceType, r[0], self.getResourcesSnapshot());
             return r[0];

@@ -1,0 +1,30 @@
+{
+    "constants": {
+        "jobTypes": {
+            "DIRT_GATHER": {
+                "name": "Dirt Digger",
+                "description": "One who digs dirt",
+                "resource": "DIRT",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 1
+            },
+            "WATER_GATHER": {
+                "name": "Water Gatherer",
+                "description": "One who collects water",
+                "resource": "WATER",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 0
+            },
+            "WOOD_GATHER": {
+                "name": "Wood Chopper",
+                "description": "One who chops wood",
+                "resource": "WOOD",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 0
+            }
+        }
+    }
+}

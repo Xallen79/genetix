@@ -4,7 +4,7 @@
             <bloqhead-player-box box-title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
                 <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
-                        <bloqhead-breeder can-breed="$ctrl.breeders.length < $ctrl.breederLimit" unit="child" assign="$ctrl.addBreeder($id)"></bloqhead-breeder>
+                        <bloqhead-breeder can-breed="$ctrl.breeders.length < $ctrl.breederLimit" unit="child" assign="$ctrl.assign($id, $jobType)"></bloqhead-breeder>
                     </div>
                 </div>
             </bloqhead-player-box>
@@ -33,6 +33,11 @@
                         <bloqhead-breeder unit="$ctrl.population[breederid]" allow-assign="false"></bloqhead-breeder>
                     </div>
                 </div>
+            </bloqhead-player-box>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
+            <bloqhead-player-box box-title="Workers">
+                <bloqhead-worker-list></bloqhead-worker-list>
             </bloqhead-player-box>
         </div>
     </div>

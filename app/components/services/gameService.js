@@ -55,9 +55,12 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService', 'resourceService', 'buildingService', 'LZString', 'traitDefinitions',
-    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService, resourceService, buildingService, LZString, traitDefinitions) {
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService',
+    'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'workerService',
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService,
+        resourceService, buildingService, LZString, traitDefinitions, workerService) {
         var self = this;
+        var initialized = false;
         self.init = function(state) {
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
             var savedState = (json) ? angular.fromJson(json) : undefined;
@@ -65,13 +68,17 @@ game.service('gameService', [
             self.autoSaveSteps = self.gameState.autoSaveSteps || self.autoSaveSteps || 10;
             self.startGame();
             self.stepsSinceSave = 0;
+            if (!initialized) {
+                gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
+                initialized = true;
+            }
         };
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
 
             populationService.init(
                 angular.merge({},
-                    defaultState.populationServiceState,                    
+                    defaultState.populationServiceState,
                     self.gameState.populationServiceState
                 )
             );
@@ -96,7 +103,7 @@ game.service('gameService', [
                     self.gameState.buildingServiceState
                 )
             );
-
+            workerService.init(defaultState.workerServiceState);
             gameLoopService.init(
                 angular.merge({},
                     defaultState.gameLoopServiceState,
@@ -128,22 +135,21 @@ game.service('gameService', [
         };
 
 
-        gameLoopService.SubscribeGameLoopEvent($rootScope, function(event, steps) {
+        function handleLoop(event, steps) {
             self.stepsSinceSave += steps;
 
             // testing
             var d = resourceService.getResource('DIRT');
-            if (d >= 13)
-                resourceService.changeResource("DIRT", -d);
-            else
-                resourceService.changeResource("DIRT", 1);
+            // if (d >= 25)
+            //     resourceService.changeResource("DIRT", -d);
+            // else
+            //     resourceService.changeResource("DIRT", 1);
 
             if (self.stepsSinceSave > self.autoSaveSteps) {
                 self.saveGame(true);
-                logService.logGeneralMessage('Game autosaved.');
                 self.stepsSinceSave = 0;
             }
-        });
+        }
 
     }
 ]);

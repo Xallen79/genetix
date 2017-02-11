@@ -20,8 +20,8 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', 'populationService', 'achievementService', 'resourceService',
-    function($scope, populationService, achievementService, resourceService) {
+    '$scope', 'populationService', 'achievementService', 'resourceService', 'workerService',
+    function($scope, populationService, achievementService, resourceService, workerService) {
         var self = this;
         self.$onInit = function() {
             self.breeders = [];
@@ -41,8 +41,14 @@ game.controller('bloqhead.controllers.mainGame', [
         self.updateGene = function(id, geneIndex, geneValues) {
             populationService.updateMember(id, geneIndex, geneValues);
         };
-
+        self.assign = function(unitid, jobType) {
+            if (!angular.isDefined(jobType))
+                self.addBreeder(unitid);
+            else
+                workerService.addWorker(jobType, unitid);
+        };
         self.addBreeder = function(unitid) {
+
             populationService.addBreeder(unitid);
         };
 
@@ -61,6 +67,7 @@ game.controller('bloqhead.controllers.mainGame', [
             self.maxPopulation = data.maxSize;
             self.breederLimit = data.breederLimit;
         };
+
     }
 ]);
 
@@ -76,14 +83,20 @@ game.component("bloqheadBreeder", {
     }
 });
 
-game.controller("bloqheader.controllers.breeder", function() {
+game.controller("bloqheader.controllers.breeder", ["jobTypes", function(jobTypes) {
     var self = this;
     self.$onInit = function() {
         self.allowAssign = angular.isDefined(self.allowAssign) ? self.allowAssign : true;
-
+        self.jobs = [];
+        for (var key in jobTypes) {
+            if (jobTypes.hasOwnProperty(key)) {
+                self.jobs.push({ name: jobTypes[key].name, type: key });
+            }
+        }
     };
-    self.assignMe = function() {
-        self.assign({ $id: self.unit.id });
+    self.assignMe = function(type) {
+        self.assign({ $id: self.unit.id, $jobType: type });
     };
 
-});
+
+}]);

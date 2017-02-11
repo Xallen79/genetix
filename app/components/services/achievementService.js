@@ -3,8 +3,8 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'achievementSetup', 'logService', 'geneDefinitions', 'resourceTypes',
-    function($rootScope, $filter, achievementSetup, logService, geneDefinitions, resourceTypes) {
+    '$rootScope', '$filter', 'achievementSetup', 'logService', 'geneDefinitions', 'resourceTypes', 'defaultBuildings',
+    function($rootScope, $filter, achievementSetup, logService, geneDefinitions, resourceTypes, defaultBuildings) {
         var self = this;
 
 
@@ -141,21 +141,22 @@ game.service('achievementService', [
             var params = {
                 name: perkSetup.name
             };
-            switch (perkSetup.pid) {
-                case 'P_G_ENHANCED':
+            switch (perkSetup.pid.substring(0, 4)) {
+                case 'P_G_':
                     var gene = geneDefinitions[arr[1]];
                     params.dom = gene.dom;
                     params.rec = gene.rec;
                     params.attr = gene.attr[0];
                     params.amt = arr[2];
                     break;
-                case 'P_R_BONUS':
-                case 'P_R_MULTIPLIER':
+                case 'P_R_':
                     params.res = resourceTypes[arr[1]].name;
-                    params.amt = arr[2];
+                    params.amt = arr[2] || 0;
                     break;
-                case 'P_M_RESOURCE':
-                    params.res = resourceTypes[arr[1]].name;
+                case 'P_B_':
+                    params.buildingType = defaultBuildings[arr[1]].name;
+                    params.amt = arr[2] || 0;
+                    params.plural = params.amt > 1 ? "s" : "";
                     break;
                 default:
                     for (var i = 1; i < arr.length; i++)

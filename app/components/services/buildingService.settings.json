@@ -34,16 +34,31 @@
                 "size": 5,
                 "baseCost": [{
                     "resource": "DIRT",
-                    "amount": 5,
-                    "costMultiplier": 1.05
+                    "amount": 50,
+                    "costMultiplier": 1.5
                 }, {
                     "resource": "WATER",
-                    "amount": 5,
-                    "costMultiplier": 1.05
+                    "amount": 25,
+                    "costMultiplier": 1.5
                 }],
                 "purchased": 0,
                 "gifted": 1,
                 "unlocked": 1
+            },
+            "WATERHOLE": {
+                "name": "Water Hole",
+                "description": "A dirty place to hold water. Stores %(size)d.",
+                "use": "storage",
+                "stores": "WATER",
+                "size": 10,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 25,
+                    "costMultiplier": 1.05
+                }],
+                "purchased": 0,
+                "gifted": 0,
+                "unlocked": 0
             },
             "WELL": {
                 "name": "Well",
