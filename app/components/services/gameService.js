@@ -10,7 +10,7 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
         self.initialized = false;
         self.init = function(state) {
             state = state || {};
-            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 1000;
+            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 10;
             self.lastTime = 0;
             self.currentState = gameStates.PAUSED;
             if (!self.initialized) {
@@ -103,7 +103,12 @@ game.service('gameService', [
                     self.gameState.buildingServiceState
                 )
             );
-            workerService.init(defaultState.workerServiceState);
+            workerService.init(
+                angular.merge({},
+                    defaultState.workerServiceState,
+                    self.gameState.workerServiceState)
+            );
+
             gameLoopService.init(
                 angular.merge({},
                     defaultState.gameLoopServiceState,
@@ -126,6 +131,7 @@ game.service('gameService', [
             saveState.achievementServiceState = angular.copy(achievementService.getState());
             saveState.buildingServiceState = angular.copy(buildingService.getState());
             saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
+            saveState.workerServiceState = angular.copy(workerService.getState());
             var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
             localStorage.setItem(gameSaveKey, save);
             if (autosave)

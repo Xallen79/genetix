@@ -6,8 +6,8 @@ game.service('populationService', [
 
         self.init = function(state) {
             state = state || {};
-            self.breedSteps = state.breedSteps || state.breedSteps || 6;
-            self.stepsSinceBreed = state.stepsSinceBreed || self.stepsSinceBreed || 0;
+            self.breedSteps = state.breedSteps || self.breedSteps || 6;
+            self.stepsSinceBreed = angular.isDefined(state.stepsSinceBreed) ? state.stepsSinceBreed : self.stepsSinceBreed || 0;
             self.populationState = state.populationState || self.populationState;
             self.population = (self.populationState) ? new Population(self.populationState) : self.population || new Population();
 
@@ -71,19 +71,31 @@ game.service('populationService', [
             member.update();
             self.sendPopulationUpdateEvent();
         };
+        self.setUnitJob = function(id, job) {
+            self.population.getById(id).currentJob = job;
+            self.sendPopulationUpdateEvent();
+        };
         self.setBreederLimit = function(newLimit) {
             self.population.breederLimit = newLimit;
+            self.sendPopulationUpdateEvent();
+        };
+        self.setNurseryLimit = function(newLimit) {
+            self.population.newbornLimit = newLimit;
             self.sendPopulationUpdateEvent();
         };
         self.setPopulationLimit = function(newLimit) {
             self.population.maxSize = newLimit;
             self.sendPopulationUpdateEvent();
         };
+        self.processNewbornFate = function(unitid, fate) {
+            self.population.processNewbornFate(unitid, fate);
+            self.sendPopulationUpdateEvent();
+        };
         self.sendBreederUpdateEvent = function() {
             $rootScope.$emit('breederUpdateEvent', { breeders: self.population.breeders, isBreeding: self.population.isBreeding(), stepsSinceBreed: self.stepsSinceBreed, breedSteps: self.breedSteps });
         };
         self.sendPopulationUpdateEvent = function() {
-            $rootScope.$emit('populationUpdateEvent', { population: self.population.members, maxSize: self.population.maxSize, breederLimit: self.population.breederLimit });
+            $rootScope.$emit('populationUpdateEvent', { population: self.population.members, newborns: self.population.newborns, maxSize: self.population.maxSize, breederLimit: self.population.breederLimit, newbornLimit: self.population.newbornLimit });
         };
 
         self.SubscribeBreederUpdateEvent = function(scope, callback) {

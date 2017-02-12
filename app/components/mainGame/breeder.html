@@ -2,6 +2,7 @@
     <h5>
         {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" tooltip-placement="top" uib-tooltip="{{trait.name}}"></i>
     </h5>
+
     <table class="genomeEditor">
         <thead>
             <tr>
@@ -49,7 +50,7 @@
             </tr>
         </tbody>
     </table>
-    <div ng-show="$ctrl.allowAssign">
+    <div ng-show="$ctrl.mode === 'POP'">
         <button ng-disabled="!$ctrl.canBreed" class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
         <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
             <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>Work <span class="caret"></span></button>
@@ -59,16 +60,15 @@
                 </li>
             </ul>
         </div>
-        <!--<div class="btn-group" role="menu" data-container="body">
-            <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Work <span class="caret"></span>
-        </button>
-            <ul class="dropdown-menu">
-                <li ng-repeat="job in $ctrl.jobs">
-                    <a ng-bind="job.name" ng-click=></a>
-                </li>
-            </ul>
-        </div>-->
+        <span class="pull-right" ng-bind="$ctrl.unit.currentJob"></span>
     </div>
-
+    <div ng-show="$ctrl.mode === 'NURSE'">
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('BANISH')">Banish</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORK')">Work</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('SCHOOL')">School??(Int)</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('TRAIN')">Train??(Str)</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('RUN')">Run??(End)</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('CHR')">Cosmo??(Chr)</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LCK')">Luck something??(Lck)</button>
+    </div>
 </div>

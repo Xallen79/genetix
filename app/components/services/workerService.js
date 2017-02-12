@@ -8,7 +8,7 @@ game.service('workerService', [
         var state;
         var lastSnapshot;
         self.init = function(loadState) {
-            state = angular.merge({}, state, loadState);
+            state = loadState || state || {};
             if (!initialized) {
                 gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
                 initialized = true;
@@ -16,6 +16,7 @@ game.service('workerService', [
 
             self.getWorkersSnapshot();
         };
+
         self.getState = function() {
             return state;
         };
@@ -35,6 +36,7 @@ game.service('workerService', [
                     unitid: unitid,
                     stepsSinceWork: 0
                 });
+                populationService.setUnitJob(unitid, workerType);
                 self.getWorkersSnapshot();
             }
         };

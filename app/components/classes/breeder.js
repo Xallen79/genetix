@@ -11,7 +11,7 @@ game.filter('hasTrait', function() {
 });
 
 
-game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitInspector) {
+game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filter, TraitInspector, jobTypes) {
 
 
 
@@ -29,6 +29,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', function($filter, TraitIns
         this.generation = config.generation || this.generation || 0;
         this.genes = config.genes || this.genes || [];
         this.breederGeneCap = config.breederGeneCap || this.breederGeneCap || 25;
+        this.currentJob = config.currentJob || this.currentJob || null;
 
         this.redGreenImage = getRedGreenImage(this.genes, this.breederGeneCap);
         //this.blueImage = getBlueImage(this.genes);

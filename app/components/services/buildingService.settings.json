@@ -9,8 +9,19 @@
                 "baseCost": [],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1
-
+                "unlocked": 1,
+                "multiplier": 1
+            },
+            "NURSERY": {
+                "name": "Nursery",
+                "description": "A place for newborns. Maximum newborns %(size)d.",
+                "use": "newborn",
+                "size": 1,
+                "baseCost": [],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": 1,
+                "multiplier": 1
             },
             "DIRTPILE": {
                 "name": "Dirt pile",
@@ -25,7 +36,8 @@
                 }],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1
+                "unlocked": 1,
+                "multiplier": 1
             },
             "SODHOUSE": {
                 "name": "Sod house",
@@ -43,7 +55,8 @@
                 }],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1
+                "unlocked": 1,
+                "multiplier": 1
             },
             "WATERHOLE": {
                 "name": "Water Hole",
@@ -58,7 +71,8 @@
                 }],
                 "purchased": 0,
                 "gifted": 0,
-                "unlocked": 0
+                "unlocked": 0,
+                "multiplier": 1
             },
             "WELL": {
                 "name": "Well",
@@ -73,7 +87,8 @@
                 }],
                 "purchased": 0,
                 "gifted": 0,
-                "unlocked": 0
+                "unlocked": 0,
+                "multiplier": 1
             }
         }
     }

@@ -14,6 +14,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
         this.breeders = state.breeders || this.breeders || [];
         this.breederLimit = state.breederLimit || this.breederLimit || 0;
+        this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
         this.maxSize = state.maxSize || this.maxSize || 10;
         this.breederMutationBits = state.breederMutationBits || this.breederMutationBits || 4;
         this.breederMutationChance = state.breederMutationChance || this.breederMutationChance || 5;
@@ -31,12 +32,32 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
                     genes: member.genes,
                     mutationBits: member.mutationBits,
                     name: member.name,
+                    currentJob: member.currentJob
                 });
                 unit.update();
                 this.members.push(unit);
 
             }
         } else this.members = this.members || this.createInitialPopulation(this.initialSize);
+        this.newborns = [];
+        if (state.newborns) {
+            for (var n = 0; n < state.newborns.length; n++) {
+                var newborn = state.newborns[n];
+                var nb = new Breeder({
+                    id: newborn.id,
+                    mother: newborn.mother || null,
+                    father: newborn.father || null,
+                    generation: newborn.generation,
+                    genes: newborn.genes,
+                    mutationBits: newborn.mutationBits,
+                    name: newborn.name,
+                    currentJob: newborn.currentJob
+                });
+                nb.update();
+                this.newborns.push(nb);
+            }
+        }
+
     };
     Population.prototype.getState = function() {
         var state = {
@@ -57,7 +78,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
                 generation: member.generation,
                 genes: member.genes,
                 mutationBits: member.mutationBits,
-                name: member.name
+                name: member.name,
+                currentJob: member.currentJob
             });
         }
         return state;
@@ -94,6 +116,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
 
     Population.prototype.isBreeding = function() {
         if (this.members.length >= this.maxSize) return false;
+        if (this.newborns.length >= this.newbornLimit) return false;
         // make sure there are at least 1 male and 1 female in the breeders
         var hasMale = false,
             hasFemale = false;
@@ -124,9 +147,30 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
         var p1 = self.getById(self.breeders[0]);
         var p2 = self.getById(self.breeders[1]);
         var child = p1.breed(p2, self.members.length);
-        self.members.push(child);
+        self.newborns.push(child);
         return child;
     };
+    Population.prototype.processNewbornFate = function(id, fate) {
+        var index;
+        var newborn = this.newborns.filter(function(unit, i) {
+            if (unit.id === id) {
+                index = i;
+                return true;
+            }
+        })[0];
+        switch (fate) {
+            case "WORK":
+                this.members.push(newborn);
+                this.newborns.splice(index, 1);
+                break;
+            case "BANISH":
+                this.newborns.splice(index, 1);
+                break;
+            default:
+                console.error("Invalid fate: " + fate);
+                break;
 
+        }
+    };
     return Population;
 }]);

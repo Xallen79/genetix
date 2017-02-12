@@ -64,8 +64,13 @@ game.controller('bloqhead.controllers.mainGame', [
         };
         self.updatePopulation = function(event, data) {
             self.population = data.population;
+            self.newborns = data.newborns;
             self.maxPopulation = data.maxSize;
             self.breederLimit = data.breederLimit;
+            self.newbornLimit = data.newbornLimit;
+        };
+        self.decideFate = function(unitid, fate) {
+            populationService.processNewbornFate(unitid, fate);
         };
 
     }
@@ -76,17 +81,16 @@ game.component("bloqheadBreeder", {
     templateUrl: "components/mainGame/breeder.html",
     controller: "bloqheader.controllers.breeder",
     bindings: {
-        unit: '<',
-        allowAssign: '<',
-        canBreed: '<',
-        assign: '&'
+        unit: "<",
+        canBreed: "<",
+        assign: "&",
+        mode: "@"
     }
 });
 
 game.controller("bloqheader.controllers.breeder", ["jobTypes", function(jobTypes) {
     var self = this;
     self.$onInit = function() {
-        self.allowAssign = angular.isDefined(self.allowAssign) ? self.allowAssign : true;
         self.jobs = [];
         for (var key in jobTypes) {
             if (jobTypes.hasOwnProperty(key)) {
@@ -95,7 +99,7 @@ game.controller("bloqheader.controllers.breeder", ["jobTypes", function(jobTypes
         }
     };
     self.assignMe = function(type) {
-        self.assign({ $id: self.unit.id, $jobType: type });
+        self.assign({ $id: self.unit.id, $type: type });
     };
 
 

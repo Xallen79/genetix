@@ -29,7 +29,8 @@ game.service('buildingService', [
                     saveState.buildings[key] = {
                         purchased: building.purchased,
                         gifted: building.gifted,
-                        unlocked: building.unlocked
+                        unlocked: building.unlocked,
+                        multiplier: building.multiplier
                     };
                 }
             }
@@ -69,12 +70,15 @@ game.service('buildingService', [
                 self.updateStorage();
                 self.updateBreeders();
                 self.updateHousing();
+                self.updateNursery();
             } else if (use === 'storage') {
                 self.updateStorage();
             } else if (use === 'housing') {
                 self.updateHousing();
             } else if (use === 'breeding') {
                 self.updateBreeders();
+            } else if (use === 'newborn') {
+                self.updateNursery();
             } else if (use === 'production') {
                 angular.noop();
             }
@@ -87,13 +91,26 @@ game.service('buildingService', [
                 if (state.buildings.hasOwnProperty(key)) {
                     var building = state.buildings[key];
                     if (building.use === 'breeding') {
-                        var multiplier = building.sizeMultiplier || 1;
-                        max += Math.floor(building.size * (building.purchased + building.gifted) * multiplier);
+                        max += Math.floor(building.size * (building.purchased + building.gifted) * building.multiplier);
                     }
                 }
             }
             max *= typeMult;
             populationService.setBreederLimit(Math.floor(max));
+        };
+        self.updateNursery = function() {
+            var max = 0;
+            var typeMult = state.newbornSizeMultiplier || 1;
+            for (var key in state.buildings) {
+                if (state.buildings.hasOwnProperty(key)) {
+                    var building = state.buildings[key];
+                    if (building.use === 'newborn') {
+                        max += Math.floor(building.size * (building.purchased + building.gifted) * building.multiplier);
+                    }
+                }
+            }
+            max *= typeMult;
+            populationService.setNurseryLimit(Math.floor(max));
         };
 
         self.updateStorage = function() {
@@ -105,9 +122,8 @@ game.service('buildingService', [
                     var building = state.buildings[key];
                     if (building.use === 'storage') {
                         rt.push(building.stores);
-                        var multiplier = building.multiplier || 1;
                         resources[building.stores].newAmount = resources[building.stores].newAmount || 0;
-                        resources[building.stores].newAmount += Math.floor((building.size * (building.purchased + building.gifted) * multiplier));
+                        resources[building.stores].newAmount += Math.floor(building.size * (building.purchased + building.gifted) * building.multiplier);
                     }
                 }
 
@@ -126,8 +142,7 @@ game.service('buildingService', [
                 if (state.buildings.hasOwnProperty(key)) {
                     var building = state.buildings[key];
                     if (building.use === 'housing') {
-                        var multiplier = building.multiplier || 1;
-                        max += Math.floor(building.size * (building.gifted + building.purchased) * multiplier);
+                        max += Math.floor(building.size * (building.gifted + building.purchased) * building.multiplier);
                     }
                 }
             }
@@ -165,6 +180,7 @@ game.service('buildingService', [
         };
 
         self.rewardEarned = function(event, reward) {
+
             for (var p = 0; p < reward.perks.length; p++) {
                 var perk = reward.perks[p];
                 var building = state.buildings[perk.arr[1]];
@@ -174,6 +190,10 @@ game.service('buildingService', [
                 }
                 if (perk.pid === 'P_B_UNLOCK') {
                     building.unlocked = 1;
+                    self.update(building.use);
+                }
+                if (perk.pid === "P_B_MULTIPLIER") {
+                    building.multiplier += perk.arr[2] / 100.0;
                     self.update(building.use);
                 }
             }

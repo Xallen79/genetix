@@ -8,6 +8,7 @@
             },
             "populationServiceState": {
                 "breedSteps": 6,
+                "stepsSinceBreed": 0,
                 "populationState": {
                     "initialSize": 2,
                     "maxSize": 5,
