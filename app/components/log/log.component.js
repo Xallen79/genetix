@@ -30,6 +30,9 @@ game.controller('bloqhead.controllers.log', [
                 case logTypes.BREED:
                     a = 'color-breed';
                     break;
+                case logTypes.WORK:
+                    a = 'color-work';
+                    break;
                 default:
                     a = prefix + 'none';
                     break;
@@ -46,6 +49,7 @@ game.controller('bloqhead.controllers.log', [
 
 game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTypes) {
     var self = this;
+    var maxMessages = 500;
     self.init = function(clearLog) {
         if (clearLog) {
             self.messages = [];
@@ -54,19 +58,25 @@ game.service('logService', ['$rootScope', 'logTypes', function($rootScope, logTy
     };
     self.logGeneralMessage = function(message) {
         self.messages.push({ type: logTypes.GENERAL, timestamp: Date.now(), message: message });
-        if (self.messages.length > 100)
+        if (self.messages.length > maxMessages)
             self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);
     };
     self.logBreedMessage = function(message) {
         self.messages.push({ type: logTypes.BREED, timestamp: Date.now(), message: message });
-        if (self.messages.length > 100)
+        if (self.messages.length > maxMessages)
             self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);
     };
     self.logAchievementMessage = function(message) {
         self.messages.push({ type: logTypes.ACHIEVEMENT, timestamp: Date.now(), message: message });
-        if (self.messages.length > 100)
+        if (self.messages.length > maxMessages)
+            self.messages.splice(0, 1);
+        $rootScope.$emit('newMessageEvent', self.messages);
+    };
+    self.logWorkMessage = function(message) {
+        self.messages.push({ type: logTypes.WORK, timestamp: Date.now(), message: message });
+        if (self.messages.length > maxMessages)
             self.messages.splice(0, 1);
         $rootScope.$emit('newMessageEvent', self.messages);
     };

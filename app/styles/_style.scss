@@ -266,16 +266,20 @@ bloqhead-log {
         height: 200px;
         overflow-y: scroll;
         .color-general {
-            color: #83997E;
+            color: #2ECC91;
             background-color: #374C32;
         }
         .color-breed {
-            color: #7E7F99;
+            color: #be90d4;
             background-color: #32334C;
         }
         .color-achievement {
-            color: #994C46;
+            color: #ff4500;
             background-color: #4C0701;
+        }
+        .color-work {
+            color: #638bb3;
+            background-color: #01194c;
         }
     }
 }

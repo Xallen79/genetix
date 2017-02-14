@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('workerService', [
-    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'populationService', 'achievementService', 'gameLoopService',
-    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, populationService, achievementService, gameLoopService) {
+    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'populationService', 'achievementService', 'gameLoopService', 'logService',
+    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, populationService, achievementService, gameLoopService, logService) {
         var self = this;
         var initialized = false;
         var state;
@@ -71,6 +71,7 @@ game.service('workerService', [
             var resources = resourceService.getResourcesSnapshot();
             for (var i = 0; i < state.workers.length; i++) {
                 var worker = state.workers[i];
+                var unit = populationService.population.getById(worker.unitid);
                 var job = jobTypes[worker.type];
                 var elapsed = 0;
                 worker.stepsSinceWork += steps;
@@ -79,7 +80,13 @@ game.service('workerService', [
                     worker.stepsSinceWork -= job.baseWorkerSteps;
                 }
                 resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
-                resources[job.resource].gatherAmount += (job.baseAmount * elapsed);
+                if (elapsed > 0 && (resources[job.resource][0] + resources[job.resource].gatherAmount) < resources[job.resource][1]) {
+
+                    resources[job.resource].gatherAmount += (job.baseAmount * elapsed);
+                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: (job.baseAmount * elapsed), res: resourceTypes[job.resource].name });
+                    logService.logWorkMessage(msg);
+                }
+
 
             }
             for (var key in resources) {

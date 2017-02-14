@@ -60,44 +60,28 @@
                             ["P_B_BONUS", "WATERHOLE", 1]
                         ]],
                         [40, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [50, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [60, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [80, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [100, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [250, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [350, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [550, [
-                            ["P_R_UNLOCK", "WATER"],
-                            ["P_B_UNLOCK", "WATERHOLE"],
-                            ["P_B_BONUS", "WATERHOLE", 1]
+
                         ]],
                         [1000, [
                             ["P_B_MULTIPLIER", "DIRTPILE", 20]

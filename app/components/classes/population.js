@@ -1,6 +1,6 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($filter, Breeder, geneDefinitions) {
+game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService', function($filter, Breeder, geneDefinitions, logService) {
 
 
     /* constructor */
@@ -158,19 +158,23 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', function($f
                 return true;
             }
         })[0];
+        var msg = "";
         switch (fate) {
             case "WORK":
                 this.members.push(newborn);
                 this.newborns.splice(index, 1);
+                msg = $filter('fmt')("%(name)s has joined the workforce", newborn);
                 break;
             case "BANISH":
+                msg = $filter('fmt')("%(name)s has been banished", newborn);
                 this.newborns.splice(index, 1);
                 break;
             default:
+                msg = msg = $filter('fmt')("Invalid %(fate)s", { fate: fate });
                 console.error("Invalid fate: " + fate);
                 break;
-
         }
+        logService.logBreedMessage(msg);
     };
     return Population;
 }]);
