@@ -8,7 +8,7 @@
  })(jQuery);
 */
 
-angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap', 'sprintf'])
+angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap', 'sprintf', 'ngAnimate'])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider',
         function($stateProvider, $urlRouterProvider, $locationProvider, $uibTooltipProvider) {
             $urlRouterProvider.otherwise('/main');
