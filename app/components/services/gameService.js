@@ -10,21 +10,24 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
         self.initialized = false;
         self.init = function(state) {
             state = state || {};
-            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 10;
-            self.lastTime = 0;
-            self.currentState = gameStates.PAUSED;
+            self.saveTime = state.saveTime || Date.now();
+            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 1000;
+            self.lastTime = self.saveTime - Date.now();
+            console.log(self.lastTime);
+            self.currentState = state.currentState || self.currentState || gameStates.RUNNING;
             if (!self.initialized) {
                 self.initialized = true;
                 self.gameLoop(0);
             }
 
-            self.currentState = state.currentState || self.currentState || gameStates.RUNNING;
+
         };
 
         self.getState = function() {
             return {
                 stepTimeMs: self.stepTimeMs,
-                currentState: self.currentState
+                currentState: self.currentState,
+                saveTime: self.saveTime
             };
         };
         self.setState = function(newState) {
@@ -35,12 +38,14 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 
         self.gameLoop = function(step) {
             var self = this;
+            self.saveTime = Date.now();
             var steps = 0;
-            while (self.lastTime + step > (self.stepTimeMs * (steps + 1))) {
+            while (step - self.lastTime >= (self.stepTimeMs * (steps + 1))) {
                 steps++;
             }
-            self.lastTime = (self.lastTime - (self.stepTimeMs * steps));
+            self.lastTime += (self.stepTimeMs * steps);
             if (self.currentState == gameStates.RUNNING && steps > 0) {
+                console.log(steps);
                 $rootScope.$apply($rootScope.$emit('gameLoopEvent', steps));
             }
             $window.requestAnimationFrame(this.gameLoop.bind(this));
@@ -151,7 +156,7 @@ game.service('gameService', [
             // else
             //     resourceService.changeResource("DIRT", 1);
 
-            if (self.stepsSinceSave > self.autoSaveSteps) {
+            if (self.stepsSinceSave >= self.autoSaveSteps) {
                 self.saveGame(true);
                 self.stepsSinceSave = 0;
             }
