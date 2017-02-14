@@ -19,7 +19,7 @@
                 <div class="row breeder-container">
                     <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
-                        <bloqhead-breeder unit="$ctrl.population[breederid]" mode="BREED"></bloqhead-breeder>
+                        <bloqhead-mortal unit="$ctrl.population[breederid]" mode="BREED"></bloqhead-mortal>
                     </div>
                 </div>
             </bloqhead-player-box>
@@ -35,7 +35,7 @@
             <bloqhead-player-box box-title="Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]">
                 <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12">
-                        <bloqhead-breeder mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-breeder>
+                        <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
                     </div>
                 </div>
             </bloqhead-player-box>
@@ -43,13 +43,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <bloqhead-player-box box-title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
-                <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.population" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 ">
-                        <bloqhead-breeder mode="POP" can-breed="$ctrl.breeders.length < $ctrl.breederLimit" unit="child" assign="$ctrl.assign($id, $type)"></bloqhead-breeder>
-                    </div>
-                </div>
-            </bloqhead-player-box>
+            <bloqhead-population-list population="$ctrl.population" max-population="$ctrl.maxPopulation" breeder-assign="$ctrl.assign($id, $type)" can-breed="$ctrl.breeders.length < $ctrl.breederLimit"></bloqhead-population-list>
         </div>
     </div>
 </div>

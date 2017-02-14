@@ -150,6 +150,17 @@ body {
     }
 }
 
+.population-list {
+    .mortal-name {
+        padding: 2px;
+        font-size: .8em;
+    }
+    @include maximize-row();
+    .genomeEditor {
+        margin: 2px !important;
+    }
+}
+
 .perk-tooltip,
 .achievement-tooltip {
     p {
@@ -219,7 +230,8 @@ body {
         @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
     }
     table.genomeEditor {
-        margin-bottom: 8px;
+        margin-top: 4px;
+        margin-bottom: 4px;
         width: 100%;
         th,
         td {
@@ -253,7 +265,8 @@ body {
 
 .bloqhead-component {
     @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border: 1px solid black;
     padding: 5px;
     -webkit-box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.75);
@@ -337,4 +350,12 @@ bloqhead-player-box {
 
 [disabled] {
     pointer-events: none;
+}
+
+.male-color {
+    color: dodgerblue;
+}
+
+.female-color {
+    color: hotpink;
 }

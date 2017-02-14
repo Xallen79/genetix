@@ -161,6 +161,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
         var msg = "";
         switch (fate) {
             case "WORK":
+                newborn.currentJob = 'IDLE';
                 this.members.push(newborn);
                 this.newborns.splice(index, 1);
                 msg = $filter('fmt')("%(name)s has joined the workforce", newborn);

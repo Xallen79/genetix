@@ -1,0 +1,5 @@
+<bloqhead-player-box box-title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}] ---FILTERS HERE???----">
+    <div class="row breeder-container">
+        <bloqhead-mortal ng-repeat="child in $ctrl.population" display="LIST" mode="POP" can-breed="$ctrl.canBreed" unit="child" assign="$ctrl.breederAssign({$id:$id, $type:$type})"></bloqhead-mortal>
+    </div>
+</bloqhead-player-box>

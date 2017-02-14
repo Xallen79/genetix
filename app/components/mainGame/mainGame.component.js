@@ -75,32 +75,3 @@ game.controller('bloqhead.controllers.mainGame', [
 
     }
 ]);
-
-
-game.component("bloqheadBreeder", {
-    templateUrl: "components/mainGame/breeder.html",
-    controller: "bloqheader.controllers.breeder",
-    bindings: {
-        unit: "<",
-        canBreed: "<",
-        assign: "&",
-        mode: "@"
-    }
-});
-
-game.controller("bloqheader.controllers.breeder", ["jobTypes", function(jobTypes) {
-    var self = this;
-    self.$onInit = function() {
-        self.jobs = [];
-        for (var key in jobTypes) {
-            if (jobTypes.hasOwnProperty(key)) {
-                self.jobs.push({ name: jobTypes[key].name, type: key });
-            }
-        }
-    };
-    self.assignMe = function(type) {
-        self.assign({ $id: self.unit.id, $type: type });
-    };
-
-
-}]);

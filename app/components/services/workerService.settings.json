@@ -1,6 +1,14 @@
 {
     "constants": {
         "jobTypes": {
+            "IDLE": {
+                "name": "Idle",
+                "description": "One who enjoys life",
+                "resource": "HAPPINESS",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 1
+            },
             "DIRT_GATHER": {
                 "name": "Dirt Digger",
                 "description": "One who digs dirt",
