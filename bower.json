@@ -28,5 +28,8 @@
         "dist/angular-sprintf.min.js"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "^1.6.1"
   }
 }

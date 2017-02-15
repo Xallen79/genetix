@@ -9,8 +9,8 @@
 */
 
 angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap', 'sprintf', 'ngAnimate'])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider',
-        function($stateProvider, $urlRouterProvider, $locationProvider, $uibTooltipProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$uibTooltipProvider', '$animateProvider',
+        function($stateProvider, $urlRouterProvider, $locationProvider, $uibTooltipProvider, $animateProvider) {
             $urlRouterProvider.otherwise('/main');
             var states = [];
             states.push({

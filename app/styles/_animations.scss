@@ -1,44 +1,160 @@
-.slide.ng-enter, .slide.ng-leave {
+.animate-view.ng-enter,
+.animate-view.ng-leave {
     -webkit-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -moz-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -ms-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -o-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all; 
-  display:block;
-  width:100%;
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;   
+    transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
-.slide.ng-enter {
-  opacity: 0;
-  -webkit-transform:scale3d(0, 0, 0);
-  -moz-transform:scale3d(0, 0, 0);
-  transform:scale3d(0, 0, 0);
+.animate-view.ng-enter {
+    opacity: 0;
+    -webkit-transform: scale3d(0, 0, 0);
+    -moz-transform: scale3d(0, 0, 0);
+    transform: scale3d(0, 0, 0);
 }
 
-.slide.ng-enter-active {
-  opacity: 1;
-  -webkit-transform:scale3d(1, 1, 1);
-  -moz-transform:scale3d(1, 1, 1);
-  transform:scale3d(1, 1, 1);
+.animate-view.ng-enter-active {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    -moz-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
 }
 
-.slide.ng-leave {
-  opacity: 1;
-  /*padding-left: 0px;*/  
-  -webkit-transform:translate3d(0, 0, 0);
-  -moz-transform:translate3d(0, 0, 0);
-  transform:translate3d(0, 0, 0);
+.animate-view.ng-leave {
+    opacity: 1;
+    /*padding-left: 0px;*/
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
-.slide.ng-leave-active {
-  opacity: 0;
-  /*padding-left: 100px;*/
-  -webkit-transform:translate3d(0, 200px, 0);
-  -moz-transform:translate3d(0, 200px, 0);
-  transform:translate3d(0, 200px, 0);
+.animate-view.ng-leave-active {
+    opacity: 0;
+    /*padding-left: 100px;*/
+    -webkit-transform: translate3d(0, 200px, 0);
+    -moz-transform: translate3d(0, 200px, 0);
+    transform: translate3d(0, 200px, 0);
+}
+
+#sidebar {
+    padding: 0;
+    position: absolute;
+    height: 100%;
+    width: 25vw;
+    left: 0;
+    margin: 0;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+#sidebar.home-hide {
+    left: -100%;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+#wrapper {
+    position: absolute;
+    left: 26vw;
+    width: 72vw;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+#wrapper.home-hide {
+    left: 1vw;
+    width: 98vw;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+#toggle {
+    padding: 0;
+    position: absolute;
+    left: 25vw;
+    width: 1vw;
+    color: red;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+#toggle.home-hide {
+    left: 0;
+    color: red;
+    -moz-transition: left ease 500ms;
+    -o-transition: left ease 500ms;
+    -webkit-transition: left ease 500ms;
+    transition: left ease 500ms;
+}
+
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 {
+    position: relative;
+    min-height: 1px;
+    padding-left: .25vw;
+    padding-right: .25vw;
 }
