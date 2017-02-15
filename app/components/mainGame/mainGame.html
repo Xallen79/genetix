@@ -11,7 +11,7 @@
                     <div class="col-xs-12 col-lg-12">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
-                                <span ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span><i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
+                                <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span><i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
                             </div>
                         </div>
                     </div>
@@ -25,11 +25,21 @@
             </bloqhead-player-box>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
+            <bloqhead-player-box box-title="Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]">
+                <div class="row breeder-container">
+                    <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12">
+                        <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
+                    </div>
+                </div>
+            </bloqhead-player-box>
+            <!--
             <bloqhead-player-box box-title="Workers">
                 <bloqhead-worker-list></bloqhead-worker-list>
             </bloqhead-player-box>
+            -->
         </div>
     </div>
+    <!--
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
             <bloqhead-player-box box-title="Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]">
@@ -41,6 +51,7 @@
             </bloqhead-player-box>
         </div>
     </div>
+    -->
     <div class="row">
         <div class="col-xs-12">
             <bloqhead-population-list population="$ctrl.population" max-population="$ctrl.maxPopulation" breeder-assign="$ctrl.assign($id, $type)" can-breed="$ctrl.breeders.length < $ctrl.breederLimit"></bloqhead-population-list>

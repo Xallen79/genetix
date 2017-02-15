@@ -24,6 +24,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
     Breeder.prototype.update = function(config) {
         if (typeof(config) == 'undefined') config = {};
         this.id = config.id || this.id || 0;
+        this.dt = config.dt || this.dt || new Date();
         this.mother = config.mother || this.mother || null;
         this.father = config.father || this.father || null;
         this.generation = config.generation || this.generation || 0;
@@ -48,6 +49,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
 
         var child = new Breeder({
             id: newId,
+            dt: new Date(),
             generation: p1.generation + 1,
             genes: [],
             mother: myGender == 'Female' ? p1 : p2,

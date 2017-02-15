@@ -2,46 +2,58 @@
     "constants": {
         "resourceTypes": {
             "DIRT": {
+                "rid": "DIRT",
                 "name": "Dirt",
                 "desc": "Used in construction and mining.",
-                "attr": "STR"
+                "attr": "STR",
+                "jids": ["DIRT_GATHER"]
             },
             "BRICKS": {
+                "rid": "BRICKS",
                 "name": "Bricks",
                 "desc": "Used in construction and smelting.",
                 "attr": "STR"
             },
             "STEEL": {
+                "rid": "STEEL",
                 "name": "Steel",
                 "desc": "Used in advanced construction.",
                 "attr": "STR"
             },
             "WATER": {
+                "rid": "WATER",
                 "name": "Water",
                 "desc": "Used in construction, mining and population expansion.",
-                "attr": "END"
+                "attr": "END",
+                "jids": ["WATER_GATHER"]
             },
             "WOOD": {
+                "rid": "WOOD",
                 "name": "Wood",
                 "desc": "Used in construction and mining.",
-                "attr": "END"
+                "attr": "END",
+                "jids": ["WOOD_GATHER"]
             },
             "GOLD": {
+                "rid": "GOLD",
                 "name": "Gold",
                 "desc": "Used for purchasing gene research technologies.",
                 "attr": "INT"
             },
             "SCIENCE": {
+                "rid": "SCIENCE",
                 "name": "Science",
                 "desc": "Used in genetic modification and advanced construction.",
                 "attr": "INT"
             },
             "HAPPINESS": {
+                "rid": "HAPPINESS",
                 "name": "Happiness",
                 "desc": "Good things happen to those that are happy...",
                 "attr": "CHR"
             },
             "EVOCOIN": {
+                "rid": "EVOCOIN",
                 "name": "Evo-Coins",
                 "desc": "A rare commodity indeed. Used to discover traits.",
                 "attr": "LCK"

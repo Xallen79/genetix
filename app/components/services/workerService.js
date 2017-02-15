@@ -20,23 +20,23 @@ game.service('workerService', [
         self.getState = function() {
             return state;
         };
-        self.addWorker = function(workerType, unitid) {
+        self.addWorker = function(jid, unitid) {
             var notWorking = $filter('filter')(state.workers, { unitid: unitid }).length === 0;
             var tmpWorkers = [];
             if (!notWorking)
                 tmpWorkers = state.workers.filter(function(worker) {
-                    return worker.unitid !== unitid || (worker.unitid === unitid && worker.jobType === workerType);
+                    return worker.unitid !== unitid || (worker.unitid === unitid && worker.jobType === jid);
                 });
 
             if (notWorking || tmpWorkers.length != state.workers.length) {
                 if (!notWorking)
                     state.workers = angular.copy(tmpWorkers);
                 state.workers.push({
-                    type: workerType,
+                    jid: jid,
                     unitid: unitid,
                     stepsSinceWork: 0
                 });
-                populationService.setUnitJob(unitid, workerType);
+                populationService.setUnitJob(unitid, jid);
                 self.getWorkersSnapshot();
             }
         };
@@ -45,11 +45,13 @@ game.service('workerService', [
             var snapshot = [];
             for (var key in jobTypes) {
                 if (jobTypes.hasOwnProperty(key)) {
-                    var group = $filter('filter')(state.workers, { type: key });
+                    var group = $filter('filter')(state.workers, { jid: key });
+                    var jt = jobTypes[key];
                     snapshot.push({
-                        type: key,
-                        name: jobTypes[key].name,
-                        description: jobTypes.description,
+                        jid: jt.jid,
+                        resource: jt.resource,
+                        name: jt.name,
+                        description: jt.description,
                         count: group.length
                     });
                 }
@@ -72,7 +74,7 @@ game.service('workerService', [
             for (var i = 0; i < state.workers.length; i++) {
                 var worker = state.workers[i];
                 var unit = populationService.population.getById(worker.unitid);
-                var job = jobTypes[worker.type];
+                var job = jobTypes[worker.jid];
                 var elapsed = 0;
                 worker.stepsSinceWork += steps;
                 while (worker.stepsSinceWork >= job.baseWorkerSteps) {

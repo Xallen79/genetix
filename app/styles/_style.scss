@@ -34,11 +34,21 @@
         min-width: 2px;
         font-family: "Courier New", Courier, monospace;
         border-right: 1px solid black;
-        >span {
+        >span.amounts {
             overflow-x: visible;
             white-space: nowrap;
             position: absolute;
             right: 5px;
+        }
+        >span.workers {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            left: 5px;
+            >i {
+                font-size: .8em;
+                width: .8em;
+            }
         }
         >i {
             overflow-x: visible;

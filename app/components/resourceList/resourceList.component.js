@@ -9,16 +9,23 @@ game.component('bloqheadResourceList', {
 
 
 game.controller('bloqhead.controllers.resourceList', [
-    '$scope', 'resourceService', 'resourceTypes',
-    function($scope, resourceService, resourceTypes) {
+    '$scope', 'resourceService', 'resourceTypes', 'workerService', 'jobTypes',
+    function($scope, resourceService, resourceTypes, workerService, jobTypes) {
         var self = this;
         self.resourceTypes = resourceTypes;
+        self.jobTypes = jobTypes;
         self.resources = {};
         self.$onInit = function() {
             resourceService.SubscribeResourceChangedEvent($scope, self.resourceChanged);
             resourceService.SubscribeResourceLimitChangedEvent($scope, self.resourceLimitChanged);
             resourceService.SubscribeResourceEnabledEvent($scope, self.resourceEnabled);
             self.resources = resourceService.getResourcesSnapshot();
+            self.workers = [];
+            workerService.SubscribeWorkersChangedEvent($scope, self.updateWorkers);
+        };
+
+        self.updateWorkers = function(event, workers) {
+            self.workers = workers;
         };
 
         self.getUnlockedResources = function() {
@@ -30,7 +37,21 @@ game.controller('bloqhead.controllers.resourceList', [
             return ret;
         };
 
+        self.getWorkerIcon = function(res) {
+            var ret = {};
+            ret['fa-truck'] = (res === 'DIRT');
+            ret['fa-tint'] = (res === 'WATER');
+            return ret;
+        };
 
+        self.getWorkerCount = function(res) {
+            var ret = 0;
+            for (var i = 0; i < self.workers.length; i++) {
+                if (res === self.workers[i].resource)
+                    ret += self.workers[i].count;
+            }
+            return ret;
+        };
 
         self.resourceChanged = function(event, resourceType, amount) {
             if (!self.resources[resourceType])
