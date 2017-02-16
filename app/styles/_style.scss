@@ -137,8 +137,11 @@
 }
 
 body {
-    padding-top: 50px;
-    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+.game-container {
+    height: 100vh;
 }
 
 @include attribute-progress-bars;
