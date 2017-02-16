@@ -166,7 +166,7 @@ game.service('achievementService', [
                     var gene = geneDefinitions[arr[1]];
                     params.dom = gene.dom;
                     params.rec = gene.rec;
-                    params.attr = gene.attr[0];
+                    params.attr = gene.attr;
                     params.amt = arr[2];
                     break;
                 case 'P_R_':

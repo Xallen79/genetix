@@ -74,69 +74,46 @@
 </div>
 
 <div ng-if="$ctrl.display === 'LIST'" ng-show="$ctrl.mode === 'POP'" class="population-list row">
-    <div class="col-xs-1 mortal-name" ng-switch="$ctrl.unit.hasTrait('Male')">
+    <div class="col-xs-2 mortal-name" ng-switch="$ctrl.unit.hasTrait('Male')">
         <i class="fa fa-male male-color" ng-switch-when="true"></i>
         <i class="fa fa-female female-color" ng-switch-when="false"></i>
         <span>{{$ctrl.unit.name}}</span>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-3">
         <table class="genomeEditor">
             <thead>
                 <tr>
+                    <th style="width: 20%">
+                        {{$ctrl.unit.attributes.STR}}
+                    </th>
+                    <th style="width: 20%">
+                        {{$ctrl.unit.attributes.INT}}
+                    </th>
+                    <th style="width: 20%">
+                        {{$ctrl.unit.attributes.END}}
+                    </th>
+                    <th style="width: 20%">
+                        {{$ctrl.unit.attributes.CHR}}
+                    </th>
+                    <th style="width: 20%">
+                        {{$ctrl.unit.attributes.LCK}}
+                    </th>
+                </tr>
+                <tr>
                     <th colspan="5"><img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" /></th>
                 </tr>
-                <tr>
-                    <th style="width: 20%">
-                        STR
-                    </th>
-
-                    <th style="width: 20%">
-                        INT
-                    </th>
-
-                    <th style="width: 20%">
-                        END
-                    </th>
-
-                    <th style="width: 20%">
-                        CHR
-                    </th>
-
-                    <th style="width: 20%">
-                        LCK
-                    </th>
-                </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <span ng-bind="$ctrl.unit.attributes.STR"></span>
-                    </td>
-                    <td>
-                        <span ng-bind="$ctrl.unit.attributes.INT"></span>
-                    </td>
-                    <td>
-                        <span ng-bind="$ctrl.unit.attributes.END"></span>
-                    </td>
-                    <td>
-                        <span ng-bind="$ctrl.unit.attributes.CHR"></span>
-                    </td>
-                    <td>
-                        <span ng-bind="$ctrl.unit.attributes.LCK"></span>
-                    </td>
-                </tr>
-            </tbody>
         </table>
     </div>
 
 
 
     <div class="col-xs-1">
-        <button ng-disabled="!$ctrl.canBreed" class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
+        <button ng-disabled="!$ctrl.canBreed" class="btn btn-xs btn-primary " ng-click="$ctrl.assignMe() ">Breed Me</button>
     </div>
     <div class="col-xs-2">
         <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
-            <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle><span ng-bind="$ctrl.jobTypes[$ctrl.unit.currentJob].name"></span><span class="caret"></span></button>
+            <button type="button" class="btn btn-xs btn-primary" uib-dropdown-toggle><span ng-bind="$ctrl.jobTypes[$ctrl.unit.currentJob].name"></span><span class="caret"></span></button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                 <li ng-repeat="(key, job) in $ctrl.jobTypes">
                     <a href="javascript:void(0);" ng-bind="job.name" ng-click="$ctrl.assignMe(key)"></a>
