@@ -1,10 +1,6 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title" ng-bind="$ctrl.boxTitle"></h3>
-    </div>
-    <div class="panel-body" ng-style="$ctrl.maxHeightOveride()">
+<div class="player-box">
+    <h3 class="box-title" ng-bind="$ctrl.boxTitle"></h3>    
+    <div class="player-content">            
         <ng-transclude></ng-transclude>
     </div>
-    <div ng-if="angular.isDefined($ctrl.footer)" class="panel-footer"><span ng-bind="$ctrl.footer"></span></div>
-
 </div>

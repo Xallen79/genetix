@@ -14,11 +14,20 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
     [class*="col-"] {
-        padding-left: 5px !important;
-        padding-right: 5px !important;
+        padding-left: .25vh !important;
+        padding-right: .25vh !important;
+    }
+    [class*="col-"].nopadding {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }
-
+html {
+    @include maximize-row();
+}
+.nopadding {
+    padding: 0 !important;
+}
 @mixin attribute-progress-bars {
     .progress {
         position: relative;
@@ -136,9 +145,8 @@
     background: linear-gradient($direction, $color-stops);
 }
 
-body {
-    padding-top: 50px;
-    padding-bottom: 10px;
+body {    
+    padding-bottom: 50px;
 }
 
 @include attribute-progress-bars;
@@ -286,7 +294,8 @@ body {
 
 bloqhead-log {
     .log-component {
-        height: 200px;
+        font-size: .8vw;
+        height: 18vh;
         overflow-y: scroll;
         .color-general {
             color: #2ECC91;
@@ -308,7 +317,7 @@ bloqhead-log {
 }
 
 bloqhead-building-list,
-bloqhead-worker-list {
+bloqhead-worker-list {  
     h5 {
         margin: 8px 0px 1px 0px;
         font-size: .8em;
@@ -321,17 +330,39 @@ bloqhead-worker-list {
     }
 }
 
-bloqhead-player-box {
-    .panel-body {
-        border-top: 1px solid black;
-        min-height: 200px;
-        //max-height: 340px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 0 0 1px 1px;
+bloqhead-player-box {         
+    .player-box {
+        height:100%;
+        border: 2px solid $gray-darker;
+        margin-bottom: .5vh;
+    }
+    .box-title {
+        background-color: $gray-dark;
+        margin: 0;
+        padding-left: .2vw;
+        padding-right: .1vw;
+        padding-top: .1vh;
+        padding-bottom: .1vh;
+        font-size: 1.1vw;
+        height: 12%;
+        vertical-align: center;
+        border-bottom: 2px solid $gray-darker;
+    }
+    .player-content {
+        padding-left: .25vw;
+        padding-right: .25vw;
+        padding-top: .25vh;
+        padding-bottom: .25vh;
+        height: 88%;
+        overflow-x:hidden;
+        overflow-y:auto;
+        @include linear-gradient(0deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
     }
 }
 
+.fullH {
+    height: 100%;
+}
 
 /* Specify styling for tooltip contents */
 

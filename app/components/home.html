@@ -1,5 +1,5 @@
 <div ng-init="$ctrl.hideme=false">
-    <div id="sidebar" ng-class="$ctrl.hideme ? 'home-hide' : ''">
+    <div class="nopadding col-xs-3" ng-class="$ctrl.hideme ? 'home-hide' : ''">
         <div class="row">
             <div class="col-xs-12">
                 <bloqhead-player-box box-title="Log">
@@ -17,13 +17,15 @@
         <div class="row">
             <div class="col-xs-12">
                 <bloqhead-player-box box-title="Resources">
+                    <div class="row">
                     <bloqhead-resource-list></bloqhead-resource-list>
+                    </div>
                 </bloqhead-player-box>
             </div>
         </div>
     </div>
-    <div id="toggle" ng-class="$ctrl.hideme ? 'home-hide' : ''" ng-click="$ctrl.hideme = !$ctrl.hideme"><i class="fa" ng-class="$ctrl.hideme ? 'fa-caret-square-o-right' : 'fa-caret-square-o-left'"></i></div>
-    <div id="wrapper" class="container-fluid" ng-class="$ctrl.hideme ? 'home-hide' : ''">
+    
+    <div class="col-xs-9 fullH nopadding" ng-class="$ctrl.hideme ? 'home-hide' : ''">
         <div ui-view="" class="animate-view"></div>
     </div>
 </div>
