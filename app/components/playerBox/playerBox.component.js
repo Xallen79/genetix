@@ -1,7 +1,9 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqheadPlayerBox', {
-    transclude: true,
+    transclude: {
+        'boxTitleHtml': '?bloqheadPlayerBoxTitle'
+    },
     require: {
         mainCtrl: "^bloqhead.components.home"
     },
@@ -27,4 +29,10 @@ game.controller('bloqhead.controllers.playerBox', function() {
         }
         return ret;
     };
+});
+
+game.component('bloqheadPlayerBoxTitle', {
+    require: {
+        playerBoxCtrl: "^bloqheadPlayerBox"
+    },
 });

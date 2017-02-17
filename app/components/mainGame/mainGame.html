@@ -6,19 +6,25 @@
             </bloqhead-player-box>
         </div>
         <div class="col-xs-4 fullH">
-            <bloqhead-player-box box-title="Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]">
-                <div class="row">
-                    <div class="col-xs-12 col-lg-12">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
-                                <span class="breeders">
+            <bloqhead-player-box>
+                <bloqhead-player-box-title>
+                    <div class="row">
+                        <div class="col-xs-5">
+                            Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="progress progress-playerbox-title">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
+                                    <span class="breeders">
                                     <i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
                                 </span>
-                                <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span>
+                                    <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </bloqhead-player-box-title>
+
                 <div class="row breeder-container">
                     <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>

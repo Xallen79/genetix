@@ -1,6 +1,6 @@
 <div class="player-box">
-    <h3 class="box-title" ng-bind="$ctrl.boxTitle"></h3>    
-    <div class="player-content">            
+    <h3 class="box-title" ng-transclude="boxTitleHtml">{{$ctrl.boxTitle}}</h3>
+    <div class="player-content">
         <ng-transclude></ng-transclude>
     </div>
 </div>

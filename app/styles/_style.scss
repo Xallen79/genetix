@@ -170,6 +170,11 @@ h5 {
 }
 
 @include attribute-progress-bars;
+.progress-playerbox-title {
+    margin: 0px;
+    height: 2.4vh;
+}
+
 .genomeEditor {
     font-size: .7vw;
     input {
