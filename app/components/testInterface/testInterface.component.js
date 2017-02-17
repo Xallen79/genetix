@@ -8,7 +8,7 @@ app.component('bloqhead.components.testInterface', {
 // tab components
 app.component('breederTab', {
     bindings: {
-        units: '=',
+        units: '<',
     },
     controller: ['Breeder', 'geneDefinitions', 'traitDefinitions', function(Breeder, geneDefinitions, traitDefinitions) {
         var self = this;
@@ -41,7 +41,6 @@ app.component('breederTab', {
             self.units.unshift(unit);
 
         };
-
     }],
     templateUrl: 'components/testInterface/breederTab.html'
 });
@@ -81,13 +80,15 @@ app.component('configurationTab', {
 
 app.component('genomeEditor', {
     bindings: {
-        unit: '='
+        u: '=',
+        resolve: '<'
     },
     controller: ['geneDefinitions', function(geneDefinitions) {
         var self = this;
         self.$onInit = function() {
             self.geneDefinitions = geneDefinitions;
-            self.expando = false;
+            self.expando = true;
+            self.unit = self.u || self.resolve.unit || {};
         };
         self.randomizeName = function() {
             self.unit.name = self.unit.getRandomName();

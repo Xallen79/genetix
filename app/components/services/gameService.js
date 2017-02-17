@@ -13,7 +13,6 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
             self.saveTime = state.saveTime || Date.now();
             self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 1000;
             self.lastTime = self.saveTime - Date.now();
-            console.log(self.lastTime);
             self.currentState = state.currentState || self.currentState || gameStates.RUNNING;
             if (!self.initialized) {
                 self.initialized = true;
@@ -45,7 +44,6 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
             }
             self.lastTime += (self.stepTimeMs * steps);
             if (self.currentState == gameStates.RUNNING && steps > 0) {
-                console.log(steps);
                 $rootScope.$apply($rootScope.$emit('gameLoopEvent', steps));
             }
             $window.requestAnimationFrame(this.gameLoop.bind(this));

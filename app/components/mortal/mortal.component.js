@@ -13,7 +13,7 @@ game.component("bloqheadMortal", {
     }
 });
 
-game.controller("bloqheader.controllers.mortal", ["jobTypes", function(jobTypes) {
+game.controller("bloqheader.controllers.mortal", ["$uibModal", "jobTypes", function($uibModal, jobTypes) {
     var self = this;
     self.jobTypes = jobTypes;
     self.$onInit = function() {
@@ -22,6 +22,14 @@ game.controller("bloqheader.controllers.mortal", ["jobTypes", function(jobTypes)
     self.assignMe = function(type) {
         self.assign({ $id: self.unit.id, $type: type });
     };
-
-
+    self.showDetails = function(unit) {
+        $uibModal.open({
+            component: 'genomeEditor',
+            resolve: {
+                unit: function() {
+                    return self.unit;
+                }
+            }
+        });
+    };
 }]);
