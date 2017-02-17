@@ -1,3 +1,4 @@
+$top-row-height: 25vh;
 @mixin strokeme($color) {
     text-shadow: -1px -1px 0 $color, 1px -1px 0 $color, -1px 1px 0 $color, 1px 1px 0 $color;
 }
@@ -22,12 +23,7 @@
         padding-right: 0 !important;
     }
 }
-html {
-    @include maximize-row();
-}
-.nopadding {
-    padding: 0 !important;
-}
+
 @mixin attribute-progress-bars {
     .progress {
         position: relative;
@@ -38,7 +34,7 @@ html {
     }
     .progress-bar {
         font-weight: bold;
-        font-size: 1.25em;
+        font-size: 1.1vw;
         //min-width: 2%;
         min-width: 2px;
         font-family: "Courier New", Courier, monospace;
@@ -47,23 +43,24 @@ html {
             overflow-x: visible;
             white-space: nowrap;
             position: absolute;
-            right: 5px;
+            right: .25vw;
         }
-        >span.workers {
+        >span.workers,
+        >span.breeders {
             overflow-x: visible;
             white-space: nowrap;
             position: absolute;
-            left: 5px;
+            left: .25vw;
             >i {
-                font-size: .8em;
-                width: .8em;
+                font-size: .85vw;
+                width: .85vw;
             }
         }
         >i {
             overflow-x: visible;
             white-space: nowrap;
             position: absolute;
-            left: 5px;
+            left: .25vw;
         }
     }
     div[data-attr="STR"] {
@@ -145,14 +142,36 @@ html {
     background: linear-gradient($direction, $color-stops);
 }
 
-body {    
-    padding-bottom: 50px;
+html {
+    @include maximize-row();
+}
+
+body {
     overflow: hidden;
+}
+
+h5 {
+    font-size: .85vw;
+}
+
+#content {
+    height: 100vh;
+}
+
+#inner-content {
+    padding: 0.5vw 0.5vh;
+    //border: 2px solid $brand-info;
+    height: calc(100vh - #{$navbar-height});
+}
+
+.topRow {
+    height: $top-row-height;
+    margin-bottom: .5vh;
 }
 
 @include attribute-progress-bars;
 .genomeEditor {
-    font-size: .8em;
+    font-size: .7vw;
     input {
         color: black;
         width: 4em;
@@ -162,17 +181,17 @@ body {
 .resource-list {
     @include maximize-row();
     //overflow-y: scroll;
-    height: 280px;
+    height: 30vh;
     h5 {
         margin: 8px 0px 1px 0px;
-        font-size: .8em;
+        font-size: .8vw;
     }
 }
 
 .population-list {
     .mortal-name {
         padding: 2px;
-        font-size: .8em;
+        font-size: .8vw;
     }
     @include maximize-row();
     .genomeEditor {
@@ -181,10 +200,26 @@ body {
 }
 
 .perk-tooltip,
-.achievement-tooltip {
+.achievement-tooltip,
+.building-tooltip {
     p {
         margin: 3px;
     }
+    // p[data-attr="STR"] {
+    //     color: $attr-str;
+    // }
+    // p[data-attr="INT"] {
+    //     color: $attr-int;
+    // }
+    // p[data-attr="END"] {
+    //     color: $attr-end;
+    // }
+    // p[data-attr="CHR"] {
+    //     color: $attr-chr;
+    // }
+    // p[data-attr="LCK"] {
+    //     color: $attr-lck;
+    // }
     h5 {
         margin: 3px;
         color: lightblue;
@@ -206,7 +241,7 @@ body {
         border: 1px solid black;
         padding: 2px;
         min-height: 30px;
-        font-size: .75em;
+        font-size: .75vw;
     }
     .achievement-cell {
         @include linear-gradient(180deg, $gray-dark 15%, black 100%);
@@ -214,7 +249,7 @@ body {
         margin: 2px;
     }
     .achievement-rank-cell {
-        line-height: 1.1em;
+        line-height: 1.1vw;
         padding: 2px;
         margin-bottom: 3px;
         @include linear-gradient(135deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
@@ -237,6 +272,14 @@ body {
     }
 }
 
+// calc came from trial and error, i couldn't figure out how to calculate it correctly.
+.population-container {
+    height: calc(100vh - #{$top-row-height} - 3.5vh - #{$navbar-height} - 18px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.population-container,
 .breeder-container {
     @include maximize-row();
     h5 {
@@ -296,7 +339,7 @@ body {
 bloqhead-log {
     .log-component {
         font-size: .8vw;
-        height: 18vh;
+        height: 100%;
         overflow-y: scroll;
         .color-general {
             color: #2ECC91;
@@ -318,10 +361,10 @@ bloqhead-log {
 }
 
 bloqhead-building-list,
-bloqhead-worker-list {  
+bloqhead-worker-list {
     h5 {
         margin: 8px 0px 1px 0px;
-        font-size: .8em;
+        font-size: .8vw;
     }
     button.btn-primary {
         @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
@@ -331,9 +374,9 @@ bloqhead-worker-list {
     }
 }
 
-bloqhead-player-box {         
+bloqhead-player-box {
     .player-box {
-        height:100%;
+        height: 100%;
         border: 2px solid $gray-darker;
         margin-bottom: .5vh;
     }
@@ -346,7 +389,7 @@ bloqhead-player-box {
         padding-bottom: .1vh;
         font-size: 1.1vw;
         height: 12%;
-        vertical-align: center;
+        vertical-align: middle;
         border-bottom: 2px solid $gray-darker;
     }
     .player-content {
@@ -355,8 +398,8 @@ bloqhead-player-box {
         padding-top: .25vh;
         padding-bottom: .25vh;
         height: 88%;
-        overflow-x:hidden;
-        overflow-y:auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         @include linear-gradient(0deg, $gray-light 0%, $gray-dark 30%, $gray-dark 100%);
     }
 }
@@ -364,6 +407,7 @@ bloqhead-player-box {
 .fullH {
     height: 100%;
 }
+
 
 /* Specify styling for tooltip contents */
 

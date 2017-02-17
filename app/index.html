@@ -23,23 +23,26 @@
     <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
-<div id="content">
-    <nav class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li><a ui-sref="home.main">Main</a></li>
-                <li><a ui-sref="home.achievements">Achievements</a></li>
-                <li><a ui-sref="home.test">Test Interface</a></li>
+    <div id="content">
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="home.main">Main</a></li>
+                    <li><a ui-sref="home.achievements">Achievements</a></li>
+                    <li><a ui-sref="home.test">Test Interface</a></li>
 
-            </ul>
-            <bloqhead-game-control class="navbar-brand navbar-right"></bloqhead-game-control>
+                </ul>
+                <bloqhead-game-control class="navbar-brand navbar-right"></bloqhead-game-control>
+            </div>
+        </nav>
+        <div id="inner-content">
+            <div ui-view=""></div>
         </div>
-    </nav>
-    <div ui-view=""></div>
-</div>
+    </div>
     <!-- bower:js -->
     <!-- endinject -->
     <!-- inject:js -->
     <!-- endinject -->
 </body>
+
 </html>

@@ -1,8 +1,8 @@
 <div class="">
-    <div class="row" id="topRow">
+    <div class="row topRow">
         <div class="col-xs-4 fullH">
-            <bloqhead-player-box box-title="Buildings">                
-                <bloqhead-building-list></bloqhead-building-list>                
+            <bloqhead-player-box box-title="Buildings">
+                <bloqhead-building-list></bloqhead-building-list>
             </bloqhead-player-box>
         </div>
         <div class="col-xs-4 fullH">
@@ -11,7 +11,10 @@
                     <div class="col-xs-12 col-lg-12">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
-                                <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span><i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
+                                <span class="breeders">
+                                    <i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
+                                </span>
+                                <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span>
                             </div>
                         </div>
                     </div>
