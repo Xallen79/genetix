@@ -53,15 +53,16 @@ game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions'
                 chrBase = 0,
                 lckBase = 0;
             for (var g = 0; g < genes.length; g++) {
-                if (g < 10)
+                var attribute = geneDefinitions[g].attr;
+                if (attribute === "STR")
                     strBase += genes[g][1] - genes[g][0];
-                else if (g < 20)
+                else if (attribute === "INT")
                     intBase += genes[g][1] - genes[g][0];
-                else if (g < 30)
+                else if (attribute === "END")
                     endBase += genes[g][1] - genes[g][0];
-                else if (g < 40)
+                else if (attribute === "CHR")
                     chrBase += genes[g][1] - genes[g][0];
-                else
+                else if (attribute === "LCK")
                     lckBase += genes[g][1] - genes[g][0];
             }
             ret.STR = Math.floor(Math.sqrt((Math.abs(strBase) + 20) / 25)) * (strBase < 0 ? -1 : 1);
@@ -72,7 +73,6 @@ game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions'
         }
         return ret;
     };
-
 
     /* private members */
     var checked = [];

@@ -13,8 +13,8 @@
                     "initialSize": 2,
                     "maxSize": 5,
                     "breederGeneCap": 100,
-                    "breederGenesUnlocked": [0, 42],
-                    "breederMutationChance": 10
+                    "breederGenesUnlocked": [0,10,20,30,40],
+                    "breederMutationChance": 20
                 }
             },
             "achievementServiceState": null,

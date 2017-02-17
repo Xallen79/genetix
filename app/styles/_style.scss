@@ -297,8 +297,8 @@ h5 {
         @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
     }
     table.genomeEditor {
-        margin-top: 4px;
-        margin-bottom: 4px;
+        margin-top: .1vh;
+        margin-bottom: .1vh;
         width: 100%;
         th,
         td {
@@ -326,6 +326,9 @@ h5 {
                 background-color: black;
                 font-family: "Courier New", Courier, monospace;
             }
+        }
+        img {
+            min-width: 100%;
         }
     }
 }
@@ -361,6 +364,9 @@ bloqhead-log {
         .color-work {
             color: #638bb3;
             background-color: #01194c;
+        }
+        .list-group {
+            margin: 0;
         }
     }
 }

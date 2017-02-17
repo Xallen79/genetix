@@ -18,7 +18,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
         this.maxSize = state.maxSize || this.maxSize || 10;
         this.breederMutationBits = state.breederMutationBits || this.breederMutationBits || 4;
         this.breederMutationChance = state.breederMutationChance || this.breederMutationChance || 5;
-        this.breederGenesUnlocked = state.breederGenesUnlocked || this.breederGenesUnlocked || [42];
+        this.breederGenesUnlocked = state.breederGenesUnlocked || this.breederGenesUnlocked || [];
         this.initialSize = state.initialSize || this.initialSize || 2;
         if (state.members) {
             this.members = [];
@@ -30,7 +30,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     father: member.father || null,
                     generation: member.generation,
                     genes: member.genes,
-                    mutationBits: member.mutationBits,
+                    genesUnlocked: member.genesUnlocked,
                     name: member.name,
                     currentJob: member.currentJob
                 });
@@ -49,7 +49,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     father: newborn.father || null,
                     generation: newborn.generation,
                     genes: newborn.genes,
-                    mutationBits: newborn.mutationBits,
+                    genesUnlocked: newborn.genesUnlocked,
                     name: newborn.name,
                     currentJob: newborn.currentJob
                 });
@@ -77,7 +77,18 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 id: member.id,
                 generation: member.generation,
                 genes: member.genes,
-                mutationBits: member.mutationBits,
+                genesUnlocked: member.genesUnlocked,
+                name: member.name,
+                currentJob: member.currentJob
+            });
+        }
+        for (var n = 0; n < this.newborns.length; n++) {
+            var member = this.newborns[n];
+            state.newborns.push({
+                id: member.id,
+                generation: member.generation,
+                genes: member.genes,
+                genesUnlocked: member.genesUnlocked,
                 name: member.name,
                 currentJob: member.currentJob
             });
@@ -90,23 +101,22 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
         var population = [];
         for (var i = 0; i < count; i++) {
             var genes = [];
+            var r = i % 2 === 0 ? 255 : 0;
+            var g = i % 2 === 0 ? 0 : 255;
             for (var gn = 0; gn < self.geneDefinitions.length; gn++) {
                 genes.push([0, 0, 0]);
                 if (self.breederGenesUnlocked.indexOf(gn) !== -1) genes[gn][2] = self.breederMutationChance;
+                if(self.geneDefinitions[gn].rec === "Male"){
+                    genes[gn][0] = r;
+                    genes[gn][1] = g;
+                    genes[gn][2] = 0;
+                }
             }
-
-            var r = i % 2 === 0 ? 255 : 0;
-            var g = i % 2 === 0 ? 0 : 255;
-
-            genes[42][0] = r;
-            genes[42][1] = g;
-            genes[42][2] = 0;
-
             var unit = new Breeder({
                 id: i,
                 generation: 0,
                 genes: angular.copy(genes),
-                mutationBits: self.breederMutationBits
+                genesUnlocked: self.breederGenesUnlocked
             });
             unit.update();
             population.push(unit);

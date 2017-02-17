@@ -1,8 +1,11 @@
 <div class="bloqhead-component" ng-if="$ctrl.display === 'TILE'">
     <h5 ng-click="$ctrl.showDetails()">
-        {{$ctrl.unit.name}} <i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" tooltip-placement="top" uib-tooltip="{{trait.name}}"></i>
+        <div class="col-xs-12 mortal-name" ng-switch="$ctrl.unit.hasTrait('Male')">
+            <i class="fa fa-male male-color" ng-switch-when="true"></i>
+            <i class="fa fa-female female-color" ng-switch-when="false"></i>
+            <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" tooltip-placement="top" uib-tooltip="{{trait.name}}"></i>
+        </div>        
     </h5>
-
     <table class="genomeEditor">
         <thead>
             <tr>
@@ -79,7 +82,7 @@
         <i class="fa fa-female female-color" ng-switch-when="false"></i>
         <span ng-click="$ctrl.showDetails($ctrl.unit)">{{$ctrl.unit.name}}</span>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-2">
         <table class="genomeEditor">
             <thead>
                 <tr>

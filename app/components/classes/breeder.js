@@ -11,7 +11,7 @@ game.filter('hasTrait', function() {
 });
 
 
-game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filter, TraitInspector, jobTypes) {
+game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobTypes', function($filter, TraitInspector, geneDefinitions, jobTypes) {
 
 
 
@@ -30,9 +30,10 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
         this.generation = config.generation || this.generation || 0;
         this.genes = config.genes || this.genes || [];
         this.breederGeneCap = config.breederGeneCap || this.breederGeneCap || 25;
+        this.genesUnlocked = config.genesUnlocked || this.genesUnlocked || [];
         this.currentJob = config.currentJob || this.currentJob || null;
 
-        this.redGreenImage = getRedGreenImage(this.genes, this.breederGeneCap);
+        this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.breederGeneCap);
         //this.blueImage = getBlueImage(this.genes);
 
         this.traits = this.traitInspector.getTraits(this.genes);
@@ -52,6 +53,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
             dt: new Date(),
             generation: p1.generation + 1,
             genes: [],
+            genesUnlocked: p1.genesUnlocked,
             mother: myGender == 'Female' ? p1 : p2,
             father: myGender == 'Male' ? p1 : p2
 
@@ -177,7 +179,9 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
     function crossover(g1, g2, geneCap) {
         var crossover = Math.random();
         var geneRatio = geneCap / 255.0;
-        var g = angular.copy(crossover <= geneticOptions.crossoverrate ? g1 : g2);
+        var g = angular.copy(g1);
+        g[0]= (crossover <= geneticOptions.crossoverrate ? g1[0] : g2[0]);
+        g[1]= (crossover <= geneticOptions.crossoverrate ? g2[1] : g1[1]);
         g[0] /= geneRatio;
         g[1] /= geneRatio;
         var mutationRate = g[2] / 255.0;
@@ -200,20 +204,56 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'jobTypes', function($filt
         var oldG = g[1];
         g[0] ^= parseInt(bitStringR, 2);
         g[1] ^= parseInt(bitStringG, 2);
-        g[0] *= geneRatio;
-        g[1] *= geneRatio;
+        g[0] = Math.round(g[0] *geneRatio);
+        g[1] = Math.round(g[1]*geneRatio);
         return g;
     }
+    function gcd(a, b) {
+        return !b ? a : gcd(b, a % b);
+    }
 
-    function getRedGreenImage(genes, breederGeneCap) {
-        return generateBitmapDataURL(addRows(convertRedGreenMap(genes, breederGeneCap), genes.length), 20);
+    function lcm(a, b) {
+        return (a * b) / gcd(a, b);   
+    }
+    function getRedGreenImage(genes, genesUnlocked, breederGeneCap) {
+        if(genes.length === 0) return;
+        var unlocked = {
+            "STR":[],
+            "INT":[],
+            "END":[],
+            "CHR":[],
+            "LCK":[]
+        };
+        var genesToUse = [];
+        // sort the unlocked genes into arrays.
+        for(var u=0;u<genesUnlocked.length;u++) {
+            var attr = geneDefinitions[genesUnlocked[u]].attr;
+            unlocked[attr].push(genes[genesUnlocked[u]]);
+        }
+        // get the least common multiple for that lengths of each array to determine the number of pixels necessary
+        // this assumes each attribute has at least 1 gene unlocked.
+        var arr = [unlocked.STR.length, unlocked.INT.length,unlocked.END.length,unlocked.CHR.length,unlocked.LCK.length];
+        var multiple = Math.min(...arr);
+        arr.forEach(function(n){
+            multiple = lcm(multiple,n);
+        });
+        while(multiple<5){  multiple*=2;}
+        for(var key in unlocked) {
+            var geneSize = multiple / unlocked[key].length;
+            for(var g=0;g<unlocked[key].length;g++) {
+                for(var s=0;s<geneSize;s++) {
+                    genesToUse.push(unlocked[key][g]);
+                }
+            }
+        }
+        return generateBitmapDataURL(addRows(convertRedGreenMap(genesToUse, breederGeneCap), genesToUse.length), 1);
     }
 
     function getBlueImage(genes) {
-        return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 20);
+        return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 1);
     }
 
-    function convertRedGreenMap(genes, breederGeneCap) {
+    function convertRedGreenMap(genes, breederGeneCap) {        
         var result = [];
         var minColorRatio = 1 + breederGeneCap / 50.0;
         var colorRatio = 205.0 / breederGeneCap;

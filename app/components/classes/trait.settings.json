@@ -47,14 +47,16 @@
 
             { "dom": "LCK0+", "rec": "LCK0-", "attr": "LCK" },
             { "dom": "LCK1+", "rec": "LCK1-", "attr": "LCK" },
-            { "dom": "Female", "rec": "Male", "attr": "LCK" },
+            { "dom": "LCK2+", "rec": "LCK2-", "attr": "LCK" },
             { "dom": "LCK3+", "rec": "LCK3-", "attr": "LCK" },
             { "dom": "LCK4+", "rec": "LCK4-", "attr": "LCK" },
             { "dom": "LCK5+", "rec": "LCK5-", "attr": "LCK" },
             { "dom": "LCK6+", "rec": "LCK6-", "attr": "LCK" },
             { "dom": "LCK7+", "rec": "LCK7-", "attr": "LCK" },
             { "dom": "LCK8+", "rec": "LCK8-", "attr": "LCK" },
-            { "dom": "LCK9+", "rec": "LCK9-", "attr": "LCK" }
+            { "dom": "LCK9+", "rec": "LCK9-", "attr": "LCK" },
+
+            { "dom": "Female", "rec": "Male", "attr": "NONE"}
         ],
         "traitDefinitions": [{
                 "name": "Handsome",
@@ -69,8 +71,8 @@
                         255
                     ]
                 ],
-                "requiredTraits": [
-                    "Male"
+                "requiredProps": [
+                    {"gender": "Male"}
                 ]
             },
             {
@@ -121,7 +123,7 @@
                 "name": "Female",
                 "genes": [
                     [
-                        42,
+                        50,
                         0,
                         255
                     ]
@@ -131,7 +133,7 @@
                 "name": "Male",
                 "genes": [
                     [
-                        42, -255, -1
+                        50, -255, -1
                     ]
                 ]
             },
