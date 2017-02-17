@@ -69,7 +69,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
             breederMutationChance: this.breederMutationChance,
             breederGenesUnlocked: this.breederGenesUnlocked,
             initialSize: this.initialSize,
-            members: []
+            members: [],
+            newborns: []
         };
         for (var m = 0; m < this.members.length; m++) {
             var member = this.members[m];
