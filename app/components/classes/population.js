@@ -16,7 +16,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
         this.breederLimit = state.breederLimit || this.breederLimit || 0;
         this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
         this.maxSize = state.maxSize || this.maxSize || 10;
-        this.breederMutationBits = state.breederMutationBits || this.breederMutationBits || 4;
+        this.breederGeneCap = state.breederGeneCap || this.breederGeneCap || 25;
         this.breederMutationChance = state.breederMutationChance || this.breederMutationChance || 5;
         this.breederGenesUnlocked = state.breederGenesUnlocked || this.breederGenesUnlocked || [];
         this.initialSize = state.initialSize || this.initialSize || 2;
@@ -26,6 +26,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 var member = state.members[m];
                 var unit = new Breeder({
                     id: member.id,
+                    dt: member.dt,
+                    breederGeneCap: member.breederGeneCap,
                     mother: member.mother || null,
                     father: member.father || null,
                     generation: member.generation,
@@ -45,6 +47,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 var newborn = state.newborns[n];
                 var nb = new Breeder({
                     id: newborn.id,
+                    dt: newborn.dt,
+                    breederGeneCap: newborn.breederGeneCap,
                     mother: newborn.mother || null,
                     father: newborn.father || null,
                     generation: newborn.generation,
@@ -65,7 +69,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
             breeders: this.breeders,
             breederLimit: this.breederLimit,
             maxSize: this.maxSize,
-            breederMutationBits: this.breederMutationBits,
+            breederGeneCap: this.breederGeneCap,
             breederMutationChance: this.breederMutationChance,
             breederGenesUnlocked: this.breederGenesUnlocked,
             initialSize: this.initialSize,
@@ -76,6 +80,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
             var member = this.members[m];
             state.members.push({
                 id: member.id,
+                dt: member.dt,
+                breederGeneCap: member.breederGeneCap,
                 generation: member.generation,
                 genes: member.genes,
                 genesUnlocked: member.genesUnlocked,
@@ -84,14 +90,16 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
             });
         }
         for (var n = 0; n < this.newborns.length; n++) {
-            var member = this.newborns[n];
+            var nb = this.newborns[n];
             state.newborns.push({
-                id: member.id,
-                generation: member.generation,
-                genes: member.genes,
-                genesUnlocked: member.genesUnlocked,
-                name: member.name,
-                currentJob: member.currentJob
+                id: nb.id,
+                dt: nb.dt,
+                breederGeneCap: nb.breederGeneCap,
+                generation: nb.generation,
+                genes: nb.genes,
+                genesUnlocked: nb.genesUnlocked,
+                name: nb.name,
+                currentJob: nb.currentJob
             });
         }
         return state;
@@ -107,7 +115,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
             for (var gn = 0; gn < self.geneDefinitions.length; gn++) {
                 genes.push([0, 0, 0]);
                 if (self.breederGenesUnlocked.indexOf(gn) !== -1) genes[gn][2] = self.breederMutationChance;
-                if(self.geneDefinitions[gn].rec === "Male"){
+                if (self.geneDefinitions[gn].rec === "Male") {
                     genes[gn][0] = r;
                     genes[gn][1] = g;
                     genes[gn][2] = 0;
@@ -117,7 +125,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 id: i,
                 generation: 0,
                 genes: angular.copy(genes),
-                genesUnlocked: self.breederGenesUnlocked
+                genesUnlocked: self.breederGenesUnlocked,
+                breederGeneCap: self.breederGeneCap,
             });
             unit.update();
             population.push(unit);

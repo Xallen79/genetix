@@ -17,17 +17,17 @@ game.service('resourceService', [
 
             // this will turn them all on for testing purposes
             var overrideAllOn = false;
-
+            //[0] owned, [1] max, [2] enabled, [3] multiplier
             var defaultLimits = {
-                DIRT: [0, 0, true || overrideAllOn],
-                BRICKS: [0, 0, false || overrideAllOn],
-                WATER: [0, 0, false || overrideAllOn],
-                WOOD: [0, 0, false || overrideAllOn],
-                GOLD: [0, 0, false || overrideAllOn],
-                HAPPINESS: [0, -1, false || overrideAllOn],
-                SCIENCE: [0, -1, false || overrideAllOn],
-                STEEL: [0, 0, false || overrideAllOn],
-                EVOCOIN: [0, -1, false || overrideAllOn]
+                DIRT: [0, 0, true || overrideAllOn, 1.00],
+                BRICKS: [0, 0, false || overrideAllOn, 1.00],
+                WATER: [0, 0, false || overrideAllOn, 1.00],
+                WOOD: [0, 0, false || overrideAllOn, 1.00],
+                GOLD: [0, 0, false || overrideAllOn, 1.00],
+                HAPPINESS: [0, -1, false || overrideAllOn, 1.00],
+                SCIENCE: [0, -1, false || overrideAllOn, 1.00],
+                STEEL: [0, 0, false || overrideAllOn, 1.00],
+                EVOCOIN: [0, -1, false || overrideAllOn, 1.00]
             };
 
             for (var resourceType in resourceTypes) {
@@ -35,7 +35,7 @@ game.service('resourceService', [
                     var r = self.state.resources[resourceType];
                     if (typeof r == 'undefined') {
                         // if there is no default, instead of failing we are just going to add it with a max of 911 so that we are aware of the problem
-                        r = defaultLimits[resourceType] || [0, 911, overrideAllOn];
+                        r = defaultLimits[resourceType] || [0, 911, overrideAllOn, 1];
                         self.state.resources[resourceType] = r;
                     }
                     $rootScope.$emit('resourceChangedEvent', resourceType, r[0]);
@@ -61,6 +61,9 @@ game.service('resourceService', [
                     self.state.resources[perk.arr[1]][2] = true;
                     $rootScope.$emit('resourceEnabledEvent', perk.arr[1], true);
                 }
+                if (perk.pid === 'P_R_MULTIPLIER') {
+                    self.addResourceMultiplier(perk.arr[1], perk.arr[2]);
+                }
             }
         };
 
@@ -82,7 +85,7 @@ game.service('resourceService', [
             r[0] += amount;
             var actualAmount = amount;
             if (r[1] != -1 && r[0] > r[1]) {
-                actualAmount = amount - r[1] - r[0];
+                actualAmount = amount - (r[0] - r[1]);
                 r[0] = r[1];
             }
             // if this puts us negative, we cannot deduct the amount, reset and return -1 to indicate failure.
@@ -109,6 +112,9 @@ game.service('resourceService', [
                 $rootScope.$emit('resourceEnabledEvent', resourceType, true);
             }
             $rootScope.$emit('resourceLimitChangedEvent', resourceType, r[1]);
+        };
+        self.addResourceMultiplier = function(resourceType, amount) {
+            self.state.resources[resourceType][3] += (amount / 100.0);
         };
 
         self.SubscribeResourceChangedEvent = function(scope, callback) {

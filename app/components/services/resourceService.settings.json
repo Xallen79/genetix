@@ -8,6 +8,20 @@
                 "attr": "STR",
                 "jids": ["DIRT_GATHER"]
             },
+            "WOOD": {
+                "rid": "WOOD",
+                "name": "Wood",
+                "desc": "Used in construction and mining.",
+                "attr": "END",
+                "jids": ["WOOD_GATHER"]
+            },
+            "WATER": {
+                "rid": "WATER",
+                "name": "Water",
+                "desc": "Used in construction, mining and population expansion.",
+                "attr": "LCK",
+                "jids": ["WATER_GATHER"]
+            },
             "BRICKS": {
                 "rid": "BRICKS",
                 "name": "Bricks",
@@ -19,20 +33,6 @@
                 "name": "Steel",
                 "desc": "Used in advanced construction.",
                 "attr": "STR"
-            },
-            "WATER": {
-                "rid": "WATER",
-                "name": "Water",
-                "desc": "Used in construction, mining and population expansion.",
-                "attr": "END",
-                "jids": ["WATER_GATHER"]
-            },
-            "WOOD": {
-                "rid": "WOOD",
-                "name": "Wood",
-                "desc": "Used in construction and mining.",
-                "attr": "END",
-                "jids": ["WOOD_GATHER"]
             },
             "GOLD": {
                 "rid": "GOLD",

@@ -12,9 +12,9 @@
                 "populationState": {
                     "initialSize": 2,
                     "maxSize": 5,
-                    "breederGeneCap": 100,
-                    "breederGenesUnlocked": [0,10,20,30,40],
-                    "breederMutationChance": 20
+                    "breederGeneCap": 90,
+                    "breederGenesUnlocked": [0, 10, 20, 30, 40],
+                    "breederMutationChance": 10
                 }
             },
             "achievementServiceState": null,

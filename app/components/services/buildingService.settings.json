@@ -23,22 +23,6 @@
                 "unlocked": 1,
                 "multiplier": 1
             },
-            "DIRTPILE": {
-                "name": "Dirt pile",
-                "description": "Where else would you store dirt? Holds %(size)d.",
-                "use": "storage",
-                "stores": "DIRT",
-                "size": 25,
-                "baseCost": [{
-                    "resource": "DIRT",
-                    "amount": 10,
-                    "costMultiplier": 1.25
-                }],
-                "purchased": 0,
-                "gifted": 1,
-                "unlocked": 1,
-                "multiplier": 1
-            },
             "SODHOUSE": {
                 "name": "Sod house",
                 "description": "Provides minimal shelter for %(size)d things.",
@@ -46,16 +30,56 @@
                 "size": 5,
                 "baseCost": [{
                     "resource": "DIRT",
-                    "amount": 50,
-                    "costMultiplier": 1.5
+                    "amount": 500,
+                    "costMultiplier": 2.5
+                }, {
+                    "resource": "WOOD",
+                    "amount": 250,
+                    "costMultiplier": 2.5
                 }, {
                     "resource": "WATER",
-                    "amount": 25,
-                    "costMultiplier": 1.5
+                    "amount": 125,
+                    "costMultiplier": 2.5
                 }],
                 "purchased": 0,
                 "gifted": 1,
                 "unlocked": 1,
+                "multiplier": 1
+            },
+            "DIRTPILE": {
+                "name": "Dirt pile",
+                "description": "Where else would you store dirt? Holds %(size)d.",
+                "use": "storage",
+                "stores": "DIRT",
+                "size": 100,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 50,
+                    "costMultiplier": 1.25
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": 1,
+                "multiplier": 1
+            },
+            "WOODSHED": {
+                "name": "Woodshed",
+                "description": "Holds %(size)d wood",
+                "use": "storage",
+                "stores": "WOOD",
+                "size": 100,
+                "baseCost": [{
+                    "resource": "WOOD",
+                    "amount": 50,
+                    "costMultiplier": 1.10
+                }, {
+                    "resource": "DIRT",
+                    "amount": 25,
+                    "costMultiplier": 1.10
+                }],
+                "purchased": 0,
+                "gifted": 0,
+                "unlocked": 0,
                 "multiplier": 1
             },
             "WATERHOLE": {
@@ -63,10 +87,14 @@
                 "description": "A dirty place to hold water. Stores %(size)d.",
                 "use": "storage",
                 "stores": "WATER",
-                "size": 10,
+                "size": 100,
                 "baseCost": [{
+                    "resource": "WOOD",
+                    "amount": 50,
+                    "costMultiplier": 1.10
+                }, {
                     "resource": "DIRT",
-                    "amount": 25,
+                    "amount": 50,
                     "costMultiplier": 1.05
                 }],
                 "purchased": 0,

@@ -83,11 +83,13 @@ game.service('workerService', [
                 }
                 resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
                 if (elapsed > 0 && (resources[job.resource][0] + resources[job.resource].gatherAmount) < resources[job.resource][1]) {
-
-                    resources[job.resource].gatherAmount += (job.baseAmount * elapsed);
-                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: (job.baseAmount * elapsed), res: resourceTypes[job.resource].name });
+                    var a = unit.getAttribute(resourceTypes[job.resource].attr);
+                    gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
+                    resources[job.resource].gatherAmount += gatherAmount;
+                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
                     logService.logWorkMessage(msg);
                 }
+
 
 
             }

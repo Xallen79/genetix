@@ -41,6 +41,7 @@ game.controller('bloqhead.controllers.resourceList', [
             var ret = {};
             ret['fa-truck'] = (res === 'DIRT');
             ret['fa-tint'] = (res === 'WATER');
+            ret['fa-tree'] = (res === 'WOOD');
             return ret;
         };
 

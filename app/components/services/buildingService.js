@@ -238,7 +238,7 @@ game.service('buildingService', [
             var resources = resourceService.getResourcesSnapshot();
             for (var c = 0; c < nextCost.length; c++) {
                 var r = resources[nextCost[c].resourceType];
-                if (r[0] < nextCost[c].amount) {
+                if (!angular.isDefined(r) || r[0] < nextCost[c].amount) {
                     return false;
                 }
             }

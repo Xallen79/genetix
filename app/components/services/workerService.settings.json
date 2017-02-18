@@ -21,8 +21,8 @@
             },
             "WATER_GATHER": {
                 "jid": "WATER_GATHER",
-                "name": "Water Gatherer",
-                "description": "One who collects water",
+                "name": "Water Diviner",
+                "description": "Uses wooden sticks to find water",
                 "resource": "WATER",
                 "baseWorkerSteps": 4,
                 "baseAmount": 1,

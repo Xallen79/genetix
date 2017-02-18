@@ -11,7 +11,7 @@ game.filter('hasTrait', function() {
 });
 
 
-game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobTypes', function($filter, TraitInspector, geneDefinitions, jobTypes) {
+game.factory('Breeder', ['$filter', 'TraitInspector', 'geneDefinitions', 'jobTypes', function($filter, TraitInspector, geneDefinitions, jobTypes) {
 
 
 
@@ -51,17 +51,22 @@ game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobType
         var child = new Breeder({
             id: newId,
             dt: new Date(),
-            generation: p1.generation + 1,
+            generation: p1.generation,
             genes: [],
             genesUnlocked: p1.genesUnlocked,
+            breederGeneCap: p1.breederGeneCap,
             mother: myGender == 'Female' ? p1 : p2,
             father: myGender == 'Male' ? p1 : p2
 
         });
         for (var g = 0; g < p1.genes.length; g++) {
-            var p1g = p1.genes[g];
-            var p2g = p2.genes[g];
-            child.genes.push(crossover(p1g, p2g, this.breederGeneCap));
+            if (geneDefinitions[g].dom === "Female") {
+                child.genes.push(randomIntFromInterval(0, 1) > 0 ? p1.genes[g] : p2.genes[g]);
+            } else {
+                var p1g = p1.genes[g];
+                var p2g = p2.genes[g];
+                child.genes.push(crossover(p1g, p2g, this.breederGeneCap));
+            }
         }
         child.update();
         return child;
@@ -83,6 +88,9 @@ game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobType
         var firstName = (this.hasTrait('Male')) ? nameList1[randomIntFromInterval(0, nameList1.length - 1)] : nameList2[randomIntFromInterval(0, nameList2.length - 1)];
         var lastName = nameList3[randomIntFromInterval(0, nameList3.length - 1)] + nameList4[randomIntFromInterval(0, nameList4.length - 1)] + nameList5[randomIntFromInterval(0, nameList5.length - 1)];
         return firstName + lastName;
+    };
+    Breeder.prototype.getAttribute = function(attr) {
+        return this.attributes[attr];
     };
     // we need to return all relations to account for inbreeding (aka uncle brother)
     /* this is way wrong....
@@ -180,8 +188,8 @@ game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobType
         var crossover = Math.random();
         var geneRatio = geneCap / 255.0;
         var g = angular.copy(g1);
-        g[0]= (crossover <= geneticOptions.crossoverrate ? g1[0] : g2[0]);
-        g[1]= (crossover <= geneticOptions.crossoverrate ? g2[1] : g1[1]);
+        g[0] = (crossover <= geneticOptions.crossoverrate ? g1[0] : g2[0]);
+        g[1] = (crossover <= geneticOptions.crossoverrate ? g2[1] : g1[1]);
         g[0] /= geneRatio;
         g[1] /= geneRatio;
         var mutationRate = g[2] / 255.0;
@@ -202,46 +210,52 @@ game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobType
         }
         var oldR = g[0];
         var oldG = g[1];
+
         g[0] ^= parseInt(bitStringR, 2);
         g[1] ^= parseInt(bitStringG, 2);
-        g[0] = Math.round(g[0] *geneRatio);
-        g[1] = Math.round(g[1]*geneRatio);
+        var newR = g[0];
+        g[0] = Math.round(g[0] * geneRatio);
+        g[1] = Math.round(g[1] * geneRatio);
+
+        //console.log($filter('fmt')('mutate %d -> %d -> %d - string: %s geneCap: %d', oldR, newR, g[0], bitStringR, geneCap));
         return g;
     }
+
     function gcd(a, b) {
         return !b ? a : gcd(b, a % b);
     }
 
     function lcm(a, b) {
-        return (a * b) / gcd(a, b);   
+        return (a * b) / gcd(a, b);
     }
+
     function getRedGreenImage(genes, genesUnlocked, breederGeneCap) {
-        if(genes.length === 0) return;
+        if (genes.length === 0) return;
         var unlocked = {
-            "STR":[],
-            "INT":[],
-            "END":[],
-            "CHR":[],
-            "LCK":[]
+            "STR": [],
+            "INT": [],
+            "END": [],
+            "CHR": [],
+            "LCK": []
         };
         var genesToUse = [];
         // sort the unlocked genes into arrays.
-        for(var u=0;u<genesUnlocked.length;u++) {
+        for (var u = 0; u < genesUnlocked.length; u++) {
             var attr = geneDefinitions[genesUnlocked[u]].attr;
             unlocked[attr].push(genes[genesUnlocked[u]]);
         }
         // get the least common multiple for that lengths of each array to determine the number of pixels necessary
         // this assumes each attribute has at least 1 gene unlocked.
-        var arr = [unlocked.STR.length, unlocked.INT.length,unlocked.END.length,unlocked.CHR.length,unlocked.LCK.length];
-        var multiple = Math.min(...arr);
-        arr.forEach(function(n){
-            multiple = lcm(multiple,n);
+        var arr = [unlocked.STR.length, unlocked.INT.length, unlocked.END.length, unlocked.CHR.length, unlocked.LCK.length];
+        var multiple = Math.min(unlocked.STR.length, unlocked.INT.length, unlocked.END.length, unlocked.CHR.length, unlocked.LCK.length);
+        arr.forEach(function(n) {
+            multiple = lcm(multiple, n);
         });
-        while(multiple<5){  multiple*=2;}
-        for(var key in unlocked) {
+        while (multiple < 5) { multiple *= 2; }
+        for (var key in unlocked) {
             var geneSize = multiple / unlocked[key].length;
-            for(var g=0;g<unlocked[key].length;g++) {
-                for(var s=0;s<geneSize;s++) {
+            for (var g = 0; g < unlocked[key].length; g++) {
+                for (var s = 0; s < geneSize; s++) {
                     genesToUse.push(unlocked[key][g]);
                 }
             }
@@ -253,7 +267,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector','geneDefinitions', 'jobType
         return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 1);
     }
 
-    function convertRedGreenMap(genes, breederGeneCap) {        
+    function convertRedGreenMap(genes, breederGeneCap) {
         var result = [];
         var minColorRatio = 1 + breederGeneCap / 50.0;
         var colorRatio = 205.0 / breederGeneCap;
