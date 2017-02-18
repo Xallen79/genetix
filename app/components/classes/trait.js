@@ -21,6 +21,8 @@ game.factory('TraitInspector', ['$filter', 'geneDefinitions', 'traitDefinitions'
             for (var i = 0; i < traits.length; i++) {
                 var td = traits[i];
                 var met = true;
+                if (genes.length == 50)
+                    genes.unshift([255, 0, 0]);
                 for (var h = 0; h < td.genes.length && met === true; h++) {
                     var tdg = td.genes[h];
                     var v = genes[tdg[0]][1] - genes[tdg[0]][0];

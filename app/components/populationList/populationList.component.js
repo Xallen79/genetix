@@ -1,7 +1,5 @@
 var game = angular.module('bloqhead.genetixApp');
 
-
-
 game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
@@ -13,34 +11,37 @@ game.component('bloqheadPopulationList', {
     }
 });
 
+// not being used atm
+game.component('bloqheadPopulationListMaleRow', {
+    required: 'bloqheadPopulationList',
+    templateUrl: 'components/populationList/maleRow.html',
+    bindings: {
+        canBreed: "<",
+        breederAssign: "&",
+        unit: '<',
+        maxPopulation: '='
+    }
+});
+// not being used atm
+game.component('bloqheadPopulationListFemaleRow', {
+    required: 'bloqheadPopulationList',
+    templateUrl: 'components/populationList/femaleRow.html',
+    bindings: {
+        canBreed: "<",
+        breederAssign: "&",
+        unit: '<',
+        maxPopulation: '='
+    }
+});
+
+
 game.controller('bloqhead.controllers.populationList', [
-    '$scope', 'resourceService', 'resourceTypes',
-    function($scope, resourceService, resourceTypes) {
+    '$scope', 'resourceService', 'resourceTypes', 'jobTypes',
+    function($scope, resourceService, resourceTypes, jobTypes) {
         var self = this;
+        self.jobTypes = jobTypes;
 
-
-        self.$onInit = function() {
-            //resourceService.SubscribeResourceChangedEvent($scope, self.resourceChanged);
-            //resourceService.SubscribeResourceLimitChangedEvent($scope, self.resourceLimitChanged);
-            //resourceService.SubscribeResourceEnabledEvent($scope, self.resourceEnabled);
-            //self.resources = resourceService.getResourcesSnapshot();
-        };
-
-        /*
-        self.resourceChanged = function(event, resourceType, amount) {
-            if (!self.resources[resourceType])
-                self.resources[resourceType] = [];
-            self.resources[resourceType][0] = amount;
-        };
-        self.resourceLimitChanged = function(event, resourceType, amount) {
-            if (!self.resources[resourceType])
-                self.resources[resourceType] = [];
-            self.resources[resourceType][1] = amount;
-        };
-        self.resourceEnabled = function(event, resourceType, bit) {
-            self.resources[resourceType][2] = bit;
-        };
-        */
+        self.$onInit = function() {};
     }
 
 

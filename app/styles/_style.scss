@@ -198,6 +198,11 @@ h5 {
         padding: 2px;
         font-size: .8vw;
     }
+    .mortal-genome {
+        .genomeEditor {
+            width: 10vw;
+        }
+    }
     @include maximize-row();
     .genomeEditor {
         margin: 2px !important;
