@@ -162,6 +162,22 @@ h5 {
     padding: 0.5vw 0.5vh;
     //border: 2px solid $brand-info;
     height: calc(100vh - #{$navbar-height});
+    //height: 90vh;
+}
+
+.game-menu {
+    max-height: $navbar-height;
+}
+
+.building-list-button {
+    float: left;
+    font-size: .8em;
+    width: 30%;
+    margin: .1vh .1vw .1vh .1vw;
+    button {
+        width: 100%;
+        margin: 0;
+    }
 }
 
 .topRow {
@@ -177,6 +193,9 @@ h5 {
 
 .genomeEditor {
     font-size: .7vw;
+    img.gene {
+        border: .1vh solid black;
+    }
     input {
         color: black;
         width: 4em;
@@ -215,27 +234,33 @@ h5 {
     p {
         margin: 3px;
     }
-    // p[data-attr="STR"] {
-    //     color: $attr-str;
-    // }
-    // p[data-attr="INT"] {
-    //     color: $attr-int;
-    // }
-    // p[data-attr="END"] {
-    //     color: $attr-end;
-    // }
-    // p[data-attr="CHR"] {
-    //     color: $attr-chr;
-    // }
-    // p[data-attr="LCK"] {
-    //     color: $attr-lck;
-    // }
+    [data-attr="STR"] {
+        color: $attr-str;
+        @include strokeme(black)
+    }
+    [data-attr="INT"] {
+        color: $attr-int;
+        @include strokeme(black)
+    }
+    [data-attr="END"] {
+        color: $attr-end;
+        @include strokeme(black)
+    }
+    [data-attr="CHR"] {
+        color: $attr-chr;
+        @include strokeme(black)
+    }
+    [data-attr="LCK"] {
+        color: $attr-lck;
+        @include strokeme(black)
+    }
     h5 {
         margin: 3px;
         color: lightblue;
     }
-    max-width: 250px;
-    width: 250px;
+    div {
+        max-width: 40vw;
+    }
 }
 
 .achievement-list {

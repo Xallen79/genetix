@@ -15,6 +15,11 @@ game.controller('bloqhead.controllers.resourceList', [
         self.resourceTypes = resourceTypes;
         self.jobTypes = jobTypes;
         self.resources = {};
+
+        self.getWorkerIcon = function(res) {
+            return resourceService.getWorkerIcon(res);
+        };
+
         self.$onInit = function() {
             resourceService.SubscribeResourceChangedEvent($scope, self.resourceChanged);
             resourceService.SubscribeResourceLimitChangedEvent($scope, self.resourceLimitChanged);
@@ -37,13 +42,7 @@ game.controller('bloqhead.controllers.resourceList', [
             return ret;
         };
 
-        self.getWorkerIcon = function(res) {
-            var ret = {};
-            ret['fa-truck'] = (res === 'DIRT');
-            ret['fa-tint'] = (res === 'WATER');
-            ret['fa-tree'] = (res === 'WOOD');
-            return ret;
-        };
+
 
         self.getWorkerCount = function(res) {
             var ret = 0;

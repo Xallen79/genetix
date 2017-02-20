@@ -51,6 +51,14 @@ game.service('resourceService', [
             return self.state;
         };
 
+        self.getWorkerIcon = function(res) {
+            var ret = {};
+            ret['fa-truck'] = (res === 'DIRT');
+            ret['fa-tint'] = (res === 'WATER');
+            ret['fa-tree'] = (res === 'WOOD');
+            return ret;
+        };
+
         self.rewardEarned = function(event, reward) {
             for (var p = 0; p < reward.perks.length; p++) {
                 var perk = reward.perks[p];

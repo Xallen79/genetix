@@ -1,23 +1,22 @@
 <div class="row">
-    <div class="col-xs-5">Building</div>
-    <div class="col-xs-2">Owned</div>
-</div>
-<div class="row" ng-repeat="building in $ctrl.buildings" style="padding-bottom: 5px">
-    <div class="col-xs-5">
-        <h5 uib-tooltip="{{building.description}}">{{building.name}}</h5>
-    </div>
-    <div class="col-xs-2">
-        <h5 ng-bind="building.owned"></h5>
-    </div>
-    <div class="col-xs-4">
-        <div style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'resourceTooltip.html'" tooltip-class="building-tooltip">
-            <button ng-disabled=" !building.canBuild " ng-if="building.costToBuild.length> 0" class="btn btn-xs btn-primary" ng-click="$ctrl.build(building.type)">Build</button>
+    <div class="col-xs-12">
+        <div class="building-list-button" ng-repeat="building in $ctrl.buildings" ng-if="building.costToBuild.length > 0" tooltip-placement="bottom" uib-tooltip-template="'resourceTooltip.html'" tooltip-class="building-tooltip">
+            <button type="button" ng-bind="(building.name + ' (' + building.owned + ')')" ng-disabled=" !building.canBuild " class="btn btn-xs btn-primary" ng-click="$ctrl.build(building.type)"></button>
         </div>
     </div>
 </div>
 <script type="text/ng-template" id="resourceTooltip.html">
-    <div>
-        <h5>Requires</h5>
+    <div style="text-align: left;">
+        <h5>{{building.description}}</h5>
+        <p style="white-space:nowrap">
+            <span>Requires: </span>
+            <span ng-repeat="cost in building.costToBuild">
+                <i class="fa" ng-class="$ctrl.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
+                <span ng-bind="cost.amount"></span>&nbsp;
+            </span>
+        </p>
+        <!--
         <p ng-repeat="cost in building.costToBuild" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"><span ng-bind="cost.resource"></span>: <span ng-bind="cost.amount"></span></p>
+        -->
     </div>
 </script>

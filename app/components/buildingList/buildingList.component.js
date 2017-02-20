@@ -7,8 +7,8 @@ game.component('bloqheadBuildingList', {
 
 
 game.controller('bloqhead.controllers.buildingList', [
-    '$scope', 'buildingService', 'resourceTypes',
-    function($scope, buildingService, resourceTypes) {
+    '$scope', 'buildingService', 'resourceService', 'resourceTypes',
+    function($scope, buildingService, resourceService, resourceTypes) {
         var self = this;
         self.$onInit = function() {
             self.buildings = []; //buildingService.getBuildingSnapshot();
@@ -18,7 +18,9 @@ game.controller('bloqhead.controllers.buildingList', [
         self.updateBuildings = function(event, buildings) {
             self.buildings = buildings;
         };
-
+        self.getWorkerIcon = function(res) {
+            return resourceService.getWorkerIcon(res);
+        };
         self.build = function(type) {
             buildingService.build(type);
         };
