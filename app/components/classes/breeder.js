@@ -24,7 +24,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'geneDefinitions', 'jobTyp
     Breeder.prototype.update = function(config) {
         if (typeof(config) == 'undefined') config = {};
         this.id = config.id || this.id || 0;
-        this.dt = config.dt || this.dt || new Date();
+        this.dt = config.dt || this.dt || new Date().getTime();
         this.mother = config.mother || this.mother || null;
         this.father = config.father || this.father || null;
         this.generation = config.generation || this.generation || 0;
@@ -50,7 +50,7 @@ game.factory('Breeder', ['$filter', 'TraitInspector', 'geneDefinitions', 'jobTyp
 
         var child = new Breeder({
             id: newId,
-            dt: new Date(),
+            dt: new Date().getTime(),
             generation: p1.generation,
             genes: [],
             genesUnlocked: p1.genesUnlocked,

@@ -11,30 +11,6 @@ game.component('bloqheadPopulationList', {
     }
 });
 
-// not being used atm
-game.component('bloqheadPopulationListMaleRow', {
-    required: 'bloqheadPopulationList',
-    templateUrl: 'components/populationList/maleRow.html',
-    bindings: {
-        canBreed: "<",
-        breederAssign: "&",
-        unit: '<',
-        maxPopulation: '='
-    }
-});
-// not being used atm
-game.component('bloqheadPopulationListFemaleRow', {
-    required: 'bloqheadPopulationList',
-    templateUrl: 'components/populationList/femaleRow.html',
-    bindings: {
-        canBreed: "<",
-        breederAssign: "&",
-        unit: '<',
-        maxPopulation: '='
-    }
-});
-
-
 game.controller('bloqhead.controllers.populationList', [
     '$scope', 'resourceService', 'resourceTypes', 'jobTypes',
     function($scope, resourceService, resourceTypes, jobTypes) {
@@ -43,8 +19,51 @@ game.controller('bloqhead.controllers.populationList', [
 
         self.$onInit = function() {};
     }
+]);
 
 
+game.component('bloqheadPopulationPanel', {
+    require: {
+        parent: '^bloqheadPopulationList'
+    },
+    templateUrl: 'components/populationList/populationPanel.html',
+    controller: 'bloqhead.controllers.populationPanel',
+    bindings: {
+        population: '<',
+        filter: '<',
+        orderBy: '<'
+    }
+});
+game.filter('applyPopulationFilter', function() {
+    return function(input, filter) {
+        var matches = [];
+        var nonmatches = [];
+        for (var i = 0; i < input.length; i++) {
+            var criteriaMet = true;
+            if (filter && filter.traits) {
+                for (var t = 0; t < filter.traits.length; t++) {
+                    if (!input[i].hasTrait(filter.traits[t])) {
+                        criteriaMet = false;
+                        break;
+                    }
+                }
+            }
+            if (criteriaMet)
+                matches.push(input[i]);
+            if (!criteriaMet)
+                nonmatches.push(input[i]);
+        }
 
+        return matches;
+    };
+});
 
+game.controller('bloqhead.controllers.populationPanel', [
+    function() {
+        var self = this;
+        self.$onInit = function() {
+            self.orderBy = self.orderBy || '-dt';
+        };
+
+    }
 ]);

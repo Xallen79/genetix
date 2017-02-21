@@ -320,41 +320,54 @@ h5 {
     h5 {
         margin: 2px 0px 1px 0px;
     }
+    .nav-pills>li>a {
+        /* adjust padding for height*/
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
     button.btn-primary {
         @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
     }
     button.btn-primary:hover {
         @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
     }
-    table.genomeEditor {
-        margin-top: .1vh;
-        margin-bottom: .1vh;
-        width: 100%;
-        th,
-        td {
-            text-align: center;
-        }
+    bloqhead-population-panel {
         thead {
-            th:nth-child(1) {
-                @include linear-gradient(180deg, $attr-str 15%, black 100%)
-            }
-            th:nth-child(2) {
-                @include linear-gradient(180deg, $attr-int 15%, black 100%)
-            }
-            th:nth-child(3) {
-                @include linear-gradient(180deg, $attr-end 15%, black 100%)
-            }
-            th:nth-child(4) {
-                @include linear-gradient(180deg, $attr-chr 15%, black 100%)
-            }
-            th:nth-child(5) {
-                @include linear-gradient(180deg, $attr-lck 15%, black 100%)
+            th {
+                text-align: center;
+                font-size: .8em;
             }
         }
         tbody {
             td {
+                font-size: .7em;
+            }
+        }
+    }
+    table.genomeEditor {
+        margin-top: .1vh;
+        margin-bottom: .1vh;
+        width: 100%;
+        tbody {
+            td {
                 background-color: black;
                 font-family: "Courier New", Courier, monospace;
+                text-align: center;
+            }
+            td:nth-child(1) {
+                @include linear-gradient(180deg, $attr-str 15%, black 100%)
+            }
+            td:nth-child(2) {
+                @include linear-gradient(180deg, $attr-int 15%, black 100%)
+            }
+            td:nth-child(3) {
+                @include linear-gradient(180deg, $attr-end 15%, black 100%)
+            }
+            td:nth-child(4) {
+                @include linear-gradient(180deg, $attr-chr 15%, black 100%)
+            }
+            td:nth-child(5) {
+                @include linear-gradient(180deg, $attr-lck 15%, black 100%)
             }
         }
         img {

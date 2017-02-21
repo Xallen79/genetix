@@ -1,111 +1,26 @@
 <bloqhead-player-box box-title="Population [{{$ctrl.population.length}} / {{$ctrl.maxPopulation}}]">
     <div class="row population-container">
-        <div class="col-xs-6">
-            <h6><i class="fa fa-male male-color"></i> Males</h6>
-            <table>
-                <thead>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="unit in $ctrl.population | hasTrait:'Male' | orderBy: '-dt'" class="population-list">
-                        <td class="mortal-name "><span ng-click="$ctrl.showDetails(unit) ">{{unit.name}}</span></td>
-                        <td class="mortal-genome ">
+        <div class="col-xs-12">
+            <uib-tabset type="pills">
+                <div uib-tab class="panel-default" heading="Gender View">
+                    <div class="col-xs-6">
+                        <h6><i class="fa fa-male male-color"></i> Males</h6>
+                        <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Male']}"></bloqhead-population-panel>
+                    </div>
+                    <div class="col-xs-6">
+                        <h6><i class="fa fa-female female-color "></i> Females</h6>
+                        <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Female']}"></bloqhead-population-panel>
+                    </div>
+                </div>
+                <div uib-tab class="panel-default" heading="Custom View">
+                    <div class="col-xs-6">
+                        <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Male']}"></bloqhead-population-panel>
+                    </div>
+                </div>
 
-                            <table class="genomeEditor ">
-                                <thead>
-                                    <tr>
-                                        <th colspan="5 "><img class="img-responsive " ng-src="{{unit.redGreenImage}} " /></th>
-                                    </tr>
-                                    <tr>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.STR}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.INT}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.END}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.CHR}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.LCK}}
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </table>
+            </uib-tabset>
 
-                        </td>
-                        <td>
-                            <button ng-disabled="!$ctrl.canBreed " class="btn btn-xs btn-primary " ng-click="$ctrl.breederAssign({$id:unit.id}) ">Breed Me</button>
-                        </td>
-                        <td>
-                            <div class="btn-group " uib-dropdown dropdown-append-to-body="true ">
-                                <button type="button " class="btn btn-xs btn-primary " uib-dropdown-toggle><span ng-bind="$ctrl.jobTypes[unit.currentJob].name "></span><span class="caret "></span></button>
-                                <ul class="dropdown-menu " uib-dropdown-menu role="menu " aria-labelledby="single-button ">
-                                    <li ng-repeat="(key, job) in $ctrl.jobTypes ">
-                                        <a href="javascript:void(0); " ng-bind="job.name " ng-click="$ctrl.breederAssign({$id:unit.id, $type:key}) "></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-xs-6 ">
-            <h6><i class="fa fa-female female-color "></i> Females</h6>
-            <table>
-                <thead>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="unit in $ctrl.population | hasTrait:'Female' | orderBy: '-dt'" class="population-list">
-                        <td class="mortal-name "><span ng-click="$ctrl.showDetails(unit) ">{{unit.name}}</span></td>
-                        <td class="mortal-genome ">
 
-                            <table class="genomeEditor ">
-                                <thead>
-                                    <tr>
-                                        <th colspan="5 "><img class="img-responsive gene" ng-src="{{unit.redGreenImage}} " /></th>
-                                    </tr>
-                                    <tr>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.STR}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.INT}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.END}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.CHR}}
-                                        </th>
-                                        <th style="width: 20% ">
-                                            {{unit.attributes.LCK}}
-                                        </th>
-                                    </tr>
-
-                                </thead>
-                            </table>
-
-                        </td>
-                        <td>
-                            <button ng-disabled="!$ctrl.canBreed " class="btn btn-xs btn-primary " ng-click="$ctrl.breederAssign({$id:unit.id}) ">Breed Me</button>
-                        </td>
-                        <td>
-                            <div class="btn-group " uib-dropdown dropdown-append-to-body="true ">
-                                <button type="button " class="btn btn-xs btn-primary " uib-dropdown-toggle><span ng-bind="$ctrl.jobTypes[unit.currentJob].name "></span><span class="caret "></span></button>
-                                <ul class="dropdown-menu " uib-dropdown-menu role="menu " aria-labelledby="single-button ">
-                                    <li ng-repeat="(key, job) in $ctrl.jobTypes ">
-                                        <a href="javascript:void(0); " ng-bind="job.name " ng-click="$ctrl.breederAssign({$id:unit.id, $type:key}) "></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
 

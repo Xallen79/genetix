@@ -7,48 +7,25 @@
         </div>
     </h5>
     <table class="genomeEditor">
-        <thead>
-            <tr>
-                <th colspan="5"><img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" /></th>
-            </tr>
-            <tr>
-                <th style="width: 20%">
-                    STR
-                </th>
-
-                <th style="width: 20%">
-                    INT
-                </th>
-
-                <th style="width: 20%">
-                    END
-                </th>
-
-                <th style="width: 20%">
-                    CHR
-                </th>
-
-                <th style="width: 20%">
-                    LCK
-                </th>
-            </tr>
-        </thead>
         <tbody>
             <tr>
-                <td>
-                    <span ng-bind="$ctrl.unit.attributes.STR"></span>
+                <th colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" /></th>
+            </tr>
+            <tr>
+                <td style="width: 20% ">
+                    {{$ctrl.unit.attributes.STR}}
                 </td>
-                <td>
-                    <span ng-bind="$ctrl.unit.attributes.INT"></span>
+                <td style="width: 20% ">
+                    {{$ctrl.unit.attributes.INT}}
                 </td>
-                <td>
-                    <span ng-bind="$ctrl.unit.attributes.END"></span>
+                <td style="width: 20% ">
+                    {{$ctrl.unit.attributes.END}}
                 </td>
-                <td>
-                    <span ng-bind="$ctrl.unit.attributes.CHR"></span>
+                <td style="width: 20% ">
+                    {{$ctrl.unit.attributes.CHR}}
                 </td>
-                <td>
-                    <span ng-bind="$ctrl.unit.attributes.LCK"></span>
+                <td style="width: 20% ">
+                    {{$ctrl.unit.attributes.LCK}}
                 </td>
             </tr>
         </tbody>
