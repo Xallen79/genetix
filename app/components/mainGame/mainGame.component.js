@@ -47,6 +47,12 @@ game.controller('bloqhead.controllers.mainGame', [
             else
                 workerService.addWorker(jobType, unitid);
         };
+        self.dropped = function(dragId, dropId) {
+            if(dropId ==="breeder-target") {
+                var drag = angular.element(document.getElementById(dragId));
+                this.addBreeder(drag.data('breederid'));
+            }
+        };
         self.addBreeder = function(unitid) {
 
             populationService.addBreeder(unitid);

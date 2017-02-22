@@ -499,3 +499,20 @@ bloqhead-player-box {
 .female-color {
     color: hotpink;
 }
+
+.lvl-over {
+border: 2px dashed black !important;
+}
+
+.lvl-target {
+background-color: #ddd; 
+opacity: .5;
+}
+
+[ng-click] {
+    cursor: pointer;
+}
+
+[draggable] {
+cursor: move;
+}

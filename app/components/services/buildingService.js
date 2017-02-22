@@ -171,7 +171,8 @@ game.service('buildingService', [
             }
             if (built) {
                 state.buildings[type].purchased++;
-                self.update(building.use);
+                self.update(building.use);                
+                achievementService.updateProgress('A_' + type + '_B', 1); 
             } else {
                 for (var s = 0; s < spent.length; s++) {
                     resourceService.changeResource(spent[s].resourceType, nextCost[s].amount);

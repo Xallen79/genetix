@@ -21,7 +21,7 @@
             }, {
                 "name": "Buildings",
                 "aids": [
-
+                    "A_LIBRARY_B"
                 ]
             }],
             "achievements": {
@@ -141,8 +141,7 @@
                             ["P_B_MULTIPLIER", "WATERHOLE", 10]
                         ]],
                         [2500, [
-                            ["P_R_UNLOCK", "SCIENCE"],
-                            ["P_B_UNLOCK", "LIBRARY", 10]
+                            ["P_B_UNLOCK", "LIBRARY"]
                         ]],
                         [5000, [
                             ["P_R_MULTIPLIER", "WATER", 10]
@@ -242,7 +241,19 @@
                             ["P_R_MULTIPLIER", "HAPPINESS", 20]
                         ]]
                     ]
+                },
+                "A_LIBRARY_B": {
+                    "aid": "A_LIBRARY_B",
+                    "name": "Build a Library",
+                    "desc": "Build a Library",
+                    "logmsg": "Build a Library",
+                    "ranks": [
+                        [1, [
+                            ["P_R_UNLOCK", "SCIENCE"]
+                        ]]
+                    ]
                 }
+
             },
             "perks": {
                 "P_R_UNLOCK": {

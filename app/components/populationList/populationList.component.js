@@ -4,20 +4,31 @@ game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
     bindings: {
-        canBreed: "<",
-        breederAssign: "&",
+        canBreed: '<',
+        breederAssign: '&',
         population: '<',
         maxPopulation: '='
     }
 });
 
 game.controller('bloqhead.controllers.populationList', [
-    '$scope', 'resourceService', 'resourceTypes', 'jobTypes',
-    function($scope, resourceService, resourceTypes, jobTypes) {
+    '$scope', '$uibModal', 'resourceService', 'resourceTypes', 'jobTypes',
+    function($scope, $uibModal, resourceService, resourceTypes, jobTypes) {
         var self = this;
         self.jobTypes = jobTypes;
 
         self.$onInit = function() {};
+
+        self.showDetails = function(unit) {
+            $uibModal.open({
+                component: 'genomeEditor',
+                resolve: {
+                    unit: function() {
+                        return unit;
+                    }
+                }
+            });
+        };
     }
 ]);
 

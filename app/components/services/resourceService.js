@@ -56,6 +56,7 @@ game.service('resourceService', [
             ret['fa-truck'] = (res === 'DIRT');
             ret['fa-tint'] = (res === 'WATER');
             ret['fa-tree'] = (res === 'WOOD');
+            ret['fa-flask'] = (res === 'SCIENCE');
             return ret;
         };
 

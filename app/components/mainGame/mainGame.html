@@ -25,7 +25,7 @@
                     </div>
                 </bloqhead-player-box-title>
 
-                <div class="row breeder-container">
+                <div id="breeder-target" class="row breeder-container fullH" lvl-drop-target="true" on-drop="$ctrl.dropped(dragEl, dropEl)">
                     <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
                         <bloqhead-mortal unit="$ctrl.population[breederid]" mode="BREED"></bloqhead-mortal>
