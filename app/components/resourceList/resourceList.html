@@ -4,20 +4,28 @@
             <h5 uib-tooltip="{{$ctrl.resourceTypes[key].desc}}">{{$ctrl.resourceTypes[key].name}}</h5>
         </div>
         <div class="col-xs-12 col-sm-10">
-            <div class="progress">
-                <div ng-if="value[1] !== -1" class="progress-bar" role="progressbar" aria-valuenow="{{value[0]}}" aria-valuemin="0" aria-valuemax="{{value[1]}}" ng-style="{width: (100*(value[0]/value[1])) + '%'}">
+            <div class="progress" ng-if="value[1] !== -1">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{value[0]}}" aria-valuemin="0" aria-valuemax="{{value[1]}}" ng-style="{width: (100*(value[0]/value[1])) + '%'}">
                     <span class="workers" uib-tooltip="Dirt Diggers">
                         <i class="fa" ng-class="$ctrl.getWorkerIcon(key)"></i>
-                        <span ng-bind="$ctrl.getWorkerCount(key);"></span>
+                        <span ng-bind="$ctrl.getWorkerCount(key)"></span>
 
                     </span>
                     <span class="amounts" ng-bind="value[0] + ' / ' + value[1]"></span>
 
                 </div>
-                <div ng-if="value[1] === -1" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1" ng-style="{width: '100%'}">
+            </div>
+            <div class="progress" ng-if="value[1] === -1">
+                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1" ng-style="{width: '100%'}">
+                    <span class="workers" uib-tooltip="Dirt Diggers">
+                        <i class="fa" ng-class="$ctrl.getWorkerIcon(key)"></i>
+                        <span ng-bind="$ctrl.getWorkerCount(key)"></span>
+
+                    </span>
                     <span class="amounts" ng-bind="value[0]"></span>
                 </div>
             </div>
+
         </div>
 
     </div>

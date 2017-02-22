@@ -129,6 +129,7 @@
                     "res": "WATER",
                     "ranks": [
                         [50, [
+                            ["P_R_UNLOCK", "SCIENCE"],
                             ["P_R_MULTIPLIER", "WATER", 10]
                         ]],
                         [75, [
@@ -139,6 +140,9 @@
                         ]],
                         [750, [
                             ["P_B_MULTIPLIER", "WATERHOLE", 10]
+                        ]],
+                        [2500, [
+                            ["P_B_UNLOCK", "LIBRARY", 10]
                         ]],
                         [5000, [
                             ["P_R_MULTIPLIER", "WATER", 10]
@@ -246,7 +250,7 @@
                     "name": "New Resource: %(res)s",
                     "desc": "Unlocks the %(res)s resource.",
                     "logmsg": "The %(res)s resource has been unlocked.",
-                    "once": true
+                    "once": false
                 },
                 "P_R_MULTIPLIER": {
                     "pid": "P_R_MULTIPLIER",

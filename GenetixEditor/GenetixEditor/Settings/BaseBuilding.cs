@@ -58,6 +58,8 @@ namespace GenetixEditor.Settings
             Gifted = 1;
             Unlocked = false;
             Multiplier = 1;
+            Produces = "";
+            Stores = "";
 
         }
 
@@ -115,6 +117,24 @@ namespace GenetixEditor.Settings
                     break;
                 case "size":
                     this.Size = Int32.Parse(value);
+                    break;
+                case "purchased":
+                    this.Purchased = Int32.Parse(value);
+                    break;
+                case "gifted":
+                    this.Gifted = Int32.Parse(value);
+                    break;
+                case "unlocked":
+                    this.Unlocked = Boolean.Parse(value);
+                    break;
+                case "multiplier":
+                    this.Multiplier = Double.Parse(value);
+                    break;
+                case "stores":
+                    this.Stores = value;
+                    break;
+                case "produces":
+                    this.Produces = value;
                     break;
             }
         }

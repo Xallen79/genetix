@@ -19,20 +19,29 @@
                 "baseAmount": 1,
                 "unlocked": 1
             },
-            "WATER_GATHER": {
-                "jid": "WATER_GATHER",
-                "name": "Water Diviner",
-                "description": "Uses wooden sticks to find water",
-                "resource": "WATER",
-                "baseWorkerSteps": 4,
-                "baseAmount": 1,
-                "unlocked": 0
-            },
             "WOOD_GATHER": {
                 "jid": "WOOD_GATHER",
                 "name": "Wood Chopper",
                 "description": "One who chops wood",
                 "resource": "WOOD",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 0
+            },
+            "WATER_GATHER": {
+                "jid": "WATER_GATHER",
+                "name": "Water Diviner",
+                "description": "One who uses wooden sticks to find water",
+                "resource": "WATER",
+                "baseWorkerSteps": 4,
+                "baseAmount": 1,
+                "unlocked": 0
+            },
+            "RESEARCHER": {
+                "jid": "RESEARCHER",
+                "name": "Researcher",
+                "description": "One who learns",
+                "resource": "SCIENCE",
                 "baseWorkerSteps": 4,
                 "baseAmount": 1,
                 "unlocked": 0

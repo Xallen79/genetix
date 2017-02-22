@@ -117,6 +117,32 @@
                 "gifted": 0,
                 "unlocked": false,
                 "multiplier": 1
+            },
+            "LIBRARY": {
+                "name": "Library",
+                "description": "A place for researchers, produces science.",
+                "use": 3,
+                "size": 0,
+                "baseCost": [{
+                    "resource": "DIRT",
+                    "amount": 5000,
+                    "costMultiplier": 100
+                }, {
+                    "resource": "WOOD",
+                    "amount": 2500,
+                    "costMultiplier": 100
+
+                }, {
+                    "resource": "WATER",
+                    "amount": 1500,
+                    "costMultiplier": 100
+                }],
+                "purchased": 0,
+                "gifted": 0,
+                "unlocked": false,
+                "multiplier": 1.0,
+                "stores": "",
+                "produces": "SCIENCE"
             }
         }
     }

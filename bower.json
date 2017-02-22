@@ -16,7 +16,8 @@
     "seedrandom": "^2.4.2",
     "seiyria-bootstrap-slider": "~9.7.0",
     "angular-lz-string": "^1.0.5",
-    "sprintf": "~1.0.3"
+    "sprintf": "~1.0.3",
+    "lvlDragDrop": "https://github.com/Xallen79/lvlDragDrop"
   },
   "devDependencies": {
     "angular-mocks": "^1.2.23"
