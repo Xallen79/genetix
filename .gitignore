@@ -3,3 +3,6 @@
 /node_modules
 /dist.dev
 *.DS_Store
+/GenetixEditor/packages/Newtonsoft.Json.9.0.1
+/GenetixEditor/GenetixEditor/obj/Debug
+/GenetixEditor/GenetixEditor/bin/Debug

@@ -9,7 +9,7 @@
                 "baseCost": [],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1,
+                "unlocked": true,
                 "multiplier": 1
             },
             "NURSERY": {
@@ -20,7 +20,7 @@
                 "baseCost": [],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1,
+                "unlocked": true,
                 "multiplier": 1
             },
             "SODHOUSE": {
@@ -43,7 +43,7 @@
                 }],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1,
+                "unlocked": true,
                 "multiplier": 1
             },
             "DIRTPILE": {
@@ -59,7 +59,7 @@
                 }],
                 "purchased": 0,
                 "gifted": 1,
-                "unlocked": 1,
+                "unlocked": true,
                 "multiplier": 1
             },
             "WOODSHED": {
@@ -79,7 +79,7 @@
                 }],
                 "purchased": 0,
                 "gifted": 0,
-                "unlocked": 0,
+                "unlocked": false,
                 "multiplier": 1
             },
             "WATERHOLE": {
@@ -99,7 +99,7 @@
                 }],
                 "purchased": 0,
                 "gifted": 0,
-                "unlocked": 0,
+                "unlocked": false,
                 "multiplier": 1
             },
             "WELL": {
@@ -115,7 +115,7 @@
                 }],
                 "purchased": 0,
                 "gifted": 0,
-                "unlocked": 0,
+                "unlocked": false,
                 "multiplier": 1
             }
         }
