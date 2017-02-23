@@ -24,9 +24,9 @@
     -->
         <tbody>
             <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
-                <td class="mortal-name" ng-switch="unit.hasTrait('Male')">
+                <td class="mortal-name" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)" ng-switch="unit.hasTrait('Male')">
                     <i class="fa fa-male male-color" ng-switch-when="true"></i><i class="fa fa-female female-color" ng-switch-when="false"></i>
-                    <span ng-click="$ctrl.showDetails(unit) ">{{unit.name}}</span>
+                    <span>{{unit.name}}</span>
                 </td>
                 <td class="mortal-genome">
                     <table class="genomeEditor">
