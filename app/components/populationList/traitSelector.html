@@ -9,8 +9,8 @@
                 </div>
                 <div class="genes-tr" ng-repeat="g in $ctrl.geneDefinitions">
                     <div class="genes-td rec" ng-bind="g.rec"></div>
-                    <div class="genes-td">
-                        <div class="progress progress-trait-selector" data-attr="{{g.attr}}">
+                    <div class="genes-td" data-attr="{{g.attr}}">
+                        <div class="progress progress-trait-selector">
                             <div class="progress-bar" role="progressbar" aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneStyle(g)"></div>
                         </div>
                     </div>

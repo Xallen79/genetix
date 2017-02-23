@@ -149,7 +149,7 @@ bloqhead-population-panel {
     border: 1px solid black;
     min-width: 160px;
     height: 12px;
-    background-color: white;
+    //background-color: white;
     table.genes {
         height: 300px;
         font-size: .7em;
@@ -397,7 +397,7 @@ div[data-attr="END"] {
 
 div[data-attr="CHR"] {
     .progress {
-        background-color: lighten($attr-chr, 35%);
+        background-color: lighten($attr-chr, 55%);
     }
     .progress-bar {
         background-color: $attr-chr;
@@ -412,6 +412,16 @@ div[data-attr="LCK"] {
     .progress-bar {
         background-color: $attr-lck;
         @include strokeme($attr-lck)
+    }
+}
+
+div[data-attr="NONE"] {
+    .progress {
+        background-color: lighten($attr-none, 35%);
+    }
+    .progress-bar {
+        background-color: $attr-none;
+        @include strokeme(black)
     }
 }
 

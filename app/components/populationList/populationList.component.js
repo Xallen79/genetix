@@ -36,8 +36,8 @@ game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
     bindings: {
-        canBreed: "<",
-        breederAssign: "&",
+        canBreed: '<',
+        breederAssign: '&',
         population: '<',
         maxPopulation: '='
     }
@@ -52,6 +52,17 @@ game.controller('bloqhead.controllers.populationList', [
 
 
         self.$onInit = function() {};
+
+        self.showDetails = function(unit) {
+            $uibModal.open({
+                component: 'genomeEditor',
+                resolve: {
+                    unit: function() {
+                        return unit;
+                    }
+                }
+            });
+        };
 
         self.getCustomFilter = function() {
             var traits = [];
