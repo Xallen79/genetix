@@ -569,6 +569,10 @@ bloqhead-player-box {
     opacity: .5;
 }
 
+.lvl-target * {
+    pointer-events: none;
+}
+
 [ng-click] {
     cursor: pointer;
 }

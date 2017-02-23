@@ -85,10 +85,20 @@ game.controller('bloqhead.controllers.populationList', [
                 //$log.info('modal-component dismissed at: ' + new Date());
             });
         };
+
+
+        self.showDetails = function(unit) {
+            $uibModal.open({
+                component: 'genomeEditor',
+                resolve: {
+                    unit: function() {
+                        return unit;
+                    }
+                }
+            });
+        };
+
     }
-
-
-
 ]);
 
 // POPULATION PANE

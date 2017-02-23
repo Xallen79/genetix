@@ -47,8 +47,9 @@ game.controller('bloqhead.controllers.mainGame', [
             else
                 workerService.addWorker(jobType, unitid);
         };
-        self.dropped = function(dragId, dropId) {
-            if(dropId ==="breeder-target") {
+        self.dropped = function(dragId, dropId, relativePos) {
+            if (dropId === "breeder-target") {
+                console.log(relativePos);
                 var drag = angular.element(document.getElementById(dragId));
                 this.addBreeder(drag.data('breederid'));
             }
