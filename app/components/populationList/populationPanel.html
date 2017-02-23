@@ -1,5 +1,6 @@
-<table>
-    <!--
+<div class="population-panel">
+    <table>
+        <!--
     <thead>
         <tr>
             <th>&nbsp;</th>
@@ -21,48 +22,54 @@
         </tr>
     </thead>
     -->
-    <tbody>
-        <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
-            <td class="mortal-name" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)"><span>{{unit.name}}</span></td>
-            <td class="mortal-genome">
-                <table class="genomeEditor">
-                    <tbody>
-                        <tr>
-                            <td colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" /></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 20%">
-                                {{unit.attributes.STR}}
-                            </td>
-                            <td style="width: 20%">
-                                {{unit.attributes.INT}}
-                            </td>
-                            <td style="width: 20%">
-                                {{unit.attributes.END}}
-                            </td>
-                            <td style="width: 20%">
-                                {{unit.attributes.CHR}}
-                            </td>
-                            <td style="width: 20%">
-                                {{unit.attributes.LCK}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-            <td>
-                <button ng-disabled="!$ctrl.parent.canBreed" class="btn btn-xs btn-primary" ng-click="$ctrl.parent.breederAssign({$id:unit.id})">Breed Me</button>
-            </td>
-            <td>
-                <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
-                    <button type="button" class="btn btn-xs btn-primary" uib-dropdown-toggle><span ng-bind="$ctrl.parent.jobTypes[unit.currentJob].name"></span><span class="caret"></span></button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                        <li ng-repeat="(key, job) in $ctrl.parent.jobTypes">
-                            <a href="javascript:void(0);" ng-bind="job.name" ng-click="$ctrl.parent.breederAssign({$id:unit.id, $type:key})"></a>
-                        </li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        <tbody>
+            <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
+                <td class="mortal-name" ng-switch="unit.hasTrait('Male')">
+                    <i class="fa fa-male male-color" ng-switch-when="true"></i><i class="fa fa-female female-color" ng-switch-when="false"></i>
+                    <span ng-click="$ctrl.showDetails(unit) ">{{unit.name}}</span>
+                </td>
+                <td class="mortal-genome">
+                    <table class="genomeEditor">
+                        <thead>
+                            <tr>
+                                <th colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width: 20%; ">
+                                    {{unit.attributes.STR}}
+                                </td>
+                                <td style="width: 20%">
+                                    {{unit.attributes.INT}}
+                                </td>
+                                <td style="width: 20%">
+                                    {{unit.attributes.END}}
+                                </td>
+                                <td style="width: 20%">
+                                    {{unit.attributes.CHR}}
+                                </td>
+                                <td style="width: 20%">
+                                    {{unit.attributes.LCK}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <button ng-disabled="!$ctrl.parent.canBreed" class="btn btn-xs btn-primary" ng-click="$ctrl.parent.breederAssign({$id:unit.id})">Breed Me</button>
+                </td>
+                <td>
+                    <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
+                        <button type="button" class="btn btn-xs btn-primary" uib-dropdown-toggle><span ng-bind="$ctrl.parent.jobTypes[unit.currentJob].name"></span><span class="caret"></span></button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li ng-repeat="(key, job) in $ctrl.parent.jobTypes">
+                                <a href="javascript:void(0);" ng-bind="job.name" ng-click="$ctrl.parent.breederAssign({$id:unit.id, $type:key})"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

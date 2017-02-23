@@ -13,7 +13,7 @@
                             Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]
                         </div>
                         <div class="col-xs-7">
-                            <div class="progress progress-playerbox-title">
+                            <div class="progress progress-custom progress-playerbox-title">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
                                     <span class="breeders">
                                     <i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>

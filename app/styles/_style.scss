@@ -24,104 +24,6 @@ $top-row-height: 25vh;
     }
 }
 
-@mixin attribute-progress-bars {
-    .progress {
-        position: relative;
-        border: 1px solid black;
-        -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
-    }
-    .progress-bar {
-        font-weight: bold;
-        font-size: 1.1vw;
-        //min-width: 2%;
-        min-width: 2px;
-        font-family: "Courier New", Courier, monospace;
-        border-right: 1px solid black;
-        >span.amounts {
-            overflow-x: visible;
-            white-space: nowrap;
-            position: absolute;
-            right: .25vw;
-        }
-        >span.workers,
-        >span.breeders {
-            overflow-x: visible;
-            white-space: nowrap;
-            position: absolute;
-            left: .25vw;
-            >i {
-                font-size: .85vw;
-                width: .85vw;
-            }
-        }
-        >i {
-            overflow-x: visible;
-            white-space: nowrap;
-            position: absolute;
-            left: .25vw;
-        }
-    }
-    div[data-attr="STR"] {
-        .progress {
-            background-color: lighten($attr-str, 60%);
-        }
-        .progress-bar {
-            background-color: $attr-str;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="INT"] {
-        .progress {
-            background-color: lighten($attr-int, 60%);
-        }
-        .progress-bar {
-            background-color: $attr-int;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="END"] {
-        .progress {
-            background-color: lighten($attr-end, 25%);
-        }
-        .progress-bar {
-            background-color: $attr-end;
-            @include strokeme(black)
-        }
-    }
-    div[data-attr="CHR"] {
-        .progress {
-            background-color: lighten($attr-chr, 35%);
-        }
-        .progress-bar {
-            background-color: $attr-chr;
-            @include strokeme(black);
-        }
-    }
-    div[data-attr="LCK"] {
-        .progress {
-            background-color: lighten($attr-lck, 55%);
-        }
-        .progress-bar {
-            background-color: $attr-lck;
-            @include strokeme($attr-lck)
-        }
-    }
-    div {
-        .progress {
-            background-color: lighten($brand-primary, 60%);
-        }
-        .progress-bar {
-            background-color: $brand-primary;
-            @include strokeme($brand-primary)
-        }
-    }
-    .progress {
-        margin: 5px 0px 5px 0px;
-    }
-}
-
 /// Test if `$value` is a valid direction
 /// @param {*} $value - Value to test
 /// @return {Bool}
@@ -185,12 +87,6 @@ h5 {
     margin-bottom: .5vh;
 }
 
-@include attribute-progress-bars;
-.progress-playerbox-title {
-    margin: 0px;
-    height: 2.4vh;
-}
-
 .genomeEditor {
     font-size: .7vw;
     img.gene {
@@ -214,17 +110,129 @@ h5 {
 
 .population-list {
     .mortal-name {
-        padding: 2px;
         font-size: .8vw;
+        padding: 3px;
     }
     .mortal-genome {
+        padding: 3px;
         .genomeEditor {
             width: 10vw;
         }
     }
     @include maximize-row();
-    .genomeEditor {
-        margin: 2px !important;
+}
+
+bloqhead-population-list {
+    .nav-pills>li>a {
+        /* adjust padding for height*/
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}
+
+bloqhead-population-panel {
+    thead {
+        th {
+            text-align: center;
+            font-size: .8em;
+        }
+    }
+    tbody {
+        td {
+            font-size: .95em;
+        }
+    }
+}
+
+.progress-trait-selector {
+    margin: 0;
+    border: 1px solid black;
+    min-width: 160px;
+    height: 12px;
+    background-color: white;
+    table.genes {
+        height: 300px;
+        font-size: .7em;
+    }
+    .progress-bar {
+        -webkit-transition: none;
+        -moz-transition: none;
+        -ms-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+}
+
+div.genes-table {
+    display: table;
+}
+
+div.genes-tr {
+    //display: table-row;
+    height: 12px;
+}
+
+div.genes-th,
+div.genes-td {
+    display: table-cell;
+    overflow: hidden;
+    text-align: center;
+    min-width: 160px;
+    white-space: nowrap;
+    font-size: .8em;
+}
+
+div.genes-th {
+    //display: table-row;
+    height: 20px;
+    font-size: .9em;
+    font-weight: bold;
+    display: table-cell;
+    line-height: 1em;
+    color: lightblue;
+}
+
+div.genes-th.dom,
+div.genes-td.dom {
+    text-align: left;
+    padding-left: 5px;
+}
+
+div.genes-th.rec,
+div.genes-td.rec {
+    text-align: right;
+    padding-right: 5px;
+}
+
+table.genomeEditor {
+    //margin-top: .1vh;
+    //margin-bottom: .1vh;
+    margin: 0;
+    width: 100%;
+    tbody {
+        td {
+            background-color: black;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+        }
+        td:nth-child(1) {
+            @include linear-gradient(180deg, $attr-str 15%, black 100%)
+        }
+        td:nth-child(2) {
+            @include linear-gradient(180deg, $attr-int 15%, black 100%)
+        }
+        td:nth-child(3) {
+            @include linear-gradient(180deg, $attr-end 15%, black 100%)
+        }
+        td:nth-child(4) {
+            @include linear-gradient(180deg, $attr-chr 15%, black 100%)
+        }
+        td:nth-child(5) {
+            @include linear-gradient(180deg, $attr-lck 15%, black 100%)
+        }
+    }
+    img {
+        min-width: 100%;
     }
 }
 
@@ -307,6 +315,106 @@ h5 {
     }
 }
 
+.progress.progress-custom {
+    position: relative;
+    border: 1px solid black;
+    margin: 5px 0px 5px 0px;
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+    .progress-bar {
+        font-weight: bold;
+        font-size: 1.1vw;
+        //min-width: 2%;
+        min-width: 2px;
+        font-family: "Courier New", Courier, monospace;
+        border-right: 1px solid black;
+        >span.amounts {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            right: .25vw;
+        }
+        >span.workers,
+        >span.breeders {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            left: .25vw;
+            >i {
+                font-size: .85vw;
+                width: .85vw;
+            }
+        }
+        >i {
+            overflow-x: visible;
+            white-space: nowrap;
+            position: absolute;
+            left: .25vw;
+        }
+    }
+}
+
+.progress.progress-playerbox-title {
+    margin: 0;
+    height: 2.4vh;
+    background-color: lighten($brand-primary, 60%);
+    .progress-bar {
+        background-color: $brand-primary;
+        @include strokeme($brand-primary)
+    }
+}
+
+div[data-attr="STR"] {
+    .progress {
+        background-color: lighten($attr-str, 60%);
+    }
+    .progress-bar {
+        background-color: $attr-str;
+        @include strokeme(black)
+    }
+}
+
+div[data-attr="INT"] {
+    .progress {
+        background-color: lighten($attr-int, 60%);
+    }
+    .progress-bar {
+        background-color: $attr-int;
+        @include strokeme(black)
+    }
+}
+
+div[data-attr="END"] {
+    .progress {
+        background-color: lighten($attr-end, 25%);
+    }
+    .progress-bar {
+        background-color: $attr-end;
+        @include strokeme(black)
+    }
+}
+
+div[data-attr="CHR"] {
+    .progress {
+        background-color: lighten($attr-chr, 35%);
+    }
+    .progress-bar {
+        background-color: $attr-chr;
+        @include strokeme(black);
+    }
+}
+
+div[data-attr="LCK"] {
+    .progress {
+        background-color: lighten($attr-lck, 55%);
+    }
+    .progress-bar {
+        background-color: $attr-lck;
+        @include strokeme($attr-lck)
+    }
+}
+
 // calc came from trial and error, i couldn't figure out how to calculate it correctly.
 .population-container {
     height: calc(100vh - #{$top-row-height} - 3.5vh - #{$navbar-height} - 18px);
@@ -320,59 +428,11 @@ h5 {
     h5 {
         margin: 2px 0px 1px 0px;
     }
-    .nav-pills>li>a {
-        /* adjust padding for height*/
-        padding-top: 4px;
-        padding-bottom: 4px;
-    }
     button.btn-primary {
         @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
     }
     button.btn-primary:hover {
         @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
-    }
-    bloqhead-population-panel {
-        thead {
-            th {
-                text-align: center;
-                font-size: .8em;
-            }
-        }
-        tbody {
-            td {
-                font-size: .7em;
-            }
-        }
-    }
-    table.genomeEditor {
-        margin-top: .1vh;
-        margin-bottom: .1vh;
-        width: 100%;
-        tbody {
-            td {
-                background-color: black;
-                font-family: "Courier New", Courier, monospace;
-                text-align: center;
-            }
-            td:nth-child(1) {
-                @include linear-gradient(180deg, $attr-str 15%, black 100%)
-            }
-            td:nth-child(2) {
-                @include linear-gradient(180deg, $attr-int 15%, black 100%)
-            }
-            td:nth-child(3) {
-                @include linear-gradient(180deg, $attr-end 15%, black 100%)
-            }
-            td:nth-child(4) {
-                @include linear-gradient(180deg, $attr-chr 15%, black 100%)
-            }
-            td:nth-child(5) {
-                @include linear-gradient(180deg, $attr-lck 15%, black 100%)
-            }
-        }
-        img {
-            min-width: 100%;
-        }
     }
 }
 
@@ -501,12 +561,12 @@ bloqhead-player-box {
 }
 
 .lvl-over {
-border: 2px dashed black !important;
+    border: 2px dashed black !important;
 }
 
 .lvl-target {
-background-color: #ddd; 
-opacity: .5;
+    background-color: #ddd;
+    opacity: .5;
 }
 
 [ng-click] {
@@ -514,5 +574,5 @@ opacity: .5;
 }
 
 [draggable] {
-cursor: move;
+    cursor: move;
 }

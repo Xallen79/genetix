@@ -56,7 +56,7 @@
             { "dom": "LCK8+", "rec": "LCK8-", "attr": "LCK" },
             { "dom": "LCK9+", "rec": "LCK9-", "attr": "LCK" },
 
-            { "dom": "Female", "rec": "Male", "attr": "NONE"}
+            { "dom": "Female", "rec": "Male", "attr": "NONE" }
         ],
         "traitDefinitions": [{
                 "name": "Handsome",
@@ -71,8 +71,8 @@
                         255
                     ]
                 ],
-                "requiredProps": [
-                    {"gender": "Male"}
+                "requiredTraits": [
+                    "Male"
                 ]
             },
             {

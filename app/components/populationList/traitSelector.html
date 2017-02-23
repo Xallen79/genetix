@@ -1,0 +1,42 @@
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="genes-table">
+                <div class="genes-tr">
+                    <div class="genes-th rec">Recessive</div>
+                    <div class="genes-th"><span class="pull-left">-255</span> 0 <span class="pull-right">+255</span></div>
+                    <div class="genes-th dom">Dominant</div>
+                </div>
+                <div class="genes-tr" ng-repeat="g in $ctrl.geneDefinitions">
+                    <div class="genes-td rec" ng-bind="g.rec"></div>
+                    <div class="genes-td">
+                        <div class="progress progress-trait-selector" data-attr="{{g.attr}}">
+                            <div class="progress-bar" role="progressbar" aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneStyle(g)"></div>
+                        </div>
+                    </div>
+                    <div class="genes-td dom" ng-bind="g.dom"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">Traits
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <span class="trait-icon" ng-repeat="t in $ctrl.traitDefinitions">
+                        <button class="btn btn-sm btn-info" type="button" ng-click="" ng-bind="t.name" data-ng-mouseenter="$ctrl.traitEnter(t);" ng-mouseleave="$ctrl.traitLeave(t);"></button>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary " type="button " ng-click="$ctrl.ok() ">OK</button>
+                <button class="btn btn-warning " type="button " ng-click="$ctrl.cancel() ">Cancel</button>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+</div>
