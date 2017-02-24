@@ -40,11 +40,11 @@
         </div>
     </bloqhead-player-box>
     <script type="text/ng-template" id="achievementTooltip.html">
-        <div>
+        <div data-attr="NONE">
             <h5 ng-bind="$ctrl.achievementSetup.achievements[aid].desc"></h5>
             <p ng-bind="'Total Progress: ' + ($ctrl.achievementService.state.progress.achievements[aid].amount || 0)"></p>
             <p ng-if="$ctrl.achievementService.state.progress.achievements[aid].nextRank != -1" ng-bind="'Next Rank: ' + ($ctrl.achievementService.state.progress.achievements[aid].nextRank || 0)"></p>
-            <div class="progress">
+            <div class="progress progress-custom">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.achievementService.state.progress.achievements[aid].amount}}" aria-valuemin="{{$ctrl.achievementService.state.progress.achievements[aid].lastRank}}" aria-valuemax="{{$ctrl.achievementService.state.progress.achievements[aid].nextRank}}"
                     ng-style="{width: (100*(($ctrl.achievementService.state.progress.achievements[aid].amount - $ctrl.achievementService.state.progress.achievements[aid].lastRank) / ($ctrl.achievementService.state.progress.achievements[aid].nextRank-$ctrl.achievementService.state.progress.achievements[aid].lastRank))) + '%'}">
 
