@@ -54,9 +54,11 @@ game.service('populationService', [
                 var genderToAdd = self.population.getById(id).hasTrait('Male') ? 'Male' : 'Female';
                 var unit = {};
                 if (self.population.breeders.length < self.population.breederLimit) {
-                    unit = self.population.getById(self.population.breeders[0]); //assuming only 2 breeders will exist
-                    if (unit.hasTrait(genderToAdd)) {
-                        self.removeBreeder(unit.id);
+                    if (self.population.breeders.length > 0) {
+                        unit = self.population.getById(self.population.breeders[0]); //assuming only 2 breeders will exist
+                        if (unit.hasTrait(genderToAdd)) {
+                            self.removeBreeder(unit.id);
+                        }
                     }
                     self.population.breeders.push(id);
                     self.logService.logBreedMessage("Breeder added: " + self.population.getById(id).name);

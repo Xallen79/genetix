@@ -7,30 +7,32 @@
     </div>
     -->
     <bloqhead-player-box box-title="Achievements">
-        <div class="row" ng-repeat="ag in $ctrl.achievementSetup.achievementGroups">
-            <div class="col-xs-12">
-                <h6 ng-bind="ag.name"></h6>
-                <div class="row achievement-list" ng-repeat="aid in ag.aids">
+        <div class="achievement-container">
+            <div class="row" ng-repeat="ag in $ctrl.achievementSetup.achievementGroups">
+                <div class="col-xs-12">
+                    <h6 ng-bind="ag.name"></h6>
+                    <div class="row achievement-list" ng-repeat="aid in ag.aids">
 
-                    <div class="col-xs-12 col-md-2 col-sm-1">
-                        <!-- achievement -->
-                        <div class="achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" tooltip-placement="top" uib-tooltip-template="'achievementTooltip.html'" tooltip-class="achievement-tooltip">
-                            <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
+                        <div class="col-xs-12 col-md-2 col-sm-1">
+                            <!-- achievement -->
+                            <div class="achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" tooltip-placement="top" uib-tooltip-template="'achievementTooltip.html'" tooltip-class="achievement-tooltip">
+                                <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-md-10 col-sm-11">
-                        <div class="row achievement-rank-row">
-                            <!-- ranks -->
-                            <div class="col-xs-6 col-sm-3 col-lg-1" ng-repeat="ar in $ctrl.achievementSetup.achievements[aid].ranks">
-                                <div class="achievement-rank-cell" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
-                                    <span ng-bind="ar[0]"></span><br />
-                                    <!-- perks -->
-                                    <div ng-repeat="p in ar[1]" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'perkTooltip.html'" tooltip-class="perk-tooltip">
-                                        <i class="fa fa-gift"></i>&nbsp;
+                        <div class="col-xs-12 col-md-10 col-sm-11">
+                            <div class="row achievement-rank-row">
+                                <!-- ranks -->
+                                <div class="col-xs-6 col-sm-3 col-lg-1" ng-repeat="ar in $ctrl.achievementSetup.achievements[aid].ranks">
+                                    <div class="achievement-rank-cell" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
+                                        <span ng-bind="ar[0]"></span><br />
+                                        <!-- perks -->
+                                        <div ng-repeat="p in ar[1]" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'perkTooltip.html'" tooltip-class="perk-tooltip">
+                                            <i class="fa fa-gift"></i>&nbsp;
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>

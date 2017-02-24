@@ -271,6 +271,12 @@ table.genomeEditor {
     }
 }
 
+.achievement-container {
+    height: calc(100vh - 3.5vh - #{$navbar-height} - 18px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .achievement-list {
     margin: 5px;
     padding: 2px;
@@ -571,16 +577,24 @@ bloqhead-player-box {
 }
 
 .lvl-over {
-    border: 2px dashed black !important;
+    border: 2px dashed $gray-lighter !important;
 }
 
 .lvl-target {
-    background-color: #ddd;
-    opacity: .5;
+    background-color: $gray-darker;
+    opacity: 0.9;
 }
 
 .lvl-target * {
     pointer-events: none;
+}
+
+.lvl-moving {
+    opacity: 0.25;
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -o-transform: scale(0.8);
 }
 
 [ng-click] {
@@ -589,4 +603,8 @@ bloqhead-player-box {
 
 [draggable] {
     cursor: move;
+    -webkit-transition: -webkit-transform 0.2s ease-out;
+    -moz-transition: -moz-transform 0.2s ease-out;
+    -o-transition: -o-transform 0.2s ease-out;
+    -ms-transition: -ms-transform 0.2s ease-out;
 }

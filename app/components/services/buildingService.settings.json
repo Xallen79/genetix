@@ -24,7 +24,7 @@
                 "multiplier": 1
             },
             "SODHOUSE": {
-                "name": "Sod house",
+                "name": "Sod House",
                 "description": "Provides minimal shelter for %(size)d things.",
                 "use": "housing",
                 "size": 5,
@@ -47,7 +47,7 @@
                 "multiplier": 1
             },
             "DIRTPILE": {
-                "name": "Dirt pile",
+                "name": "Dirt Pile",
                 "description": "Where else would you store dirt? Holds %(size)d.",
                 "use": "storage",
                 "stores": "DIRT",
@@ -121,7 +121,7 @@
             "LIBRARY": {
                 "name": "Library",
                 "description": "A place for researchers, produces science.",
-                "use": 3,
+                "use": "production",
                 "size": 0,
                 "baseCost": [{
                     "resource": "DIRT",
@@ -142,7 +142,8 @@
                 "unlocked": false,
                 "multiplier": 1.0,
                 "stores": "",
-                "produces": "SCIENCE"
+                "produces": "SCIENCE",
+                "maxcount": 1
             }
         }
     }

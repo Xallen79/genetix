@@ -21,7 +21,10 @@
             }, {
                 "name": "Buildings",
                 "aids": [
-                    "A_LIBRARY_B"
+                    "A_SODHOUSE_B",
+                    "A_DIRTPILE_B",
+                    "A_WOODSHED_B",
+                    "A_WATERHOLE_B"
                 ]
             }],
             "achievements": {
@@ -242,11 +245,62 @@
                         ]]
                     ]
                 },
+                "A_SODHOUSE_B": {
+                    "aid": "A_SODHOUSE_B",
+                    "name": "Build a Sod House",
+                    "desc": "Build a Sod House",
+                    "logmsg": "Build a Sod House",
+                    "res": "HAPPINESS",
+                    "ranks": [
+                        [4, [
+                            ["P_B_BONUS", "DIRTPILE", 4],
+                            ["P_B_BONUS", "WOODSHED", 4],
+                            ["P_B_BONUS", "WATERHOLE", 4]
+                        ]]
+                    ]
+                },
+                "A_DIRTPILE_B": {
+                    "aid": "A_DIRTPILE_B",
+                    "name": "Build a Dirt Pile",
+                    "desc": "Build a Dirt Pile",
+                    "logmsg": "Build a Dirt Pile",
+                    "res": "DIRT",
+                    "ranks": [
+                        [25, [
+                            ["P_R_MULTIPLIER", "DIRT", 250]
+                        ]]
+                    ]
+                },
+                "A_WOODSHED_B": {
+                    "aid": "A_WOODSHED_B",
+                    "name": "Build a Woodshed",
+                    "desc": "Build a Woodshed",
+                    "logmsg": "Build a Woodshed",
+                    "res": "WOOD",
+                    "ranks": [
+                        [25, [
+                            ["P_R_MULTIPLIER", "WOOD", 250]
+                        ]]
+                    ]
+                },
+                "A_WATERHOLE_B": {
+                    "aid": "A_WATERHOLE_B",
+                    "name": "Build a Water Hole",
+                    "desc": "Build a Water Hole",
+                    "logmsg": "Build a Water Hole",
+                    "res": "WATER",
+                    "ranks": [
+                        [25, [
+                            ["P_R_MULTIPLIER", "WATER", 250]
+                        ]]
+                    ]
+                },
                 "A_LIBRARY_B": {
                     "aid": "A_LIBRARY_B",
                     "name": "Build a Library",
                     "desc": "Build a Library",
                     "logmsg": "Build a Library",
+                    "res": "SCIENCE",
                     "ranks": [
                         [1, [
                             ["P_R_UNLOCK", "SCIENCE"]
