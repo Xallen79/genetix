@@ -1,7 +1,7 @@
 var game = angular.module('bloqhead.genetixApp');
 game.service('populationService', [
-    '$rootScope', 'gameLoopService', 'Population', 'logService', 'achievementService',
-    function($rootScope, gameLoopService, Population, logService, achievementService) {
+    '$rootScope', '$filter', 'gameLoopService', 'Population', 'logService', 'achievementService',
+    function($rootScope, $filter, gameLoopService, Population, logService, achievementService) {
         var self = this;
 
         self.init = function(state) {
@@ -50,10 +50,27 @@ game.service('populationService', [
         };
 
         self.addBreeder = function(id) {
-            if (self.population.breeders.indexOf(id) === -1 && self.population.breeders.length < self.population.breederLimit) {
-                self.population.breeders.push(id);
-                self.sendBreederUpdateEvent();
-                self.logService.logBreedMessage("Breeder added: " + self.population.getById(id).name);
+            if (self.population.breeders.indexOf(id) === -1) {
+                var genderToAdd = self.population.getById(id).hasTrait('Male') ? 'Male' : 'Female';
+                var unit = {};
+                if (self.population.breeders.length < self.population.breederLimit) {
+                    unit = self.population.getById(self.population.breeders[0]); //assuming only 2 breeders will exist
+                    if (unit.hasTrait(genderToAdd)) {
+                        self.removeBreeder(unit.id);
+                    }
+                    self.population.breeders.push(id);
+                    self.logService.logBreedMessage("Breeder added: " + self.population.getById(id).name);
+                    self.sendBreederUpdateEvent();
+                } else {
+                    for (var b = 0; b < self.population.breeders.length; b++) {
+                        unit = self.population.getById(self.population.breeders[b]);
+                        if (unit.hasTrait(genderToAdd)) {
+                            self.removeBreeder(unit.id);
+                            self.addBreeder(id);
+                            break;
+                        }
+                    }
+                }
             }
         };
         self.removeBreeder = function(id) {
@@ -71,8 +88,12 @@ game.service('populationService', [
             member.update();
             self.sendPopulationUpdateEvent();
         };
-        self.setUnitJob = function(id, job) {
-            self.population.getById(id).currentJob = job;
+        self.setUnitJob = function(id, job, jobName) {
+            var unit = self.population.getById(id);
+            unit.currentJob = job;
+
+            var msg = $filter('fmt')('%(name)s is now a %(job)s', { name: unit.name, job: jobName });
+            self.logService.logWorkMessage(msg);
             self.sendPopulationUpdateEvent();
         };
         self.setBreederLimit = function(newLimit) {

@@ -53,6 +53,12 @@ game.controller('bloqhead.controllers.resourceList', [
             return ret;
         };
 
+        self.dropped = function(dragId, dropId, relativePos, resourceKey) {
+            var jobType = resourceTypes[resourceKey].jids[0];
+            var unitid = angular.element(document.getElementById(dragId)).data('breederid');
+            workerService.addWorker(jobType, unitid);
+        };
+
         self.resourceChanged = function(event, resourceType, amount) {
             if (!self.resources[resourceType])
                 self.resources[resourceType] = [];

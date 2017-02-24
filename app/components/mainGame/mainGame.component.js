@@ -49,7 +49,6 @@ game.controller('bloqhead.controllers.mainGame', [
         };
         self.dropped = function(dragId, dropId, relativePos) {
             if (dropId === "breeder-target") {
-                console.log(relativePos);
                 var drag = angular.element(document.getElementById(dragId));
                 this.addBreeder(drag.data('breederid'));
             }

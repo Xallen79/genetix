@@ -36,7 +36,7 @@ game.service('workerService', [
                     unitid: unitid,
                     stepsSinceWork: 0
                 });
-                populationService.setUnitJob(unitid, jid);
+                populationService.setUnitJob(unitid, jid, jobTypes[jid].name);
                 self.getWorkersSnapshot();
             }
         };
@@ -87,7 +87,7 @@ game.service('workerService', [
                     gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
                     resources[job.resource].gatherAmount += gatherAmount;
                     var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
-                    logService.logWorkMessage(msg);
+                    //logService.logWorkMessage(msg);
                 }
 
 
