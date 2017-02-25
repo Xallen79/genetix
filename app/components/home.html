@@ -2,7 +2,10 @@
     <div class="nopadding col-xs-3" ng-class="$ctrl.hideme ? 'home-hide' : ''">
         <div class="row topRow">
             <div class="col-xs-12 fullH">
-                <bloqhead-player-box box-title="Log">
+                <bloqhead-player-box>
+                    <bloqhead-player-box-title>
+                        <i class="fa fa-list"></i> Log
+                    </bloqhead-player-box-title>
                     <bloqhead-log></bloqhead-log>
                 </bloqhead-player-box>
             </div>
@@ -16,7 +19,10 @@
         </div>-->
         <div class="row">
             <div class="col-xs-12">
-                <bloqhead-player-box box-title="Resources">
+                <bloqhead-player-box>
+                    <bloqhead-player-box-title>
+                        <i class="fa fa-th"></i> Resources
+                    </bloqhead-player-box-title>
                     <div class="row">
                         <bloqhead-resource-list></bloqhead-resource-list>
                     </div>

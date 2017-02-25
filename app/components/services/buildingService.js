@@ -171,8 +171,8 @@ game.service('buildingService', [
             }
             if (built) {
                 state.buildings[type].purchased++;
-                self.update(building.use);                
-                achievementService.updateProgress('A_' + type + '_B', 1); 
+                self.update(building.use);
+                achievementService.updateProgress('A_' + type + '_B', 1);
             } else {
                 for (var s = 0; s < spent.length; s++) {
                     resourceService.changeResource(spent[s].resourceType, nextCost[s].amount);
@@ -186,7 +186,7 @@ game.service('buildingService', [
                 var perk = reward.perks[p];
                 var building = state.buildings[perk.arr[1]];
                 if (perk.pid === 'P_B_BONUS') {
-                    building.gifted++;
+                    building.gifted += perk.arr[2];
                     self.update(building.use);
                 }
                 if (perk.pid === 'P_B_UNLOCK') {

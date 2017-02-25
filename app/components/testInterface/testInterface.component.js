@@ -144,3 +144,9 @@ app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gam
     };
 
 }]);
+
+
+app.component('fontTab', {
+    templateUrl: 'components/testInterface/fontTab.html',
+    controller: 'bloqhead.controllers.testInterface'
+});

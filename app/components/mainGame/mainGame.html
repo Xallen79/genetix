@@ -1,7 +1,10 @@
 <div class="">
     <div class="row topRow">
         <div class="col-xs-4 fullH">
-            <bloqhead-player-box box-title="Buildings">
+            <bloqhead-player-box>
+                <bloqhead-player-box-title>
+                    <i class="fa fa-building"></i> Buildings
+                </bloqhead-player-box-title>
                 <bloqhead-building-list></bloqhead-building-list>
             </bloqhead-player-box>
         </div>
@@ -10,7 +13,7 @@
                 <bloqhead-player-box-title>
                     <div class="row">
                         <div class="col-xs-5">
-                            Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]
+                            <i class="fa fa-heart"></i> Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]
                         </div>
                         <div class="col-xs-7">
                             <div class="progress progress-custom progress-playerbox-title">
@@ -24,7 +27,6 @@
                         </div>
                     </div>
                 </bloqhead-player-box-title>
-
                 <div id="breeder-target" class="row breeder-container fullH" lvl-drop-target="true" on-drop="$ctrl.dropped(dragId, dropId, relativePos)">
                     <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
@@ -34,7 +36,10 @@
             </bloqhead-player-box>
         </div>
         <div class="col-xs-4 fullH">
-            <bloqhead-player-box box-title="Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]">
+            <bloqhead-player-box>
+                <bloqhead-player-box-title>
+                    <i class="icon-foot"></i> Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]
+                </bloqhead-player-box-title>
                 <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12">
                         <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>

@@ -15,7 +15,7 @@ var paths = {
     settings: 'app/**/*.json',
     styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
-    fonts: './bower_components/components-font-awesome/fonts/**.*',
+    fonts: ['./bower_components/components-font-awesome/fonts/**.*', './app/styles/fonts/**.*'],
     index: './app/index.html',
     partials: ['app/**/*.html', '!app/index.html'],
     distDev: './dist.dev',
