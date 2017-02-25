@@ -363,7 +363,8 @@ table.genomeEditor {
 
 .progress.progress-playerbox-title {
     margin: 0;
-    height: 2.4vh;
+    //height: 1.1em;
+    font-size: 1em;
     background-color: lighten($brand-primary, 60%);
     .progress-bar {
         background-color: $brand-primary;
@@ -518,7 +519,9 @@ bloqhead-player-box {
         padding-top: .1vh;
         padding-bottom: .1vh;
         font-size: 1.1vw;
-        height: 12%;
+        //height: 12%;
+        overflow: hidden;
+        height: 1.2em;
         vertical-align: middle;
         border-bottom: 2px solid $gray-darker;
     }
