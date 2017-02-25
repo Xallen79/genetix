@@ -11,6 +11,29 @@ $top-row-height: 25vh;
     background: -webkit-linear-gradient(-45deg, opacify($gray-light, 0.4) 0%, opacify($gray-light, 0.4) 30%, opacify($gray-dark, 0.4) 100%);
 }
 
+@mixin resource-attr-stroke {
+    [data-attr="STR"] {
+        color: $attr-str;
+        @include strokeme(black)
+    }
+    [data-attr="INT"] {
+        color: $attr-int;
+        @include strokeme(black)
+    }
+    [data-attr="END"] {
+        color: $attr-end;
+        @include strokeme(black)
+    }
+    [data-attr="CHR"] {
+        color: $attr-chr;
+        @include strokeme(black)
+    }
+    [data-attr="LCK"] {
+        color: $attr-lck;
+        @include strokeme(black)
+    }
+}
+
 @mixin maximize-row {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -108,8 +131,20 @@ h5 {
     }
 }
 
+.trait-filter-item {
+    color: white;
+    border: 1px solid $gray-light;
+    margin-right: 3px;
+    float: left;
+    @include linear-gradient(180deg, $gray-dark 15%, black 100%);
+    button {
+        margin-left: 3px;
+    }
+}
+
 .population-list {
     .mortal-name {
+        @include resource-attr-stroke();
         font-size: .8vw;
         padding: 3px;
     }
@@ -236,32 +271,14 @@ table.genomeEditor {
     }
 }
 
+.trait-tooltip,
 .perk-tooltip,
 .achievement-tooltip,
 .building-tooltip {
     p {
         margin: 3px;
     }
-    [data-attr="STR"] {
-        color: $attr-str;
-        @include strokeme(black)
-    }
-    [data-attr="INT"] {
-        color: $attr-int;
-        @include strokeme(black)
-    }
-    [data-attr="END"] {
-        color: $attr-end;
-        @include strokeme(black)
-    }
-    [data-attr="CHR"] {
-        color: $attr-chr;
-        @include strokeme(black)
-    }
-    [data-attr="LCK"] {
-        color: $attr-lck;
-        @include strokeme(black)
-    }
+    @include resource-attr-stroke();
     h5 {
         margin: 3px;
         color: lightblue;

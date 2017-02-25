@@ -4,6 +4,8 @@ game.filter('applyPopulationFilter', function() {
     return function(input, filter) {
         var matches = [];
         var nonmatches = [];
+        if (typeof filter == 'string')
+            filter = JSON.parse(filter);
         for (var i = 0; i < input.length; i++) {
             var criteriaMet = true;
             if (filter && filter.traits) {
@@ -29,6 +31,51 @@ game.filter('applyPopulationFilter', function() {
         return matches;
     };
 });
+
+game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDefinitions) {
+    function map(OldValue, OldMin, OldMax, NewMin, NewMax) {
+        return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
+    }
+
+    return {
+        range: function(g, trait) {
+            var ret = {};
+            if (trait !== null) {
+                var i = geneDefinitions.indexOf(g);
+                for (var x = 0; x < trait.genes.length; x++) {
+                    var tg = trait.genes[x];
+                    if (tg[0] == i) {
+                        var os = map(tg[1], -255, 255, 0, 100);
+                        var w = map(tg[2], -255, 255, 0, 100);
+                        ret.marginLeft = os + '%';
+                        ret.width = (w - os) + '%';
+                    }
+                }
+
+
+            }
+            return ret;
+        },
+        value: function(v) {
+            var l = map(v, -255, 255, 0, 100);
+            if (l > 98) l = 98;
+            if (l < 2) l = 2;
+            var ret = {
+                position: 'absolute',
+                marginLeft: (l - 2) + '%',
+                top: '0px',
+                bottom: '0px',
+                width: '4%',
+                backgroundColor: 'white',
+                border: '1px solid black'
+            };
+
+            return ret;
+        }
+    }
+
+    return;
+}]);
 
 // POPULATION LIST
 
@@ -69,12 +116,16 @@ game.controller('bloqhead.controllers.populationList', [
             for (var i = 0; i < self.criteria.length; i++) {
                 var c = self.criteria[i];
                 if (c.type == 'trait') {
-                    traits.push(c.val);
+                    traits.push(c.val.name);
                 }
             }
             return JSON.stringify({
                 traits: traits
             });
+        };
+
+        self.deleteCriteria = function(index) {
+            self.criteria.splice(index, 1);
         };
 
 
@@ -128,12 +179,23 @@ game.component('bloqheadPopulationPanel', {
 });
 
 game.controller('bloqhead.controllers.populationPanel', [
-    function() {
+    'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService',
+    function(bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService) {
         var self = this;
+        self.geneDefinitions = geneDefinitions;
+        self.resourceTypes = resourceTypes;
         self.$onInit = function() {
             self.orderBy = self.orderBy || '-dt';
         };
-
+        self.getGeneRangeStyle = function(g, t) {
+            return bloqheadGetGeneProgressStyle.range(g, t);
+        };
+        self.getGeneValueStyle = function(g) {
+            return bloqheadGetGeneProgressStyle.value(g[1] - g[0]);
+        };
+        self.getWorkerIcon = function(res) {
+            return resourceService.getWorkerIcon(res);
+        };
     }
 ]);
 
@@ -150,8 +212,8 @@ game.component('bloqheadTraitSelector', {
 });
 
 game.controller('bloqhead.controllers.traitSelector', [
-    'traitDefinitions', 'geneDefinitions',
-    function(traitDefinitions, geneDefinitions) {
+    'traitDefinitions', 'geneDefinitions', 'bloqheadGetGeneProgressStyle',
+    function(traitDefinitions, geneDefinitions, bloqheadGetGeneProgressStyle) {
         var self = this;
         self.trait = null;
         self.traitDefinitions = traitDefinitions;
@@ -168,24 +230,10 @@ game.controller('bloqhead.controllers.traitSelector', [
         self.$onInit = function() {
             self.unit = self.resolve.unit;
         };
-        self.getGeneStyle = function(g) {
-            var ret = {};
-            if (self.trait !== null) {
-                var i = self.geneDefinitions.indexOf(g);
-                for (var x = 0; x < self.trait.genes.length; x++) {
-                    var tg = self.trait.genes[x];
-                    if (tg[0] == i) {
-                        var os = map(tg[1], -255, 255, 0, 100);
-                        var w = map(tg[2], -255, 255, 0, 100);
-                        ret.marginLeft = os + '%';
-                        ret.width = (w - os) + '%';
-                    }
-                }
-
-
-            }
-            return ret;
+        self.select = function(t) {
+            self.close({ $value: t });
         };
+
         self.ok = function() {
             self.close({ $value: self.trait });
         };
@@ -193,9 +241,10 @@ game.controller('bloqhead.controllers.traitSelector', [
         self.cancel = function() {
             self.dismiss({ $value: 'cancel' });
         };
+        self.getGeneRangeStyle = function(g) {
+            return bloqheadGetGeneProgressStyle.range(g, self.trait);
+        };
 
-        function map(OldValue, OldMin, OldMax, NewMin, NewMax) {
-            return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
-        }
+
     }
 ]);
