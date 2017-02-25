@@ -72,9 +72,7 @@ game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDe
 
             return ret;
         }
-    }
-
-    return;
+    };
 }]);
 
 // POPULATION LIST
