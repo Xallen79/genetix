@@ -26,7 +26,9 @@
             <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
                 <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
                     <i class="fa fa-male male-color" ng-switch-when="true"></i><i class="fa fa-female female-color" ng-switch-when="false"></i>
+                    <i class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.currentJob].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.currentJob].resource].attr}}"></i>
                     <span>{{unit.name}}</span>
+
                 </td>
                 <td class="mortal-genome">
                     <table class="genomeEditor">
@@ -37,7 +39,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="width: 20%; ">
+                                <td style="width: 20%;">
                                     {{unit.attributes.STR}}
                                 </td>
                                 <td style="width: 20%">
@@ -57,6 +59,11 @@
                     </table>
                 </td>
                 <td>
+                    <i ng-repeat="trait in unit.traits" class="fa fa-star" tooltip-placement="top" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
+                </td>
+
+                <!--
+                <td>
                     <button ng-disabled="!$ctrl.parent.canBreed" class="btn btn-xs btn-primary" ng-click="$ctrl.parent.breederAssign({$id:unit.id})">Breed Me</button>
                 </td>
                 <td>
@@ -69,7 +76,32 @@
                         </ul>
                     </div>
                 </td>
+                -->
             </tr>
         </tbody>
     </table>
 </div>
+<script type="text/ng-template" id="traitTooltip.html">
+    <div class="text-center">
+        <h4>{{trait.name}}</h4>
+        <div class="genes-table">
+            <div class="genes-tr">
+                <div class="genes-th rec">Recessive</div>
+                <div class="genes-th"><span class="pull-left">-255</span> 0 <span class="pull-right">+255</span></div>
+                <div class="genes-th dom ">Dominant</div>
+            </div>
+            <div class="genes-tr " ng-repeat="gene in trait.genes">
+                <div class="genes-td rec " ng-bind="$ctrl.geneDefinitions[gene[0]].rec "></div>
+                <div class="genes-td" data-attr="{{$ctrl.geneDefinitions[gene[0]].attr}}">
+                    <div class="progress progress-trait-selector" style="position:relative;">
+                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneValueStyle(unit.genes[gene[0]]) "></div>
+                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle($ctrl.geneDefinitions[gene[0]], trait)"></div>
+                    </div>
+                </div>
+                <div class="genes-td dom" ng-bind="$ctrl.geneDefinitions[gene[0]].dom"></div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</script>

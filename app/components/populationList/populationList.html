@@ -13,6 +13,7 @@
     <div class="row population-container">
         <div class="col-xs-12">
             <uib-tabset type="pills">
+
                 <div uib-tab class="panel-default" heading="Gender View">
                     <div class="col-xs-6 col-lg-6">
                         <h4>Males</h4>
@@ -23,22 +24,21 @@
                         <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Female']}"></bloqhead-population-panel>
                     </div>
                 </div>
+
                 <div uib-tab class="panel-default" heading="Custom View">
-                    <div class="col-xs-6 col-lg-6">
-                        <h4><a href="javascript:void(0);" ng-click="$ctrl.openTraitSelector()">Add Filter</a></h4>
-                        <bloqhead-population-panel population="$ctrl.population" filter="$ctrl.getCustomFilter()"></bloqhead-population-panel>
+                    <div class="col-xs-12">
+                        <div class="btn btn-xs btn-primary trait-filter-item" ng-repeat="c in $ctrl.criteria" ng-click="$ctrl.deleteCriteria($index)">
+                            <div ng-if="c.type='trait'">
+                                <span ng-bind="c.val.name"></span>
+                                <button type="button" class="close" ng-click="$ctrl.deleteCriteria($index)"><span>×</span></button>
+                            </div>
+                        </div>
+                        <button class="btn btn-xs btn-primary" type="button" href="javascript:void(0);" ng-click="$ctrl.openTraitSelector()">Add Filter</button>
                     </div>
+                    <bloqhead-population-panel population="$ctrl.population" filter="$ctrl.getCustomFilter()"></bloqhead-population-panel>
                 </div>
-
             </uib-tabset>
-
-
         </div>
-
-
-        <!--
-            <bloqhead-mortal ng-repeat="child in $ctrl.population | orderBy: '-dt' " display="LIST " mode="POP " can-breed="$ctrl.canBreed " unit="child " assign="$ctrl.breederAssign({$id:$id, $type:$type}) "></bloqhead-mortal>
-        -->
     </div>
 
 
