@@ -46,7 +46,7 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap',
 
             $uibTooltipProvider.options({
                 appendToBody: true,
-                placement: 'top-left',
+                placement: 'auto top',
                 popupCloseDelay: 250,
                 popupDelay: 250
             });

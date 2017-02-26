@@ -1,6 +1,13 @@
 {
     "constants": {
         "resourceTypes": {
+            "HAPPINESS": {
+                "rid": "HAPPINESS",
+                "name": "Happiness",
+                "desc": "Good things happen to those that are happy...",
+                "attr": "CHR",
+                "jids": ["IDLE"]
+            },
             "DIRT": {
                 "rid": "DIRT",
                 "name": "Dirt",
@@ -46,12 +53,6 @@
                 "name": "Gold",
                 "desc": "Used for purchasing gene research technologies.",
                 "attr": "INT"
-            },
-            "HAPPINESS": {
-                "rid": "HAPPINESS",
-                "name": "Happiness",
-                "desc": "Good things happen to those that are happy...",
-                "attr": "CHR"
             },
             "EVOCOIN": {
                 "rid": "EVOCOIN",

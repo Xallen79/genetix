@@ -195,7 +195,7 @@ pipes.builtIndexDev = function() {
         .pipe(pipes.orderedVendorScripts());
 
     var orderedAppScripts = pipes.builtAppScriptsDev()
-        .pipe(pipes.orderedAppScripts())
+        .pipe(pipes.orderedAppScripts());
 
     var appStyles = pipes.builtStylesDev();
     pipes.builtFontsDev();
@@ -348,7 +348,7 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     // watch styles
     gulp.watch(paths.styles, function() {
         return pipes.builtStylesDev()
-            .pipe(plugins.livereload())
+            .pipe(plugins.livereload());
     });
 
 });

@@ -13,13 +13,11 @@ game.controller('bloqhead.controllers.buildingList', [
         self.$onInit = function() {
             self.buildings = []; //buildingService.getBuildingSnapshot();
             self.resourceTypes = resourceTypes;
+            self.resourceService = resourceService;
             buildingService.SubscribeBuildingsChangedEvent($scope, self.updateBuildings);
         };
         self.updateBuildings = function(event, buildings) {
             self.buildings = buildings;
-        };
-        self.getWorkerIcon = function(res) {
-            return resourceService.getWorkerIcon(res);
         };
         self.build = function(type) {
             buildingService.build(type);

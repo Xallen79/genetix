@@ -30,28 +30,28 @@
                     <span>{{unit.name}}</span>
 
                 </td>
-                <td class="mortal-genome">
+                <td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
                     <table class="genomeEditor">
                         <thead>
                             <tr>
-                                <th colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" /></th>
+                                <th colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" ng-mousemove="$ctrl.imageHover($event)" /></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="width: 20%;">
+                                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'STR'">
                                     {{unit.attributes.STR}}
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'INT'">
                                     {{unit.attributes.INT}}
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'END'">
                                     {{unit.attributes.END}}
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'CHR'">
                                     {{unit.attributes.CHR}}
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'LCK'">
                                     {{unit.attributes.LCK}}
                                 </td>
                             </tr>
@@ -59,7 +59,7 @@
                     </table>
                 </td>
                 <td>
-                    <i ng-repeat="trait in unit.traits" class="fa fa-star" tooltip-placement="top" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
+                    <i ng-repeat="trait in unit.traits" class="fa fa-star" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
                 </td>
 
                 <!--
@@ -95,10 +95,31 @@
                 <div class="genes-td" data-attr="{{$ctrl.geneDefinitions[gene[0]].attr}}">
                     <div class="progress progress-trait-selector" style="position:relative;">
                         <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneValueStyle(unit.genes[gene[0]]) "></div>
-                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle($ctrl.geneDefinitions[gene[0]], trait)"></div>
+                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneTraitRangeStyle($ctrl.geneDefinitions[gene[0]], trait)"></div>
                     </div>
                 </div>
                 <div class="genes-td dom" ng-bind="$ctrl.geneDefinitions[gene[0]].dom"></div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</script>
+<script type="text/ng-template" id="attrTooltip.html">
+    <div class="text-center">
+        <h4>{{$ctrl.attributes[$ctrl.hoverAttr].name}}</h4>
+        <h5>{{$ctrl.attributes[$ctrl.hoverAttr].desc}}</h5>
+        <br />
+        <div class="genes-table">
+            <div class="genes-tr " ng-repeat="gene in $ctrl.geneDefinitions | filter:{attr: $ctrl.hoverAttr}" ng-if="unit.genesUnlocked.indexOf($ctrl.geneDefinitions.indexOf(gene)) >=0">
+                <div class="genes-td rec"><span ng-bind="gene.rec"></span>: -<span ng-bind="unit.genes[$ctrl.geneDefinitions.indexOf(gene)][0]"></span></div>
+                <div class="genes-td" data-attr="{{$ctrl.hoverAttr}}">
+                    <div class="progress progress-trait-selector" style="position:relative;">
+                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneValueStyle(unit.genes[$ctrl.geneDefinitions.indexOf(gene)]) "></div>
+                        <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle(unit.genes[$ctrl.geneDefinitions.indexOf(gene)])"></div>
+                    </div>
+                </div>
+                <div class="genes-td dom"><span ng-bind="gene.dom"></span>: <span ng-bind="unit.genes[$ctrl.geneDefinitions.indexOf(gene)][1]"></span></div>
             </div>
         </div>
         <br />

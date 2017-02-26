@@ -15,7 +15,7 @@
 
                         <div class="col-xs-12 col-md-2 col-sm-1">
                             <!-- achievement -->
-                            <div class="achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" tooltip-placement="top" uib-tooltip-template="'achievementTooltip.html'" tooltip-class="achievement-tooltip">
+                            <div class="achievement-cell" ng-class="$ctrl.getAchievementClass($ctrl.achievementSetup.achievements[aid])" uib-tooltip-template="'achievementTooltip.html'" tooltip-class="achievement-tooltip">
                                 <p ng-bind="$ctrl.achievementSetup.achievements[aid].name" />
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                                     <div class="achievement-rank-cell" ng-class="$ctrl.getAchievementRankClass($ctrl.achievementSetup.achievements[aid], ar)">
                                         <span ng-bind="ar[0]"></span><br />
                                         <!-- perks -->
-                                        <div ng-repeat="p in ar[1]" style="display: inline-block;" tooltip-placement="top" uib-tooltip-template="'perkTooltip.html'" tooltip-class="perk-tooltip">
+                                        <div ng-repeat="p in ar[1]" style="display: inline-block;" uib-tooltip-template="'perkTooltip.html'" tooltip-class="perk-tooltip">
                                             <i class="fa fa-gift"></i>&nbsp;
                                         </div>
                                     </div>

@@ -24,7 +24,7 @@ game.service('resourceService', [
                 WATER: [0, 0, false || overrideAllOn, 1.00],
                 WOOD: [0, 0, false || overrideAllOn, 1.00],
                 GOLD: [0, 0, false || overrideAllOn, 1.00],
-                HAPPINESS: [0, -1, false || overrideAllOn, 1.00],
+                HAPPINESS: [0, -1, true || overrideAllOn, 1.00],
                 SCIENCE: [0, -1, false || overrideAllOn, 1.00],
                 STEEL: [0, 0, false || overrideAllOn, 1.00],
                 EVOCOIN: [0, -1, false || overrideAllOn, 1.00]
@@ -57,6 +57,7 @@ game.service('resourceService', [
             ret['fa-tint'] = (res === 'WATER');
             ret['fa-tree'] = (res === 'WOOD');
             ret['fa-flask'] = (res === 'SCIENCE');
+            ret['icon-happy'] = (res === 'HAPPINESS');
             return ret;
         };
 

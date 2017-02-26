@@ -38,7 +38,15 @@ game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDe
     }
 
     return {
-        range: function(g, trait) {
+        range: function(rec, dom) {
+            var ret = {};
+            var os = map(-1 * rec, -255, 255, 0, 100);
+            var w = map(dom, -255, 255, 0, 100);
+            ret.marginLeft = os + '%';
+            ret.width = (w - os) + '%';
+            return ret;
+        },
+        traitRange: function(g, trait) {
             var ret = {};
             if (trait !== null) {
                 var i = geneDefinitions.indexOf(g);
@@ -177,22 +185,38 @@ game.component('bloqheadPopulationPanel', {
 });
 
 game.controller('bloqhead.controllers.populationPanel', [
-    'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService',
-    function(bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService) {
+    'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService', 'attributes',
+    function(bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService, attributes) {
         var self = this;
         self.geneDefinitions = geneDefinitions;
+        self.attributes = attributes;
         self.resourceTypes = resourceTypes;
         self.$onInit = function() {
             self.orderBy = self.orderBy || '-dt';
         };
-        self.getGeneRangeStyle = function(g, t) {
-            return bloqheadGetGeneProgressStyle.range(g, t);
+        self.getGeneTraitRangeStyle = function(g, t) {
+            return bloqheadGetGeneProgressStyle.traitRange(g, t);
+        };
+        self.getGeneRangeStyle = function(gene) {
+            return bloqheadGetGeneProgressStyle.range(gene[0], gene[1]);
         };
         self.getGeneValueStyle = function(g) {
             return bloqheadGetGeneProgressStyle.value(g[1] - g[0]);
         };
         self.getWorkerIcon = function(res) {
             return resourceService.getWorkerIcon(res);
+        };
+        self.imageHover = function(hoverEvent) {
+            var attrs = [];
+            for (var key in self.attributes) {
+                attrs.push(key);
+            }
+            var imgWidth = hoverEvent.target.clientWidth;
+            var offsetX = hoverEvent.offsetX;
+            var attrSize = imgWidth / 5;
+            var index = Math.floor(offsetX / attrSize);
+            index = Math.min(attrs.length - 1, index);
+            self.hoverAttr = attrs[index];
         };
     }
 ]);
@@ -240,7 +264,7 @@ game.controller('bloqhead.controllers.traitSelector', [
             self.dismiss({ $value: 'cancel' });
         };
         self.getGeneRangeStyle = function(g) {
-            return bloqheadGetGeneProgressStyle.range(g, self.trait);
+            return bloqheadGetGeneProgressStyle.traitRange(g, self.trait);
         };
 
 

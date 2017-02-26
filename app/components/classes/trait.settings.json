@@ -121,6 +121,28 @@
                     "Aggressive"
                 ]
             }
-        ]
+        ],
+        "attributes": {
+            "STR": {
+                "name": "Strength",
+                "desc": "Affects a mortals ability for physical labor such as digging."
+            },
+            "INT": {
+                "name": "Intelligence",
+                "desc": "Affects a mortals ability for thoughtful endeavors such as researching."
+            },
+            "END": {
+                "name": "Endurance",
+                "desc": "Affects a mortals ability for demanding tasks such as wood chopping."
+            },
+            "CHR": {
+                "name": "Charisma",
+                "desc": "Affects a mortals ability for stuff."
+            },
+            "LCK": {
+                "name": "Luck",
+                "desc": "Increases a mortals luck.  Useful for divining water."
+            }
+        }
     }
 }

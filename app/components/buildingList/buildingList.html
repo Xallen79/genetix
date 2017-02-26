@@ -11,7 +11,7 @@
         <p style="white-space:nowrap">
             <span>Requires: </span>
             <span ng-repeat="cost in building.costToBuild">
-                <i class="fa" ng-class="$ctrl.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
+                <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
                 <span ng-bind="cost.amount"></span>&nbsp;
             </span>
         </p>

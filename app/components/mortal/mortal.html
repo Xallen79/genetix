@@ -1,30 +1,30 @@
-<div class="bloqhead-component" ng-if="$ctrl.display === 'TILE'">
+<div class="bloqhead-component" ng-if="$ctrl.display === 'TILE'" ng-init="unit = $ctrl.unit">
     <h5 ng-click="$ctrl.showDetails()">
         <div class="col-xs-12 mortal-name" ng-switch="$ctrl.unit.hasTrait('Male')">
             <i class="fa fa-male male-color" ng-switch-when="true"></i>
             <i class="fa fa-female female-color" ng-switch-when="false"></i>
-            <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" tooltip-placement="top" uib-tooltip="{{trait.name}}"></i>
+            <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
         </div>
     </h5>
-    <table class="genomeEditor">
+    <table class="genomeEditor" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
         <tbody>
             <tr>
-                <th colspan="5"><img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" /></th>
+                <th colspan="5"><img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" ng-mousemove="$ctrl.imageHover($event)" /></th>
             </tr>
             <tr>
-                <td style="width: 20% ">
+                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'STR'">
                     {{$ctrl.unit.attributes.STR}}
                 </td>
-                <td style="width: 20% ">
+                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'INT'">
                     {{$ctrl.unit.attributes.INT}}
                 </td>
-                <td style="width: 20% ">
+                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'END'">
                     {{$ctrl.unit.attributes.END}}
                 </td>
-                <td style="width: 20% ">
+                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'CHR'">
                     {{$ctrl.unit.attributes.CHR}}
                 </td>
-                <td style="width: 20% ">
+                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'LCK'">
                     {{$ctrl.unit.attributes.LCK}}
                 </td>
             </tr>
@@ -43,12 +43,29 @@
         <span class="pull-right" ng-bind="$ctrl.unit.currentJob"></span>
     </div>
     <div ng-show="$ctrl.mode === 'NURSE'">
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('BANISH')">Banish</button>
+        <span uib-tooltip-template="'banishTooltip.html'" tooltip-class="trait-tooltip">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('BANISH')" ng-disabled="!$ctrl.canBanish()">Banish</button>
+        </span>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORK')">Work</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('SCHOOL')">School??(Int)</button>
+        <!--<button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('SCHOOL')">School??(Int)</button>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('TRAIN')">Train??(Str)</button>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('RUN')">Run??(End)</button>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('CHR')">Cosmo??(Chr)</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LCK')">Luck something??(Lck)</button>
+        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LCK')">Luck something??(Lck)</button>-->
     </div>
 </div>
+<script type="text/ng-template" id="banishTooltip.html">
+    <div style="text-align: left;">
+        <h5>Cost to banish</h5>
+        <p style="white-space:nowrap">
+            <span>Requires: </span>
+            <span ng-repeat="cost in unit.banishCost">
+                <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
+                <span ng-bind="cost.amount"></span>&nbsp;
+            </span>
+        </p>
+        <!--
+        <p ng-repeat="cost in building.costToBuild" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"><span ng-bind="cost.resource"></span>: <span ng-bind="cost.amount"></span></p>
+        -->
+    </div>
+</script>
