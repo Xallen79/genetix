@@ -94,14 +94,37 @@ h5 {
     max-height: $navbar-height;
 }
 
-.building-list-button {
+.scalable-list-button {
     float: left;
-    font-size: .8em;
     width: 30%;
     margin: .1vh .1vw .1vh .1vw;
     button {
+        font-size: .8vw;
         width: 100%;
         margin: 0;
+    }
+}
+
+.tab-list-button {
+    float: left;
+    width: 10vw;
+    margin: .1vh .1vw .1vh .1vw;
+    button {
+        font-size: .8vw;
+        width: 100%;
+        margin: 0;
+        color: $gray-light;
+        background-color: rgba(0, 0, 0, .3);
+    }
+    button:hover {
+        @include linear-gradient(180deg, lighten($brand-primary, 30%) 0%, lighten($brand-primary, 10%) 30%, lighten($brand-primary, 10%) 100%);
+    }
+}
+
+.tab-list-button.active {
+    button {
+        color: $gray-lighter;
+        @include linear-gradient(180deg, lighten($brand-primary, 20%) 0%, $brand-primary 30%, $brand-primary 100%);
     }
 }
 
@@ -117,7 +140,7 @@ h5 {
     }
     input {
         color: black;
-        width: 4em;
+        width: 2vw;
     }
 }
 
@@ -169,12 +192,12 @@ bloqhead-population-panel {
     thead {
         th {
             text-align: center;
-            font-size: .8em;
+            font-size: .5vw;
         }
     }
     tbody {
         td {
-            font-size: .95em;
+            font-size: .6vw;
         }
     }
 }
@@ -187,7 +210,7 @@ bloqhead-population-panel {
     //background-color: white;
     table.genes {
         height: 300px;
-        font-size: .7em;
+        font-size: .4vw;
     }
     .progress-bar {
         -webkit-transition: width 0.6s ease, margin-left 0.6s ease;
@@ -212,18 +235,18 @@ div.genes-td {
     display: table-cell;
     overflow: hidden;
     text-align: center;
-    min-width: 160px;
+    width: 5vw;
     white-space: nowrap;
-    font-size: .8em;
+    font-size: .5vw;
 }
 
 div.genes-th {
     //display: table-row;
     height: 20px;
-    font-size: .9em;
+    font-size: .6vw;
     font-weight: bold;
     display: table-cell;
-    line-height: 1em;
+    line-height: .7vw;
     color: lightblue;
 }
 
@@ -367,6 +390,7 @@ table.genomeEditor {
             >i {
                 font-size: .85vw;
                 width: .85vw;
+                line-height: 2.1vh;
             }
         }
         >i {
@@ -380,10 +404,11 @@ table.genomeEditor {
 
 .progress.progress-playerbox-title {
     margin: 0;
-    //height: 1.1em;
-    font-size: 1em;
+    height: 2.4vh;
     background-color: lighten($brand-primary, 60%);
     .progress-bar {
+        font-size: .8vw;
+        line-height: 2.0vh;
         background-color: $brand-primary;
         @include strokeme($brand-primary)
     }
@@ -536,9 +561,8 @@ bloqhead-player-box {
         padding-top: .1vh;
         padding-bottom: .1vh;
         font-size: 1.1vw;
-        //height: 12%;
+        height: 12%;
         overflow: hidden;
-        height: 1.2em;
         vertical-align: middle;
         border-bottom: 2px solid $gray-darker;
     }

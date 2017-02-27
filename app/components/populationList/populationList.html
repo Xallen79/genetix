@@ -14,7 +14,7 @@
         <div class="col-xs-12">
             <uib-tabset type="pills">
 
-                <div uib-tab class="panel-default" heading="Gender View">
+                <div uib-tab template-url="tab.html" heading="Gender View">
                     <div class="col-xs-6 col-lg-6">
                         <h4>Males</h4>
                         <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Male']}"></bloqhead-population-panel>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div uib-tab class="panel-default" heading="Custom View">
+                <div uib-tab template-url="tab.html" heading="Custom View">
                     <div class="col-xs-12">
                         <div class="btn btn-xs btn-primary trait-filter-item" ng-repeat="c in $ctrl.criteria" ng-click="$ctrl.deleteCriteria($index)">
                             <div ng-if="c.type='trait'">
@@ -43,3 +43,10 @@
 
 
 </bloqhead-player-box>
+<script type="text/ng-template" id="tab.html">
+
+    <li ng-class="[{active: active, disabled: disabled}, classes]" class="uib-tab nav-item tab-list-button">
+        <button ng-click="select($event)" class="btn btn-xs">{{heading}}</button>
+    </li>
+
+</script>

@@ -42,11 +42,13 @@
         </div>
         <span class="pull-right" ng-bind="$ctrl.unit.currentJob"></span>
     </div>
-    <div ng-show="$ctrl.mode === 'NURSE'">
-        <span uib-tooltip-template="'banishTooltip.html'" tooltip-class="trait-tooltip">
+    <div class="row" ng-show="$ctrl.mode === 'NURSE'">
+        <div class="scalable-list-button" uib-tooltip-template="'banishTooltip.html'" tooltip-class="trait-tooltip">
             <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('BANISH')" ng-disabled="!$ctrl.canBanish()">Banish</button>
-        </span>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORK')">Work</button>
+        </div>
+        <div class="scalable-list-button">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORK')">Work</button>
+        </div>
         <!--<button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('SCHOOL')">School??(Int)</button>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('TRAIN')">Train??(Str)</button>
         <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('RUN')">Run??(End)</button>
