@@ -205,11 +205,11 @@ bloqhead-population-panel {
 .progress-trait-selector {
     margin: 0;
     border: 1px solid black;
-    min-width: 160px;
-    height: 12px;
+    min-width: 10vw;
+    height: 1vh;
     //background-color: white;
     table.genes {
-        height: 300px;
+        height: 25vh;
         font-size: .4vw;
     }
     .progress-bar {
@@ -227,7 +227,7 @@ div.genes-table {
 
 div.genes-tr {
     //display: table-row;
-    height: 12px;
+    height: 1.0vh;
 }
 
 div.genes-th,
@@ -235,19 +235,19 @@ div.genes-td {
     display: table-cell;
     overflow: hidden;
     text-align: center;
-    width: 5vw;
+    min-width: 10vw;
     white-space: nowrap;
-    font-size: .5vw;
+    font-size: .6vw;
 }
 
 div.genes-th {
     //display: table-row;
-    height: 20px;
-    font-size: .6vw;
+    font-size: .75vw;
     font-weight: bold;
     display: table-cell;
-    line-height: .7vw;
+    line-height: .95;
     color: lightblue;
+    height: 100%;
 }
 
 div.genes-th.dom,

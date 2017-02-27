@@ -112,7 +112,7 @@
         <br />
         <div class="genes-table">
             <div class="genes-tr " ng-repeat="gene in $ctrl.geneDefinitions | filter:{attr: $ctrl.hoverAttr}" ng-if="unit.genesUnlocked.indexOf($ctrl.geneDefinitions.indexOf(gene)) >=0">
-                <div class="genes-td rec"><span ng-bind="gene.rec"></span>: -<span ng-bind="unit.genes[$ctrl.geneDefinitions.indexOf(gene)][0]"></span></div>
+                <div class="genes-td rec"><span ng-bind="gene.rec"></span>: <span ng-bind="{{-1*unit.genes[$ctrl.geneDefinitions.indexOf(gene)][0]}}"></span></div>
                 <div class="genes-td" data-attr="{{$ctrl.hoverAttr}}">
                     <div class="progress progress-trait-selector" style="position:relative;">
                         <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneValueStyle(unit.genes[$ctrl.geneDefinitions.indexOf(gene)]) "></div>
