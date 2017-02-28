@@ -34,7 +34,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     genes: member.genes,
                     genesUnlocked: member.genesUnlocked,
                     name: member.name,
-                    currentJob: member.currentJob
+                    jid: member.jid
                 });
                 unit.update();
                 this.members.push(unit);
@@ -55,7 +55,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     genes: newborn.genes,
                     genesUnlocked: newborn.genesUnlocked,
                     name: newborn.name,
-                    currentJob: newborn.currentJob
+                    jid: newborn.jid
                 });
                 nb.update();
                 this.newborns.push(nb);
@@ -86,7 +86,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 genes: member.genes,
                 genesUnlocked: member.genesUnlocked,
                 name: member.name,
-                currentJob: member.currentJob
+                jid: member.jid
             });
         }
         for (var n = 0; n < this.newborns.length; n++) {
@@ -99,7 +99,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 genes: nb.genes,
                 genesUnlocked: nb.genesUnlocked,
                 name: nb.name,
-                currentJob: nb.currentJob
+                jid: nb.jid
             });
         }
         return state;
@@ -126,7 +126,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 generation: 0,
                 genes: angular.copy(genes),
                 genesUnlocked: self.breederGenesUnlocked,
-                breederGeneCap: self.breederGeneCap,
+                breederGeneCap: self.breederGeneCap
             });
             unit.update();
             population.push(unit);
@@ -181,7 +181,7 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
         var msg = "";
         switch (fate) {
             case "WORK":
-                newborn.currentJob = 'IDLE';
+                newborn.jid = 'IDLE';
                 this.members.push(newborn);
                 this.newborns.splice(index, 1);
                 msg = $filter('fmt')("%(name)s has joined the workforce", newborn);

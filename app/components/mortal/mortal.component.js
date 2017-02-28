@@ -26,8 +26,8 @@ game.controller("bloqheader.controllers.mortal", [
             self.resourceService = resourceService;
         };
         self.canBanish = function() {
-            for (var key in self.unit.banishCost) {
-                var cost = self.unit.banishCost[key];
+            for (var key in self.unit.societyValue) {
+                var cost = self.unit.societyValue[key];
                 if (resourceService.getResource(cost.resourceType) < cost.amount) {
                     return false;
                 }
@@ -39,8 +39,8 @@ game.controller("bloqheader.controllers.mortal", [
             var doAssign = true;
             if (type === "BANISH") {
                 var spent = [];
-                for (var key in self.unit.banishCost) {
-                    var cost = self.unit.banishCost[key];
+                for (var key in self.unit.societyValue) {
+                    var cost = self.unit.societyValue[key];
                     if (resourceService.changeResource(cost.resourceType, (-1 * cost.amount)) === -1) {
                         doAssign = false;
                         for (var i = 0; i < spent.length; i++) {
@@ -50,6 +50,11 @@ game.controller("bloqheader.controllers.mortal", [
                     } else {
                         spent.push({ type: cost.resourceType, amount: cost.amount });
                     }
+                }
+            } else {
+                for (var k in self.unit.societyValue) {
+                    var value = self.unit.societyValue[k];
+                    resourceService.changeResource(value.resourceType, value.amount);
                 }
             }
             if (doAssign)

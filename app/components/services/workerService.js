@@ -11,10 +11,15 @@ game.service('workerService', [
             state = loadState || state || {};
             if (!initialized) {
                 gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
+                populationService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
+            } else {
+                self.handlePopulationUpdate(null, { population: populationService.population.members });
+                console.log(state);
             }
 
             self.getWorkersSnapshot();
+            console.log(state);
         };
 
         self.getState = function() {
@@ -25,7 +30,7 @@ game.service('workerService', [
             var tmpWorkers = [];
             if (!notWorking)
                 tmpWorkers = state.workers.filter(function(worker) {
-                    return worker.unitid !== unitid || (worker.unitid === unitid && worker.jobType === jid);
+                    return worker.unitid !== unitid || (worker.unitid === unitid && worker.jid === jid);
                 });
 
             if (notWorking || tmpWorkers.length != state.workers.length) {
@@ -78,16 +83,25 @@ game.service('workerService', [
                 var elapsed = 0;
                 worker.stepsSinceWork += steps;
                 while (worker.stepsSinceWork >= job.baseWorkerSteps) {
+                    if (worker.jid !== 'IDLE') {
+                        if (resourceService.changeResource('HAPPINESS', -1) < 0) {
+                            unit.onStrike = true;
+                            worker.stepsSinceWork = 0;
+                            break;
+                        }
+                    }
+                    unit.onStrike = false;
                     elapsed++;
                     worker.stepsSinceWork -= job.baseWorkerSteps;
+
                 }
                 resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
                 if (elapsed > 0 && ((resources[job.resource][0] + resources[job.resource].gatherAmount) < resources[job.resource][1] || resources[job.resource][1] === -1)) {
                     var a = unit.getAttribute(resourceTypes[job.resource].attr);
                     gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
                     resources[job.resource].gatherAmount += gatherAmount;
-                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
-                    //logService.logWorkMessage(msg);
+                    // var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
+                    // logService.logWorkMessage(msg);
                 }
 
 
@@ -99,5 +113,17 @@ game.service('workerService', [
                 }
             }
         }
+
+        self.handlePopulationUpdate = function(event, data) {
+            for (var m = 0; m < data.population.length; m++) {
+                var unit = data.population[m];
+                if (unit.jid) {
+
+                    self.addWorker(unit.jid, unit.id);
+
+                }
+            }
+            self.getWorkersSnapshot();
+        };
     }
 ]);

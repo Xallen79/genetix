@@ -90,11 +90,12 @@ game.service('populationService', [
             member.update();
             self.sendPopulationUpdateEvent();
         };
-        self.setUnitJob = function(id, job, jobName) {
+        self.setUnitJob = function(id, jid, jobName) {
             var unit = self.population.getById(id);
-            unit.currentJob = job;
-
-            var msg = $filter('fmt')('%(name)s is now a %(job)s', { name: unit.name, job: jobName });
+            unit.jid = jid;
+            var f = jobName.charAt(0).toLowerCase();
+            var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
+            var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
             self.logService.logWorkMessage(msg);
             self.sendPopulationUpdateEvent();
         };

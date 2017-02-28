@@ -26,7 +26,7 @@
             <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
                 <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
                     <i class="fa fa-male male-color" ng-switch-when="true"></i><i class="fa fa-female female-color" ng-switch-when="false"></i>
-                    <i class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.currentJob].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.currentJob].resource].attr}}"></i>
+                    <i class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
                     <span>{{unit.name}}</span>
 
                 </td>

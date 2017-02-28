@@ -33,14 +33,15 @@ game.factory('Breeder', [
             this.genes = config.genes || this.genes || [];
             this.breederGeneCap = config.breederGeneCap || this.breederGeneCap || 25;
             this.genesUnlocked = config.genesUnlocked || this.genesUnlocked || [];
-            this.currentJob = config.currentJob || this.currentJob || null;
+            this.jid = config.currentJob || config.jid || this.jid || 'IDLE';
+            this.onStrike = config.onStrike || this.onStrike || false;
 
             this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.breederGeneCap);
             //this.blueImage = getBlueImage(this.genes);
 
             this.traits = this.traitInspector.getTraits(this.genes);
             this.attributes = this.traitInspector.getAttributes(this.genes);
-            this.banishCost = getBanishCost(this.attributes);
+            this.societyValue = getSocietyValue(this.attributes);
 
             this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
 
@@ -317,7 +318,7 @@ game.factory('Breeder', [
             return result;
         }
 
-        function getBanishCost(attr) {
+        function getSocietyValue(attr) {
             var costs = [];
             var total = 0;
             for (var key in attributes) {

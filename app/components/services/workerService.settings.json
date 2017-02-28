@@ -3,7 +3,7 @@
         "jobTypes": {
             "IDLE": {
                 "jid": "IDLE",
-                "name": "Idle",
+                "name": "Idler",
                 "description": "One who enjoys life",
                 "resource": "HAPPINESS",
                 "baseWorkerSteps": 4,
