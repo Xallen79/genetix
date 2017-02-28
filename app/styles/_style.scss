@@ -13,24 +13,24 @@ $top-row-height: 25vh;
 
 @mixin resource-attr-stroke {
     [data-attr="STR"] {
-        color: $attr-str;
-        @include strokeme(black)
+        color: $attr-str-dim;
+        @include strokeme($attr-str)
     }
     [data-attr="INT"] {
-        color: $attr-int;
-        @include strokeme(black)
+        color: $attr-int-dim;
+        @include strokeme($attr-int)
     }
     [data-attr="END"] {
-        color: $attr-end;
-        @include strokeme(black)
+        color: $attr-end-dim;
+        @include strokeme($attr-end)
     }
     [data-attr="CHR"] {
-        color: $attr-chr;
-        @include strokeme(black)
+        color: $attr-chr-dim;
+        @include strokeme($attr-chr)
     }
     [data-attr="LCK"] {
-        color: $attr-lck;
-        @include strokeme(black)
+        color: $attr-lck-dim;
+        @include strokeme($attr-lck)
     }
 }
 
@@ -205,8 +205,8 @@ bloqhead-population-panel {
 .progress-trait-selector {
     margin: 0;
     border: 1px solid black;
-    min-width: 10vw;
-    height: 1vh;
+    max-width: 6vw;
+    height: 1.2vh;
     //background-color: white;
     table.genes {
         height: 25vh;
@@ -221,13 +221,21 @@ bloqhead-population-panel {
     }
 }
 
+.toggle.lock {
+    .toggle-handle {
+        background-color: white;
+    }
+}
+
 div.genes-table {
     display: table;
+    min-width: 15vw;
 }
 
 div.genes-tr {
     //display: table-row;
-    height: 1.0vh;
+    height: 1.4vh;
+    min-width: 20vw;
 }
 
 div.genes-th,
@@ -235,9 +243,10 @@ div.genes-td {
     display: table-cell;
     overflow: hidden;
     text-align: center;
-    min-width: 10vw;
+    min-width: 6vw;
     white-space: nowrap;
-    font-size: .6vw;
+    font-size: .7vw;
+    margin: 1px;
 }
 
 div.genes-th {
@@ -416,7 +425,7 @@ table.genomeEditor {
 
 div[data-attr="STR"] {
     .progress {
-        background-color: lighten($attr-str, 60%);
+        background-color: $attr-str-dim;
     }
     .progress-bar {
         background-color: $attr-str;
@@ -426,7 +435,7 @@ div[data-attr="STR"] {
 
 div[data-attr="INT"] {
     .progress {
-        background-color: lighten($attr-int, 60%);
+        background-color: $attr-int-dim;
     }
     .progress-bar {
         background-color: $attr-int;
@@ -436,7 +445,7 @@ div[data-attr="INT"] {
 
 div[data-attr="END"] {
     .progress {
-        background-color: lighten($attr-end, 25%);
+        background-color: $attr-end-dim;
     }
     .progress-bar {
         background-color: $attr-end;
@@ -446,7 +455,7 @@ div[data-attr="END"] {
 
 div[data-attr="CHR"] {
     .progress {
-        background-color: lighten($attr-chr, 55%);
+        background-color: $attr-chr-dim;
     }
     .progress-bar {
         background-color: $attr-chr;
@@ -456,7 +465,7 @@ div[data-attr="CHR"] {
 
 div[data-attr="LCK"] {
     .progress {
-        background-color: lighten($attr-lck, 55%);
+        background-color: $attr-lck-dim;
     }
     .progress-bar {
         background-color: $attr-lck;
@@ -466,11 +475,11 @@ div[data-attr="LCK"] {
 
 div[data-attr="NONE"] {
     .progress {
-        background-color: lighten($attr-none, 35%);
+        background-color: $attr-none-dim;
     }
     .progress-bar {
         background-color: $attr-none;
-        @include strokeme(black)
+        @include strokeme($attr-none-stroke)
     }
 }
 

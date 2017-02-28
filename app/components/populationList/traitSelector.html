@@ -1,29 +1,37 @@
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-xs-8">
-            <div class="genes-table">
-                <div class="genes-tr">
-                    <div class="genes-th rec">Recessive</div>
-                    <div class="genes-th"><span class="pull-left">-255</span> 0 <span class="pull-right">+255</span></div>
-                    <div class="genes-th dom">Dominant</div>
-                </div>
-                <div class="genes-tr" ng-repeat="g in $ctrl.geneDefinitions">
-                    <div class="genes-td rec" ng-bind="g.rec"></div>
-                    <div class="genes-td" data-attr="{{g.attr}}">
-                        <div class="progress progress-trait-selector">
-                            <div class="progress-bar" role="progressbar" aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle(g)"></div>
-                        </div>
-                    </div>
-                    <div class="genes-td dom" ng-bind="g.dom"></div>
-                </div>
-            </div>
+        <div class="pull-right" style="margin-right: 3vw;">
+            <toggle ng-model="$ctrl.showLocked" style="lock" off="<i class='fa fa-unlock'></i>" on="<i class='fa fa-lock'></i>" size="btn-sm" offstyle="btn-success" onstyle="btn-danger"></toggle>
         </div>
-        <div class="col-xs-4">Traits
+        <div class="col-xs-4">
+            <fieldset>
+
+                <h5>Genes</h5>
+
+                <div class="genes-table">
+                    <div class="genes-tr">
+                        <div class="genes-th rec">Recessive</div>
+                        <div class="genes-th"><span class="pull-left">-255</span> 0 <span class="pull-right">+255</span></div>
+                        <div class="genes-th dom">Dominant</div>
+                    </div>
+                    <div class="genes-tr" ng-repeat="g in $ctrl.geneDefinitions" ng-show="g.unlocked || $ctrl.showLocked">
+                        <div class="genes-td rec" ng-bind="$ctrl.getGeneRecessive(g)"></div>
+                        <div class="genes-td" data-attr="{{g.attr}}">
+                            <div class="progress progress-trait-selector">
+                                <div class="progress-bar" role="progressbar" aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle(g)"></div>
+                            </div>
+                        </div>
+                        <div class="genes-td dom" ng-bind="$ctrl.getGeneDominant(g)"></div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-xs-8">Traits
 
             <div class="row">
                 <div class="col-xs-12">
                     <span class="trait-icon" ng-repeat="t in $ctrl.traitDefinitions">
-                        <button class="btn btn-sm btn-info" type="button" ng-click="$ctrl.select(t)" ng-bind="t.name" data-ng-mouseenter="$ctrl.traitEnter(t);" ng-mouseleave="$ctrl.traitLeave(t);"></button>
+                        <button ng-show="t.unlocked || $ctrl.showLocked" class="btn btn-sm btn-info" type="button" ng-click="$ctrl.select(t)" ng-bind="t.name" data-ng-mouseenter="$ctrl.traitEnter(t);" ng-mouseleave="$ctrl.traitLeave(t);"></button>
                     </span>
                 </div>
             </div>

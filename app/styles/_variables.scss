@@ -22,11 +22,23 @@ $brand-info: #5bc0de !default;
 $brand-warning: #f89406 !default;
 $brand-danger: #ee5f5b !default;
 $attr-str: #7F0000;
+$attr-str-dim: lighten($attr-str, 60%);
+$attr-str-stroke: #C53636;
 $attr-int: #015175;
+$attr-int-dim: lighten($attr-int, 60%);
+$attr-int-stroke: #0484BC;
 $attr-end: #ED5B10;
+$attr-end-dim: lighten($attr-end, 25%);
+$attr-end-stroke: #FFA070;
 $attr-chr: #45006E;
+$attr-chr-dim: lighten($attr-chr, 55%);
+$attr-chr-stroke: #6F00B1;
 $attr-lck: #2D7F0D;
+$attr-lck-dim: lighten($attr-lck, 55%);
+$attr-lck-stroke: #64B645;
 $attr-none: $gray-dark;
+$attr-none-dim: lighten($attr-none, 35%);
+$attr-none-stroke: black;
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
