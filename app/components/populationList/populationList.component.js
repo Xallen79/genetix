@@ -188,8 +188,8 @@ game.component('bloqheadPopulationPanel', {
 });
 
 game.controller('bloqhead.controllers.populationPanel', [
-    'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService', 'attributes',
-    function(bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService, attributes) {
+    '$timeout', 'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService', 'attributes',
+    function($timeout, bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService, attributes) {
         var self = this;
         self.geneDefinitions = geneDefinitions;
         self.attributes = attributes;
@@ -198,16 +198,21 @@ game.controller('bloqhead.controllers.populationPanel', [
             self.orderBy = self.orderBy || '-dt';
         };
         self.getGeneTraitRangeStyle = function(g, t) {
-            return bloqheadGetGeneProgressStyle.traitRange(g, t);
+            return bloqheadGetGeneProgressStyle().traitRange(g, t);
         };
         self.getGeneRangeStyle = function(gene) {
-            return bloqheadGetGeneProgressStyle.range(gene[0], gene[1]);
+            return bloqheadGetGeneProgressStyle().range(gene[0], gene[1]);
         };
         self.getGeneValueStyle = function(g) {
-            return bloqheadGetGeneProgressStyle.value(g[1] - g[0]);
+            return bloqheadGetGeneProgressStyle().value(g[1] - g[0]);
         };
-        self.getWorkerIcon = function(res) {
-            return resourceService.getWorkerIcon(res);
+        self.getWorkerIcon = function(strike, res) {
+
+            var ret = [];
+            ret.push(resourceService.getWorkerIcon(res));
+            if (strike) ret.push('onstrike');
+
+            return ret;
         };
         self.imageHover = function(hoverEvent) {
             var attrs = [];

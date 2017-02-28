@@ -25,13 +25,14 @@
         <tbody>
             <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
                 <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
-                    <i title="Male" class="fa fa-male male-color" ng-switch-when="true"></i><i title="Female" class="fa fa-female female-color" ng-switch-when="false"></i>
-                    <!--<span class="fa-stack">                        -->
-                    <i title="{{$ctrl.parent.jobTypes[unit.jid].name}}" class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
-                    <i title="On Strike!" ng-if="unit.onStrike" class="fa fa-ban" style="color:tomato;"></i>
-                    <!--</span>-->
-                    <span>{{unit.name}}</span>
+                    <span>
+                        <i title="Male" class="fa fa-male male-color" ng-switch-when="true"></i><i title="Female" class="fa fa-female female-color" ng-switch-when="false"></i>
+                    </span>
+                    <span>                        
+                        <i title="{{unit.onStrike ? 'On strike!' : $ctrl.parent.jobTypes[unit.jid].name}}" class="fa fa-fw" ng-class="$ctrl.getWorkerIcon(unit.onStrike, $ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
+                    </span>
 
+                    <span>{{unit.name}}</span>
                 </td>
                 <td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
                     <table class="genomeEditor">
@@ -62,7 +63,7 @@
                     </table>
                 </td>
                 <td>
-                    <i ng-repeat="trait in unit.traits" class="fa fa-star" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
+                    <span ng-repeat="trait in unit.traits"><i class="fa fa-star" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i></span>
                 </td>
 
                 <!--
@@ -128,4 +129,8 @@
         <br />
         <br />
     </div>
+</script>
+<script type="text/ng-template" id="carousel.html">
+    <span class="carousel-inner" ng-transclude></span>
+
 </script>

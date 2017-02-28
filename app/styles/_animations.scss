@@ -63,3 +63,16 @@
     opacity: 1;
     max-height: 30px;
 }
+
+i.onstrike::before {
+    animation-duration: 1s;
+    animation-name: swap-ban;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes swap-ban {
+    from {
+        content: "\f05e"
+    }
+}
