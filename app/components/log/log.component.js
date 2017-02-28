@@ -2,19 +2,23 @@ var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqheadLog', {
     templateUrl: 'components/log/log.html',
-    controller: 'bloqhead.controllers.log'
+    controller: 'bloqhead.controllers.log',
+    bindings: {
+        pauseScroll: '<'
+    }
 });
 
 
 
 
 game.controller('bloqhead.controllers.log', [
-    '$scope', 'logService', 'logTypes',
-    function($scope, logService, logTypes) {
+    '$scope', '$location', '$anchorScroll', 'logService', 'logTypes',
+    function($scope, $location, $anchorScroll, logService, logTypes) {
         var self = this;
         self.$onInit = function() {
             self.messages = [];
             logService.SubscribeNewMessageEvent($scope, self.receiveMessages);
+            $location.hash('scrollBottom');
         };
 
         self.getLogClass = function(type) {
@@ -42,7 +46,8 @@ game.controller('bloqhead.controllers.log', [
 
         self.receiveMessages = function(event, messages) {
             self.messages = messages;
-            $('.log-component')[0].scrollTop = $('.log-component')[0].scrollHeight;
+            if (!self.pauseScroll)
+                $anchorScroll();
         };
     }
 ]);

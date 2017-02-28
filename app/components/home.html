@@ -5,8 +5,9 @@
                 <bloqhead-player-box>
                     <bloqhead-player-box-title>
                         <i class="fa fa-list"></i> Log
+                        <i class="pull-right fa" ng-class="$ctrl.pauseScroll ? 'fa-play' : 'fa-pause'" ng-click="$ctrl.pauseScroll=!$ctrl.pauseScroll" title="Autoscroll On/Off"></i>
                     </bloqhead-player-box-title>
-                    <bloqhead-log></bloqhead-log>
+                    <bloqhead-log pause-scroll="$ctrl.pauseScroll"></bloqhead-log>
                 </bloqhead-player-box>
             </div>
         </div>

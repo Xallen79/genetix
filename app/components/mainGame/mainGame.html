@@ -28,7 +28,7 @@
                     </div>
                 </bloqhead-player-box-title>
                 <div id="breeder-target" class="row breeder-container fullH" lvl-drop-target="true" on-drop="$ctrl.dropped(dragId, dropId, relativePos)">
-                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12">
+                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12 animate-repeat">
                         <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
                         <bloqhead-mortal unit="$ctrl.population[breederid]" mode="BREED"></bloqhead-mortal>
                     </div>
@@ -41,7 +41,7 @@
                     <i class="icon-foot"></i> Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]
                 </bloqhead-player-box-title>
                 <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12">
+                    <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12 animate-repeat">
                         <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
                     </div>
                 </div>

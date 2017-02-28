@@ -23,10 +23,13 @@
     </thead>
     -->
         <tbody>
-            <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list">
+            <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
                 <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
-                    <i class="fa fa-male male-color" ng-switch-when="true"></i><i class="fa fa-female female-color" ng-switch-when="false"></i>
-                    <i class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
+                    <i title="Male" class="fa fa-male male-color" ng-switch-when="true"></i><i title="Female" class="fa fa-female female-color" ng-switch-when="false"></i>
+                    <!--<span class="fa-stack">                        -->
+                    <i title="{{$ctrl.parent.jobTypes[unit.jid].name}}" class="fa" ng-class="$ctrl.getWorkerIcon($ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
+                    <i title="On Strike!" ng-if="unit.onStrike" class="fa fa-ban" style="color:tomato;"></i>
+                    <!--</span>-->
                     <span>{{unit.name}}</span>
 
                 </td>

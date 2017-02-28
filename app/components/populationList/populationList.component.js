@@ -37,8 +37,8 @@ game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDe
         return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
     }
 
-    return function(gd) {
-        var gd = gd || geneDefinitions;
+    return function(pgd) {
+        var gd = pgd || geneDefinitions;
         return {
             range: function(rec, dom) {
                 var ret = {};
@@ -82,7 +82,7 @@ game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDe
 
                 return ret;
             }
-        }
+        };
     };
 }]);
 
@@ -252,13 +252,13 @@ game.controller('bloqhead.controllers.traitSelector', [
                 return lockedText;
             else
                 return g.dom;
-        }
+        };
         self.getGeneRecessive = function(g) {
             if (g.locked)
                 return lockedText;
             else
                 return g.rec;
-        }
+        };
 
         self.traitEnter = function(t) {
             self.trait = t;

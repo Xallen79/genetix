@@ -15,11 +15,9 @@ game.service('workerService', [
                 initialized = true;
             } else {
                 self.handlePopulationUpdate(null, { population: populationService.population.members });
-                console.log(state);
             }
 
             self.getWorkersSnapshot();
-            console.log(state);
         };
 
         self.getState = function() {
@@ -100,8 +98,8 @@ game.service('workerService', [
                     var a = unit.getAttribute(resourceTypes[job.resource].attr);
                     gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
                     resources[job.resource].gatherAmount += gatherAmount;
-                    // var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
-                    // logService.logWorkMessage(msg);
+                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
+                    logService.logWorkMessage(msg);
                 }
 
 
