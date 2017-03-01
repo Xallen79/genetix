@@ -35,7 +35,7 @@ game.factory('Breeder', [
             this.genesUnlocked = config.genesUnlocked || this.genesUnlocked || [];
             this.jid = config.currentJob || config.jid || this.jid || 'IDLE';
             this.onStrike = config.onStrike || this.onStrike || false;
-
+            this.earnings = config.earnings || this.earnings || angular.copy(zeroEarnings);
             this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.breederGeneCap);
             //this.blueImage = getBlueImage(this.genes);
 
@@ -167,7 +167,13 @@ game.factory('Breeder', [
             crossoverrate: 0.5
         };
 
-
+        var zeroEarnings = {};
+        for (var key in resourceTypes) {
+            zeroEarnings[key] = {
+                rid: key,
+                amount: 0
+            };
+        }
 
 
         // male first names

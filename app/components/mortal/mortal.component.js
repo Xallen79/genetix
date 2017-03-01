@@ -61,13 +61,13 @@ game.controller("bloqheader.controllers.mortal", [
                 self.assign({ $id: self.unit.id, $type: type });
         };
         self.getGeneTraitRangeStyle = function(g, t) {
-            return bloqheadGetGeneProgressStyle.traitRange(g, t);
+            return bloqheadGetGeneProgressStyle().traitRange(g, t);
         };
         self.getGeneRangeStyle = function(gene) {
-            return bloqheadGetGeneProgressStyle.range(gene[0], gene[1]);
+            return bloqheadGetGeneProgressStyle().range(gene[0], gene[1]);
         };
         self.getGeneValueStyle = function(g) {
-            return bloqheadGetGeneProgressStyle.value(g[1] - g[0]);
+            return bloqheadGetGeneProgressStyle().value(g[1] - g[0]);
         };
         self.imageHover = function(hoverEvent) {
             var attrs = [];

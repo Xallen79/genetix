@@ -7,6 +7,7 @@ game.service('workerService', [
         var initialized = false;
         var state;
         var lastSnapshot;
+        var resourceStats = {};
         self.init = function(loadState) {
             state = loadState || state || {};
             if (!initialized) {
@@ -16,7 +17,14 @@ game.service('workerService', [
             } else {
                 self.handlePopulationUpdate(null, { population: populationService.population.members });
             }
+            for (var res in resourceTypes) {
+                resourceStats[res] = {
+                    rate: 0,
+                    working: 0,
+                    stepsSinceUpdate: 0
 
+                };
+            }
             self.getWorkersSnapshot();
         };
 
@@ -49,13 +57,15 @@ game.service('workerService', [
             for (var key in jobTypes) {
                 if (jobTypes.hasOwnProperty(key)) {
                     var group = $filter('filter')(state.workers, { jid: key });
+                    var gatherRate = getGatherAmount(group, key);
                     var jt = jobTypes[key];
                     snapshot.push({
                         jid: jt.jid,
                         resource: jt.resource,
                         name: jt.name,
                         description: jt.description,
-                        count: group.length
+                        count: group.length,
+                        rate: gatherRate
                     });
                 }
             }
@@ -72,46 +82,6 @@ game.service('workerService', [
             $rootScope.$emit('workersChangedEvent', self.getWorkersSnapshot());
         };
 
-        function handleLoop(event, steps) {
-            var resources = resourceService.getResourcesSnapshot();
-            for (var i = 0; i < state.workers.length; i++) {
-                var worker = state.workers[i];
-                var unit = populationService.population.getById(worker.unitid);
-                var job = jobTypes[worker.jid];
-                var elapsed = 0;
-                worker.stepsSinceWork += steps;
-                while (worker.stepsSinceWork >= job.baseWorkerSteps) {
-                    if (worker.jid !== 'IDLE') {
-                        if (resourceService.changeResource('HAPPINESS', -1) < 0) {
-                            unit.onStrike = true;
-                            worker.stepsSinceWork = 0;
-                            break;
-                        }
-                    }
-                    unit.onStrike = false;
-                    elapsed++;
-                    worker.stepsSinceWork -= job.baseWorkerSteps;
-
-                }
-                resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
-                if (elapsed > 0 && ((resources[job.resource][0] + resources[job.resource].gatherAmount) < resources[job.resource][1] || resources[job.resource][1] === -1)) {
-                    var a = unit.getAttribute(resourceTypes[job.resource].attr);
-                    gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
-                    resources[job.resource].gatherAmount += gatherAmount;
-                    var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: unit.name, amt: gatherAmount, res: resourceTypes[job.resource].name });
-                    logService.logWorkMessage(msg);
-                }
-
-
-
-            }
-            for (var key in resources) {
-                if (resources.hasOwnProperty(key) && resources[key].gatherAmount) {
-                    resourceService.changeResource(key, resources[key].gatherAmount);
-                }
-            }
-        }
-
         self.handlePopulationUpdate = function(event, data) {
             for (var m = 0; m < data.population.length; m++) {
                 var unit = data.population[m];
@@ -123,5 +93,110 @@ game.service('workerService', [
             }
             self.getWorkersSnapshot();
         };
+
+        function handleLoop(event, steps) {
+            var resources = resourceService.getResourcesSnapshot();
+            resources.HAPPINESS.gatherAmount = 0;
+            var workCost = Math.ceil(populationService.population.members.length / 5);
+            var workerStats = [];
+            while (steps > 0) {
+                for (var i = 0; i < state.workers.length; i++) {
+                    var worker = state.workers[i];
+                    var unit = populationService.population.getById(worker.unitid);
+                    var job = jobTypes[worker.jid];
+                    var elapsed = 0;
+                    resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
+                    var canGather = ((resources[job.resource][0] + resources[job.resource].gatherAmount) < resources[job.resource][1] || resources[job.resource][1] === -1);
+                    if (!canGather) {
+                        unit.stepsSinceWork = 0;
+                        continue;
+                    }
+                    if (worker.jid !== 'IDLE' && worker.stepsSinceWork === 0) {
+                        var sMsg;
+                        var currentHappiness = resources.HAPPINESS.gatherAmount + resources.HAPPINESS[0];
+                        if (currentHappiness >= workCost) {
+                            resources.HAPPINESS.gatherAmount -= workCost;
+                        }
+                        if (currentHappiness < workCost) {
+                            if (!unit.onStrike) {
+                                unit.onStrike = true;
+                                sMsg = $filter('fmt')('%(name)s is on strike!', { name: unit.name });
+                                logService.logWorkMessage(sMsg);
+                            }
+                            continue;
+                        }
+                        unit.onStrike = false;
+                        // sMsg = $filter('fmt')('%(name)s started collecting %(res)s, %(cost)d Happiness has been deducted.', { name: unit.name, res: resourceTypes[job.resource].name, cost: workCost });
+                        // logService.logWorkMessage(sMsg);
+
+                    }
+                    worker.stepsSinceWork++;
+                    if (worker.stepsSinceWork >= job.baseWorkerSteps) {
+                        elapsed = 1;
+                        worker.stepsSinceWork -= job.baseWorkerSteps;
+
+                    }
+                    resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
+                    if (elapsed > 0 && canGather) {
+                        var a = unit.getAttribute(resourceTypes[job.resource].attr);
+                        gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
+                        resources[job.resource].gatherAmount += gatherAmount;
+
+                        if (!angular.isDefined(workerStats[unit.name])) {
+                            workerStats[unit.name] = {};
+                            workerStats[unit.name].gatherAmount = 0;
+                            workerStats[unit.name].resource = resourceTypes[job.resource].name;
+                        }
+
+                        workerStats[unit.name].gatherAmount = workerStats[unit.name].gatherAmount || 0;
+                        workerStats[unit.name].gatherAmount += gatherAmount;
+                        unit.earnings[job.resource].amount += gatherAmount;
+                        console.log(unit.earnings);
+                    }
+
+
+
+                }
+                steps--;
+            }
+            for (var key in resources) {
+                if (resources.hasOwnProperty(key) && resources[key].gatherAmount) {
+                    resourceService.changeResource(key, resources[key].gatherAmount);
+                }
+            }
+            // for (var name in workerStats) {
+            //     var msg = $filter('fmt')('%(name)s produced %(amt)d %(res)s.', { name: name, amt: workerStats[name].gatherAmount, res: workerStats[name].resource });
+            //     logService.logWorkMessage(msg);
+            // }
+            self.getWorkersSnapshot();
+        }
+
+        function getGatherAmount(workers, jid) {
+            var resources = resourceService.getResourcesSnapshot();
+            var gatherRate = 0;
+            for (var w = 0; w < workers.length; w++) {
+                var unit = populationService.population.getById(workers[w].unitid);
+                var job = jobTypes[jid];
+                if (unit.onStrike) continue;
+                var a = unit.getAttribute(resourceTypes[job.resource].attr);
+                if (resources[job.resource][1] === -1 || resources[job.resource][0] < resources[job.resource][1])
+                    gatherRate += Math.round((job.baseAmount * resources[job.resource][3] * Math.pow(10, a))) / job.baseWorkerSteps;
+
+            }
+            if (jid === "IDLE") {
+                var workCost = Math.ceil(populationService.population.members.length / 5);
+                var realJobs = $filter('filter')(state.workers, { jid: '!' + jid });
+                for (var i = 0; i < realJobs.length; i++) {
+                    var worker = realJobs[i];
+                    var j = jobTypes[worker.jid];
+                    var u = populationService.population.getById(worker.unitid);
+                    if (!u.onStrike && (resources[j.resource][1] === -1 || resources[j.resource][0] < resources[j.resource][1]))
+                        gatherRate -= (workCost / j.baseWorkerSteps);
+                }
+            }
+
+            return gatherRate;
+        }
+
     }
 ]);

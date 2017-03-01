@@ -93,6 +93,7 @@ game.service('populationService', [
         self.setUnitJob = function(id, jid, jobName) {
             var unit = self.population.getById(id);
             unit.jid = jid;
+            unit.onStrike = false;
             var f = jobName.charAt(0).toLowerCase();
             var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
             var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });

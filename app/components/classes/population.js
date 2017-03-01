@@ -34,7 +34,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     genes: member.genes,
                     genesUnlocked: member.genesUnlocked,
                     name: member.name,
-                    jid: member.jid
+                    jid: member.jid,
+                    earnings: member.earnings
                 });
                 unit.update();
                 this.members.push(unit);
@@ -55,7 +56,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                     genes: newborn.genes,
                     genesUnlocked: newborn.genesUnlocked,
                     name: newborn.name,
-                    jid: newborn.jid
+                    jid: newborn.jid,
+                    earnings: newborn.earnings
                 });
                 nb.update();
                 this.newborns.push(nb);
@@ -86,7 +88,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 genes: member.genes,
                 genesUnlocked: member.genesUnlocked,
                 name: member.name,
-                jid: member.jid
+                jid: member.jid,
+                earnings: member.earnings
             });
         }
         for (var n = 0; n < this.newborns.length; n++) {
@@ -99,7 +102,8 @@ game.factory('Population', ['$filter', 'Breeder', 'geneDefinitions', 'logService
                 genes: nb.genes,
                 genesUnlocked: nb.genesUnlocked,
                 name: nb.name,
-                jid: nb.jid
+                jid: nb.jid,
+                earnings: nb.earnings
             });
         }
         return state;

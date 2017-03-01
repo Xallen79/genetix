@@ -42,7 +42,14 @@ game.controller('bloqhead.controllers.resourceList', [
             return ret;
         };
 
-
+        self.getWorkerRate = function(res) {
+            var ret = 0;
+            for (var i = 0; i < self.workers.length; i++) {
+                if (res === self.workers[i].resource)
+                    ret += self.workers[i].rate;
+            }
+            return ret;
+        };
 
         self.getWorkerCount = function(res) {
             var ret = 0;

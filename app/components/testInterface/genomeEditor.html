@@ -31,4 +31,7 @@
             </tbody>
         </table>
     </div>
+    <div ng-repeat="earning in $ctrl.unit.earnings">
+        <span ng-bind="earning.rid"></span>: <span ng-bind="earning.amount"></span>
+    </div>
 </div>
