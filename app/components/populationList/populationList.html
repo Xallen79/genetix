@@ -16,26 +16,33 @@
 
                 <div uib-tab template-url="tab.html" heading="Gender View">
                     <div class="col-xs-6 col-lg-6">
-                        <h4>Males</h4>
-                        <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Male']}"></bloqhead-population-panel>
-                    </div>
-                    <div class="col-xs-6 col-lg-6">
-                        <h4>Females</h4>
-                        <bloqhead-population-panel population="$ctrl.population" filter="{traits:['Female']}"></bloqhead-population-panel>
+                        <h4>Workers</h4>
+                        <bloqhead-population-panel bees="$ctrl.bees" filter="{traits:[]}"></bloqhead-population-panel>
                     </div>
                 </div>
 
                 <div uib-tab template-url="tab.html" heading="Custom View">
+
                     <div class="col-xs-12">
-                        <div class="btn btn-xs btn-primary trait-filter-item" ng-repeat="c in $ctrl.criteria" ng-click="$ctrl.deleteCriteria($index)">
-                            <div ng-if="c.type='trait'">
-                                <span ng-bind="c.val.name"></span>
-                                <button type="button" class="close" ng-click="$ctrl.deleteCriteria($index)"><span>×</span></button>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="btn btn-xs btn-primary trait-filter-item" ng-repeat="c in $ctrl.criteria" ng-click="$ctrl.deleteCriteria($index)">
+                                    <div ng-if="c.type='trait'">
+                                        <span ng-bind="c.val.name"></span>
+                                        <button type="button" class="close" ng-click="$ctrl.deleteCriteria($index)"><span>×</span></button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-xs btn-primary" type="button" href="javascript:void(0);" ng-click="$ctrl.openTraitSelector()">Add Filter</button>
                             </div>
                         </div>
-                        <button class="btn btn-xs btn-primary" type="button" href="javascript:void(0);" ng-click="$ctrl.openTraitSelector()">Add Filter</button>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <bloqhead-population-panel bees="$ctrl.population" filter="$ctrl.getCustomFilter()"></bloqhead-population-panel>
+                            </div>
+                        </div>
                     </div>
-                    <bloqhead-population-panel population="$ctrl.population" filter="$ctrl.getCustomFilter()"></bloqhead-population-panel>
+
+
                 </div>
             </uib-tabset>
         </div>

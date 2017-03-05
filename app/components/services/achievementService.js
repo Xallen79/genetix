@@ -116,7 +116,7 @@ game.service('achievementService', [
                 pid: pid,
                 msg: msg,
                 arr: arr,
-                dt: (new Date()).toUTCString()
+                dt: new Date().getTime()
             };
             self.state.progress.perks.push(ret);
             return ret;

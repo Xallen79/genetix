@@ -6,15 +6,15 @@
             "gameLoopServiceState": {
                 "stepTimeMs": 1000
             },
-            "populationServiceState": {
+            "hiveServiceState": {
                 "breedSteps": 6,
                 "stepsSinceBreed": 0,
                 "populationState": {
                     "initialSize": 2,
                     "maxSize": 5,
-                    "breederGeneCap": 90,
-                    "breederGenesUnlocked": [0, 10, 20, 30, 40],
-                    "breederMutationChance": 10
+                    "beeGeneCap": 90,
+                    "beeGenesUnlocked": [0, 10, 20, 30, 40],
+                    "beeMutationChance": 10
                 }
             },
             "achievementServiceState": null,

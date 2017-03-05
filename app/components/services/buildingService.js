@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('buildingService', [
-    '$rootScope', '$filter', 'defaultBuildings', 'resourceTypes', 'resourceService', 'populationService', 'achievementService',
-    function($rootScope, $filter, defaultBuildings, resourceTypes, resourceService, populationService, achievementService) {
+    '$rootScope', '$filter', 'defaultBuildings', 'resourceTypes', 'resourceService', 'hiveService', 'achievementService',
+    function($rootScope, $filter, defaultBuildings, resourceTypes, resourceService, hiveService, achievementService) {
         /* private members */
         var self = this;
         var state;
@@ -96,7 +96,7 @@ game.service('buildingService', [
                 }
             }
             max *= typeMult;
-            populationService.setBreederLimit(Math.floor(max));
+            hiveService.setBreederLimit(Math.floor(max));
         };
         self.updateNursery = function() {
             var max = 0;
@@ -110,7 +110,7 @@ game.service('buildingService', [
                 }
             }
             max *= typeMult;
-            populationService.setNurseryLimit(Math.floor(max));
+            hiveService.setNurseryLimit(Math.floor(max));
         };
 
         self.updateStorage = function() {
@@ -146,7 +146,7 @@ game.service('buildingService', [
                     }
                 }
             }
-            populationService.setPopulationLimit(Math.floor(max * typeMult));
+            hiveService.setPopulationLimit(Math.floor(max * typeMult));
         };
 
         self.build = function(type) {

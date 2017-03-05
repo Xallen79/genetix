@@ -242,8 +242,8 @@ game.component('bloqheadTraitSelector', {
 });
 
 game.controller('bloqhead.controllers.traitSelector', [
-    'populationService', 'traitDefinitions', 'geneDefinitions', 'bloqheadGetGeneProgressStyle',
-    function(populationService, traitDefinitions, geneDefinitions, bloqheadGetGeneProgressStyle) {
+    'hiveService', 'traitDefinitions', 'geneDefinitions', 'bloqheadGetGeneProgressStyle',
+    function(hiveService, traitDefinitions, geneDefinitions, bloqheadGetGeneProgressStyle) {
         var self = this;
         self.trait = null;
 
@@ -277,7 +277,7 @@ game.controller('bloqhead.controllers.traitSelector', [
             self.geneDefinitions = angular.copy(geneDefinitions);
             self.traitDefinitions = angular.copy(traitDefinitions);
 
-            var arr = angular.copy(populationService.population.breederGenesUnlocked);
+            var arr = angular.copy(hiveService.population.beeGenesUnlocked);
             arr.push(50); // gender
 
             for (var i = 0; i < self.geneDefinitions.length; i++) {

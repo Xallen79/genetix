@@ -20,16 +20,16 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', 'populationService', 'achievementService', 'resourceService', 'workerService',
-    function($scope, populationService, achievementService, resourceService, workerService) {
+    '$scope', 'hiveService', 'achievementService', 'resourceService', 'workerService',
+    function($scope, hiveService, achievementService, resourceService, workerService) {
         var self = this;
         self.$onInit = function() {
-            self.breeders = [];
+            //self.breeders = [];
             self.population = [];
             self.maxPopulation = 0;
-            self.maxBreeders = 0;
-            populationService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
-            populationService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
+            //self.maxBreeders = 0;
+            hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
+            //hiveService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
         };
 
@@ -39,7 +39,7 @@ game.controller('bloqhead.controllers.mainGame', [
         };
 
         self.updateGene = function(id, geneIndex, geneValues) {
-            populationService.updateMember(id, geneIndex, geneValues);
+            hiveService.updateMember(id, geneIndex, geneValues);
         };
         self.assign = function(unitid, jobType) {
             if (!angular.isDefined(jobType))
@@ -53,13 +53,14 @@ game.controller('bloqhead.controllers.mainGame', [
                 this.addBreeder(drag.data('breederid'));
             }
         };
+        /*
         self.addBreeder = function(unitid) {
 
-            populationService.addBreeder(unitid);
+            hiveService.addBreeder(unitid);
         };
 
         self.removeBreeder = function(unitid) {
-            populationService.removeBreeder(unitid);
+            hiveService.removeBreeder(unitid);
         };
 
         self.updateBreeders = function(event, data) {
@@ -68,15 +69,16 @@ game.controller('bloqhead.controllers.mainGame', [
             self.stepsSinceBreed = data.stepsSinceBreed;
             self.breedSteps = data.breedSteps;
         };
+        */
         self.updatePopulation = function(event, data) {
             self.population = data.population;
             self.newborns = data.newborns;
             self.maxPopulation = data.maxSize;
-            self.breederLimit = data.breederLimit;
+            //self.breederLimit = data.breederLimit;
             self.newbornLimit = data.newbornLimit;
         };
         self.decideFate = function(unitid, fate) {
-            populationService.processNewbornFate(unitid, fate);
+            hiveService.processNewbornFate(unitid, fate);
         };
 
     }

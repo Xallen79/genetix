@@ -58,9 +58,9 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 ]);
 
 game.service('gameService', [
-    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'populationService', 'achievementService',
+    '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'hiveService', 'achievementService',
     'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'workerService',
-    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, populationService, achievementService,
+    function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, hiveService, achievementService,
         resourceService, buildingService, LZString, traitDefinitions, workerService) {
         var self = this;
         var initialized = false;
@@ -79,10 +79,10 @@ game.service('gameService', [
         self.startGame = function() {
             logService.init(self.gameState.clearLog);
 
-            populationService.init(
+            hiveService.init(
                 angular.merge({},
-                    defaultState.populationServiceState,
-                    self.gameState.populationServiceState
+                    defaultState.hiveServiceState,
+                    self.gameState.hiveServiceState
                 )
             );
 
@@ -129,7 +129,7 @@ game.service('gameService', [
 
         self.saveGame = function(autosave) {
             var saveState = angular.copy(self.gameState);
-            saveState.populationServiceState = angular.copy(populationService.getState());
+            saveState.hiveServiceState = angular.copy(hiveService.getState());
             saveState.resourceServiceState = angular.copy(resourceService.getState());
             saveState.achievementServiceState = angular.copy(achievementService.getState());
             saveState.buildingServiceState = angular.copy(buildingService.getState());

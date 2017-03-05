@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('workerService', [
-    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'populationService', 'achievementService', 'gameLoopService', 'logService',
-    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, populationService, achievementService, gameLoopService, logService) {
+    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'hiveService', 'achievementService', 'gameLoopService', 'logService',
+    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, hiveService, achievementService, gameLoopService, logService) {
         var self = this;
         var initialized = false;
         var state;
@@ -12,10 +12,10 @@ game.service('workerService', [
             state = loadState || state || {};
             if (!initialized) {
                 gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
-                populationService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
+                hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
             } else {
-                self.handlePopulationUpdate(null, { population: populationService.population.members });
+                self.handlePopulationUpdate(null, { population: hiveService.hive.members });
             }
             for (var res in resourceTypes) {
                 resourceStats[res] = {
@@ -47,7 +47,7 @@ game.service('workerService', [
                     unitid: unitid,
                     stepsSinceWork: 0
                 });
-                populationService.setUnitJob(unitid, jid, jobTypes[jid].name);
+                hiveService.setUnitJob(unitid, jid, jobTypes[jid].name);
                 self.getWorkersSnapshot();
             }
         };
@@ -97,12 +97,12 @@ game.service('workerService', [
         function handleLoop(event, steps) {
             var resources = resourceService.getResourcesSnapshot();
             resources.HAPPINESS.gatherAmount = 0;
-            var workCost = Math.ceil(populationService.population.members.length / 5);
+            var workCost = Math.ceil(hiveService.hive.members.length / 5);
             var workerStats = [];
             while (steps > 0) {
                 for (var i = 0; i < state.workers.length; i++) {
                     var worker = state.workers[i];
-                    var unit = populationService.population.getById(worker.unitid);
+                    var unit = hiveService.hive.getById(worker.unitid);
                     var job = jobTypes[worker.jid];
                     var elapsed = 0;
                     resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
@@ -175,22 +175,22 @@ game.service('workerService', [
             var resources = resourceService.getResourcesSnapshot();
             var gatherRate = 0;
             for (var w = 0; w < workers.length; w++) {
-                var unit = populationService.population.getById(workers[w].unitid);
+                var unit = hiveService.hive.getById(workers[w].unitid);
                 var job = jobTypes[jid];
-                if (unit.onStrike) continue;
+                /*if (unit.onStrike) continue;*/
                 var a = unit.getAttribute(resourceTypes[job.resource].attr);
                 if (resources[job.resource][1] === -1 || resources[job.resource][0] < resources[job.resource][1])
                     gatherRate += Math.round((job.baseAmount * resources[job.resource][3] * Math.pow(10, a))) / job.baseWorkerSteps;
 
             }
             if (jid === "IDLE") {
-                var workCost = Math.ceil(populationService.population.members.length / 5);
+                var workCost = Math.ceil(hiveService.hive.members.length / 5);
                 var realJobs = $filter('filter')(state.workers, { jid: '!' + jid });
                 for (var i = 0; i < realJobs.length; i++) {
                     var worker = realJobs[i];
                     var j = jobTypes[worker.jid];
-                    var u = populationService.population.getById(worker.unitid);
-                    if (!u.onStrike && (resources[j.resource][1] === -1 || resources[j.resource][0] < resources[j.resource][1]))
+                    var u = hiveService.hive.getById(worker.unitid);
+                    if ( /*!u.onStrike && */ (resources[j.resource][1] === -1 || resources[j.resource][0] < resources[j.resource][1]))
                         gatherRate -= (workCost / j.baseWorkerSteps);
                 }
             }

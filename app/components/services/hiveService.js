@@ -1,18 +1,18 @@
 var game = angular.module('bloqhead.genetixApp');
-game.service('populationService', [
-    '$rootScope', '$filter', 'gameLoopService', 'Population', 'logService', 'achievementService',
-    function($rootScope, $filter, gameLoopService, Population, logService, achievementService) {
+game.service('hiveService', [
+    '$rootScope', '$filter', 'gameLoopService', 'Hive', 'logService', 'achievementService',
+    function($rootScope, $filter, gameLoopService, Hive, logService, achievementService) {
         var self = this;
 
         self.init = function(state) {
             state = state || {};
             self.breedSteps = state.breedSteps || self.breedSteps || 6;
             self.stepsSinceBreed = angular.isDefined(state.stepsSinceBreed) ? state.stepsSinceBreed : self.stepsSinceBreed || 0;
-            self.populationState = state.populationState || self.populationState;
-            self.population = (self.populationState) ? new Population(self.populationState) : self.population || new Population();
+            self.hiveState = state.hiveState || self.hiveState;
+            self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
 
             self.logService = logService;
-            self.sendBreederUpdateEvent();
+            //self.sendBreederUpdateEvent();
             self.sendPopulationUpdateEvent();
 
         };
@@ -21,17 +21,18 @@ game.service('populationService', [
                 breedSteps: self.breedSteps,
                 stepsSinceBreed: self.stepsSinceBreed
             };
-            state.populationState = self.population.getState();
+            state.hiveState = self.hive.getState();
             return state;
         };
 
         self.handleGameLoop = function(event, steps) {
             var popUpdated = false;
             if (event.name !== 'gameLoopEvent') {
-                console.error('populateService.handleGameLoop - Invalid event: ' + event);
+                console.error('hiveService.handleGameLoop - Invalid event: ' + event);
                 return;
             }
-            if (self.population.isBreeding()) {
+            /*
+            if (self.hive.isBreeding()) {
                 self.stepsSinceBreed += steps;
                 while (self.stepsSinceBreed >= self.breedSteps) {
                     self.stepsSinceBreed -= self.breedSteps;
@@ -46,9 +47,9 @@ game.service('populationService', [
                 if (popUpdated)
                     self.sendPopulationUpdateEvent();
             }
-
+            */
         };
-
+        /*
         self.addBreeder = function(id) {
             if (self.population.breeders.indexOf(id) === -1) {
                 var genderToAdd = self.population.getById(id).hasTrait('Male') ? 'Male' : 'Female';
@@ -84,14 +85,15 @@ game.service('populationService', [
                 self.logService.logBreedMessage("Breeder removed: " + self.population.getById(id).name);
             }
         };
+        */
         self.updateMember = function(id, geneIndex, geneValues) {
-            var member = self.population.getById(id);
+            var member = self.hive.getById(id);
             member.genes[geneIndex] = geneValues;
             member.update();
             self.sendPopulationUpdateEvent();
         };
         self.setUnitJob = function(id, jid, jobName) {
-            var unit = self.population.getById(id);
+            var unit = self.hive.getById(id);
             unit.jid = jid;
             unit.onStrike = false;
             var f = jobName.charAt(0).toLowerCase();
@@ -101,26 +103,28 @@ game.service('populationService', [
             self.sendPopulationUpdateEvent();
         };
         self.setBreederLimit = function(newLimit) {
-            self.population.breederLimit = newLimit;
+            self.hive.breederLimit = newLimit;
             self.sendPopulationUpdateEvent();
         };
         self.setNurseryLimit = function(newLimit) {
-            self.population.newbornLimit = newLimit;
+            self.hive.newbornLimit = newLimit;
             self.sendPopulationUpdateEvent();
         };
         self.setPopulationLimit = function(newLimit) {
-            self.population.maxSize = newLimit;
+            self.hive.maxSize = newLimit;
             self.sendPopulationUpdateEvent();
         };
         self.processNewbornFate = function(unitid, fate) {
-            self.population.processNewbornFate(unitid, fate);
+            self.hive.processNewbornFate(unitid, fate);
             self.sendPopulationUpdateEvent();
         };
+        /*
         self.sendBreederUpdateEvent = function() {
-            $rootScope.$emit('breederUpdateEvent', { breeders: self.population.breeders, isBreeding: self.population.isBreeding(), stepsSinceBreed: self.stepsSinceBreed, breedSteps: self.breedSteps });
+            $rootScope.$emit('breederUpdateEvent', { breeders: self.hive.breeders, isBreeding: self.hive.isBreeding(), stepsSinceBreed: self.stepsSinceBreed, breedSteps: self.breedSteps });
         };
+        */
         self.sendPopulationUpdateEvent = function() {
-            $rootScope.$emit('populationUpdateEvent', { population: self.population.members, newborns: self.population.newborns, maxSize: self.population.maxSize, breederLimit: self.population.breederLimit, newbornLimit: self.population.newbornLimit });
+            $rootScope.$emit('populationUpdateEvent', { population: self.hive.members, newborns: self.hive.newborns, maxSize: self.hive.maxSize, breederLimit: self.hive.breederLimit, newbornLimit: self.hive.newbornLimit });
         };
 
         self.SubscribeBreederUpdateEvent = function(scope, callback) {
@@ -130,7 +134,7 @@ game.service('populationService', [
         };
 
         self.SubscribePopulationUpdateEvent = function(scope, callback) {
-            var handler = $rootScope.$on('populationUpdateEvent', callback.bind(this));
+            var handler = $rootScope.$on('hiveUpdateEvent', callback.bind(this));
             scope.$on('$destroy', handler);
             self.sendPopulationUpdateEvent();
         };
