@@ -57,7 +57,7 @@ game.service('workerService', [
             for (var key in jobTypes) {
                 if (jobTypes.hasOwnProperty(key)) {
                     var group = $filter('filter')(state.workers, { jid: key });
-                    var gatherRate = getGatherAmount(group, key);
+                    var gatherRatePerSec = getGatherRate(group, key);
                     var jt = jobTypes[key];
                     snapshot.push({
                         jid: jt.jid,
@@ -65,7 +65,7 @@ game.service('workerService', [
                         name: jt.name,
                         description: jt.description,
                         count: group.length,
-                        rate: gatherRate
+                        rate: gatherRatePerSec
                     });
                 }
             }
@@ -171,7 +171,7 @@ game.service('workerService', [
             self.getWorkersSnapshot();
         }
 
-        function getGatherAmount(workers, jid) {
+        function getGatherRate(workers, jid) {
             var resources = resourceService.getResourcesSnapshot();
             var gatherRate = 0;
             for (var w = 0; w < workers.length; w++) {
@@ -195,7 +195,7 @@ game.service('workerService', [
                 }
             }
 
-            return gatherRate;
+            return gatherRate * gameLoopService.stepTimeMs / 1000;
         }
 
     }
