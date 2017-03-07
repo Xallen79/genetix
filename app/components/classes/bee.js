@@ -10,9 +10,6 @@ game.filter('hasTrait', function() {
     };
 });
 
-
-
-
 game.factory('Bee', [
     '$filter', 'TraitInspector', 'Genome', 'jobTypes', 'resourceTypes',
     function($filter, TraitInspector, Genome, jobTypes, resourceTypes) {
@@ -22,16 +19,15 @@ game.factory('Bee', [
         /* constructor */
         var Bee = function(config) {
             this.traitInspector = new TraitInspector();
-            this.update(config);
+            this.baseUpdate(config);
         };
         /* public functions */
-        Bee.prototype.update = function(config) {
+        Bee.prototype.baseUpdate = function(config) {
             if (typeof(config) == 'undefined') config = {};
             this.id = config.id || this.id || 0;
             this.dt = config.dt || this.dt || new Date().getTime();
-            this.queenParent = config.queenParent || this.queenParent || null;
-            this.droneParent = config.droneParent || this.droneParent || null;
-            this.beetype = config.beetype || this.beetype || 'hatchling';
+            this.queenParentId = config.queenParentId || this.queenParentId || null;
+            this.droneParentId = config.droneParentId || this.droneParentId || null;
             this.generation = config.generation || this.generation || 0;
             this.jid = config.currentJob || config.jid || this.jid || 'IDLE';
             this.onStrike = config.onStrike || this.onStrike || false;
@@ -40,13 +36,25 @@ game.factory('Bee', [
             this.genome = new Genome(config.genomeState || this.genomeState || { mutationChance: this.beeMutationChance });
             this.genomeState = this.genome.getState();
             //this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
-            //this.blueImage = getBlueImage(this.genes);
 
             this.traits = this.traitInspector.getTraits(this.genome);
-            //this.attributes = this.traitInspector.getAttributes(this.genes);
-            //this.societyValue = getSocietyValue(this.attributes);
 
             //this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
+        };
+
+        Bee.prototype.baseGetState = function() {
+            return {
+                id: this.id,
+                dt: this.dt,
+                queenParentId: this.queenParentId,
+                droneParentId: this.droneParentId,
+                generation: this.generation,
+                jid: this.jid,
+                onStrike: this.onStrike,
+                earnings: this.earnigns,
+                beeMutationChance: this.beeMutationChance,
+                genomeState: this.genomeState
+            };
         };
 
         Bee.prototype.getTraits = function() {
@@ -69,38 +77,6 @@ game.factory('Bee', [
             return firstName + lastName;
         };
         */
-        Bee.prototype.getAttribute = function(attr) {
-            return this.attributes[attr];
-        };
-
-
-        // queen functions
-        Bee.prototype.breed = function(partner, newId) {
-
-            // this must be a queen and partner must be a drone
-            if (this.beetype !== 'queen' || partner.beetype !== 'drone')
-                return null;
-
-            var queen = this;
-            var drone = partner;
-
-            var newGenome = queen.genome.mate(drone.genome);
-
-            var child = new Bee({
-                id: newId,
-                dt: new Date().getTime(),
-                generation: queen.generation,
-                genomeState: newGenome.getState(),
-                queenParent: queen,
-                droneParent: drone,
-                beetype: 'hatchling'
-
-            });
-            child.update();
-            return child;
-        };
-
-
 
         /* private members */
         var geneticOptions = {
@@ -137,42 +113,6 @@ game.factory('Bee', [
 
 
         /* private functions */
-        function crossover(g1, g2, geneCap) {
-            var crossoverfn = Math.random();
-            var geneRatio = geneCap / 255.0;
-            var g = angular.copy(g1);
-            g[0] = (crossoverfn <= geneticOptions.crossoverrate ? g1[0] : g2[0]);
-            g[1] = (crossoverfn <= geneticOptions.crossoverrate ? g2[1] : g1[1]);
-            g[0] /= geneRatio;
-            g[1] /= geneRatio;
-            var mutationRate = g[2] / 255.0;
-            var bitStringR = '';
-            var bitStringG = '';
-
-            for (var i = 0; i < 8; i++) {
-                if (Math.random() < mutationRate) {
-                    bitStringR += '1';
-                } else {
-                    bitStringR += '0';
-                }
-                if (Math.random() < mutationRate) {
-                    bitStringG += '1';
-                } else {
-                    bitStringG += '0';
-                }
-            }
-            var oldR = g[0];
-            var oldG = g[1];
-
-            g[0] ^= parseInt(bitStringR, 2);
-            g[1] ^= parseInt(bitStringG, 2);
-            var newR = g[0];
-            g[0] = Math.round(g[0] * geneRatio);
-            g[1] = Math.round(g[1] * geneRatio);
-
-            //console.log($filter('fmt')('mutate %d -> %d -> %d - string: %s geneCap: %d', oldR, newR, g[0], bitStringR, geneCap));
-            return g;
-        }
 
         function gcd(a, b) {
             return !b ? a : gcd(b, a % b);
@@ -216,9 +156,6 @@ game.factory('Bee', [
             return generateBitmapDataURL(addRows(convertRedGreenMap(genesToUse, beeGeneCap), genesToUse.length), 1);
         }
 
-        function getBlueImage(genes) {
-            return generateBitmapDataURL(addRows(convertBlueMap(genes), genes.length), 1);
-        }
 
         function convertRedGreenMap(genes, beeGeneCap) {
             var result = [];
@@ -247,14 +184,6 @@ game.factory('Bee', [
             return result;
         }
 
-        function convertBlueMap(genes) {
-            var result = [];
-            for (var i = 0; i < genes.length; i++) {
-                result.push([0, 0, genes[i][2]]);
-            }
-            return result;
-        }
-
         function addRows(genes, cols) {
             var result = [];
             for (var j = 0; j < (genes.length / cols); j++) {
@@ -267,25 +196,173 @@ game.factory('Bee', [
             return result;
         }
 
-        function getSocietyValue(attr) {
-            var costs = [];
-            var total = 0;
-            for (var key in attributes) {
-                var a = attr[key];
-                if (a < 0) {
-                    total -= Math.pow(10, (-1 * a));
-                } else {
-                    total += Math.pow(10, a);
-                }
-            }
-
-            if (total < 0) total = 0;
-
-            costs.push({ resource: resourceTypes.HAPPINESS.name, resourceType: 'HAPPINESS', amount: total });
-            return costs;
-
-        }
-
         return Bee;
+    }
+]);
+
+
+game.factory('Queen', [
+    'Bee',
+    function(Bee) {
+        var Queen = function(config) {
+            this.beetype = "queen";
+            this.update(config);
+        };
+        Queen.prototype = new Bee();
+
+        Queen.prototype.update = function(config) {
+            config = config || {};
+            this.baseUpdate(config);
+            this.droneGenomeStates = config.droneGenomeStates || this.droneGenomeStates || [];
+            this.droneIds = config.droneIds || this.droneIds || [];
+        };
+
+        Queen.prototype.getState = function() {
+            var state = this.baseGetState();
+            state.droneGenomeStates = this.droneGenomeStates;
+            state.droneIds = this.droneIds;
+            return state;
+        };
+
+        Queen.prototype.mate = function(drone) {
+            if (drone.beetype !== "drone") {
+                console.log("Queen cannot mate with: " + drone.beetype);
+                return;
+            }
+            this.droneGenomeStates.push(drone.genome.getState);
+            this.droneIds.push(drone.id);
+            drone.die();
+        };
+
+        Queen.prototype.layEgg = function(newId) {
+            var eggGenome = this.genome.getEggGenome();
+            var egg = new Egg({
+                id: newId,
+                dt: new Date().getTime(),
+                generation: this.generation + 1,
+                genomeState: eggGenome.getState(),
+                queenParentId: this.id,
+                beeMutationChance: this.beeMutationChance
+
+            });
+            egg.update();
+            return egg;
+        };
+
+        Queen.prototype.fertilizeEgg = function(egg, newId) {
+            var d = randomIntFromInterval(0, this.droneGenomeStates.length - 1);
+            var droneGenome = new Genome(this.droneGenomeStates[d]);
+            var newGenome = egg.genome.fertilize(droneGenome);
+
+            var child = new Larva({
+                id: newId,
+                dt: new Date().getTime(),
+                generation: this.generation + 1,
+                genomeState: newGenome.getState(),
+                queenParentId: this.id,
+                droneParentId: this.droneIds[d],
+                beeMutationChance: this.beeMutationChance
+
+            });
+            child.update();
+            return child;
+        };
+
+        return Queen;
+    }
+
+]);
+
+game.factory('Worker', [
+    'Bee',
+    function(Bee) {
+        var Worker = function(config) {
+            this.beetype = "worker";
+            this.update(config);
+        };
+        Worker.prototype = new Bee();
+
+        Worker.prototype.update = function(config) {
+            config = config || {};
+            this.baseUpdate(config);
+
+        };
+        Worker.prototype.getState = function() {
+            var state = this.baseGetState();
+
+            return state;
+        };
+
+        return Worker;
+    }
+]);
+
+game.factory('Drone', [
+    'Bee',
+    function(Bee) {
+        var Drone = function(config) {
+            this.beetype = "drone";
+            this.update(config);
+        };
+        Drone.prototype = new Bee();
+        Drone.prototype.update = function(config) {
+            config = config || {};
+            this.baseUpdate(config);
+        };
+        Drone.prototype.getState = function() {
+            var state = this.baseGetState();
+
+            return state;
+        };
+        Drone.prototype.die = function() {
+            console.log("Drone died. Id: " + this.id);
+        };
+        return Drone;
+    }
+]);
+
+game.factory('Egg', [
+    'Bee',
+    function(Bee) {
+        var Egg = function(config) {
+            this.beetype = "egg";
+            this.update(config);
+        };
+        Egg.prototype = new Bee();
+        Egg.prototype.update = function(config) {
+            config = config || {};
+            this.baseUpdate(config);
+        };
+        Egg.prototype.getState = function() {
+            var state = this.baseGetState();
+
+            return state;
+        };
+
+
+        return Egg;
+    }
+]);
+
+game.factory('Larva', [
+    'Bee',
+    function(Bee) {
+        var Larva = function(config) {
+            this.beetype = "larva";
+            this.update(config);
+        };
+        Larva.prototype = new Bee();
+        Larva.prototype.update = function(config) {
+            config = config || {};
+            this.baseUpdate(config);
+        };
+        Larva.prototype.getState = function() {
+            var state = this.baseGetState();
+
+            return state;
+        };
+
+
+        return Larva;
     }
 ]);

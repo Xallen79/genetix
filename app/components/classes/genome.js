@@ -76,27 +76,19 @@ game.factory('Genome', ['Chromosome', function(Chromosome) {
         return on;
     };
 
-    Genome.prototype.mate = function(genome) {
-        if (this.hasChromosomePairs === genome.hasChromosomePairs) {
+    Genome.prototype.fertilize = function(genome) {
+        if (this.hasChromosomePairs !== genome.hasChromosomePairs !== false) {
             console.error("Cannot mate these genomes.", this, genome);
             return;
         }
         var chromosomes = [];
-        chromosomes.push([]);
-        var baseChromo = [];
-        if (this.hasChromosomePairs === false) {
-            chromosomes.push(angular.copy(this.chromosomes[0]));
-            baseChromo = genome.chromosomes;
-        } else {
-            chromosomes.push(angular.copy(genome.chromosomes[0]));
-            baseChromo = this.chromosomes;
-        }
+        chromosomes.push(angular.copy(this.chromosomes[0]));
+        chromosomes.push(angular.copy(genome.chromosomes[0]));
+
 
         for (var i = 0; i < this.chromosomeCount; i++) {
-            var p = randomIntFromInterval(0, 1);
-            var newChromo = angular.copy(baseChromo[p][i]);
-            newChromo.doMutation();
-            chromosomes[0].push(newChromo);
+            chromosomes[0][i].doMutation();
+            chromosomes[1][i].doMutation();
         }
 
         var childGenome = new Genome({

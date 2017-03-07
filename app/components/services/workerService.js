@@ -15,7 +15,7 @@ game.service('workerService', [
                 hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
             } else {
-                self.handlePopulationUpdate(null, { population: hiveService.hive.members });
+                self.handlePopulationUpdate(null, { population: hiveService.hive.workers });
             }
             for (var res in resourceTypes) {
                 resourceStats[res] = {
@@ -97,7 +97,7 @@ game.service('workerService', [
         function handleLoop(event, steps) {
             var resources = resourceService.getResourcesSnapshot();
             resources.HAPPINESS.gatherAmount = 0;
-            var workCost = Math.ceil(hiveService.hive.members.length / 5);
+            var workCost = Math.ceil(hiveService.hive.workers.length / 5);
             var workerStats = [];
             while (steps > 0) {
                 for (var i = 0; i < state.workers.length; i++) {
@@ -184,7 +184,7 @@ game.service('workerService', [
 
             }
             if (jid === "IDLE") {
-                var workCost = Math.ceil(hiveService.hive.members.length / 5);
+                var workCost = Math.ceil(hiveService.hive.workers.length / 5);
                 var realJobs = $filter('filter')(state.workers, { jid: '!' + jid });
                 for (var i = 0; i < realJobs.length; i++) {
                     var worker = realJobs[i];

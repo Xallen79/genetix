@@ -16,7 +16,8 @@
                 "name": "Fly 1 extra grid cell",
                 "genes": [
                     { "chromosome": 1, "gene": 0, "value": 1 }
-                ]
+                ],
+                "requiredTraits": ["Big stinger"]
             }
         ]
     }

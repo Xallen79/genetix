@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', 'Bee', 'logService',
-    function($filter, Bee, logService) {
+    '$filter', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService',
+    function($filter, Queen, Drone, Worker, Egg, Larva, logService) {
 
         /* constructor */
         var Hive = function(state) {
@@ -12,108 +12,101 @@ game.factory('Hive', [
         Hive.prototype.update = function(state) {
             state = state || {};
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
-            this.bees = state.bees || this.bees || [];
-            this.beeLimit = state.beeLimit || this.beeLimit || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.maxSize = state.maxSize || this.maxSize || 10;
             this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
             this.initialSize = state.initialSize || this.initialSize || 2;
-            if (state.members) {
-                this.members = [];
-                for (var m = 0; m < state.members.length; m++) {
-                    var member = state.members[m];
-                    var unit = new Bee({
-                        id: member.id,
-                        dt: member.dt,
-                        mother: member.mother || null,
-                        father: member.father || null,
-                        generation: member.generation,
-                        genomeState: member.genomeState,
-                        beeMutationChance: member.beeMutationChance,
-                        name: member.name,
-                        jid: member.jid,
-                        earnings: member.earnings
-                    });
-                    unit.update();
-                    this.members.push(unit);
-
-                }
-            } else this.members = this.members || this.createInitialPopulation(this.initialSize);
-            this.newborns = [];
-            if (state.newborns) {
-                for (var n = 0; n < state.newborns.length; n++) {
-                    var newborn = state.newborns[n];
-                    var nb = new Bee({
-                        id: newborn.id,
-                        dt: newborn.dt,
-                        mother: newborn.mother || null,
-                        father: newborn.father || null,
-                        generation: newborn.generation,
-                        genomeState: newborn.genomeState,
-                        beeMutationChance: newborn.beeMutationChance,
-                        name: newborn.name,
-                        jid: newborn.jid,
-                        earnings: newborn.earnings
-                    });
-                    nb.update();
-                    this.newborns.push(nb);
+            if (state.queenState) {
+                this.queen = new Queen(state.queenState);
+            } else {
+                this.createInitialQueen(true);
+            }
+            this.drones = this.drones || [];
+            if (state.droneStates) {
+                this.drones = [];
+                for (var d = 0; d < state.droneStates.length; d++) {
+                    this.drones.push(new Drone(state.droneStates[d]));
                 }
             }
-
+            this.workers = this.workers || [];
+            if (state.workerStates) {
+                this.workers = [];
+                for (var w = 0; w < state.workerStates.length; w++) {
+                    this.workers.push(new Worker(state.workerStates[w]));
+                }
+            }
+            this.eggs = this.eggs || [];
+            if (state.eggStates) {
+                this.eggs = [];
+                for (var e = 0; e < state.eggStates.length; e++) {
+                    this.eggs.push(new Egg(state.eggStates[e]));
+                }
+            }
+            this.larva = this.larva || [];
+            if (state.larvaStates) {
+                this.larva = [];
+                for (var l = 0; l < state.larvaStates.length; l++) {
+                    this.larva.push(new Larva(state.larvaStates[l]));
+                }
+            }
         };
+
         Hive.prototype.getState = function() {
             var state = {
                 currentGeneration: this.currentGeneration,
-                bees: this.bees,
-                beeLimit: this.beeLimit,
                 maxSize: this.maxSize,
                 beeMutationChance: this.beeMutationChance,
                 initialSize: this.initialSize,
-                members: [],
-                newborns: []
+                queenState: this.queen.getState(),
+                droneStates: [],
+                workerStates: [],
+                eggStates: [],
+                larvaStates: []
             };
-            for (var m = 0; m < this.members.length; m++) {
-                var member = this.members[m];
-                state.members.push({
-                    id: member.id,
-                    dt: member.dt,
-                    generation: member.generation,
-                    genomeState: member.genomeState,
-                    beeMutationChance: member.beeMutationChance,
-                    name: member.name,
-                    jid: member.jid,
-                    earnings: member.earnings
-                });
+            for (var d = 0; d < this.drones.length; d++) {
+                state.droneStates.push(this.drones[d].getState());
             }
-            for (var n = 0; n < this.newborns.length; n++) {
-                var nb = this.newborns[n];
-                state.newborns.push({
-                    id: nb.id,
-                    dt: nb.dt,
-                    generation: nb.generation,
-                    genomeState: nb.genomeState,
-                    beeMutationChance: nb.beeMutationChance,
-                    name: nb.name,
-                    jid: nb.jid,
-                    earnings: nb.earnings
-                });
+            for (var w = 0; w < this.workers.length; w++) {
+                state.workerStates.push(this.workers[w].getState());
+            }
+            for (var e = 0; e < this.eggs.length; e++) {
+                state.eggStates.push(this.eggs[e].getState());
+            }
+            for (var l = 0; l < this.larva.length; l++) {
+                state.larvaStates.push(this.larva[l].getState());
             }
             return state;
         };
 
-        Hive.prototype.createInitialPopulation = function(count) {
-            var self = this;
-            var population = [];
-            for (var i = 0; i < count; i++) {
-                var unit = new Bee({
-                    id: i,
-                    generation: 0,
-                    beeMutationChance: this.beeMutationChance,
-                });
-                unit.update();
-                population.push(unit);
+        Hive.prototype.createInitialQueen = function(inseminate) {
+            this.queen = new Queen({
+                id: 1,
+                generation: 0,
+                beeMutationChance: this.beeMutationChance
+            });
+            if (inseminate) {
+                for (var d = 0; d < 10; d++) {
+                    var drone = new Drone({
+                        id: 1 + d,
+                        generation: 0,
+                        beeMutationChance: this.beeMutationChance
+                    });
+                    this.queen.mate(drone);
+                }
             }
-            return population;
+            this.queen.update();
+            // var self = this;
+            // var population = [];
+            // for (var i = 0; i < count; i++) {
+            //     var unit = new Bee({
+            //         id: i,
+            //         generation: 0,
+            //         beeMutationChance: this.beeMutationChance,
+            //     });
+            //     unit.update();
+            //     population.push(unit);
+            // }
+            // return population;
         };
 
         Hive.prototype.isBreeding = function() {
