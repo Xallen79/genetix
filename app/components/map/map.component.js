@@ -12,10 +12,14 @@ game.component('bloqheadMap', {
 });
 
 game.controller('bloqhead.controllers.map', [
-    '$rootScope', '$timeout',
-    function($rootScope, $timeout) {
+    '$scope', '$rootScope', '$timeout', 'gameLoopService',
+    function($scope, $rootScope, $timeout, gameLoopService) {
         var self = this;
         var canvas, context;
+
+        self.$onInit = function() {
+            gameLoopService.SubscribeGameLoopEvent($scope, draw);
+        };
 
         self.$postLink = function() {
             $timeout(createCanvas);
@@ -32,7 +36,6 @@ game.controller('bloqhead.controllers.map', [
             context = canvas.getContext('2d');
             context.fillStyle = '#bdefc7';
             context.fillRect(0, 0, canvas.width, canvas.height);
-            requestAnimationFrame(draw);
         }
 
 
@@ -44,6 +47,9 @@ game.controller('bloqhead.controllers.map', [
 
 
         function draw() {
+            if (canvas === null || context === null)
+                return;
+
             for (var i = 0; i < hives.length; i++) {
                 var hive = hives[i];
                 context.fillStyle = 'yellow';
