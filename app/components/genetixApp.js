@@ -26,6 +26,12 @@ angular.module('bloqhead.genetixApp', ['ui.router', 'lz-string', 'ui.bootstrap',
 
             });
             states.push({
+                name: 'home.farm',
+                url: 'farm',
+                component: 'bloqhead.components.farmUI'
+
+            });
+            states.push({
                 name: 'home.achievements',
                 url: 'achievements',
                 component: 'bloqhead.components.achievementsUI'

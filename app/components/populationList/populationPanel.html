@@ -32,7 +32,6 @@
                     <span>                        
                         <i title="{{unit.onStrike ? 'On strike!' : $ctrl.parent.jobTypes[unit.jid].name}}" class="fa fa-fw" ng-class="$ctrl.getWorkerIcon(unit.onStrike, $ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
                     </span>
-
                     <span>{{unit.name}}</span>
                 </td>
                 <td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">

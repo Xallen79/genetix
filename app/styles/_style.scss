@@ -147,7 +147,7 @@ h5 {
 .resource-list {
     @include maximize-row();
     //overflow-y: scroll;
-    height: 30vh;
+    //height: 30vh;
     h5 {
         margin: 8px 0px 1px 0px;
         font-size: .8vw;
@@ -373,7 +373,8 @@ table.genomeEditor {
 .progress.progress-custom {
     position: relative;
     border: 1px solid black;
-    margin: 5px 0px 5px 0px;
+    //margin: 5px 0px 5px 0px;
+    margin: 0;
     -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
@@ -483,13 +484,17 @@ div[data-attr="NONE"] {
     }
 }
 
-// calc came from trial and error, i couldn't figure out how to calculate it correctly.
+.goal-container,
+.map-container,
 .population-container {
+    // calc came from trial and error, i couldn't figure out how to calculate it correctly.
     height: calc(100vh - #{$top-row-height} - 3.5vh - #{$navbar-height} - 18px);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+.goal-container,
+.map-container,
 .population-container,
 .breeder-container {
     @include maximize-row();
