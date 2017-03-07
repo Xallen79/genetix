@@ -1,15 +1,5 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.component('bloqhead.components.farmUI', {
-    templateUrl: 'components/farmUI/farmUI.html',
-    controller: 'bloqhead.controllers.farmUI',
-    bindings: {
-        title: '@',
-        footer: '@'
-    }
-});
-
-
 game.component('bloqheadGoalList', {
     templateUrl: 'components/goalList/goalList.html',
     controller: 'bloqhead.controllers.goalList',

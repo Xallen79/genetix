@@ -81,14 +81,7 @@
     -->
     <div class="row" id="bottomRow">
         <div class="col-xs-8 fullH">
-            <bloqhead-player-box>
-                <bloqhead-player-box-title>
-                    Map
-                </bloqhead-player-box-title>
-                <div class="row map-container">
-
-                </div>
-            </bloqhead-player-box>
+            <bloqhead-map></bloqhead-map>
         </div>
         <div class="col-xs-4 fullH">
             <bloqhead-population-list population="$ctrl.population" max-population="$ctrl.maxPopulation" breeder-assign="$ctrl.assign($id, $type)" can-breed="$ctrl.breeders.length < $ctrl.breederLimit"></bloqhead-population-list>
