@@ -14,14 +14,12 @@ game.component("bloqheadMortal", {
 });
 
 game.controller("bloqheader.controllers.mortal", [
-    "$uibModal", "jobTypes", "bloqheadGetGeneProgressStyle", "geneDefinitions", "attributes", 'resourceTypes', 'resourceService',
-    function($uibModal, jobTypes, bloqheadGetGeneProgressStyle, geneDefinitions, attributes, resourceTypes, resourceService) {
+    "$uibModal", "jobTypes", "bloqheadGetGeneProgressStyle", 'resourceTypes', 'resourceService',
+    function($uibModal, jobTypes, bloqheadGetGeneProgressStyle, resourceTypes, resourceService) {
         var self = this;
         self.$onInit = function() {
             self.display = self.display || 'TILE';
             self.jobTypes = jobTypes;
-            self.geneDefinitions = geneDefinitions;
-            self.attributes = attributes;
             self.resourceTypes = resourceTypes;
             self.resourceService = resourceService;
         };
@@ -70,16 +68,16 @@ game.controller("bloqheader.controllers.mortal", [
             return bloqheadGetGeneProgressStyle().value(g[1] - g[0]);
         };
         self.imageHover = function(hoverEvent) {
-            var attrs = [];
-            for (var key in self.attributes) {
-                attrs.push(key);
-            }
-            var imgWidth = hoverEvent.target.clientWidth;
-            var offsetX = hoverEvent.offsetX;
-            var attrSize = imgWidth / 5;
-            var index = Math.floor(offsetX / attrSize);
-            index = Math.min(attrs.length - 1, index);
-            self.hoverAttr = attrs[index];
+            // var attrs = [];
+            // for (var key in self.attributes) {
+            //     attrs.push(key);
+            // }
+            // var imgWidth = hoverEvent.target.clientWidth;
+            // var offsetX = hoverEvent.offsetX;
+            // var attrSize = imgWidth / 5;
+            // var index = Math.floor(offsetX / attrSize);
+            // index = Math.min(attrs.length - 1, index);
+            // self.hoverAttr = attrs[index];
         };
         self.showDetails = function(unit) {
             $uibModal.open({

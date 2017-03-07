@@ -329,12 +329,6 @@
                     "desc": "%(amt)d %(res)s will be added to your storage.",
                     "logmsg": "%(amt)d %(res)s has been added to your storage."
                 },
-                "P_G_ENHANCED": {
-                    "pid": "P_G_ENHANCED",
-                    "name": "New Gene Enhancement",
-                    "desc": "Will increase the boundary by %(amt)d for your %(attr)s %(dom)s/%(rec)s gene.",
-                    "logmsg": "The boundary has been increased by %(amt)d for one of your %(attr)s genes. (%(dom)s/%(rec)s)"
-                },
                 "P_B_UNLOCK": {
                     "pid": "P_B_UNLOCK",
                     "name": "New building: %(buildingType)s",

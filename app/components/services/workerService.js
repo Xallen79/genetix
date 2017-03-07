@@ -138,8 +138,8 @@ game.service('workerService', [
                     }
                     resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
                     if (elapsed > 0 && canGather) {
-                        var a = unit.getAttribute(resourceTypes[job.resource].attr);
-                        gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] * Math.pow(10, a)));
+                        //var a = unit.getAttribute(resourceTypes[job.resource].attr);
+                        gatherAmount = Math.round((job.baseAmount * elapsed * resources[job.resource][3] /** Math.pow(10, a)*/ ));
                         resources[job.resource].gatherAmount += gatherAmount;
 
                         if (!angular.isDefined(workerStats[unit.name])) {
@@ -151,7 +151,7 @@ game.service('workerService', [
                         workerStats[unit.name].gatherAmount = workerStats[unit.name].gatherAmount || 0;
                         workerStats[unit.name].gatherAmount += gatherAmount;
                         unit.earnings[job.resource].amount += gatherAmount;
-                        console.log(unit.earnings);
+                        //console.log(unit.earnings);
                     }
 
 
@@ -178,9 +178,9 @@ game.service('workerService', [
                 var unit = hiveService.hive.getById(workers[w].unitid);
                 var job = jobTypes[jid];
                 /*if (unit.onStrike) continue;*/
-                var a = unit.getAttribute(resourceTypes[job.resource].attr);
+                //var a = unit.getAttribute(resourceTypes[job.resource].attr);
                 if (resources[job.resource][1] === -1 || resources[job.resource][0] < resources[job.resource][1])
-                    gatherRate += Math.round((job.baseAmount * resources[job.resource][3] * Math.pow(10, a))) / job.baseWorkerSteps;
+                    gatherRate += Math.round((job.baseAmount * resources[job.resource][3] /** Math.pow(10, a)*/ )) / job.baseWorkerSteps;
 
             }
             if (jid === "IDLE") {

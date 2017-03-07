@@ -32,13 +32,13 @@ game.filter('applyPopulationFilter', function() {
     };
 });
 
-game.service("bloqheadGetGeneProgressStyle", ['geneDefinitions', function(geneDefinitions) {
+game.service("bloqheadGetGeneProgressStyle", [function() {
     function map(OldValue, OldMin, OldMax, NewMin, NewMax) {
         return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
     }
 
     return function(pgd) {
-        var gd = pgd || geneDefinitions;
+        var gd = pgd || {};
         return {
             range: function(rec, dom) {
                 var ret = {};
@@ -188,11 +188,9 @@ game.component('bloqheadPopulationPanel', {
 });
 
 game.controller('bloqhead.controllers.populationPanel', [
-    '$timeout', 'bloqheadGetGeneProgressStyle', 'geneDefinitions', 'resourceTypes', 'resourceService', 'attributes',
-    function($timeout, bloqheadGetGeneProgressStyle, geneDefinitions, resourceTypes, resourceService, attributes) {
+    '$timeout', 'bloqheadGetGeneProgressStyle', 'resourceTypes', 'resourceService',
+    function($timeout, bloqheadGetGeneProgressStyle, resourceTypes, resourceService) {
         var self = this;
-        self.geneDefinitions = geneDefinitions;
-        self.attributes = attributes;
         self.resourceTypes = resourceTypes;
         self.$onInit = function() {
             self.orderBy = self.orderBy || '-dt';
@@ -242,8 +240,8 @@ game.component('bloqheadTraitSelector', {
 });
 
 game.controller('bloqhead.controllers.traitSelector', [
-    'hiveService', 'traitDefinitions', 'geneDefinitions', 'bloqheadGetGeneProgressStyle',
-    function(hiveService, traitDefinitions, geneDefinitions, bloqheadGetGeneProgressStyle) {
+    'hiveService', 'traitDefinitions', 'bloqheadGetGeneProgressStyle',
+    function(hiveService, traitDefinitions, bloqheadGetGeneProgressStyle) {
         var self = this;
         self.trait = null;
 
@@ -274,26 +272,23 @@ game.controller('bloqhead.controllers.traitSelector', [
 
         self.$onInit = function() {
             self.unit = self.resolve.unit;
-            self.geneDefinitions = angular.copy(geneDefinitions);
             self.traitDefinitions = angular.copy(traitDefinitions);
 
-            var arr = angular.copy(hiveService.population.beeGenesUnlocked);
-            arr.push(50); // gender
 
-            for (var i = 0; i < self.geneDefinitions.length; i++) {
-                self.geneDefinitions[i].unlocked = (arr.indexOf(i) !== -1);
-                if (!self.geneDefinitions[i].unlocked) {
-                    for (var x = 0; x < self.traitDefinitions.length; x++) {
-                        var td = self.traitDefinitions[x];
-                        if (typeof td.unlocked == 'undefined') td.unlocked = true;
-                        for (var y = 0; y < td.genes.length; y++) {
-                            if (td.genes[y][0] == i) {
-                                td.unlocked = false;
-                            }
-                        }
-                    }
-                }
-            }
+            // for (var i = 0; i < self.geneDefinitions.length; i++) {
+            //     self.geneDefinitions[i].unlocked = (arr.indexOf(i) !== -1);
+            //     if (!self.geneDefinitions[i].unlocked) {
+            //         for (var x = 0; x < self.traitDefinitions.length; x++) {
+            //             var td = self.traitDefinitions[x];
+            //             if (typeof td.unlocked == 'undefined') td.unlocked = true;
+            //             for (var y = 0; y < td.genes.length; y++) {
+            //                 if (td.genes[y][0] == i) {
+            //                     td.unlocked = false;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         };
 
 
@@ -310,7 +305,7 @@ game.controller('bloqhead.controllers.traitSelector', [
             self.dismiss({ $value: 'cancel' });
         };
         self.getGeneRangeStyle = function(g) {
-            var r = bloqheadGetGeneProgressStyle(self.geneDefinitions).traitRange(g, self.trait);
+            var r = bloqheadGetGeneProgressStyle().traitRange(g, self.trait);
             return r;
         };
 

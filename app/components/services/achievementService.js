@@ -3,8 +3,8 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'achievementSetup', 'logService', 'geneDefinitions', 'resourceTypes', 'defaultBuildings',
-    function($rootScope, $filter, achievementSetup, logService, geneDefinitions, resourceTypes, defaultBuildings) {
+    '$rootScope', '$filter', 'achievementSetup', 'logService', 'resourceTypes', 'defaultBuildings',
+    function($rootScope, $filter, achievementSetup, logService, resourceTypes, defaultBuildings) {
         var self = this;
 
 
@@ -162,13 +162,13 @@ game.service('achievementService', [
                 name: perkSetup.name
             };
             switch (perkSetup.pid.substring(0, 4)) {
-                case 'P_G_':
-                    var gene = geneDefinitions[arr[1]];
-                    params.dom = gene.dom;
-                    params.rec = gene.rec;
-                    params.attr = gene.attr;
-                    params.amt = arr[2];
-                    break;
+                // case 'P_G_':
+                //     var gene = geneDefinitions[arr[1]];
+                //     params.dom = gene.dom;
+                //     params.rec = gene.rec;
+                //     params.attr = gene.attr;
+                //     params.amt = arr[2];
+                //     break;
                 case 'P_R_':
                     params.res = resourceTypes[arr[1]].name;
                     params.amt = arr[2] || 0;

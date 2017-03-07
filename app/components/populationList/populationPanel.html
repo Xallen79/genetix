@@ -23,7 +23,8 @@
     </thead>
     -->
         <tbody>
-            <tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
+            <!--<tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">-->
+            <tr ng-repeat="unit in $ctrl.population" class="population-list animate-repeat">
                 <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
                     <span>
                         <i title="Male" class="fa fa-male male-color" ng-switch-when="true"></i><i title="Female" class="fa fa-female female-color" ng-switch-when="false"></i>
@@ -95,14 +96,14 @@
                 <div class="genes-th dom ">Dominant</div>
             </div>
             <div class="genes-tr " ng-repeat="gene in trait.genes">
-                <div class="genes-td rec " ng-bind="$ctrl.geneDefinitions[gene[0]].rec "></div>
+                <!--<div class="genes-td rec " ng-bind="$ctrl.geneDefinitions[gene[0]].rec "></div>
                 <div class="genes-td" data-attr="{{$ctrl.geneDefinitions[gene[0]].attr}}">
                     <div class="progress progress-trait-selector" style="position:relative;">
                         <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneValueStyle(unit.genes[gene[0]]) "></div>
                         <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneTraitRangeStyle($ctrl.geneDefinitions[gene[0]], trait)"></div>
                     </div>
                 </div>
-                <div class="genes-td dom" ng-bind="$ctrl.geneDefinitions[gene[0]].dom"></div>
+                <div class="genes-td dom" ng-bind="$ctrl.geneDefinitions[gene[0]].dom"></div>-->
             </div>
         </div>
         <br />
@@ -115,7 +116,7 @@
         <h5>{{$ctrl.attributes[$ctrl.hoverAttr].desc}}</h5>
         <br />
         <div class="genes-table">
-            <div class="genes-tr " ng-repeat="gene in $ctrl.geneDefinitions | filter:{attr: $ctrl.hoverAttr}" ng-if="unit.genesUnlocked.indexOf($ctrl.geneDefinitions.indexOf(gene)) >=0">
+            <!--<div class="genes-tr " ng-repeat="gene in $ctrl.geneDefinitions | filter:{attr: $ctrl.hoverAttr}" ng-if="unit.genesUnlocked.indexOf($ctrl.geneDefinitions.indexOf(gene)) >=0">
                 <div class="genes-td rec"><span ng-bind="gene.rec"></span>: <span ng-bind="{{-1*unit.genes[$ctrl.geneDefinitions.indexOf(gene)][0]}}"></span></div>
                 <div class="genes-td" data-attr="{{$ctrl.hoverAttr}}">
                     <div class="progress progress-trait-selector" style="position:relative;">
@@ -123,11 +124,11 @@
                         <div class="progress-bar " role="progressbar " aria-valuemin="-255" aria-valuemax="255" ng-style="$ctrl.getGeneRangeStyle(unit.genes[$ctrl.geneDefinitions.indexOf(gene)])"></div>
                     </div>
                 </div>
-                <div class="genes-td dom"><span ng-bind="gene.dom"></span>: <span ng-bind="unit.genes[$ctrl.geneDefinitions.indexOf(gene)][1]"></span></div>
-            </div>
+                <div class="genes-td dom"><span ng-bind="gene.dom"></span>: <span ng-bind="unit.genes[$ctrl.geneDefinitions.indexOf(gene)][1]"></span></div>-->
         </div>
-        <br />
-        <br />
+    </div>
+    <br />
+    <br />
     </div>
 </script>
 <script type="text/ng-template" id="carousel.html">

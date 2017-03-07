@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('resourceService', [
-    '$rootScope', '$filter', 'logService', 'geneDefinitions', 'resourceTypes', 'achievementService',
-    function($rootScope, $filter, logService, geneDefinitions, resourceTypes, achievementService) {
+    '$rootScope', '$filter', 'logService', 'resourceTypes', 'achievementService',
+    function($rootScope, $filter, logService, resourceTypes, achievementService) {
         var self = this;
         var initialized = false;
 

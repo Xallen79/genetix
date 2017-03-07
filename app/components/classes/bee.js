@@ -11,15 +11,11 @@ game.filter('hasTrait', function() {
 });
 
 
-function Bee(config) {
-
-}
-
 
 
 game.factory('Bee', [
-    '$filter', 'TraitInspector', 'geneDefinitions', 'jobTypes', 'attributes', 'resourceTypes',
-    function($filter, TraitInspector, geneDefinitions, jobTypes, attributes, resourceTypes) {
+    '$filter', 'TraitInspector', 'Genome', 'jobTypes', 'resourceTypes',
+    function($filter, TraitInspector, Genome, jobTypes, resourceTypes) {
 
 
 
@@ -37,21 +33,20 @@ game.factory('Bee', [
             this.droneParent = config.droneParent || this.droneParent || null;
             this.beetype = config.beetype || this.beetype || 'hatchling';
             this.generation = config.generation || this.generation || 0;
-            this.genes = config.genes || this.genes || [];
-            this.beeGeneCap = config.beeGeneCap || this.beeGeneCap || 25;
-            this.genesUnlocked = config.genesUnlocked || this.genesUnlocked || [];
             this.jid = config.currentJob || config.jid || this.jid || 'IDLE';
             this.onStrike = config.onStrike || this.onStrike || false;
             this.earnings = config.earnings || this.earnings || angular.copy(zeroEarnings);
-            this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
+            this.beeMutationChance = config.beeMutationChance || this.beeMutationChance || 0.005;
+            this.genome = new Genome(config.genomeState || this.genomeState || { mutationChance: this.beeMutationChance });
+            this.genomeState = this.genome.getState();
+            //this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
             //this.blueImage = getBlueImage(this.genes);
 
-            this.traits = this.traitInspector.getTraits(this.genes);
-            this.attributes = this.traitInspector.getAttributes(this.genes);
-            this.societyValue = getSocietyValue(this.attributes);
+            this.traits = this.traitInspector.getTraits(this.genome);
+            //this.attributes = this.traitInspector.getAttributes(this.genes);
+            //this.societyValue = getSocietyValue(this.attributes);
 
             //this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
-
         };
 
         Bee.prototype.getTraits = function() {
@@ -89,25 +84,18 @@ game.factory('Bee', [
             var queen = this;
             var drone = partner;
 
-
+            var newGenome = queen.genome.mate(drone.genome);
 
             var child = new Bee({
                 id: newId,
                 dt: new Date().getTime(),
                 generation: queen.generation,
-                genes: [],
-                genesUnlocked: queen.genesUnlocked,
-                beeGeneCap: queen.beeGeneCap,
+                genomeState: newGenome.getState(),
                 queenParent: queen,
                 droneParent: drone,
                 beetype: 'hatchling'
 
             });
-            for (var g = 0; g < queen.genes.length; g++) {
-                var queeng = queen.genes[g];
-                var droneg = drone.genes[g];
-                child.genes.push(crossover(queeng, droneg, this.beeGeneCap));
-            }
             child.update();
             return child;
         };

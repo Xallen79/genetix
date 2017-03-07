@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', 'Bee', 'geneDefinitions', 'logService',
-    function($filter, Bee, geneDefinitions, logService) {
+    '$filter', 'Bee', 'logService',
+    function($filter, Bee, logService) {
 
         /* constructor */
         var Hive = function(state) {
@@ -11,15 +11,12 @@ game.factory('Hive', [
         /* public functions */
         Hive.prototype.update = function(state) {
             state = state || {};
-            this.geneDefinitions = geneDefinitions;
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
             this.bees = state.bees || this.bees || [];
             this.beeLimit = state.beeLimit || this.beeLimit || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.maxSize = state.maxSize || this.maxSize || 10;
-            this.beeGeneCap = state.beeGeneCap || this.beeGeneCap || 25;
-            this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 5;
-            this.beeGenesUnlocked = state.beeGenesUnlocked || this.beeGenesUnlocked || [];
+            this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
             this.initialSize = state.initialSize || this.initialSize || 2;
             if (state.members) {
                 this.members = [];
@@ -28,12 +25,11 @@ game.factory('Hive', [
                     var unit = new Bee({
                         id: member.id,
                         dt: member.dt,
-                        beeGeneCap: member.beeGeneCap,
                         mother: member.mother || null,
                         father: member.father || null,
                         generation: member.generation,
-                        genes: member.genes,
-                        genesUnlocked: member.genesUnlocked,
+                        genomeState: member.genomeState,
+                        beeMutationChance: member.beeMutationChance,
                         name: member.name,
                         jid: member.jid,
                         earnings: member.earnings
@@ -50,12 +46,11 @@ game.factory('Hive', [
                     var nb = new Bee({
                         id: newborn.id,
                         dt: newborn.dt,
-                        beeGeneCap: newborn.beeGeneCap,
                         mother: newborn.mother || null,
                         father: newborn.father || null,
                         generation: newborn.generation,
-                        genes: newborn.genes,
-                        genesUnlocked: newborn.genesUnlocked,
+                        genomeState: newborn.genomeState,
+                        beeMutationChance: newborn.beeMutationChance,
                         name: newborn.name,
                         jid: newborn.jid,
                         earnings: newborn.earnings
@@ -72,9 +67,7 @@ game.factory('Hive', [
                 bees: this.bees,
                 beeLimit: this.beeLimit,
                 maxSize: this.maxSize,
-                beeGeneCap: this.beeGeneCap,
                 beeMutationChance: this.beeMutationChance,
-                beeGenesUnlocked: this.beeGenesUnlocked,
                 initialSize: this.initialSize,
                 members: [],
                 newborns: []
@@ -84,10 +77,9 @@ game.factory('Hive', [
                 state.members.push({
                     id: member.id,
                     dt: member.dt,
-                    beeGeneCap: member.beeGeneCap,
                     generation: member.generation,
-                    genes: member.genes,
-                    genesUnlocked: member.genesUnlocked,
+                    genomeState: member.genomeState,
+                    beeMutationChance: member.beeMutationChance,
                     name: member.name,
                     jid: member.jid,
                     earnings: member.earnings
@@ -98,10 +90,9 @@ game.factory('Hive', [
                 state.newborns.push({
                     id: nb.id,
                     dt: nb.dt,
-                    beeGeneCap: nb.beeGeneCap,
                     generation: nb.generation,
-                    genes: nb.genes,
-                    genesUnlocked: nb.genesUnlocked,
+                    genomeState: nb.genomeState,
+                    beeMutationChance: nb.beeMutationChance,
                     name: nb.name,
                     jid: nb.jid,
                     earnings: nb.earnings
@@ -114,21 +105,10 @@ game.factory('Hive', [
             var self = this;
             var population = [];
             for (var i = 0; i < count; i++) {
-                var genes = [];
-                var r = i % 2 === 0 ? 255 : 0;
-                var g = i % 2 === 0 ? 0 : 255;
-                for (var gn = 0; gn < self.geneDefinitions.length; gn++) {
-                    genes.push([0, 0, 0]);
-                    if (self.beeGenesUnlocked.indexOf(gn) !== -1) {
-                        genes[gn][2] = self.beeMutationChance;
-                    }
-                }
                 var unit = new Bee({
                     id: i,
                     generation: 0,
-                    genes: angular.copy(genes),
-                    genesUnlocked: self.beeGenesUnlocked,
-                    beeGeneCap: self.beeGeneCap
+                    beeMutationChance: this.beeMutationChance,
                 });
                 unit.update();
                 population.push(unit);
