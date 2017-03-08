@@ -84,3 +84,7 @@
 .icon-happy:before {
     content: "\6d";
 }
+
+.icon-bee:before {
+  content: "\6f";
+}

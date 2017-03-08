@@ -127,7 +127,7 @@ game.factory('Hive', [
                 return this.queens[0]; //assuming first queen is the egg producer...
 
             return null;
-        }
+        };
 
         Hive.prototype.canLayEggs = function() {
             return this.queens.length && this.getHeadQueen().canLayEggs();
