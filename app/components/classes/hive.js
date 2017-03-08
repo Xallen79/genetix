@@ -141,29 +141,29 @@ game.factory('Hive', [
         };
 
         Hive.prototype.getById = function(id) {
-            return this.members.filter(function(unit) {
-                return unit.id === id;
-            })[0];
+            // return this.members.filter(function(unit) {
+            //     return unit.id === id;
+            // })[0];
         };
 
         Hive.prototype.getByGeneration = function(generation) {
-            return this.members.filter(function(unit) {
-                return unit.generation === generation;
-            });
+            // return this.members.filter(function(unit) {
+            //     return unit.generation === generation;
+            // });
         };
 
         Hive.prototype.breed = function() {
-            var self = this;
-            if (!self.isBreeding()) return null;
-            var p1 = self.getById(self.bees[0]);
-            var p2 = self.getById(self.bees[1]);
-            var child = p1.breed(p2, self.members.length);
-            self.newborns.push(child);
-            return child;
+            // var self = this;
+            // if (!self.isBreeding()) return null;
+            // var p1 = self.getById(self.bees[0]);
+            // var p2 = self.getById(self.bees[1]);
+            // var child = p1.breed(p2, self.members.length);
+            // self.newborns.push(child);
+            // return child;
         };
         Hive.prototype.processNewbornFate = function(id, fate) {
             var index;
-            var newborn = this.newborns.filter(function(unit, i) {
+            var newborn = this.larva.filter(function(unit, i) {
                 if (unit.id === id) {
                     index = i;
                     return true;
@@ -186,7 +186,7 @@ game.factory('Hive', [
                     break;
                 case "CONSUME":
                     msg = $filter('fmt')("Bee #%(id) has been turned into food", newborn);
-                    this.newborns.splice(index, 1);
+                    this.larva.splice(index, 1);
                     break;
                 default:
                     msg = msg = $filter('fmt')("Invalid %(fate)s", { fate: fate });
