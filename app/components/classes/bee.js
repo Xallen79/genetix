@@ -51,7 +51,7 @@ game.factory('Bee', [
                 generation: this.generation,
                 jid: this.jid,
                 onStrike: this.onStrike,
-                earnings: this.earnigns,
+                earnings: this.earnings,
                 beeMutationChance: this.beeMutationChance,
                 genomeState: this.genomeState
             };
