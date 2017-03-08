@@ -9,35 +9,6 @@
                     <bloqhead-resource-list></bloqhead-resource-list>
                 </div>
             </bloqhead-player-box>
-            <!--
-            <bloqhead-player-box>
-                <bloqhead-player-box-title>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <i class="fa fa-heart"></i> Breeders [{{$ctrl.breeders.length}} / {{$ctrl.breederLimit}}]
-                        </div>
-                        <div class="col-xs-7">
-                            <div class="progress progress-custom progress-playerbox-title">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.stepsSinceBreed}}" aria-valuemin="0" aria-valuemax="{{$ctrl.breedSteps}}}" ng-style="{width: (100*($ctrl.stepsSinceBreed/$ctrl.breedSteps)) + '%'}">
-                                    <span class="breeders">
-                                    <i class="fa fa-cog" ng-class="$ctrl.isBreeding == true ? 'fa-spin' : ''"></i>
-                                </span>
-                                    <span class="amounts" ng-bind="$ctrl.stepsSinceBreed + ' / ' + $ctrl.breedSteps"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </bloqhead-player-box-title>
-                
-                <div id="breeder-target" class="row breeder-container fullH" lvl-drop-target="true" on-drop="$ctrl.dropped(dragId, dropId, relativePos)">
-                    <div ng-repeat="breederid in $ctrl.breeders" class="col-xs-12 col-lg-12 animate-repeat">
-                        <button type="button" class="close" ng-click="$ctrl.removeBreeder(breederid)"><span>&times;</span></button>
-                        <bloqhead-mortal unit="$ctrl.bees[bee]" mode="BREED"></bloqhead-mortal>
-                    </div>
-                </div>
-                
-            </bloqhead-player-box>
-            -->
         </div>
         <div class="col-xs-4 fullH">
             <bloqhead-player-box>
@@ -59,26 +30,8 @@
                     </div>
                 </div>
             </bloqhead-player-box>
-            <!--
-            <bloqhead-player-box box-title="Workers">
-                <bloqhead-worker-list></bloqhead-worker-list>
-            </bloqhead-player-box>
-            -->
         </div>
     </div>
-    <!--
-    <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4">
-            <bloqhead-player-box box-title="Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]">
-                <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12">
-                        <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
-                    </div>
-                </div>
-            </bloqhead-player-box>
-        </div>
-    </div>
-    -->
     <div class="row" id="bottomRow">
         <div class="col-xs-8 fullH">
             <bloqhead-map></bloqhead-map>

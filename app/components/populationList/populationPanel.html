@@ -1,8 +1,9 @@
 <div class="population-panel">
     <table>
         <tr ng-repeat="bee in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
-            <td ng-bind="(bee.beetype.slice(0,1).toUpperCase() + ' #' + bee.id)" />
-            <div>{{JSON.stringify(bee)}}</div>
+            <td>
+                <span ng-bind="bee.name"></span>
+            </td>
         </tr>
     </table>
 

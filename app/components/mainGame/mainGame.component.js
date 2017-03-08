@@ -24,12 +24,12 @@ game.controller('bloqhead.controllers.mainGame', [
     function($scope, hiveService, achievementService, resourceService, workerService) {
         var self = this;
         self.$onInit = function() {
-            //self.breeders = [];
+
             self.hive = hiveService.hive;
             self.maxPopulation = 0;
-            //self.maxBreeders = 0;
+
             hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
-            //hiveService.SubscribeBreederUpdateEvent($scope, self.updateBreeders);
+
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
         };
 
@@ -38,41 +38,11 @@ game.controller('bloqhead.controllers.mainGame', [
             console.log(reward);
         };
 
-        //self.updateGene = function(id, geneIndex, geneValues) {
-        //    hiveService.updateMember(id, geneIndex, geneValues);
-        //};
         self.assign = function(unitid, jobType) {
-            //if (!angular.isDefined(jobType))
-            //    self.addBreeder(unitid);
-            //else
-            //    workerService.addWorker(jobType, unitid);
-
             workerService.addWorker(jobType, unitid);
-
-        };
-        //self.dropped = function(dragId, dropId, relativePos) {
-        //    if (dropId === "worker-target") {
-        //        var drag = angular.element(document.getElementById(dragId));
-        //        this.addBreeder(drag.data('breederid'));
-        //    }
-        //};
-        /*
-        self.addBreeder = function(unitid) {
-
-            hiveService.addBreeder(unitid);
         };
 
-        self.removeBreeder = function(unitid) {
-            hiveService.removeBreeder(unitid);
-        };
 
-        self.updateBreeders = function(event, data) {
-            self.breeders = data.breeders;
-            self.isBreeding = data.isBreeding;
-            self.stepsSinceBreed = data.stepsSinceBreed;
-            self.breedSteps = data.breedSteps;
-        };
-        */
         self.updatePopulation = function(event, data) {
             self.bees = data;
         };

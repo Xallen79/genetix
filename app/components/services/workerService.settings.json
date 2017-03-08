@@ -6,7 +6,7 @@
                 "name": "Idler",
                 "description": "One who enjoys life",
                 "resource": "HAPPINESS",
-                "baseWorkerSteps": 4,
+                "baseWorkerMs": 4000,
                 "baseAmount": 1,
                 "unlocked": 1
             },
@@ -15,7 +15,7 @@
                 "name": "Dirt Digger",
                 "description": "One who digs dirt",
                 "resource": "DIRT",
-                "baseWorkerSteps": 4,
+                "baseWorkerMs": 4000,
                 "baseAmount": 1,
                 "unlocked": 1
             },
@@ -24,7 +24,7 @@
                 "name": "Wood Chopper",
                 "description": "One who chops wood",
                 "resource": "WOOD",
-                "baseWorkerSteps": 4,
+                "baseWorkerMs": 4000,
                 "baseAmount": 1,
                 "unlocked": 0
             },
@@ -33,7 +33,7 @@
                 "name": "Water Diviner",
                 "description": "One who uses wooden sticks to find water",
                 "resource": "WATER",
-                "baseWorkerSteps": 4,
+                "baseWorkerMs": 4000,
                 "baseAmount": 1,
                 "unlocked": 0
             },
@@ -42,7 +42,7 @@
                 "name": "Researcher",
                 "description": "One who learns",
                 "resource": "SCIENCE",
-                "baseWorkerSteps": 4,
+                "baseWorkerMs": 4000,
                 "baseAmount": 1,
                 "unlocked": 0
             }

@@ -6,8 +6,8 @@ game.service('hiveService', [
 
         self.init = function(state) {
             state = state || {};
-            self.breedSteps = state.breedSteps || self.breedSteps || 6;
-            self.stepsSinceBreed = angular.isDefined(state.stepsSinceBreed) ? state.stepsSinceBreed : self.stepsSinceBreed || 0;
+            self.eggLayMs = state.eggLayMs || self.eggLayMs || 6000;
+            self.msSinceEgg = angular.isDefined(state.msSinceEgg) ? state.msSinceEgg : self.msSinceEgg || 0;
             self.hiveState = state.hiveState || self.hiveState;
             self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
 
@@ -18,18 +18,28 @@ game.service('hiveService', [
         };
         self.getState = function() {
             var state = {
-                breedSteps: self.breedSteps,
-                stepsSinceBreed: self.stepsSinceBreed
+                eggLayMs: self.eggLayMs,
+                msSinceEgg: self.msSinceEgg
             };
             state.hiveState = self.hive.getState();
             return state;
         };
 
-        self.handleGameLoop = function(event, steps) {
+        self.handleGameLoop = function(event, ms) {
             var popUpdated = false;
             if (event.name !== 'gameLoopEvent') {
                 console.error('hiveService.handleGameLoop - Invalid event: ' + event);
                 return;
+            }
+            if (self.hive.canLayEggs()) {
+                self.msSinceEgg += ms;
+                while (self.msSinceEgg >= self.eggLayMs) {
+                    self.msSinceEgg -= self.eggLayMs;
+                    var eggName = self.hive.layEgg();
+                    if (eggName !== null) {
+                        logService.logBreedMessage($filter('fmt')("New egg! %1s", eggName));
+                    }
+                }
             }
             /*
             if (self.hive.isBreeding()) {
@@ -49,49 +59,8 @@ game.service('hiveService', [
             }
             */
         };
-        /*
-        self.addBreeder = function(id) {
-            if (self.population.breeders.indexOf(id) === -1) {
-                var genderToAdd = self.population.getById(id).hasTrait('Male') ? 'Male' : 'Female';
-                var unit = {};
-                if (self.population.breeders.length < self.population.breederLimit) {
-                    if (self.population.breeders.length > 0) {
-                        unit = self.population.getById(self.population.breeders[0]); //assuming only 2 breeders will exist
-                        if (unit.hasTrait(genderToAdd)) {
-                            self.removeBreeder(unit.id);
-                        }
-                    }
-                    self.population.breeders.push(id);
-                    self.logService.logBreedMessage("Breeder added: " + self.population.getById(id).name);
-                    self.sendBreederUpdateEvent();
-                } else {
-                    for (var b = 0; b < self.population.breeders.length; b++) {
-                        unit = self.population.getById(self.population.breeders[b]);
-                        if (unit.hasTrait(genderToAdd)) {
-                            self.removeBreeder(unit.id);
-                            self.addBreeder(id);
-                            break;
-                        }
-                    }
-                }
-            }
-        };
-        self.removeBreeder = function(id) {
-            var index = self.population.breeders.indexOf(id);
-            if (index !== -1) {
-                self.population.breeders.splice(index, 1);
-                if (!self.population.isBreeding()) self.stepsSinceBreed = 0;
-                self.sendBreederUpdateEvent();
-                self.logService.logBreedMessage("Breeder removed: " + self.population.getById(id).name);
-            }
-        };
-        */
-        self.updateMember = function(id, geneIndex, geneValues) {
-            var member = self.hive.getById(id);
-            member.genes[geneIndex] = geneValues;
-            member.update();
-            self.sendPopulationUpdateEvent();
-        };
+
+
         self.setUnitJob = function(id, jid, jobName) {
             var unit = self.hive.getById(id);
             unit.jid = jid;
@@ -118,11 +87,7 @@ game.service('hiveService', [
             self.hive.processNewbornFate(unitid, fate);
             self.sendPopulationUpdateEvent();
         };
-        /*
-        self.sendBreederUpdateEvent = function() {
-            $rootScope.$emit('breederUpdateEvent', { breeders: self.hive.breeders, isBreeding: self.hive.isBreeding(), stepsSinceBreed: self.stepsSinceBreed, breedSteps: self.breedSteps });
-        };
-        */
+
         self.sendPopulationUpdateEvent = function() {
             $rootScope.$emit('hiveUpdateEvent', {
                 queen: self.hive.queen,
@@ -131,12 +96,6 @@ game.service('hiveService', [
                 eggs: self.hive.eggs,
                 larva: self.hive.larva
             });
-        };
-
-        self.SubscribeBreederUpdateEvent = function(scope, callback) {
-            var handler = $rootScope.$on('breederUpdateEvent', callback);
-            scope.$on('$destroy', handler);
-            //self.sendBreederUpdateEvent();
         };
 
         self.SubscribePopulationUpdateEvent = function(scope, callback) {

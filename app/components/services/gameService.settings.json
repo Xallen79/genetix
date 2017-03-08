@@ -2,13 +2,13 @@
     "constants": {
         "defaultState": {
             "clearLog": true,
-            "autoSaveSteps": 30,
+            "autoSaveMs": 30000,
             "gameLoopServiceState": {
-                "stepTimeMs": 1000
+                "stepTimeMs": 500
             },
             "hiveServiceState": {
-                "breedSteps": 6,
-                "stepsSinceBreed": 0,
+                "eggLayMs": 6000,
+                "msSinceEgg": 0,
                 "hiveState": {
                     "initialSize": 2,
                     "maxSize": 5,

@@ -44,7 +44,7 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
             }
             self.lastTime += (self.stepTimeMs * steps);
             if (self.currentState == gameStates.RUNNING && steps > 0) {
-                $rootScope.$apply($rootScope.$emit('gameLoopEvent', steps));
+                $rootScope.$apply($rootScope.$emit('gameLoopEvent', self.stepTimeMs * steps));
             }
             $window.requestAnimationFrame(this.gameLoop.bind(this));
         };
@@ -68,9 +68,9 @@ game.service('gameService', [
             var json = LZString.decompressFromBase64(localStorage.getItem(gameSaveKey));
             var savedState = (json) ? angular.fromJson(json) : undefined;
             self.gameState = state || savedState || defaultState;
-            self.autoSaveSteps = self.gameState.autoSaveSteps || self.autoSaveSteps || 10;
+            self.autoSaveMs = self.gameState.autoSaveMs || self.autoSaveMs || 30000;
             self.startGame();
-            self.stepsSinceSave = 0;
+            self.msSinceSave = 0;
             if (!initialized) {
                 gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
                 initialized = true;
@@ -144,8 +144,8 @@ game.service('gameService', [
         };
 
 
-        function handleLoop(event, steps) {
-            self.stepsSinceSave += steps;
+        function handleLoop(event, ms) {
+            self.msSinceSave += ms;
 
             // testing
             var d = resourceService.getResource('DIRT');
@@ -154,9 +154,9 @@ game.service('gameService', [
             // else
             //     resourceService.changeResource("DIRT", 1);
 
-            if (self.stepsSinceSave >= self.autoSaveSteps) {
+            if (self.msSinceSave >= self.autoSaveMs) {
                 self.saveGame(true);
-                self.stepsSinceSave = 0;
+                self.msSinceSave = 0;
             }
         }
 

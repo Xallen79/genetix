@@ -35,10 +35,11 @@ game.factory('Bee', [
             this.beeMutationChance = config.beeMutationChance || this.beeMutationChance || 0.005;
             this.genome = new Genome(config.genomeState || this.genomeState || { mutationChance: this.beeMutationChance });
             this.genomeState = this.genome.getState();
+            this.dead = config.dead || this.dead || false;
             //this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
 
             this.traits = this.traitInspector.getTraits(this.genome);
-
+            this.name = this.beetype + "#" + this.id;
             //this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
         };
 
@@ -202,10 +203,11 @@ game.factory('Bee', [
 
 
 game.factory('Queen', [
-    'Bee',
-    function(Bee) {
+    'Bee', 'Egg',
+    function(Bee, Egg) {
         var Queen = function(config) {
             this.beetype = "queen";
+            this.minDrones = 10;
             this.update(config);
         };
         Queen.prototype = new Bee();
@@ -232,6 +234,12 @@ game.factory('Queen', [
             this.droneGenomeStates.push(drone.genome.getState);
             this.droneIds.push(drone.id);
             drone.die();
+        };
+        Queen.prototype.canLayEggs = function() {
+            var ready = this.droneGenomeStates.length >= this.minDrones;
+
+            return ready;
+
         };
 
         Queen.prototype.layEgg = function(newId) {
@@ -316,6 +324,7 @@ game.factory('Drone', [
         };
         Drone.prototype.die = function() {
             console.log("Drone died. Id: " + this.id);
+            this.dead = true;
         };
         return Drone;
     }

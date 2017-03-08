@@ -15,7 +15,7 @@ game.service('workerService', [
                 hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
             } else {
-                self.handlePopulationUpdate(null, { population: hiveService.hive.workers });
+                self.handlePopulationUpdate(null, { workers: hiveService.hive.workers });
             }
             for (var res in resourceTypes) {
                 resourceStats[res] = {

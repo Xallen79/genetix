@@ -17,9 +17,7 @@ game.controller('bloqhead.controllers.map', [
         var self = this;
         var canvas, context;
 
-        self.$onInit = function() {
-            gameLoopService.SubscribeGameLoopEvent($scope, draw);
-        };
+        self.$onInit = function() {};
 
         self.$postLink = function() {
             $timeout(createCanvas);
@@ -37,6 +35,7 @@ game.controller('bloqhead.controllers.map', [
 
             context.fillStyle = '#bdefc7';
             context.fillRect(0, 0, canvas.width, canvas.height);
+            gameLoopService.SubscribeGameLoopEvent($scope, draw);
         }
 
 
