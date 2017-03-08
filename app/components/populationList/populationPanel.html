@@ -1,87 +1,13 @@
 <div class="population-panel">
     <table>
-        <!--
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>
-                <table style="min-width: 10vw;">
-                    <tbody>
-                        <tr>
-                            <td style="width: 20%">STR</td>
-                            <td style="width: 20%">INT</td>
-                            <td style="width: 20%">END</td>
-                            <td style="width: 20%">CHR</td>
-                            <td style="width: 20%">LCK</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+        <tr ng-repeat="bee in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
+            <td ng-bind="(bee.beetype.slice(0,1).toUpperCase() + ' #' + bee.id)" />
+            <div>{{JSON.stringify(bee)}}</div>
         </tr>
-    </thead>
-    -->
-        <tbody>
-            <!--<tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">-->
-            <tr ng-repeat="unit in $ctrl.bees" class="population-list animate-repeat">
-                <td class="mortal-name" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
-                    <span>                        
-                        <i title="{{unit.onStrike ? 'On strike!' : $ctrl.parent.jobTypes[unit.jid].name}}" class="fa fa-fw" ng-class="$ctrl.getWorkerIcon(unit.onStrike, $ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
-                    </span>
-                    <span>{{unit.beetype}}{{unit.id}}</span>
-                </td>
-                <!--<td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
-                    <table class="genomeEditor">
-                        <thead>
-                            <tr>
-                                <th colspan="5"><img class="img-responsive" ng-src="{{unit.redGreenImage}}" ng-mousemove="$ctrl.imageHover($event)" /></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'STR'">
-                                    {{unit.attributes.STR}}
-                                </td>
-                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'INT'">
-                                    {{unit.attributes.INT}}
-                                </td>
-                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'END'">
-                                    {{unit.attributes.END}}
-                                </td>
-                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'CHR'">
-                                    {{unit.attributes.CHR}}
-                                </td>
-                                <td style="width: 20%" ng-mouseover="$ctrl.hoverAttr = 'LCK'">
-                                    {{unit.attributes.LCK}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>-->
-                <td>
-                    <span ng-repeat="trait in unit.traits"><i class="fa fa-star" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i></span>
-                </td>
-
-                <!--
-                <td>
-                    <button ng-disabled="!$ctrl.parent.canBreed" class="btn btn-xs btn-primary" ng-click="$ctrl.parent.breederAssign({$id:unit.id})">Breed Me</button>
-                </td>
-                <td>
-                    <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
-                        <button type="button" class="btn btn-xs btn-primary" uib-dropdown-toggle><span ng-bind="$ctrl.parent.jobTypes[unit.currentJob].name"></span><span class="caret"></span></button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                            <li ng-repeat="(key, job) in $ctrl.parent.jobTypes">
-                                <a href="javascript:void(0);" ng-bind="job.name" ng-click="$ctrl.parent.breederAssign({$id:unit.id, $type:key})"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-                -->
-            </tr>
-        </tbody>
     </table>
+
 </div>
+
 <script type="text/ng-template" id="traitTooltip.html">
     <div class="text-center">
         <h4>{{trait.name}}</h4>

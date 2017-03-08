@@ -25,7 +25,7 @@ game.controller('bloqhead.controllers.mainGame', [
         var self = this;
         self.$onInit = function() {
             //self.breeders = [];
-            self.population = [];
+            self.hive = hiveService.hive;
             self.maxPopulation = 0;
             //self.maxBreeders = 0;
             hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
@@ -38,21 +38,24 @@ game.controller('bloqhead.controllers.mainGame', [
             console.log(reward);
         };
 
-        self.updateGene = function(id, geneIndex, geneValues) {
-            hiveService.updateMember(id, geneIndex, geneValues);
-        };
+        //self.updateGene = function(id, geneIndex, geneValues) {
+        //    hiveService.updateMember(id, geneIndex, geneValues);
+        //};
         self.assign = function(unitid, jobType) {
-            if (!angular.isDefined(jobType))
-                self.addBreeder(unitid);
-            else
-                workerService.addWorker(jobType, unitid);
+            //if (!angular.isDefined(jobType))
+            //    self.addBreeder(unitid);
+            //else
+            //    workerService.addWorker(jobType, unitid);
+
+            workerService.addWorker(jobType, unitid);
+
         };
-        self.dropped = function(dragId, dropId, relativePos) {
-            if (dropId === "breeder-target") {
-                var drag = angular.element(document.getElementById(dragId));
-                this.addBreeder(drag.data('breederid'));
-            }
-        };
+        //self.dropped = function(dragId, dropId, relativePos) {
+        //    if (dropId === "worker-target") {
+        //        var drag = angular.element(document.getElementById(dragId));
+        //        this.addBreeder(drag.data('breederid'));
+        //    }
+        //};
         /*
         self.addBreeder = function(unitid) {
 

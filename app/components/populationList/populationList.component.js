@@ -1,11 +1,25 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.filter('applyPopulationFilter', function() {
-    return function(input, filter) {
-        var matches = [];
-        var nonmatches = [];
+    return function(hive, filter) {
+        if (hive === null || typeof hive === 'undefined')
+            return [];
+
         if (typeof filter == 'string')
             filter = JSON.parse(filter);
+
+        var matches = [];
+        var nonmatches = [];
+
+        var input = [];
+        if (filter && filter.type) {
+            input = hive[filter.type];
+        } else {
+            input = input.concat(hive.queens);
+            input = input.concat(hive.workers);
+            input = input.concat(hive.drones);
+        }
+
         for (var i = 0; i < input.length; i++) {
             var criteriaMet = true;
             if (filter && filter.traits) {
@@ -22,6 +36,9 @@ game.filter('applyPopulationFilter', function() {
                     }
                 }
             }
+
+
+
             if (criteriaMet)
                 matches.push(input[i]);
             if (!criteriaMet)
@@ -92,9 +109,8 @@ game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
     bindings: {
-        canBreed: '<',
-        breederAssign: '&',
-        bees: '<',
+        assign: '&',
+        hive: '<',
         maxPopulation: '='
     }
 });
@@ -181,7 +197,7 @@ game.component('bloqheadPopulationPanel', {
     templateUrl: 'components/populationList/populationPanel.html',
     controller: 'bloqhead.controllers.populationPanel',
     bindings: {
-        bees: '<',
+        population: '<',
         filter: '<',
         orderBy: '<'
     }

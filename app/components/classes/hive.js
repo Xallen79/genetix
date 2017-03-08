@@ -16,11 +16,18 @@ game.factory('Hive', [
             this.maxSize = state.maxSize || this.maxSize || 10;
             this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
             this.initialSize = state.initialSize || this.initialSize || 2;
-            if (state.queenState) {
-                this.queen = new Queen(state.queenState);
-            } else {
+
+            this.queens = this.queens || [];
+            if (state.queenStates) {
+                this.queens = [];
+                for (var q = 0; q < state.queenStates.length; q++) {
+                    this.queens.push(new Queen(state.queenStates[q]));
+                }
+            }
+            if (this.queens.length === 0) {
                 this.createInitialQueen(true);
             }
+
             this.drones = this.drones || [];
             if (state.droneStates) {
                 this.drones = [];
@@ -57,12 +64,15 @@ game.factory('Hive', [
                 maxSize: this.maxSize,
                 beeMutationChance: this.beeMutationChance,
                 initialSize: this.initialSize,
-                queenState: this.queen.getState(),
+                queenStates: [],
                 droneStates: [],
                 workerStates: [],
                 eggStates: [],
                 larvaStates: []
             };
+            for (var q = 0; q < this.queens.length; q++) {
+                state.queenStates.push(this.queens[q].getState());
+            }
             for (var d = 0; d < this.drones.length; d++) {
                 state.droneStates.push(this.drones[d].getState());
             }
@@ -79,9 +89,10 @@ game.factory('Hive', [
         };
 
         Hive.prototype.createInitialQueen = function(inseminate) {
-            this.queen = new Queen({
+            var queen = new Queen({
                 id: 1,
                 generation: 0,
+                dominant: true, // 
                 beeMutationChance: this.beeMutationChance
             });
             if (inseminate) {
@@ -91,10 +102,11 @@ game.factory('Hive', [
                         generation: 0,
                         beeMutationChance: this.beeMutationChance
                     });
-                    this.queen.mate(drone);
+                    queen.mate(drone);
                 }
             }
-            this.queen.update();
+            queen.update();
+            this.queens.push(queen);
             // var self = this;
             // var population = [];
             // for (var i = 0; i < count; i++) {

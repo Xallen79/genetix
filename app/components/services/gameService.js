@@ -11,7 +11,7 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
         self.init = function(state) {
             state = state || {};
             self.saveTime = state.saveTime || Date.now();
-            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 1000;
+            self.stepTimeMs = state.stepTimeMs || self.stepTimeMs || 50;
             self.lastTime = self.lastTime || (self.saveTime - Date.now());
             self.currentState = state.currentState || self.currentState || gameStates.RUNNING;
             if (!self.initialized) {

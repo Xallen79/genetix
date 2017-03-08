@@ -34,6 +34,7 @@ game.controller('bloqhead.controllers.map', [
             canvas.height = canvas.offsetHeight;
             // create context
             context = canvas.getContext('2d');
+
             context.fillStyle = '#bdefc7';
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
@@ -44,12 +45,13 @@ game.controller('bloqhead.controllers.map', [
             [180, 400]
         ];
 
+        clovers = [
+            [450, 160],
+            [120, 330],
+            [290, 400],
+        ];
 
-
-        function draw() {
-            if (canvas === null || context === null)
-                return;
-
+        function drawHives() {
             for (var i = 0; i < hives.length; i++) {
                 var hive = hives[i];
                 context.fillStyle = 'yellow';
@@ -61,7 +63,36 @@ game.controller('bloqhead.controllers.map', [
                 context.strokeStyle = 'black';
                 context.stroke();
             }
-            requestAnimationFrame(draw);
+        }
+
+        function drawClovers() {
+            for (var i = 0; i < clovers.length; i++) {
+                var clover = clovers[i];
+                context.fillStyle = 'green';
+                context.beginPath();
+                context.arc(clover[0], clover[1], 6, 0, 2 * Math.PI);
+                context.closePath();
+                context.fill();
+                context.lineWidth = 2;
+                context.strokeStyle = 'black';
+                context.stroke();
+            }
+        }
+
+
+
+
+
+
+        function draw() {
+            if (canvas === null || context === null)
+                return;
+
+            drawHives();
+            drawClovers();
+
+
+
         }
 
 
