@@ -24,7 +24,7 @@
     -->
         <tbody>
             <!--<tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">-->
-            <tr ng-init="unit=$ctrl.bees" class="population-list animate-repeat">
+            <tr ng-repeat="unit in $ctrl.bees" class="population-list animate-repeat">
                 <td class="mortal-name" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
                     <span>                        
                         <i title="{{unit.onStrike ? 'On strike!' : $ctrl.parent.jobTypes[unit.jid].name}}" class="fa fa-fw" ng-class="$ctrl.getWorkerIcon(unit.onStrike, $ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
