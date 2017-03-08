@@ -124,13 +124,19 @@ game.service('hiveService', [
         };
         */
         self.sendPopulationUpdateEvent = function() {
-            $rootScope.$emit('populationUpdateEvent', { population: self.hive.members, newborns: self.hive.newborns, maxSize: self.hive.maxSize, breederLimit: self.hive.breederLimit, newbornLimit: self.hive.newbornLimit });
+            $rootScope.$emit('hiveUpdateEvent', {
+                queen: self.hive.queen,
+                drones: self.hive.drones,
+                workers: self.hive.workers,
+                eggs: self.hive.eggs,
+                larva: self.hive.larva
+            });
         };
 
         self.SubscribeBreederUpdateEvent = function(scope, callback) {
             var handler = $rootScope.$on('breederUpdateEvent', callback);
             scope.$on('$destroy', handler);
-            self.sendBreederUpdateEvent();
+            //self.sendBreederUpdateEvent();
         };
 
         self.SubscribePopulationUpdateEvent = function(scope, callback) {

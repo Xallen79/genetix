@@ -94,7 +94,7 @@ game.component('bloqheadPopulationList', {
     bindings: {
         canBreed: '<',
         breederAssign: '&',
-        population: '<',
+        bees: '<',
         maxPopulation: '='
     }
 });
@@ -181,7 +181,7 @@ game.component('bloqheadPopulationPanel', {
     templateUrl: 'components/populationList/populationPanel.html',
     controller: 'bloqhead.controllers.populationPanel',
     bindings: {
-        population: '<',
+        bees: '<',
         filter: '<',
         orderBy: '<'
     }

@@ -83,8 +83,8 @@ game.service('workerService', [
         };
 
         self.handlePopulationUpdate = function(event, data) {
-            for (var m = 0; m < data.population.length; m++) {
-                var unit = data.population[m];
+            for (var m = 0; m < data.workers.length; m++) {
+                var unit = data.workers[m];
                 if (unit.jid) {
 
                     self.addWorker(unit.jid, unit.id);

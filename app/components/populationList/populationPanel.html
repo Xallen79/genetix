@@ -24,17 +24,14 @@
     -->
         <tbody>
             <!--<tr ng-repeat="unit in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">-->
-            <tr ng-repeat="unit in $ctrl.population" class="population-list animate-repeat">
-                <td class="mortal-name" ng-switch="unit.hasTrait('Male')" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
-                    <span>
-                        <i title="Male" class="fa fa-male male-color" ng-switch-when="true"></i><i title="Female" class="fa fa-female female-color" ng-switch-when="false"></i>
-                    </span>
+            <tr ng-init="unit=$ctrl.bees" class="population-list animate-repeat">
+                <td class="mortal-name" lvl-draggable="true" data-breederid="{{unit.id}}" ng-click="$ctrl.parent.showDetails(unit)">
                     <span>                        
                         <i title="{{unit.onStrike ? 'On strike!' : $ctrl.parent.jobTypes[unit.jid].name}}" class="fa fa-fw" ng-class="$ctrl.getWorkerIcon(unit.onStrike, $ctrl.parent.jobTypes[unit.jid].resource)" data-attr="{{$ctrl.resourceTypes[$ctrl.parent.jobTypes[unit.jid].resource].attr}}"></i>
                     </span>
-                    <span>{{unit.name}}</span>
+                    <span>{{unit.beetype}}{{unit.id}}</span>
                 </td>
-                <td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
+                <!--<td class="mortal-genome" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
                     <table class="genomeEditor">
                         <thead>
                             <tr>
@@ -61,7 +58,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </td>
+                </td>-->
                 <td>
                     <span ng-repeat="trait in unit.traits"><i class="fa fa-star" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i></span>
                 </td>
@@ -129,8 +126,4 @@
     <br />
     <br />
     </div>
-</script>
-<script type="text/ng-template" id="carousel.html">
-    <span class="carousel-inner" ng-transclude></span>
-
 </script>

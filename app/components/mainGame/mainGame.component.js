@@ -71,11 +71,7 @@ game.controller('bloqhead.controllers.mainGame', [
         };
         */
         self.updatePopulation = function(event, data) {
-            self.population = data.population;
-            self.newborns = data.newborns;
-            self.maxPopulation = data.maxSize;
-            //self.breederLimit = data.breederLimit;
-            self.newbornLimit = data.newbornLimit;
+            self.bees = data;
         };
         self.decideFate = function(unitid, fate) {
             hiveService.processNewbornFate(unitid, fate);

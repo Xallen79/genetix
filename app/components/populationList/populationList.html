@@ -17,11 +17,11 @@
                 <div uib-tab template-url="tab.html" heading="Gender View">
                     <div class="col-xs-6 col-lg-6">
                         <h4>Queen</h4>
-                        <bloqhead-population-panel bees="$ctrl.bees" filter="{type:'queen',traits:[]}"></bloqhead-population-panel>
+                        <bloqhead-population-panel bees="$ctrl.bees.queen" filter="{traits:[]}"></bloqhead-population-panel>
                         <h4>Workers</h4>
-                        <bloqhead-population-panel bees="$ctrl.bees" filter="{type:'worker',traits:[]}"></bloqhead-population-panel>
+                        <bloqhead-population-panel bees="$ctrl.bees.workers" filter="{traits:[]}"></bloqhead-population-panel>
                         <h4>Drones</h4>
-                        <bloqhead-population-panel bees="$ctrl.bees" filter="{type:'drone',traits:[]}"></bloqhead-population-panel>
+                        <bloqhead-population-panel bees="$ctrl.bees.drones" filter="{traits:[]}"></bloqhead-population-panel>
                     </div>
                 </div>
 
