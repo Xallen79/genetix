@@ -18,7 +18,6 @@ game.controller('bloqhead.controllers.log', [
         self.$onInit = function() {
             self.messages = [];
             logService.SubscribeNewMessageEvent($scope, self.receiveMessages);
-            $location.hash('scrollBottom');
         };
 
         self.getLogClass = function(type) {
@@ -47,7 +46,7 @@ game.controller('bloqhead.controllers.log', [
         self.receiveMessages = function(event, messages) {
             self.messages = messages;
             if (!self.pauseScroll)
-                $anchorScroll();
+                $anchorScroll('scrollBottom');
         };
     }
 ]);
