@@ -1,6 +1,6 @@
 var game = angular.module('bloqhead.genetixApp');
 
-game.factory('TraitInspector', ['$filter', 'traitDefinitions', function($filter, traitDefinitions) {
+game.factory('TraitInspector', ['$filter', 'traitDefinitions', 'beeAbilities', function($filter, traitDefinitions, beeAbilities) {
     /* constructor */
     var TraitInspector = function(config) {
         this.update(config);
@@ -36,6 +36,34 @@ game.factory('TraitInspector', ['$filter', 'traitDefinitions', function($filter,
 
 
         return ret;
+    };
+
+    TraitInspector.prototype.getAbilities = function(traits) {
+        var abilities = angular.copy(beeAbilities);
+        for (var t = 0; t < traits.length; t++) {
+            var trait = traits[t];
+            for (var m = 0; m < trait.mods.length; m++) {
+                var mod = trait.mods[m];
+                for (var baid in mod) {
+                    if (mod.hasOwnProperty(baid)) {
+                        abilities[baid].add = abilities[baid].add || 0;
+                        abilities[baid].percent = abilities[baid].percent || 0;
+                        abilities[baid].add += (angular.isDefined(mod[baid].add) ? mod[baid].add : 0);
+                        abilities[baid].percent += (angular.isDefined(mod[baid].percent) ? mod[baid].percent / 100 : 0);
+                    }
+                }
+            }
+        }
+        for (var a in abilities) {
+            var ability = abilities[a];
+            ability.add = ability.add || 0;
+            ability.percent = ability.percent || 0;
+            ability.value = ability.baseValue;
+            ability.value += ability.add;
+            ability.value *= 1 + ability.percent;
+        }
+        return abilities;
+
     };
 
     // /* private members */

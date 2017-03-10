@@ -39,6 +39,7 @@ game.factory('Bee', [
             //this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
 
             this.traits = this.traitInspector.getTraits(this.genome);
+            this.abilities = this.traitInspector.getAbilities(this.traits);
             this.name = this.beetype + "#" + this.id;
             //this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
         };
@@ -66,6 +67,14 @@ game.factory('Bee', [
                 return myTrait.name === trait;
             }).length;
             return result > 0;
+        };
+        Bee.prototype.getAbility = function(abilityId) {
+            return this.abilities[abilityId];
+        };
+
+        Bee.prototype.die = function() {
+            console.log(this.name + " died.");
+            this.dead = true;
         };
         /*
         Bee.prototype.getRandomName = function() {
@@ -321,10 +330,6 @@ game.factory('Drone', [
             var state = this.baseGetState();
 
             return state;
-        };
-        Drone.prototype.die = function() {
-            console.log("Drone died. Id: " + this.id);
-            this.dead = true;
         };
         return Drone;
     }

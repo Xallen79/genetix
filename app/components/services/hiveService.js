@@ -6,7 +6,6 @@ game.service('hiveService', [
 
         self.init = function(state) {
             state = state || {};
-            self.eggLayMs = state.eggLayMs || self.eggLayMs || 6000;
             self.msSinceEgg = angular.isDefined(state.msSinceEgg) ? state.msSinceEgg : self.msSinceEgg || 0;
             self.hiveState = state.hiveState || self.hiveState;
             self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
@@ -32,9 +31,10 @@ game.service('hiveService', [
                 return;
             }
             if (self.hive.canLayEggs()) {
+                var eggLayMs = self.hive.getHeadQueen().getAbility('PRD_E').value;
                 self.msSinceEgg += ms;
-                while (self.msSinceEgg >= self.eggLayMs) {
-                    self.msSinceEgg -= self.eggLayMs;
+                while (self.msSinceEgg >= eggLayMs) {
+                    self.msSinceEgg -= eggLayMs;
                     var eggName = self.hive.layEgg();
                     if (eggName !== null) {
                         logService.logBreedMessage($filter('fmt')("New egg! %1s", eggName));
