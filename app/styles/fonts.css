@@ -1,14 +1,14 @@
 @charset "UTF-8";
 @font-face {
-    font-family: "genetix";
-    src: url("../fonts/genetix.eot");
-    src: url("../fonts/genetix.eot?#iefix") format("embedded-opentype"), url("../fonts/genetix.woff") format("woff"), url("../fonts/genetix.ttf") format("truetype"), url("../fonts/genetix.svg#genetix") format("svg");
+    font-family: "icomoon";
+    src: url("../fonts/icomoon.eot");
+    src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype"), url("../fonts/icomoon.woff") format("woff"), url("../fonts/icomoon.ttf") format("truetype"), url("../fonts/icomoon.svg#icomoon") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 [data-icon]:before {
-    font-family: "genetix" !important;
+    font-family: "icomoon" !important;
     content: attr(data-icon);
     font-style: normal !important;
     font-weight: normal !important;
@@ -22,7 +22,7 @@
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-    font-family: "genetix" !important;
+    font-family: "icomoon" !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -33,82 +33,50 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-trophy:before {
-    content: "\61";
-}
-
-.icon-hammer:before {
-    content: "\62";
-}
-
-.icon-mortar-board:before {
-    content: "\63";
-}
-
-.icon-skull:before {
-    content: "\64";
-}
-
-.icon-foot:before {
-    content: "\65";
-}
-
-.icon-shield:before {
-    content: "\66";
-}
-
-.icon-tools:before {
-    content: "\67";
-}
-
-.icon-broom:before {
-    content: "\68";
-}
-
-.icon-coins:before {
-    content: "\69";
-}
-
-.icon-flask:before {
-    content: "\6a";
-}
-
-.icon-bricks:before {
-    content: "\6b";
-}
-
-.icon-happy:before {
-    content: "\6d";
-}
-
 .icon-bee:before {
-    content: "\6e";
-}
-
-.icon-egg:before {
-    content: "\6f";
-}
-
-.icon-larva:before {
-    content: "\70";
-}
-
-.icon-i-beam:before {
-    content: "\6c";
-}
-
-.icon-pollen:before {
-    content: "\73";
-}
-
-.icon-water:before {
-    content: "\71";
+    content: "\e900";
 }
 
 .icon-bee-2:before {
-    content: "\72";
+    content: "\e901";
+}
+
+.icon-egg:before {
+    content: "\e902";
 }
 
 .icon-honeypot:before {
-    content: "\74";
+    content: "\e903";
+}
+
+.icon-larva:before {
+    content: "\e904";
+}
+
+.icon-pollen:before {
+    content: "\e905";
+}
+
+.icon-water:before {
+    content: "\e906";
+}
+
+.icon-tools:before {
+    content: "\e907";
+}
+
+.icon-hammer:before {
+    content: "\e908";
+}
+
+.icon-shield:before {
+    content: "\e909";
+}
+
+.icon-happy:before {
+    content: "\e90a";
+}
+
+.icon-happy2:before {
+    content: "\e90b";
 }

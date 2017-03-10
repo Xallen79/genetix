@@ -55,12 +55,14 @@ game.factory('TraitInspector', ['$filter', 'traitDefinitions', 'beeAbilities', f
             }
         }
         for (var a in abilities) {
-            var ability = abilities[a];
-            ability.add = ability.add || 0;
-            ability.percent = ability.percent || 0;
-            ability.value = ability.baseValue;
-            ability.value += ability.add;
-            ability.value *= 1 + ability.percent;
+            if (abilities.hasOwnProperty(a)) {
+                var ability = abilities[a];
+                ability.add = ability.add || 0;
+                ability.percent = ability.percent || 0;
+                ability.value = ability.baseValue;
+                ability.value += ability.add;
+                ability.value *= 1 + ability.percent;
+            }
         }
         return abilities;
 
