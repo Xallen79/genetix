@@ -12,53 +12,9 @@
         color: black;
     }
 </style>
-<div id="font-examples">
-    <div class="col-xs-1">
-        <i class="icon-hammer"></i>
-        <input type="text" readonly="readonly" value="hammer">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-shield"></i>
-        <input type="text" readonly="readonly" value="shield">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-tools"></i>
-        <input type="text" readonly="readonly" value="tools">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-happy"></i>
-        <input type="text" readonly="readonly" value="happy">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-happy2"></i>
-        <input type="text" readonly="readonly" value="happy2">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-bee"></i>
-        <input type="text" readonly="readonly" value="bee">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-egg"></i>
-        <input type="text" readonly="readonly" value="egg">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-larva"></i>
-        <input type="text" readonly="readonly" value="larva">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-pollen"></i>
-        <input type="text" readonly="readonly" value="pollen">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-water"></i>
-        <input type="text" readonly="readonly" value="water">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-bee-2"></i>
-        <input type="text" readonly="readonly" value="bee-2">
-    </div>
-    <div class="col-xs-1">
-        <i class="icon-honeypot"></i>
-        <input type="text" readonly="readonly" value="honeypot">
+<div id="font-examples" ng-init="fonts = ['hammer', 'shield', 'tools', 'happy', 'happy2', 'bee', 'egg','pollen','water','bee-2', 'honeypot', 'larva', 'tombstone']">
+    <div class="col-xs-1" ng-repeat="font in fonts|orderBy:font">
+        <i class="icon-{{font}}"></i>
+        <input type="text" readonly="readonly" value="{{font}}">
     </div>
 </div>

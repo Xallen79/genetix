@@ -10,7 +10,7 @@ app.component('breederTab', {
     bindings: {
         units: '<',
     },
-    controller: ['Breeder', 'geneDefinitions', 'traitDefinitions', function(Breeder, geneDefinitions, traitDefinitions) {
+    controller: ['Bee', 'traitDefinitions', function(Bee, traitDefinitions) {
         var self = this;
 
         self.lastBreederID = 0;
@@ -22,23 +22,23 @@ app.component('breederTab', {
 
 
         self.addNewBreeder = function() {
-            var genes = [];
-            for (var g = 0; g < geneDefinitions.length; g++) {
-                genes.push([0, 0, 0]);
-            }
+            // var genes = [];
+            // for (var g = 0; g < geneDefinitions.length; g++) {
+            //     genes.push([0, 0, 0]);
+            // }
 
-            var gender = (self.newBreederGender == 'Male') ? 255 : 0;
-            genes[42] = [gender, 255 - gender, 0];
+            // var gender = (self.newBreederGender == 'Male') ? 255 : 0;
+            // genes[42] = [gender, 255 - gender, 0];
 
-            var unit = new Breeder({
-                id: self.lastBreederID++,
-                generation: 0,
-                scale: 6,
-                genes: genes
-            });
+            // var unit = new Breeder({
+            //     id: self.lastBreederID++,
+            //     generation: 0,
+            //     scale: 6,
+            //     genes: genes
+            // });
 
-            unit.update();
-            self.units.unshift(unit);
+            // unit.update();
+            // self.units.unshift(unit);
 
         };
     }],
@@ -48,7 +48,7 @@ app.component('matingTab', {
     bindings: {
         units: '=',
     },
-    controller: ['Breeder', 'geneDefinitions', 'traitDefinitions', function(Breeder, geneDefinitions, traitDefinitions) {
+    controller: ['Bee', 'traitDefinitions', function(Bee, traitDefinitions) {
         var self = this;
 
     }],
@@ -59,12 +59,12 @@ app.component('configurationTab', {
 
     },
     controller: [
-        'Breeder', 'geneDefinitions', 'traitDefinitions', 'resourceTypes', 'jobTypes', 'defaultBuildings',
-        function(Breeder, geneDefinitions, traitDefinitions, resourceTypes, jobTypes, defaultBuildings) {
+        'Bee', 'traitDefinitions', 'resourceTypes', 'jobTypes', 'defaultBuildings',
+        function(Bee, traitDefinitions, resourceTypes, jobTypes, defaultBuildings) {
             var self = this;
             self.$onInit = function() {
                 self.snapshot = {
-                    geneDefinitions: angular.copy(geneDefinitions),
+                    //geneDefinitions: angular.copy(geneDefinitions),
                     traitDefinitions: angular.copy(traitDefinitions),
                     resourceTypes: angular.copy(resourceTypes),
                     jobTypes: angular.copy(jobTypes),
@@ -83,10 +83,10 @@ app.component('genomeEditor', {
         u: '=',
         resolve: '<'
     },
-    controller: ['geneDefinitions', function(geneDefinitions) {
+    controller: [function() {
         var self = this;
         self.$onInit = function() {
-            self.geneDefinitions = geneDefinitions;
+            //self.geneDefinitions = geneDefinitions;
             self.expando = true;
             self.unit = self.u || self.resolve.unit || {};
         };
@@ -94,15 +94,15 @@ app.component('genomeEditor', {
             self.unit.name = self.unit.getRandomName();
         };
         self.randomize = function(index) {
-            self.unit.genes[index] = [randomIntFromInterval(0, 255), randomIntFromInterval(0, 255), randomIntFromInterval(0, 255)];
+            //self.unit.genes[index] = [randomIntFromInterval(0, 255), randomIntFromInterval(0, 255), randomIntFromInterval(0, 255)];
         };
         self.randomizeAll = function() {
-            for (var i = 0; i < self.unit.genes.length; i++)
-                self.randomize(i);
+            // for (var i = 0; i < self.unit.genes.length; i++)
+            //     self.randomize(i);
 
-            var gender = randomIntFromInterval(0, 1) === 0 ? 255 : 0;
-            self.unit.genes[42] = [gender, 255 - gender, 0];
-            self.unit.update();
+            // var gender = randomIntFromInterval(0, 1) === 0 ? 255 : 0;
+            // self.unit.genes[42] = [gender, 255 - gender, 0];
+            // self.unit.update();
         };
 
     }],
@@ -111,14 +111,14 @@ app.component('genomeEditor', {
 
 
 
-app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gameService', 'Breeder', 'geneDefinitions', 'traitDefinitions', function($scope, $timeout, gameService, Breeder, geneDefinitions, traitDefinitions) {
+app.controller('bloqhead.controllers.testInterface', ['$scope', '$timeout', 'gameService', 'Bee', 'traitDefinitions', function($scope, $timeout, gameService, Bee, traitDefinitions) {
     var self = this;
 
 
 
 
     self.$onInit = function() {
-        self.geneDefinitions = geneDefinitions;
+        //self.geneDefinitions = geneDefinitions;
         self.traitDefinitions = traitDefinitions;
         //self.diggers = gameService.diggers;
         self.units = [];

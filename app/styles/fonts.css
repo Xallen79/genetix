@@ -80,3 +80,7 @@
 .icon-happy2:before {
     content: "\e90b";
 }
+
+.icon-tombstone:before {
+    content: "\e90c";
+}
