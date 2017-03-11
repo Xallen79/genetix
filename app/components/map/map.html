@@ -1,16 +1,22 @@
 <bloqhead-player-box>
     <bloqhead-player-box-title>
         <div class="row">
-            <div class="col-xs-9">
+            <div class="col-xs-5">
                 <i class="fa fa-map"></i> Map
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-7">
                 <div class=" pull-right">
+                    <div class="btn-group" role="group">
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(15)">Sm</div>
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(30)">Md</div>
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(60)">Lg</div>
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(100)">XL</div>
+                    </div>
                 </div>
             </div>
         </div>
     </bloqhead-player-box-title>
-    <div class="row map-container" style="overflow: hidden;">
+    <div class="row map-container" style="overflow: scroll;">
         <canvas id="map"></canvas>
     </div>
 
