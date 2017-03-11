@@ -11,9 +11,9 @@ game.service('hiveService', [
             //self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
 
             self.hives = self.hives || [];
-            if (state.hivesStates) {
+            if (state.hiveStates) {
                 self.hives = [];
-                for (var h = 0; state.hiveStates.length; h++) {
+                for (var h = 0; h < state.hiveStates.length; h++) {
                     self.hives.push(new Hive(state.hiveStates[h]));
                 }
             } else {

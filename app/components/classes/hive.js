@@ -63,6 +63,7 @@ game.factory('Hive', [
 
         Hive.prototype.getState = function() {
             var state = {
+                id: this.id,
                 currentGeneration: this.currentGeneration,
                 maxSize: this.maxSize,
                 beeMutationChance: this.beeMutationChance,
