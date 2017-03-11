@@ -68,7 +68,6 @@ game.service('buildingService', [
         self.update = function(use) {
             if (!angular.isDefined(use) || use === 'all') {
                 self.updateStorage();
-                self.updateBreeders();
                 self.updateHousing();
                 self.updateNursery();
             } else if (use === 'storage') {
@@ -84,20 +83,7 @@ game.service('buildingService', [
             }
             self.getBuildingSnapshot();
         };
-        self.updateBreeders = function() {
-            var max = 0;
-            var typeMult = state.breedingSizeMultiplier || 1;
-            for (var key in state.buildings) {
-                if (state.buildings.hasOwnProperty(key)) {
-                    var building = state.buildings[key];
-                    if (building.use === 'breeding') {
-                        max += Math.floor(building.size * (building.purchased + building.gifted) * building.multiplier);
-                    }
-                }
-            }
-            max *= typeMult;
-            hiveService.setBreederLimit(Math.floor(max));
-        };
+
         self.updateNursery = function() {
             var max = 0;
             var typeMult = state.newbornSizeMultiplier || 1;
@@ -110,7 +96,8 @@ game.service('buildingService', [
                 }
             }
             max *= typeMult;
-            hiveService.setNurseryLimit(Math.floor(max));
+            var hiveId = 1;
+            hiveService.setNurseryLimit(Math.floor(max), hiveId);
         };
 
         self.updateStorage = function() {
@@ -146,7 +133,8 @@ game.service('buildingService', [
                     }
                 }
             }
-            hiveService.setPopulationLimit(Math.floor(max * typeMult));
+            var hiveId = 1;
+            hiveService.setPopulationLimit(Math.floor(max * typeMult), hiveId);
         };
 
         self.build = function(type) {

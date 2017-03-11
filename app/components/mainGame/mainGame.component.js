@@ -44,7 +44,7 @@ game.controller('bloqhead.controllers.mainGame', [
 
 
         self.updatePopulation = function(event, data) {
-            self.bees = data;
+            self.hive = data;
         };
         self.decideFate = function(unitid, fate) {
             hiveService.processNewbornFate(unitid, fate);

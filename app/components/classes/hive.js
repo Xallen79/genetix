@@ -11,12 +11,14 @@ game.factory('Hive', [
         /* public functions */
         Hive.prototype.update = function(state) {
             state = state || {};
+            this.id = state.id || this.id;
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.maxSize = state.maxSize || this.maxSize || 10;
             this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
             this.initialSize = state.initialSize || this.initialSize || 2;
             this.nextId = state.nextId || this.nextId || 0;
+            this.msSinceEgg = state.msSinceEgg || this.msSinceEgg || 0;
 
             this.queens = this.queens || [];
             if (state.queenStates) {
@@ -70,7 +72,8 @@ game.factory('Hive', [
                 droneStates: [],
                 workerStates: [],
                 eggStates: [],
-                larvaStates: []
+                larvaStates: [],
+                msSinceEgg: this.msSinceEgg
             };
             for (var q = 0; q < this.queens.length; q++) {
                 state.queenStates.push(this.queens[q].getState());

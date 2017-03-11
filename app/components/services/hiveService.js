@@ -6,9 +6,19 @@ game.service('hiveService', [
 
         self.init = function(state) {
             state = state || {};
-            self.msSinceEgg = angular.isDefined(state.msSinceEgg) ? state.msSinceEgg : self.msSinceEgg || 0;
-            self.hiveState = state.hiveState || self.hiveState;
-            self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
+            //self.msSinceEgg = angular.isDefined(state.msSinceEgg) ? state.msSinceEgg : self.msSinceEgg || 0;
+            //self.hiveState = state.hiveState || self.hiveState;
+            //self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
+
+            self.hives = self.hives || [];
+            if (state.hivesStates) {
+                self.hives = [];
+                for (var h = 0; state.hiveStates.length; h++) {
+                    self.hives.push(new Hive(state.hiveStates[h]));
+                }
+            } else {
+                self.hives.push(new Hive({ id: 1 }));
+            }
 
             self.logService = logService;
             //self.sendBreederUpdateEvent();
@@ -16,11 +26,11 @@ game.service('hiveService', [
 
         };
         self.getState = function() {
-            var state = {
-                eggLayMs: self.eggLayMs,
-                msSinceEgg: self.msSinceEgg
-            };
-            state.hiveState = self.hive.getState();
+            var state = {};
+            state.hiveStates = [];
+            for (var h = 0; h < self.hives.length; h++) {
+                state.hiveStates.push(self.hives[h].getState());
+            }
             return state;
         };
 
@@ -30,17 +40,21 @@ game.service('hiveService', [
                 console.error('hiveService.handleGameLoop - Invalid event: ' + event);
                 return;
             }
-            if (self.hive.canLayEggs()) {
-                var eggLayMs = self.hive.getHeadQueen().getAbility('PRD_E').value;
-                self.msSinceEgg += ms;
-                while (self.msSinceEgg >= eggLayMs) {
-                    self.msSinceEgg -= eggLayMs;
-                    var eggName = self.hive.layEgg();
-                    if (eggName !== null) {
-                        logService.logBreedMessage($filter('fmt')("New egg! %1s", eggName));
+            for (var h = 0; h < self.hives.length; h++) {
+                var hive = self.hives[h];
+                if (hive.canLayEggs()) {
+                    var eggLayMs = hive.getHeadQueen().getAbility('PRD_E').value;
+                    hive.msSinceEgg += ms;
+                    while (hive.msSinceEgg >= eggLayMs) {
+                        hive.msSinceEgg -= eggLayMs;
+                        var eggName = hive.layEgg();
+                        if (eggName !== null) {
+                            logService.logBreedMessage($filter('fmt')("New egg! %1s", eggName));
+                        }
                     }
                 }
             }
+
             /*
             if (self.hive.isBreeding()) {
                 self.stepsSinceBreed += steps;
@@ -71,30 +85,29 @@ game.service('hiveService', [
             self.logService.logWorkMessage(msg);
             self.sendPopulationUpdateEvent();
         };
-        self.setBreederLimit = function(newLimit) {
-            self.hive.breederLimit = newLimit;
+        self.setNurseryLimit = function(newLimit, hiveId) {
+            var hive = $filter('filter')(self.hives, { id: hiveId })[0];
+            hive.newbornLimit = newLimit;
             self.sendPopulationUpdateEvent();
         };
-        self.setNurseryLimit = function(newLimit) {
-            self.hive.newbornLimit = newLimit;
+        self.setPopulationLimit = function(newLimit, hiveId) {
+            var hive = $filter('filter')(self.hives, { id: hiveId })[0];
+            hive.maxSize = newLimit;
             self.sendPopulationUpdateEvent();
         };
-        self.setPopulationLimit = function(newLimit) {
-            self.hive.maxSize = newLimit;
-            self.sendPopulationUpdateEvent();
-        };
-        self.processNewbornFate = function(unitid, fate) {
-            self.hive.processNewbornFate(unitid, fate);
+        self.processNewbornFate = function(unitid, fate, hiveId) {
+            var hive = $filter('filter')(self.hives, { id: hiveId })[0];
+            hive.processNewbornFate(unitid, fate);
             self.sendPopulationUpdateEvent();
         };
 
         self.sendPopulationUpdateEvent = function() {
             $rootScope.$emit('hiveUpdateEvent', {
-                queen: self.hive.queen,
-                drones: self.hive.drones,
-                workers: self.hive.workers,
-                eggs: self.hive.eggs,
-                larva: self.hive.larva
+                queens: self.hives[0].queens,
+                drones: self.hives[0].drones,
+                workers: self.hives[0].workers,
+                eggs: self.hives[0].eggs,
+                larva: self.hives[0].larva
             });
         };
 

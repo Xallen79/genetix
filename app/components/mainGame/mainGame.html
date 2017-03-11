@@ -25,7 +25,7 @@
                     <i class="icon-foot"></i> Nursery [{{$ctrl.newborns.length}} / {{$ctrl.newbornLimit}}]
                 </bloqhead-player-box-title>
                 <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.newborns" class="col-xs-12 col-lg-12 animate-repeat">
+                    <div ng-repeat="child in $ctrl.hive.eggs" class="col-xs-12 col-lg-12 animate-repeat">
                         <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
                     </div>
                 </div>
