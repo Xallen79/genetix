@@ -115,10 +115,29 @@ game.factory('Hive', [
             this.queens.push(queen);
         };
 
-        Hive.prototype.getById = function(id) {
-            // return this.members.filter(function(unit) {
-            //     return unit.id === id;
-            // })[0];
+        Hive.prototype.getById = function(id, type) {
+            var list = [];
+            switch (type) {
+                case 'EGG':
+                    list = this.eggs;
+                    break;
+                case 'LARVA':
+                    list = this.larva;
+                    break;
+                case 'DRONE':
+                    list = this.drones;
+                    break;
+                case 'WORKER':
+                    list = this.workers;
+                    break;
+                case 'QUEEN':
+                    list = this.queens;
+                    break;
+                default:
+                    console.error("Invalid type: " + type);
+                    return null;
+            }
+            return $filter('filter')(list, { id: id })[0];
         };
 
         Hive.prototype.getByGeneration = function(generation) {
@@ -147,8 +166,42 @@ game.factory('Hive', [
             }
             return newName;
         };
-
-        Hive.prototype.processNewbornFate = function(id, fate) {
+        Hive.prototype.processEggFate = function(id, fate) {
+            var index;
+            var egg = this.eggs.filter(function(unit, i) {
+                if (unit.id === id) {
+                    index = i;
+                    return true;
+                }
+            })[0];
+            var msg = "";
+            switch (fate) {
+                case "DRONE":
+                    var drone = new Drone({
+                        id: ++this.nextId,
+                        genomeState: egg.genome.getState(),
+                        generation: egg.generation,
+                        jid: 'DRONE',
+                        beeMutationChance: egg.beeMutationChance
+                    });
+                    this.drones.push(drone);
+                    this.eggs.splice(index, 1);
+                    msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: drone.name });
+                    break;
+                case "LARVA":
+                    var larva = this.getHeadQueen().fertilizeEgg(egg, ++this.nextId);
+                    this.larva.push(larva);
+                    this.eggs.splice(index, 1);
+                    msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: larva.name });
+                    break;
+                default:
+                    msg = $filter('fmt')('Invalid %(fate)s', { fate: fate });
+                    console.error("Invalid fate: " + fate);
+                    break;
+            }
+            logService.logBreedMessage(msg);
+        };
+        Hive.prototype.processLarvaFate = function(id, fate) {
             var index;
             var newborn = this.larva.filter(function(unit, i) {
                 if (unit.id === id) {
@@ -167,17 +220,17 @@ game.factory('Hive', [
                         beeMutationChance: newborn.beeMutationChance
                     });
                     this.workers.push(worker);
-                    this.newborns.splice(index, 1);
+                    this.larva.splice(index, 1);
                     msg = $filter('fmt')("%(name)s has joined the workforce", newborn);
                     break;
-                case "DRONE":
-                    // TODO
-                    break;
                 case "QUEEN":
-                    // TODO    
+                    newborn.beetype = 'queen';
+                    newborn.update();
+                    this.queens.push(newborn);
+                    this.larva.splice(index, 1);
                     break;
                 case "CONSUME":
-                    msg = $filter('fmt')("Bee #%(id) has been turned into food", newborn);
+                    msg = $filter('fmt')("%(name)s has been turned into food", newborn);
                     this.larva.splice(index, 1);
                     break;
                 default:

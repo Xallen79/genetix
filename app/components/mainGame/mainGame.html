@@ -28,6 +28,9 @@
                     <div ng-repeat="child in $ctrl.hive.eggs" class="col-xs-12 col-lg-12 animate-repeat">
                         <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
                     </div>
+                    <div ng-repeat="child in $ctrl.hive.larva" class="col-xs-12 col-lg-12 animate-repeat">
+                        <bloqhead-mortal mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-mortal>
+                    </div>
                 </div>
             </bloqhead-player-box>
         </div>

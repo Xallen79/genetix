@@ -76,8 +76,9 @@ game.factory('Genome', ['Chromosome', function(Chromosome) {
         return on;
     };
 
-    Genome.prototype.fertilize = function(genome) {
-        if (this.hasChromosomePairs !== genome.hasChromosomePairs !== false) {
+    Genome.prototype.fertilize = function(state) {
+        var genome = new Genome(state);
+        if (this.hasChromosomePairs === genome.hasChromosomePairs) {
             console.error("Cannot mate these genomes.", this, genome);
             return;
         }
@@ -97,6 +98,7 @@ game.factory('Genome', ['Chromosome', function(Chromosome) {
             hasChromosomePairs: true,
             chromosomes: chromosomes
         });
+        console.log(childGenome);
         return childGenome;
 
     };

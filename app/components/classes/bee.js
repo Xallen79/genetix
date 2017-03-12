@@ -212,8 +212,8 @@ game.factory('Bee', [
 
 
 game.factory('Queen', [
-    'Bee', 'Egg',
-    function(Bee, Egg) {
+    'Bee', 'Egg', 'Larva',
+    function(Bee, Egg, Larva) {
         var Queen = function(config) {
             this.beetype = "queen";
             this.minDrones = 10;
@@ -268,8 +268,8 @@ game.factory('Queen', [
 
         Queen.prototype.fertilizeEgg = function(egg, newId) {
             var d = randomIntFromInterval(0, this.droneGenomeStates.length - 1);
-            var droneGenome = new Genome(this.droneGenomeStates[d]);
-            var newGenome = egg.genome.fertilize(droneGenome);
+            var droneGenomeState = this.droneGenomeStates[d];
+            var newGenome = egg.genome.fertilize(droneGenomeState);
 
             var child = new Larva({
                 id: newId,
@@ -281,7 +281,6 @@ game.factory('Queen', [
                 beeMutationChance: this.beeMutationChance
 
             });
-            child.update();
             return child;
         };
 

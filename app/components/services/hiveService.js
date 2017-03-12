@@ -76,14 +76,14 @@ game.service('hiveService', [
 
 
         self.setUnitJob = function(id, jid, jobName) {
-            var unit = self.hive.getById(id);
-            unit.jid = jid;
-            unit.onStrike = false;
-            var f = jobName.charAt(0).toLowerCase();
-            var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
-            var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
-            self.logService.logWorkMessage(msg);
-            self.sendPopulationUpdateEvent();
+            // var unit = self.hive.getById(id);        
+            // unit.jid = jid;
+            // unit.onStrike = false;
+            // var f = jobName.charAt(0).toLowerCase();
+            // var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
+            // var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
+            // self.logService.logWorkMessage(msg);
+            // self.sendPopulationUpdateEvent();
         };
         self.setNurseryLimit = function(newLimit, hiveId) {
             var hive = $filter('filter')(self.hives, { id: hiveId })[0];
@@ -95,20 +95,29 @@ game.service('hiveService', [
             hive.maxSize = newLimit;
             self.sendPopulationUpdateEvent();
         };
-        self.processNewbornFate = function(unitid, fate, hiveId) {
+        self.processFate = function(unitid, fate, hiveId) {
             var hive = $filter('filter')(self.hives, { id: hiveId })[0];
-            hive.processNewbornFate(unitid, fate);
+            if (fate === 'DRONE' || fate === 'LARVA')
+                hive.processEggFate(unitid, fate);
+            else
+                hive.processLarvaFate(unitid, fate);
             self.sendPopulationUpdateEvent();
         };
 
         self.sendPopulationUpdateEvent = function() {
-            $rootScope.$emit('hiveUpdateEvent', {
-                queens: self.hives[0].queens,
-                drones: self.hives[0].drones,
-                workers: self.hives[0].workers,
-                eggs: self.hives[0].eggs,
-                larva: self.hives[0].larva
-            });
+            var data = [];
+            for (var h = 0; h < self.hives.length; h++) {
+                var hive = self.hives[h];
+                data.push({
+                    id: hive.id,
+                    queens: hive.queens,
+                    drones: hive.drones,
+                    workers: hive.workers,
+                    eggs: hive.eggs,
+                    larva: hive.larva
+                });
+            }
+            $rootScope.$emit('hiveUpdateEvent', data);
         };
 
         self.SubscribePopulationUpdateEvent = function(scope, callback) {

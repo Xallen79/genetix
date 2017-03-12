@@ -23,40 +23,40 @@ game.controller("bloqheader.controllers.mortal", [
             self.resourceTypes = resourceTypes;
             self.resourceService = resourceService;
         };
-        self.canBanish = function() {
-            for (var key in self.unit.societyValue) {
-                var cost = self.unit.societyValue[key];
-                if (resourceService.getResource(cost.resourceType) < cost.amount) {
-                    return false;
-                }
-            }
+        self.canFertilize = function() {
+            // for (var key in self.unit.societyValue) {
+            //     var cost = self.unit.societyValue[key];
+            //     if (resourceService.getResource(cost.resourceType) < cost.amount) {
+            //         return false;
+            //     }
+            // }
             return true;
 
         };
         self.assignMe = function(type) {
-            var doAssign = true;
-            if (type === "BANISH") {
-                var spent = [];
-                for (var key in self.unit.societyValue) {
-                    var cost = self.unit.societyValue[key];
-                    if (resourceService.changeResource(cost.resourceType, (-1 * cost.amount)) === -1) {
-                        doAssign = false;
-                        for (var i = 0; i < spent.length; i++) {
-                            resourceService.changeResource(spent.type, spent.amount);
-                        }
-                        break;
-                    } else {
-                        spent.push({ type: cost.resourceType, amount: cost.amount });
-                    }
-                }
-            } else {
-                for (var k in self.unit.societyValue) {
-                    var value = self.unit.societyValue[k];
-                    resourceService.changeResource(value.resourceType, value.amount);
-                }
-            }
-            if (doAssign)
-                self.assign({ $id: self.unit.id, $type: type });
+            // var doAssign = true;
+            // if (type === "BANISH") {
+            //     var spent = [];
+            //     for (var key in self.unit.societyValue) {
+            //         var cost = self.unit.societyValue[key];
+            //         if (resourceService.changeResource(cost.resourceType, (-1 * cost.amount)) === -1) {
+            //             doAssign = false;
+            //             for (var i = 0; i < spent.length; i++) {
+            //                 resourceService.changeResource(spent.type, spent.amount);
+            //             }
+            //             break;
+            //         } else {
+            //             spent.push({ type: cost.resourceType, amount: cost.amount });
+            //         }
+            //     }
+            // } else {
+            //     for (var k in self.unit.societyValue) {
+            //         var value = self.unit.societyValue[k];
+            //         resourceService.changeResource(value.resourceType, value.amount);
+            //     }
+            // }
+            // if (doAssign)
+            self.assign({ $id: self.unit.id, $type: type });
         };
         self.getGeneTraitRangeStyle = function(g, t) {
             return bloqheadGetGeneProgressStyle().traitRange(g, t);

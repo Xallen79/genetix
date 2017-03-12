@@ -20,12 +20,12 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', 'hiveService', 'achievementService', 'resourceService', 'workerService',
-    function($scope, hiveService, achievementService, resourceService, workerService) {
+    '$scope', '$filter', 'hiveService', 'achievementService', 'resourceService', 'workerService',
+    function($scope, $filter, hiveService, achievementService, resourceService, workerService) {
         var self = this;
         self.$onInit = function() {
-
-            self.hive = hiveService.hive;
+            self.currentHiveId = 0;
+            //self.hive = hiveService.hive[self.currentHiveId];
             self.maxPopulation = 0;
 
             hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
@@ -44,10 +44,15 @@ game.controller('bloqhead.controllers.mainGame', [
 
 
         self.updatePopulation = function(event, data) {
-            self.hive = data;
+            if (!self.currentHiveId) {
+                self.hive = data[0];
+                self.currentHiveId = self.hive.id;
+            } else {
+                self.hive = $filter('filter')(data, { id: self.currentHiveId })[0];
+            }
         };
         self.decideFate = function(unitid, fate) {
-            hiveService.processNewbornFate(unitid, fate);
+            hiveService.processFate(unitid, fate, self.currentHiveId);
         };
 
     }

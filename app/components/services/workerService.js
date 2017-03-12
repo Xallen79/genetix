@@ -15,7 +15,7 @@ game.service('workerService', [
                 hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
             } else {
-                self.handlePopulationUpdate(null, { workers: hiveService.hives[0].workers });
+                self.handlePopulationUpdate(null, hiveService.hives);
             }
             for (var res in resourceTypes) {
                 resourceStats[res] = {
@@ -83,8 +83,8 @@ game.service('workerService', [
         };
 
         self.handlePopulationUpdate = function(event, data) {
-            for (var m = 0; m < data.workers.length; m++) {
-                var unit = data.workers[m];
+            for (var m = 0; m < data[0].workers.length; m++) {
+                var unit = data[0].workers[m];
                 if (unit.jid) {
 
                     self.addWorker(unit.jid, unit.id);
@@ -102,7 +102,7 @@ game.service('workerService', [
             while (steps > 0) {
                 for (var i = 0; i < state.workers.length; i++) {
                     var worker = state.workers[i];
-                    var unit = hiveService.hives[0].getById(worker.unitid);
+                    var unit = hiveService.hives[0].getById(worker.unitid, 'WORKER');
                     var job = jobTypes[worker.jid];
                     var elapsed = 0;
                     resources[job.resource].gatherAmount = resources[job.resource].gatherAmount || 0;
@@ -175,7 +175,7 @@ game.service('workerService', [
             var resources = resourceService.getResourcesSnapshot();
             var gatherRate = 0;
             for (var w = 0; w < workers.length; w++) {
-                var unit = hiveService.hives[0].getById(workers[w].unitid);
+                var unit = hiveService.hives[0].getById(workers[w].unitid, 'WORKER');
                 var job = jobTypes[jid];
                 /*if (unit.onStrike) continue;*/
                 //var a = unit.getAttribute(resourceTypes[job.resource].attr);
@@ -189,7 +189,7 @@ game.service('workerService', [
                 for (var i = 0; i < realJobs.length; i++) {
                     var worker = realJobs[i];
                     var j = jobTypes[worker.jid];
-                    var u = hiveService.hives[0].getById(worker.unitid);
+                    var u = hiveService.hives[0].getById(worker.unitid, 'WORKER');
                     if ( /*!u.onStrike && */ (resources[j.resource][1] === -1 || resources[j.resource][0] < resources[j.resource][1]))
                         gatherRate -= (workCost / j.baseWorkerSteps);
                 }

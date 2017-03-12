@@ -1,35 +1,10 @@
 <div class="bloqhead-component" ng-if="$ctrl.display === 'TILE'" ng-init="unit = $ctrl.unit">
     <h5 ng-click="$ctrl.showDetails()">
-        <div class="col-xs-12 mortal-name" ng-switch="$ctrl.unit.hasTrait('Male')">
-            <i class="fa fa-male male-color" ng-switch-when="true"></i>
-            <i class="fa fa-female female-color" ng-switch-when="false"></i>
+        <div class="col-xs-12 mortal-name">
             <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
         </div>
     </h5>
-    <table class="genomeEditor" uib-tooltip-template="'attrTooltip.html'" tooltip-class="trait-tooltip">
-        <tbody>
-            <!--<tr>
-                <th colspan="5"><img class="img-responsive" ng-src="{{$ctrl.unit.redGreenImage}}" ng-mousemove="$ctrl.imageHover($event)" /></th>
-            </tr>
-            <tr>
-                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'STR'">
-                    {{$ctrl.unit.attributes.STR}}
-                </td>
-                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'INT'">
-                    {{$ctrl.unit.attributes.INT}}
-                </td>
-                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'END'">
-                    {{$ctrl.unit.attributes.END}}
-                </td>
-                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'CHR'">
-                    {{$ctrl.unit.attributes.CHR}}
-                </td>
-                <td style="width: 20%;" ng-mouseover="$ctrl.hoverAttr = 'LCK'">
-                    {{$ctrl.unit.attributes.LCK}}
-                </td>
-            </tr>-->
-        </tbody>
-    </table>
+
     <div ng-show="$ctrl.mode === 'POP'">
         <button ng-disabled="!$ctrl.canBreed" class="btn btn-sm btn-primary " ng-click="$ctrl.assignMe()">Breed Me</button>
         <div class="btn-group" uib-dropdown dropdown-append-to-body="true">
@@ -43,20 +18,21 @@
         <span class="pull-right" ng-bind="$ctrl.unit.jid"></span>
     </div>
     <div class="row" ng-show="$ctrl.mode === 'NURSE'">
-        <div class="scalable-list-button" uib-tooltip-template="'banishTooltip.html'" tooltip-class="building-tooltip">
-            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('BANISH')" ng-disabled="!$ctrl.canBanish()">Banish</button>
+        <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='egg'">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LARVA')" ng-disabled="!$ctrl.canFertilize()">Fertilize</button>
         </div>
-        <div class="scalable-list-button" uib-tooltip-template="'valueTooltip.html'" tooltip-class="building-tooltip">
-            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORK')">Work</button>
+        <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='egg'">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('DRONE')">Make Drone</button>
         </div>
-        <!--<button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('SCHOOL')">School??(Int)</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('TRAIN')">Train??(Str)</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('RUN')">Run??(End)</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('CHR')">Cosmo??(Chr)</button>
-        <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LCK')">Luck something??(Lck)</button>-->
+        <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='larva'">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('QUEEN')">Make Queen</button>
+        </div>
+        <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='larva'">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORKER')">Make Worker</button>
+        </div>
     </div>
 </div>
-<script type="text/ng-template" id="banishTooltip.html">
+<script type="text/ng-template" id="costTooltip.html">
     <div style="text-align: left;">
         <h5>Cost to banish</h5>
         <p style="white-space:nowrap">
@@ -64,18 +40,6 @@
             <span ng-repeat="cost in unit.societyValue">
                 <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
                 <span ng-bind="cost.amount"></span>&nbsp;
-            </span>
-        </p>
-    </div>
-</script>
-<script type="text/ng-template" id="valueTooltip.html">
-    <div style="text-align: left;">
-        <h5>Society Value</h5>
-        <p style="white-space:nowrap">
-            <span>Receive: </span>
-            <span ng-repeat="value in unit.societyValue">
-                <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(value.resourceType)" data-attr="{{$ctrl.resourceTypes[value.resourceType].attr}}"></i>
-                <span ng-bind="value.amount"></span>&nbsp;
             </span>
         </p>
     </div>
