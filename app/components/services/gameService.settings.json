@@ -9,11 +9,12 @@
             "hiveServiceState": {
                 "eggLayMs": 6000,
                 "msSinceEgg": 0,
-                "hiveState": {
+                "hiveStates": [{
+                    "id": 1,
                     "initialSize": 2,
                     "maxSize": 5,
                     "beeMutationChance": 0.0025
-                }
+                }]
             },
             "achievementServiceState": null,
             "resourceServiceState": {

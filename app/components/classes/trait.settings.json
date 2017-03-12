@@ -43,69 +43,56 @@
             }
         ],
         "beeAbilities": {
-
             "RNG": {
                 "name": "Range",
                 "desc": "Number of cells a bee can fly before having to return to the hive.",
                 "baseValue": 5
             },
-
             "DEF": {
                 "name": "Defense",
                 "desc": "Ability to defend the hive.",
                 "baseValue": 0
             },
-
             "STR_P": {
                 "name": "Pollen Storage",
                 "desc": "The amount of pollen a bee can hold.",
                 "baseValue": 10
             },
-
             "STR_N": {
                 "name": "Nectar Storage",
                 "desc": "The amount of nectar a bee can hold.",
                 "baseValue": 10
-            }
-
-            ,
-
+            },
             "STR_W": {
                 "name": "Water Storage",
                 "desc": "The amount of water a bee can hold.",
                 "baseValue": 10
             },
-
             "PRD_E": {
                 "name": "Egg Production",
                 "desc": "The rate at which a bee can produce eggs.",
                 "baseValue": 30000
             },
-
             "PRD_H": {
                 "name": "Honey Production",
                 "desc": "The rate at which a bee can produce honey.",
                 "baseValue": 30000
             },
-
             "PRD_W": {
                 "name": "Wax Production",
                 "desc": "The rate at which a bee can produce wax.",
                 "baseValue": 30000
             },
-
             "PRD_J": {
                 "name": "Royal Jelly Production",
                 "desc": "The rate at which a bee can produce royal jelly.",
                 "baseValue": 30000
             },
-
             "SPD_F": {
                 "name": "Flight Speed",
                 "desc": "The rate at which a bee can traverse 1 cell.",
                 "baseValue": 4000
             },
-
             "SPD_C": {
                 "name": "Collection Speed",
                 "desc": "The rate at which a bee can collect 1 resource from a node.",
@@ -116,7 +103,6 @@
                 "desc": "The rate at which a bee can convert honey, dead bees, water, and nectar to food",
                 "baseValue": 10000
             }
-
         }
     }
 }
