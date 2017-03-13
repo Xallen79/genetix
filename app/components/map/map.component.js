@@ -47,10 +47,10 @@ game.controller('bloqhead.controllers.map', [
                         return false;
 
                     if (event.wheelDeltaY > 0 && self.hexsize < hexsize_max) {
-                        self.setHexSize(self.hexsize + 5);
+                        self.setHexSize(self.hexsize * 1.1);
                     }
                     if (event.wheelDeltaY < 0 && self.hexsize > hexsize_min) {
-                        self.setHexSize(self.hexsize - 5);
+                        self.setHexSize(self.hexsize / 1.1);
                     }
                     return false;
                 }, false);
