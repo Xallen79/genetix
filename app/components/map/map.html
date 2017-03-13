@@ -6,17 +6,18 @@
             </div>
             <div class="col-xs-7">
                 <div class=" pull-right">
+                    Zoom:
                     <div class="btn-group" role="group">
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(15)">Sm</div>
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(30)">Md</div>
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(60)">Lg</div>
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.setHexSize(100)">XL</div>
+                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 20}" ng-click="$ctrl.setHexSize(20)">Sm</div>
+                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 50}" ng-click="$ctrl.setHexSize(50)">Md</div>
+                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 80}" ng-click="$ctrl.setHexSize(80)">Lg</div>
+                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 120}" ng-click="$ctrl.setHexSize(120)">XL</div>
                     </div>
                 </div>
             </div>
         </div>
     </bloqhead-player-box-title>
-    <div class="row map-container" style="overflow: scroll;">
+    <div class="row map-container" style="overflow: hidden;">
         <canvas id="map"></canvas>
     </div>
 

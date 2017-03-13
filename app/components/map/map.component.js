@@ -17,9 +17,13 @@ game.controller('bloqhead.controllers.map', [
         var self = this;
         var canvas, context, map;
 
-        var mapsize = 10; // the number of vertical hexes in the left column
-        var hexsize = 60; // the height of a hex in pixels
+        self.mapsize_h = 10; // the number of vertical hexes in the left column
+        self.mapsize_w = 15; // the number of hexagons across the top
+        self.hexsize = 50; // the height of a hex in pixels
 
+        var ratio = (2 / (Math.sqrt(3)));
+        var hexsize_min = 20;
+        var hexsize_max = 120;
 
 
         self.$onInit = function() {};
@@ -27,13 +31,30 @@ game.controller('bloqhead.controllers.map', [
         self.$postLink = function() {
 
             $timeout(function() {
-                // create canvas
+                // create canvas and context
                 canvas = document.getElementById('map');
-                resizeCanvas();
-                // create context
                 context = canvas.getContext('2d');
+
                 // set initial size
-                self.setHexSize(60);
+                self.setHexSize(self.hexsize);
+                resizeCanvas();
+
+
+
+                // add mousewheel support, this is temporary
+                canvas.parentElement.addEventListener('mousewheel', function(event) {
+                    if (event.wheelDeltaY > 0 && self.hexsize < hexsize_max) {
+                        self.setHexSize(self.hexsize + 5);
+                    }
+                    if (event.wheelDeltaY < 0 && self.hexsize > hexsize_min) {
+                        self.setHexSize(self.hexsize - 5);
+                    }
+                    return false;
+                }, false);
+
+
+
+
                 // hook into the game loop
                 gameLoopService.SubscribeGameLoopEvent($scope, draw);
 
@@ -41,13 +62,8 @@ game.controller('bloqhead.controllers.map', [
         };
 
         self.setHexSize = function(size) {
-            hexsize = size;
-            hexMap.findHexByHeight(hexsize);
-            resizeCanvas();
-        };
-        self.setMapSize = function(size) {
-            mapsize = size;
-            hexMap.findHexByHeight(hexsize);
+            self.hexsize = size;
+            hexMap.findHexByHeight(self.hexsize);
             resizeCanvas();
         };
 
@@ -55,13 +71,10 @@ game.controller('bloqhead.controllers.map', [
             if (typeof canvas === 'undefined' || typeof context === 'undefined')
                 return;
 
-
+            context.save();
             clear();
             drawHexMap();
-
-            //drawHives();
-            //drawClovers();
-
+            context.restore();
 
 
         }
@@ -70,29 +83,34 @@ game.controller('bloqhead.controllers.map', [
             if (typeof canvas === 'undefined')
                 return;
 
-            var cs = canvasSize();
-            canvas.style.width = cs + 'px';
-            canvas.style.height = cs + 'px';
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            canvas.style.width = canvas.style.width = canvasWidth() + 'px';
+            canvas.style.height = canvas.style.height = canvasHeight() + 'px';
+            canvas.width = canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.height = canvas.offsetHeight;
+            map = null;
         }
 
 
         function clear() {
             context.clearRect(0, 0, canvas.width, canvas.height);
-            //context.fillStyle = '#bdefc7';
-            //context.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        function canvasSize() {
-            return (mapsize + 0) * hexsize;
+
+        function canvasWidth() {
+            var hexwidth = hexMap.Hexagon.Static.WIDTH * 0.75;
+            return self.mapsize_w * hexwidth + (hexMap.Hexagon.Static.WIDTH * 0.25) + 2;
+        }
+
+        function canvasHeight() {
+            return self.hexsize * self.mapsize_h;
         }
 
         function drawHexMap() {
 
             // generate hexes and draw them
-            var cs = canvasSize();
-            var map = new hexMap.Grid(cs, cs);
+            if (map === null)
+                map = new hexMap.Grid(canvasWidth(), canvasHeight());
+
             for (var h in map.Hexes) {
                 map.Hexes[h].draw(context);
             }
