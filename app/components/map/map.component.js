@@ -17,11 +17,13 @@ game.controller('bloqhead.controllers.map', [
         var self = this;
         var canvas, context, map;
 
+
+
         self.mapsize_h = 10; // the number of vertical hexes in the left column
         self.mapsize_w = 15; // the number of hexagons across the top
         self.hexsize = 50; // the height of a hex in pixels
+        self.needsResize = true; // set to true to resize the canvas in the draw routine
 
-        var ratio = (2 / (Math.sqrt(3)));
         var hexsize_min = 20;
         var hexsize_max = 120;
 
@@ -37,12 +39,15 @@ game.controller('bloqhead.controllers.map', [
 
                 // set initial size
                 self.setHexSize(self.hexsize);
-                resizeCanvas();
-
 
 
                 // add mousewheel support, this is temporary
                 canvas.parentElement.addEventListener('mousewheel', function(event) {
+
+                    // only allow changing if we are not pending a resize already
+                    if (self.needsResize)
+                        return false;
+
                     if (event.wheelDeltaY > 0 && self.hexsize < hexsize_max) {
                         self.setHexSize(self.hexsize + 5);
                     }
@@ -64,12 +69,15 @@ game.controller('bloqhead.controllers.map', [
         self.setHexSize = function(size) {
             self.hexsize = size;
             hexMap.findHexByHeight(self.hexsize);
-            resizeCanvas();
+            self.needsResize = true;
         };
 
         function draw() {
             if (typeof canvas === 'undefined' || typeof context === 'undefined')
                 return;
+
+            if (self.needsResize)
+                resizeCanvas();
 
             context.save();
             clear();
@@ -85,9 +93,9 @@ game.controller('bloqhead.controllers.map', [
 
             canvas.style.width = canvas.style.width = canvasWidth() + 'px';
             canvas.style.height = canvas.style.height = canvasHeight() + 'px';
-            canvas.width = canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.height = canvas.offsetHeight;
-            map = null;
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            self.needsResize = false;
         }
 
 
@@ -106,11 +114,8 @@ game.controller('bloqhead.controllers.map', [
         }
 
         function drawHexMap() {
-
             // generate hexes and draw them
-            if (map === null)
-                map = new hexMap.Grid(canvasWidth(), canvasHeight());
-
+            map = new hexMap.Grid(canvasWidth(), canvasHeight());
             for (var h in map.Hexes) {
                 map.Hexes[h].draw(context);
             }
