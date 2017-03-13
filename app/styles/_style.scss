@@ -34,6 +34,16 @@ $top-row-height: 25vh;
     }
 }
 
+i.text-success {
+    color: $brand-success;
+    @include strokeme($brand-success-dark)
+}
+
+i.text-danger {
+    color: $brand-danger;
+    @include strokeme($brand-danger-dark)
+}
+
 @mixin maximize-row {
     margin-left: 0 !important;
     margin-right: 0 !important;

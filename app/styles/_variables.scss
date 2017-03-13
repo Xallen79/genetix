@@ -18,9 +18,11 @@ $gray-lighter: #EBEBEB !default; // #eee
 // $brand-danger: #d9534f !default;
 $brand-primary: $gray-light !default;
 $brand-success: #62c462 !default;
+$brand-success-dark:darken(#62c462, 60%) !default;
 $brand-info: #5bc0de !default;
 $brand-warning: #f89406 !default;
 $brand-danger: #ee5f5b !default;
+$brand-danger-dark:darken(#ee5f5b, 60%) !default;
 $attr-str: #7F0000;
 $attr-str-dim: lighten($attr-str, 60%);
 $attr-str-stroke: #C53636;

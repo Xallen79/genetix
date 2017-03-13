@@ -8,7 +8,8 @@
                 ],
                 "mods": [
                     { "DEF": { "add": 5 } }
-                ]
+                ],
+                "icon": "icon-shield text-success"
             },
             {
                 "name": "Little stinger",
@@ -18,7 +19,8 @@
                 ],
                 "mods": [
                     { "DEF": { "add": -5 } }
-                ]
+                ],
+                "icon": "icon-shield text-danger"
             },
             {
                 "name": "Extra Range 1",
@@ -28,7 +30,8 @@
                 ],
                 "mods": [
                     { "RNG": { "add": 1 } }
-                ]
+                ],
+                "icon": "fa-arrow-up text-success"
             },
             {
                 "name": "10% More Venomous",
@@ -39,7 +42,8 @@
                 "requiredTraits": ["Big stinger"],
                 "mods": [
                     { "DEF": { "percent": 10 } }
-                ]
+                ],
+                "icon": "icon-shield text-success"
             }
         ],
         "beeAbilities": {

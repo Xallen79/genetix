@@ -19,10 +19,10 @@ game.factory('Bee', [
         /* constructor */
         var Bee = function(config) {
             this.traitInspector = new TraitInspector();
-            this.baseUpdate(config);
+            this.update(config);
         };
         /* public functions */
-        Bee.prototype.baseUpdate = function(config) {
+        Bee.prototype.update = function(config) {
             if (typeof(config) == 'undefined') config = {};
             this.id = config.id || this.id || 0;
             this.dt = config.dt || this.dt || new Date().getTime();
@@ -44,7 +44,7 @@ game.factory('Bee', [
             //this.name = (this.name && this.name !== 'Unknown Gender') ? this.name : config.name || this.getRandomName();
         };
 
-        Bee.prototype.baseGetState = function() {
+        Bee.prototype.getState = function() {
             return {
                 id: this.id,
                 dt: this.dt,
@@ -215,21 +215,22 @@ game.factory('Queen', [
     'Bee', 'Egg', 'Larva',
     function(Bee, Egg, Larva) {
         var Queen = function(config) {
+            this.config = config;
             this.beetype = "queen";
             this.minDrones = 10;
-            this.update(config);
+            Bee.call(this, config);
         };
-        Queen.prototype = new Bee();
+        Queen.prototype = Object.create(Bee.prototype);
 
         Queen.prototype.update = function(config) {
             config = config || {};
-            this.baseUpdate(config);
+            Bee.prototype.update.apply(this, [config]);
             this.droneGenomeStates = config.droneGenomeStates || this.droneGenomeStates || [];
             this.droneIds = config.droneIds || this.droneIds || [];
         };
 
         Queen.prototype.getState = function() {
-            var state = this.baseGetState();
+            var state = Bee.prototype.getState.apply(this);
             state.droneGenomeStates = this.droneGenomeStates;
             state.droneIds = this.droneIds;
             return state;
@@ -240,7 +241,7 @@ game.factory('Queen', [
                 console.log("Queen cannot mate with: " + drone.beetype);
                 return;
             }
-            this.droneGenomeStates.push(drone.genome.getState);
+            this.droneGenomeStates.push(drone.genome.getState());
             this.droneIds.push(drone.id);
             drone.die();
         };
@@ -294,17 +295,17 @@ game.factory('Worker', [
     function(Bee) {
         var Worker = function(config) {
             this.beetype = "worker";
-            this.update(config);
+            Bee.call(this, config);
         };
-        Worker.prototype = new Bee();
+        Worker.prototype = Object.create(Bee.prototype);
 
         Worker.prototype.update = function(config) {
             config = config || {};
-            this.baseUpdate(config);
+            Bee.prototype.update.apply(this, [config]);
 
         };
         Worker.prototype.getState = function() {
-            var state = this.baseGetState();
+            var state = Bee.prototype.getState.apply(this);
 
             return state;
         };
@@ -318,15 +319,15 @@ game.factory('Drone', [
     function(Bee) {
         var Drone = function(config) {
             this.beetype = "drone";
-            this.update(config);
+            Bee.call(this, config);
         };
-        Drone.prototype = new Bee();
+        Drone.prototype = Object.create(Bee.prototype);
         Drone.prototype.update = function(config) {
             config = config || {};
-            this.baseUpdate(config);
+            Bee.prototype.update.apply(this, [config]);
         };
         Drone.prototype.getState = function() {
-            var state = this.baseGetState();
+            var state = Bee.prototype.getState.apply(this);
 
             return state;
         };
@@ -339,15 +340,15 @@ game.factory('Egg', [
     function(Bee) {
         var Egg = function(config) {
             this.beetype = "egg";
-            this.update(config);
+            Bee.call(this, config);
         };
-        Egg.prototype = new Bee();
+        Egg.prototype = Object.create(Bee.prototype);
         Egg.prototype.update = function(config) {
             config = config || {};
-            this.baseUpdate(config);
+            Bee.prototype.update.apply(this, [config]);
         };
         Egg.prototype.getState = function() {
-            var state = this.baseGetState();
+            var state = Bee.prototype.getState.apply(this);
 
             return state;
         };
@@ -362,15 +363,15 @@ game.factory('Larva', [
     function(Bee) {
         var Larva = function(config) {
             this.beetype = "larva";
-            this.update(config);
+            Bee.call(this, config);
         };
-        Larva.prototype = new Bee();
+        Larva.prototype = Object.create(Bee.prototype);
         Larva.prototype.update = function(config) {
             config = config || {};
-            this.baseUpdate(config);
+            Bee.prototype.update.apply(this, [config]);
         };
         Larva.prototype.getState = function() {
-            var state = this.baseGetState();
+            var state = Bee.prototype.getState.apply(this);
 
             return state;
         };

@@ -69,7 +69,7 @@ game.factory('Genome', ['Chromosome', function(Chromosome) {
     Genome.prototype.getGene = function(chromosome, gene) {
         var on = 0;
         if (this.hasChromosomePairs)
-            on = this.chromosomes[0][chromosome].getGene(gene) & this.chromosomes[1][chromosome].getGene(gene);
+            on = this.chromosomes[0][chromosome].getGene(gene) | this.chromosomes[1][chromosome].getGene(gene);
         else
             on = this.chromosomes[0][chromosome].getGene(gene);
 

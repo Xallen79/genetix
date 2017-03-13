@@ -1,7 +1,7 @@
 <div class="bloqhead-component" ng-if="$ctrl.display === 'TILE'" ng-init="unit = $ctrl.unit">
     <h5 ng-click="$ctrl.showDetails()">
         <div class="col-xs-12 mortal-name">
-            <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa fa-star" ng-repeat="trait in $ctrl.unit.traits" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
+            <span>{{$ctrl.unit.name}}</span>&nbsp;<i class="fa {{trait.icon}} {{trait.style}}" ng-repeat="trait in $ctrl.unit.traits" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
         </div>
     </h5>
 

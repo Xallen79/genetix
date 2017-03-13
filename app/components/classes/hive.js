@@ -178,7 +178,7 @@ game.factory('Hive', [
             switch (fate) {
                 case "DRONE":
                     var drone = new Drone({
-                        id: ++this.nextId,
+                        id: egg.id,
                         genomeState: egg.genome.getState(),
                         generation: egg.generation,
                         jid: 'DRONE',
@@ -189,7 +189,7 @@ game.factory('Hive', [
                     msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: drone.name });
                     break;
                 case "LARVA":
-                    var larva = this.getHeadQueen().fertilizeEgg(egg, ++this.nextId);
+                    var larva = this.getHeadQueen().fertilizeEgg(egg, egg.id);
                     this.larva.push(larva);
                     this.eggs.splice(index, 1);
                     msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: larva.name });
