@@ -4,7 +4,7 @@
             "clearLog": true,
             "autoSaveMs": 30000,
             "gameLoopServiceState": {
-                "stepTimeMs": 500
+                "stepTimeMs": 50
             },
             "hiveServiceState": {
                 "eggLayMs": 6000,

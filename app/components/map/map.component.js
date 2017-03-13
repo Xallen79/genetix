@@ -17,8 +17,6 @@ game.controller('bloqhead.controllers.map', [
         var self = this;
         var canvas, context, map;
 
-
-
         self.mapsize_h = 10; // the number of vertical hexes in the left column
         self.mapsize_w = 15; // the number of hexagons across the top
         self.hexsize = 50; // the height of a hex in pixels
@@ -56,6 +54,13 @@ game.controller('bloqhead.controllers.map', [
                     }
                     return false;
                 }, false);
+                canvas.addEventListener('click', function(event) {
+                    var p = new hexMap.Point(event.layerX, event.layerY);
+                    var hex = self.map.GetHexAt(p);
+                    hex.selected = !hex.selected;
+
+                    return false;
+                }, false);
 
 
 
@@ -91,11 +96,15 @@ game.controller('bloqhead.controllers.map', [
             if (typeof canvas === 'undefined')
                 return;
 
-            canvas.style.width = canvas.style.width = canvasWidth() + 'px';
-            canvas.style.height = canvas.style.height = canvasHeight() + 'px';
+            var w = canvasWidth();
+            var h = canvasHeight();
+
+            canvas.style.width = canvas.style.width = w + 'px';
+            canvas.style.height = canvas.style.height = h + 'px';
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
             self.needsResize = false;
+            self.map = new hexMap.Grid(w, h);
         }
 
 
@@ -110,14 +119,13 @@ game.controller('bloqhead.controllers.map', [
         }
 
         function canvasHeight() {
-            return self.hexsize * self.mapsize_h;
+            return (self.hexsize * self.mapsize_h) + 2;
         }
 
         function drawHexMap() {
             // generate hexes and draw them
-            map = new hexMap.Grid(canvasWidth(), canvasHeight());
-            for (var h in map.Hexes) {
-                map.Hexes[h].draw(context);
+            for (var h in self.map.Hexes) {
+                self.map.Hexes[h].draw(context);
             }
         }
 

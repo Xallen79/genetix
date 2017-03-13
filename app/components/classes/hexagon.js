@@ -83,10 +83,12 @@ game.factory('hexMap', function() {
      */
     HT.Hexagon.prototype.draw = function(ctx) {
 
-        if (!this.selected)
-            ctx.strokeStyle = "grey";
+        if (this.selected)
+            ctx.fillStyle = "cyan";
         else
-            ctx.strokeStyle = "black";
+            ctx.fillStyle = "white";
+
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(this.Points[0].X, this.Points[0].Y);
@@ -95,9 +97,11 @@ game.factory('hexMap', function() {
             ctx.lineTo(p.X, p.Y);
         }
         ctx.closePath();
-        ctx.stroke();
 
-        /*
+        ctx.stroke();
+        ctx.fill();
+
+
         if (this.Id) {
             //draw text for debugging
             ctx.fillStyle = "black";
@@ -107,7 +111,7 @@ game.factory('hexMap', function() {
             //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
             ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
         }
-
+        /*
         if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
             //draw co-ordinates for debugging
             ctx.fillStyle = "black";
@@ -239,7 +243,7 @@ game.factory('hexMap', function() {
         var HexagonsByXOrYCoOrd = {}; //Dictionary<int, List<Hexagon>>
 
         var row = 0;
-        var y = 0.0;
+        var y = 1.0;
         while (y + HT.Hexagon.Static.HEIGHT <= height) {
             var col = 0;
 
