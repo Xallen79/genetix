@@ -59,6 +59,10 @@ game.controller('bloqhead.controllers.map', [
                 canvas.addEventListener('click', function(event) {
                     var p = new hexMap.Point(event.offsetX, event.offsetY);
                     var hex = self.map.GetHexAt(p);
+
+                    if (hex === null || typeof hex === 'undefined')
+                        return false;
+
                     var oldid = mapService.selectHex(hex.id);
 
                     if (oldid == hex.id)
@@ -116,7 +120,8 @@ game.controller('bloqhead.controllers.map', [
             canvas.height = canvas.offsetHeight;
             self.needsResize = false;
             self.map = new hexMap.Grid(w, h);
-            if (mapService.getState().selectedHexID !== null)
+
+            if (angular.isDefined(mapService.getState().selectedHexID))
                 self.map.GetHexById(mapService.getState().selectedHexID).selected = true;
         }
 
@@ -132,7 +137,7 @@ game.controller('bloqhead.controllers.map', [
         }
 
         function canvasHeight() {
-            return (self.hexsize * self.mapsize_h) + 2;
+            return (self.hexsize * self.mapsize_h) + 4;
         }
 
         function drawHexMap() {
