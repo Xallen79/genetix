@@ -97,12 +97,17 @@ game.service('hiveService', [
             self.sendPopulationUpdateEvent();
         };
 
+        self.getHive = function(hiveId) {
+            return $filter('filter')(self.hives, { id: hiveId })[0];
+        };
+
         self.sendPopulationUpdateEvent = function() {
             var data = [];
             for (var h = 0; h < self.hives.length; h++) {
                 var hive = self.hives[h];
                 data.push({
                     id: hive.id,
+                    pos: hive.pos,
                     queens: hive.queens,
                     drones: hive.drones,
                     workers: hive.workers,

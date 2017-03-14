@@ -12,8 +12,8 @@ game.component('bloqheadMap', {
 });
 
 game.controller('bloqhead.controllers.map', [
-    '$scope', '$rootScope', '$timeout', 'gameLoopService', 'hexMap', 'mapService',
-    function($scope, $rootScope, $timeout, gameLoopService, hexMap, mapService) {
+    '$scope', '$rootScope', '$timeout', '$filter', 'hexMap', 'mapService',
+    function($scope, $rootScope, $timeout, $filter, hexMap, mapService) {
         var self = this;
         var canvas, context, map;
         var hexsize_min = 20;
@@ -23,9 +23,8 @@ game.controller('bloqhead.controllers.map', [
         self.mapsize_h = 10; // the number of vertical hexes in the left column
         self.mapsize_w = 15; // the number of hexagons across the top
         self.hexsize = 50; // the height of a hex in pixels
-        self.needsResize = true; // set to true to resize the canvas in the draw routine
-
-
+        self.needsResize = true; // set to true to resize the canvas in the draw routine        
+        self.mapState = {};
 
 
         self.$onInit = function() {};
@@ -80,8 +79,13 @@ game.controller('bloqhead.controllers.map', [
 
 
                 // hook into the game loop
-                gameLoopService.SubscribeGameLoopEvent($scope, draw);
-
+                //gameLoopService.SubscribeGameLoopEvent($scope, draw);
+                // instead of using game loop directly, use map update event 
+                // (this will get called during the same cycle, but ensures the map objects are updated first)
+                mapService.SubscribeMapUpdateEvent($scope, function(event, state) {
+                    self.mapState = state;
+                    draw();
+                });
             });
         };
 
@@ -91,12 +95,21 @@ game.controller('bloqhead.controllers.map', [
             self.needsResize = true;
         };
 
+
         function draw() {
             if (typeof canvas === 'undefined' || typeof context === 'undefined')
                 return;
 
             if (self.needsResize)
                 resizeCanvas();
+            // after a reset we need to clear out any selected hexes
+            if (!angular.isDefined(self.mapState.selectedHexID)) {
+                var selectedHexes = $filter('filter')(self.map.Hexes, { selected: true });
+                for (var sh = 0; sh < selectedHexes.length; sh++) {
+                    selectedHexes[sh].selected = false;
+                }
+
+            }
 
             context.save();
             clear();
@@ -121,8 +134,8 @@ game.controller('bloqhead.controllers.map', [
             self.needsResize = false;
             self.map = new hexMap.Grid(w, h);
 
-            if (angular.isDefined(mapService.getState().selectedHexID))
-                self.map.GetHexById(mapService.getState().selectedHexID).selected = true;
+            if (angular.isDefined(self.mapState.selectedHexID))
+                self.map.GetHexById(self.mapState.selectedHexID).selected = true;
         }
 
 
@@ -158,11 +171,11 @@ game.controller('bloqhead.controllers.map', [
 
         function drawHives() {
             var hexwidth = hexMap.Hexagon.Static.WIDTH * 0.75;
-            for (var i = 0; i < mapService.hives.length; i++) {
-
-                var hex = self.map.GetHexById(mapService.hives[i].pos);
-                var id = 'H' + mapService.hives[i].id;
-                context.fillStyle = 'yellow';
+            for (var i = 0; i < self.mapState.hives.length; i++) {
+                var hive = self.mapState.hives[i];
+                var hex = self.map.GetHexById(hive.pos);
+                var id = 'H' + hive.id;
+                context.fillStyle = hive.id === self.mapState.currentHiveID ? 'yellow' : 'grey';
                 context.beginPath();
                 context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.hexsize * 0.3, 0, 2 * Math.PI);
                 context.closePath();
@@ -171,7 +184,7 @@ game.controller('bloqhead.controllers.map', [
                 context.strokeStyle = 'black';
                 context.stroke();
 
-                context.fillStyle = "black";
+                context.fillStyle = 'black';
                 context.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
                 context.textAlign = "center";
                 context.textBaseline = 'middle';
