@@ -95,6 +95,7 @@ game.service('workerService', [
         };
 
         function handleLoop(event, steps) {
+            return;
             var resources = resourceService.getResourcesSnapshot();
             resources.HAPPINESS.gatherAmount = 0;
             var workCost = Math.ceil(hiveService.hives[0].workers.length / 5);

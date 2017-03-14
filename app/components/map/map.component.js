@@ -156,6 +156,7 @@ game.controller('bloqhead.controllers.map', [
             for (var i = 0; i < mapService.hives.length; i++) {
 
                 var hex = self.map.GetHexById(mapService.hives[i].pos);
+                var id = 'H' + mapService.hives[i].id;
                 context.fillStyle = 'yellow';
                 context.beginPath();
                 context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.hexsize * 0.3, 0, 2 * Math.PI);
@@ -164,6 +165,13 @@ game.controller('bloqhead.controllers.map', [
                 context.lineWidth = 2;
                 context.strokeStyle = 'black';
                 context.stroke();
+
+                context.fillStyle = "black";
+                context.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
+                context.textAlign = "center";
+                context.textBaseline = 'middle';
+                //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
+                context.fillText(id, hex.MidPoint.X, hex.MidPoint.Y);
             }
         }
 

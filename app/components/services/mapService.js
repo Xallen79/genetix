@@ -32,7 +32,7 @@ game.service('mapService', [
             var oldid = state.selectedHexID || null;
             state.selectedHexID = hexid;
             return oldid;
-        }
+        };
 
     }
 ]);

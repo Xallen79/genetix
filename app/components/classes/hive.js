@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService', 'hexMap',
-    function($filter, Queen, Drone, Worker, Egg, Larva, logService, hexMap) {
+    '$filter', '$q', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService', 'hexMap',
+    function($filter, $q, Queen, Drone, Worker, Egg, Larva, logService, hexMap) {
 
         /* constructor */
         var Hive = function(state) {
@@ -95,10 +95,12 @@ game.factory('Hive', [
             }
             return state;
         };
-
+        Hive.prototype.getNextId = function() {
+            return 'H' + this.id + '-' + (++this.nextId);
+        };
         Hive.prototype.createInitialQueen = function(inseminate) {
             var queen = new Queen({
-                id: ++this.nextId,
+                id: this.getNextId(),
                 generation: 0,
                 dominant: true, // 
                 beeMutationChance: this.beeMutationChance
@@ -106,7 +108,7 @@ game.factory('Hive', [
             if (inseminate) {
                 for (var d = 0; d < 10; d++) {
                     var drone = new Drone({
-                        id: ++this.nextId,
+                        id: this.getNextId(),
                         generation: 0,
                         beeMutationChance: this.beeMutationChance
                     });
@@ -155,18 +157,23 @@ game.factory('Hive', [
         };
 
         Hive.prototype.canLayEggs = function() {
-            return this.queens.length && this.getHeadQueen().canLayEggs();
+            //tired of browser locking up due to too many eggs
+            return this.queens.length && this.getHeadQueen().canLayEggs() && this.eggs.length < 5;
         };
 
         Hive.prototype.layEgg = function() {
+            //var d = $q.defer();
             var newName = null;
             if (this.canLayEggs()) {
                 var queen = this.getHeadQueen();
-                var egg = queen.layEgg(++this.nextId);
+                var egg = queen.layEgg(this.getNextId());
                 this.eggs.push(egg);
                 newName = egg.name;
             }
             return newName;
+            //d.resolve(newName);
+
+            //return d.promise;
         };
         Hive.prototype.processEggFate = function(id, fate) {
             var index;

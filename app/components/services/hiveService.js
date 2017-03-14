@@ -1,7 +1,7 @@
 var game = angular.module('bloqhead.genetixApp');
 game.service('hiveService', [
-    '$rootScope', '$filter', 'gameLoopService', 'Hive', 'logService', 'achievementService',
-    function($rootScope, $filter, gameLoopService, Hive, logService, achievementService) {
+    '$rootScope', '$filter', '$q', 'gameLoopService', 'Hive', 'logService', 'achievementService',
+    function($rootScope, $filter, $q, gameLoopService, Hive, logService, achievementService) {
         var self = this;
 
         self.init = function(state) {
@@ -64,7 +64,6 @@ game.service('hiveService', [
                 }
             }
         };
-
         self.getObjectPositions = function(hiveId) {
 
         };
