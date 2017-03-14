@@ -18,14 +18,14 @@ game.service('hiveService', [
                     "initialSize": 2,
                     "maxSize": 5,
                     "beeMutationChance": 0.0025,
-                    "pos": { "x": 0, "y": 0 }
+                    "pos": "D2"
                 }));
                 self.hives.push(new Hive({
                     "id": 2,
                     "initialSize": 2,
                     "maxSize": 5,
                     "beeMutationChance": 0.0025,
-                    "pos": { "x": 13, "y": 8.5 }
+                    "pos": "Q13"
                 }));
             }
 

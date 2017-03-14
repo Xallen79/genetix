@@ -12,7 +12,7 @@ game.factory('Hive', [
         Hive.prototype.update = function(state) {
             state = state || {};
             this.id = state.id || this.id;
-            this.pos = state.pos || this.pos || { x: 20, y: 30 };
+            this.pos = state.pos || this.pos || 'A1';
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.maxSize = state.maxSize || this.maxSize || 10;

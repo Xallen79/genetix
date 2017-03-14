@@ -55,9 +55,13 @@ game.controller('bloqhead.controllers.map', [
                     return false;
                 }, false);
                 canvas.addEventListener('click', function(event) {
-                    var p = new hexMap.Point(event.layerX, event.layerY);
+                    //console.log(event);
+
+                    //var p = new hexMap.Point(event.layerX, event.layerY);
+                    var p = new hexMap.Point(event.offsetX, event.offsetY);
                     var hex = self.map.GetHexAt(p);
                     hex.selected = !hex.selected;
+
 
                     return false;
                 }, false);
@@ -142,10 +146,12 @@ game.controller('bloqhead.controllers.map', [
         function drawHives() {
             var hexwidth = hexMap.Hexagon.Static.WIDTH * 0.75;
             for (var i = 0; i < mapService.hives.length; i++) {
-                var pos = mapService.hives[i].pos;
+
+                var hex = self.map.GetHexById(mapService.hives[i].pos);
+                var pos = hex.MidPoint;
                 context.fillStyle = 'yellow';
                 context.beginPath();
-                context.arc((pos.x + 1) * hexwidth - self.hexsize * 0.3 + 1, pos.y * self.hexsize + self.hexsize / 2 + 1, self.hexsize * 0.3, 0, 2 * Math.PI);
+                context.arc(pos.X, pos.Y, self.hexsize * 0.3, 0, 2 * Math.PI);
                 context.closePath();
                 context.fill();
                 context.lineWidth = 2;
