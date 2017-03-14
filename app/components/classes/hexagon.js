@@ -84,12 +84,12 @@ game.factory('hexMap', function() {
     HT.Hexagon.prototype.draw = function(ctx) {
 
         if (this.selected)
-            ctx.fillStyle = "cyan";
+            ctx.fillStyle = "#7283BA";
         else
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "#EDC867";
 
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(this.Points[0].X, this.Points[0].Y);
         for (var i = 1; i < this.Points.length; i++) {
@@ -243,7 +243,7 @@ game.factory('hexMap', function() {
         var HexagonsByXOrYCoOrd = {}; //Dictionary<int, List<Hexagon>>
 
         var row = 0;
-        var y = 1.0;
+        var y = 0.0;
         while (y + HT.Hexagon.Static.HEIGHT <= height) {
             var col = 0;
 

@@ -111,10 +111,16 @@ game.service('gameService', [
             workerService.init(
                 angular.merge({},
                     defaultState.workerServiceState,
-                    self.gameState.workerServiceState)
+                    self.gameState.workerServiceState
+                )
             );
 
-            mapService.init();
+            mapService.init(
+                angular.merge({},
+                    defaultState.mapServiceState,
+                    self.gameState.mapServiceState
+                )
+            );
 
             gameLoopService.init(
                 angular.merge({},
@@ -139,6 +145,7 @@ game.service('gameService', [
             saveState.buildingServiceState = angular.copy(buildingService.getState());
             saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
             saveState.workerServiceState = angular.copy(workerService.getState());
+            saveState.mapServiceState = angular.copy(mapService.getState());
             var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
             localStorage.setItem(gameSaveKey, save);
             if (autosave)
