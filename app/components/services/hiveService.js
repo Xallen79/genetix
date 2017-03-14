@@ -58,7 +58,7 @@ game.service('hiveService', [
                         hive.msSinceEgg -= eggLayMs;
                         var eggName = hive.layEgg();
                         if (eggName !== null) {
-                            logService.logBreedMessage($filter('fmt')("New egg! %1s", eggName));
+                            logService.logBreedMessage($filter('fmt')("New egg laid in Hive#%1d! (%2s)", hive.id, eggName));
                         }
                     }
                 }
@@ -90,7 +90,7 @@ game.service('hiveService', [
         };
         self.processFate = function(unitid, fate, hiveId) {
             var hive = $filter('filter')(self.hives, { id: hiveId })[0];
-            if (fate === 'DRONE' || fate === 'LARVA')
+            if (fate === 'DRONE' || fate === 'LARVA' || fate === 'CONSUME_EGG')
                 hive.processEggFate(unitid, fate);
             else
                 hive.processLarvaFate(unitid, fate);

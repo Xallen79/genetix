@@ -30,6 +30,9 @@
         <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='larva'">
             <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORKER')">Make Worker</button>
         </div>
+        <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip">
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('CONSUME')">Consume</button>
+        </div>
     </div>
 </div>
 <script type="text/ng-template" id="costTooltip.html">

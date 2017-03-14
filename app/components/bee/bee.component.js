@@ -56,6 +56,9 @@ game.controller("bloqheader.controllers.bee", [
             //     }
             // }
             // if (doAssign)
+            if (type === "CONSUME") {
+                type = self.unit.beetype === 'egg' ? "CONSUME_EGG" : "CONSUME_LARVA";
+            }
             self.assign({ $id: self.unit.id, $type: type });
         };
         self.getGeneTraitRangeStyle = function(g, t) {

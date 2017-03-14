@@ -96,7 +96,7 @@ game.factory('Hive', [
             return state;
         };
         Hive.prototype.getNextId = function() {
-            return 'H' + this.id + '-' + (++this.nextId);
+            return ++this.nextId;
         };
         Hive.prototype.createInitialQueen = function(inseminate) {
             var queen = new Queen({
@@ -195,13 +195,17 @@ game.factory('Hive', [
                     });
                     this.drones.push(drone);
                     this.eggs.splice(index, 1);
-                    msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: drone.name });
+                    msg = $filter('fmt')('New drone in Hive#%(id)d! (%(newname)s)', { id: this.id, newname: drone.name });
                     break;
                 case "LARVA":
                     var larva = this.getHeadQueen().fertilizeEgg(egg, egg.id);
                     this.larva.push(larva);
                     this.eggs.splice(index, 1);
-                    msg = $filter('fmt')('%(oldname)s is now %(newname)s', { oldname: egg.name, newname: larva.name });
+                    msg = $filter('fmt')('New larva in Hive#%(id)d! (%(newname)s)', { id: this.id, newname: larva.name });
+                    break;
+                case "CONSUME_EGG":
+                    msg = $filter('fmt')("%(name)s has been turned into food for Hive#%(id)d", { name: egg.name, id: this.id });
+                    this.eggs.splice(index, 1);
                     break;
                 default:
                     msg = $filter('fmt')('Invalid %(fate)s', { fate: fate });
@@ -230,16 +234,17 @@ game.factory('Hive', [
                     });
                     this.workers.push(worker);
                     this.larva.splice(index, 1);
-                    msg = $filter('fmt')("%(name)s has joined the workforce", newborn);
+                    msg = $filter('fmt')("New worker in Hive#%(id)d! (%(name)s)", { name: newborn.name, id: this.id });
                     break;
                 case "QUEEN":
                     newborn.beetype = 'queen';
                     newborn.update();
                     this.queens.push(newborn);
                     this.larva.splice(index, 1);
+                    msg = $filter('fmt')("New queen in Hive#%(id)d! (%(name)s)", { name: newborn.name, id: this.id });
                     break;
-                case "CONSUME":
-                    msg = $filter('fmt')("%(name)s has been turned into food", newborn);
+                case "CONSUME_LARVA":
+                    msg = $filter('fmt')("%(name)s has been turned into food for Hive#%(id)d", { name: newborn.name, id: this.id });
                     this.larva.splice(index, 1);
                     break;
                 default:
