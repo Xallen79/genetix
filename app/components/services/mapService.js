@@ -12,7 +12,7 @@ game.service('mapService', [
         self.init = function(loadState) {
             state = loadState || state || {};
 
-            if (!angular.isDefined(loadState.currentHiveId))
+            if (!angular.isDefined(loadState.currentHiveID))
                 state.currentHiveID = hiveService.hives[0].id;
             if (!angular.isDefined(loadState.selectedHexID))
                 state.selectedHexID = undefined;
