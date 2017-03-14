@@ -6,22 +6,30 @@ game.service('hiveService', [
 
         self.init = function(state) {
             state = state || {};
-            //self.msSinceEgg = angular.isDefined(state.msSinceEgg) ? state.msSinceEgg : self.msSinceEgg || 0;
-            //self.hiveState = state.hiveState || self.hiveState;
-            //self.hive = (self.hiveState) ? new Hive(self.hiveState) : self.hive || new Hive();
 
-            self.hives = self.hives || [];
+            self.hives = [];
             if (state.hiveStates) {
-                self.hives = [];
                 for (var h = 0; h < state.hiveStates.length; h++) {
                     self.hives.push(new Hive(state.hiveStates[h]));
                 }
             } else {
-                self.hives.push(new Hive({ id: 1 }));
+                self.hives.push(new Hive({
+                    "id": 1,
+                    "initialSize": 2,
+                    "maxSize": 5,
+                    "beeMutationChance": 0.0025,
+                    "pos": { "x": 0, "y": 0 }
+                }));
+                self.hives.push(new Hive({
+                    "id": 2,
+                    "initialSize": 2,
+                    "maxSize": 5,
+                    "beeMutationChance": 0.0025,
+                    "pos": { "x": 13, "y": 8.5 }
+                }));
             }
 
             self.logService = logService;
-            //self.sendBreederUpdateEvent();
             self.sendPopulationUpdateEvent();
 
         };
@@ -35,6 +43,7 @@ game.service('hiveService', [
         };
 
         self.handleGameLoop = function(event, ms) {
+            if (ms === 0) return;
             var popUpdated = false;
             if (event.name !== 'gameLoopEvent') {
                 console.error('hiveService.handleGameLoop - Invalid event: ' + event);
@@ -54,26 +63,11 @@ game.service('hiveService', [
                     }
                 }
             }
-
-            /*
-            if (self.hive.isBreeding()) {
-                self.stepsSinceBreed += steps;
-                while (self.stepsSinceBreed >= self.breedSteps) {
-                    self.stepsSinceBreed -= self.breedSteps;
-                    var offspring = self.population.breed();
-                    if (offspring !== null) {
-                        logService.logBreedMessage("New offspring! " + offspring.name);
-                        achievementService.updateProgress('A_BIRTHS', 1);
-                        popUpdated = true;
-                    }
-                }
-                self.sendBreederUpdateEvent();
-                if (popUpdated)
-                    self.sendPopulationUpdateEvent();
-            }
-            */
         };
 
+        self.getObjectPositions = function(hiveId) {
+
+        };
 
         self.setUnitJob = function(id, jid, jobName) {
             // var unit = self.hive.getById(id);        

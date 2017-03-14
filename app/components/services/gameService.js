@@ -43,8 +43,10 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
                 steps++;
             }
             self.lastTime += (self.stepTimeMs * steps);
-            if (self.currentState == gameStates.RUNNING && steps > 0) {
+            if (self.currentState === gameStates.RUNNING && steps > 0) {
                 $rootScope.$apply($rootScope.$emit('gameLoopEvent', self.stepTimeMs * steps));
+            } else if (self.currentState === gameStates.PAUSED) {
+                $rootScope.$apply($rootScope.$emit('gameLoopEvent', 0));
             }
             $window.requestAnimationFrame(this.gameLoop.bind(this));
         };
@@ -59,9 +61,9 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 
 game.service('gameService', [
     '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'hiveService', 'achievementService',
-    'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'workerService',
+    'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'workerService', 'mapService',
     function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, hiveService, achievementService,
-        resourceService, buildingService, LZString, traitDefinitions, workerService) {
+        resourceService, buildingService, LZString, traitDefinitions, workerService, mapService) {
         var self = this;
         var initialized = false;
         self.init = function(state) {
@@ -111,6 +113,8 @@ game.service('gameService', [
                     defaultState.workerServiceState,
                     self.gameState.workerServiceState)
             );
+
+            mapService.init();
 
             gameLoopService.init(
                 angular.merge({},

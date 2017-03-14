@@ -12,8 +12,8 @@ game.component('bloqheadMap', {
 });
 
 game.controller('bloqhead.controllers.map', [
-    '$scope', '$rootScope', '$timeout', 'gameLoopService', 'hexMap',
-    function($scope, $rootScope, $timeout, gameLoopService, hexMap) {
+    '$scope', '$rootScope', '$timeout', 'gameLoopService', 'hexMap', 'mapService',
+    function($scope, $rootScope, $timeout, gameLoopService, hexMap, mapService) {
         var self = this;
         var canvas, context, map;
 
@@ -87,6 +87,7 @@ game.controller('bloqhead.controllers.map', [
             context.save();
             clear();
             drawHexMap();
+            drawHives();
             context.restore();
 
 
@@ -130,10 +131,7 @@ game.controller('bloqhead.controllers.map', [
         }
 
 
-        var hives = [
-            [250, 130],
-            [180, 400]
-        ];
+
 
         clovers = [
             [450, 160],
@@ -142,11 +140,12 @@ game.controller('bloqhead.controllers.map', [
         ];
 
         function drawHives() {
-            for (var i = 0; i < hives.length; i++) {
-                var hive = hives[i];
+            var hexwidth = hexMap.Hexagon.Static.WIDTH * 0.75;
+            for (var i = 0; i < mapService.hives.length; i++) {
+                var pos = mapService.hives[i].pos;
                 context.fillStyle = 'yellow';
                 context.beginPath();
-                context.arc(hive[0], hive[1], 10, 0, 2 * Math.PI);
+                context.arc((pos.x + 1) * hexwidth - self.hexsize * 0.3 + 1, pos.y * self.hexsize + self.hexsize / 2 + 1, self.hexsize * 0.3, 0, 2 * Math.PI);
                 context.closePath();
                 context.fill();
                 context.lineWidth = 2;

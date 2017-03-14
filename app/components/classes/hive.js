@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService',
-    function($filter, Queen, Drone, Worker, Egg, Larva, logService) {
+    '$filter', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService', 'hexMap',
+    function($filter, Queen, Drone, Worker, Egg, Larva, logService, hexMap) {
 
         /* constructor */
         var Hive = function(state) {
@@ -12,6 +12,7 @@ game.factory('Hive', [
         Hive.prototype.update = function(state) {
             state = state || {};
             this.id = state.id || this.id;
+            this.pos = state.pos || this.pos || { x: 20, y: 30 };
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.maxSize = state.maxSize || this.maxSize || 10;
@@ -74,7 +75,8 @@ game.factory('Hive', [
                 workerStates: [],
                 eggStates: [],
                 larvaStates: [],
-                msSinceEgg: this.msSinceEgg
+                msSinceEgg: this.msSinceEgg,
+                pos: this.pos
             };
             for (var q = 0; q < this.queens.length; q++) {
                 state.queenStates.push(this.queens[q].getState());

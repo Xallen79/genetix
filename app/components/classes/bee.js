@@ -25,6 +25,7 @@ game.factory('Bee', [
         Bee.prototype.update = function(config) {
             if (typeof(config) == 'undefined') config = {};
             this.id = config.id || this.id || 0;
+            this.pos = config.pos || this.pos || { x: 0, y: 0 };
             this.dt = config.dt || this.dt || new Date().getTime();
             this.queenParentId = config.queenParentId || this.queenParentId || null;
             this.droneParentId = config.droneParentId || this.droneParentId || null;
