@@ -16,14 +16,16 @@ game.controller('bloqhead.controllers.map', [
     function($scope, $rootScope, $timeout, gameLoopService, hexMap, mapService) {
         var self = this;
         var canvas, context, map;
+        var hexsize_min = 20;
+        var hexsize_max = 120;
+
 
         self.mapsize_h = 10; // the number of vertical hexes in the left column
         self.mapsize_w = 15; // the number of hexagons across the top
         self.hexsize = 50; // the height of a hex in pixels
         self.needsResize = true; // set to true to resize the canvas in the draw routine
 
-        var hexsize_min = 20;
-        var hexsize_max = 120;
+
 
 
         self.$onInit = function() {};
@@ -55,13 +57,17 @@ game.controller('bloqhead.controllers.map', [
                     return false;
                 }, false);
                 canvas.addEventListener('click', function(event) {
-                    //console.log(event);
-
-                    //var p = new hexMap.Point(event.layerX, event.layerY);
                     var p = new hexMap.Point(event.offsetX, event.offsetY);
                     var hex = self.map.GetHexAt(p);
-                    hex.selected = !hex.selected;
+                    var oldid = mapService.selectHex(hex.id);
 
+                    if (oldid == hex.id)
+                        console.log('TODO: show additional info via dialog or somethin');
+                    else {
+                        hex.selected = true;
+                        if (oldid !== null)
+                            self.map.GetHexById(oldid).selected = false;
+                    }
 
                     return false;
                 }, false);
@@ -110,6 +116,8 @@ game.controller('bloqhead.controllers.map', [
             canvas.height = canvas.offsetHeight;
             self.needsResize = false;
             self.map = new hexMap.Grid(w, h);
+            if (mapService.getState().selectedHexID !== null)
+                self.map.GetHexById(mapService.getState().selectedHexID).selected = true;
         }
 
 
@@ -148,10 +156,9 @@ game.controller('bloqhead.controllers.map', [
             for (var i = 0; i < mapService.hives.length; i++) {
 
                 var hex = self.map.GetHexById(mapService.hives[i].pos);
-                var pos = hex.MidPoint;
                 context.fillStyle = 'yellow';
                 context.beginPath();
-                context.arc(pos.X, pos.Y, self.hexsize * 0.3, 0, 2 * Math.PI);
+                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.hexsize * 0.3, 0, 2 * Math.PI);
                 context.closePath();
                 context.fill();
                 context.lineWidth = 2;

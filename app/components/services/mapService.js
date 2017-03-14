@@ -6,11 +6,15 @@ game.service('mapService', [
         var self = this;
         var state;
 
+
+
+
         self.init = function(loadState) {
             state = loadState || state || {};
 
             if (!angular.isDefined(state.currentHiveId))
                 state.currentHiveId = hiveService.hives[0].id;
+
             self.hives = hiveService.hives;
             gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
 
@@ -21,8 +25,14 @@ game.service('mapService', [
 
         self.handleGameLoop = function(event, elapsedMs) {
             if (elapsedMs === 0) return;
-
-
         };
+
+
+        self.selectHex = function(hexid) {
+            var oldid = state.selectedHexID || null;
+            state.selectedHexID = hexid;
+            return oldid;
+        }
+
     }
 ]);

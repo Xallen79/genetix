@@ -61,7 +61,7 @@ game.factory('hexMap', function() {
             this.Points.push(new HT.Point(x, y1 + y));
         }
 
-        this.Id = id;
+        this.id = id;
 
         this.x = x;
         this.y = y;
@@ -102,14 +102,14 @@ game.factory('hexMap', function() {
         ctx.fill();
 
 
-        if (this.Id) {
+        if (this.id) {
             //draw text for debugging
             ctx.fillStyle = "black";
             ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = 'middle';
-            //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-            ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
+            //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
+            ctx.fillText(this.id, this.MidPoint.X, this.MidPoint.Y);
         }
         /*
         if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
@@ -118,7 +118,7 @@ game.factory('hexMap', function() {
             ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = 'middle';
-            //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
+            //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
             ctx.fillText("(" + this.PathCoOrdX + "," + this.PathCoOrdY + ")", this.MidPoint.X, this.MidPoint.Y + 10);
         }
         */
@@ -137,7 +137,7 @@ game.factory('hexMap', function() {
             ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
             ctx.textAlign = "left";
             ctx.textBaseline = 'middle';
-            //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
+            //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
             ctx.fillText("z", this.x + this.x1 / 2 - 8, this.y + this.y1 / 2);
             ctx.fillText("x", this.x + this.x1 / 2, this.P1.Y + 10);
             ctx.fillText("y", this.P1.X + 2, this.y + this.y1 / 2);
@@ -351,7 +351,7 @@ game.factory('hexMap', function() {
      */
     HT.Grid.prototype.GetHexById = function(id) {
         for (var i in this.Hexes) {
-            if (this.Hexes[i].Id == id) {
+            if (this.Hexes[i].id == id) {
                 return this.Hexes[i];
             }
         }
