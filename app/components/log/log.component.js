@@ -12,8 +12,8 @@ game.component('bloqheadLog', {
 
 
 game.controller('bloqhead.controllers.log', [
-    '$scope', '$location', '$anchorScroll', 'logService', 'logTypes',
-    function($scope, $location, $anchorScroll, logService, logTypes) {
+    '$scope', '$location', '$anchorScroll', '$timeout', 'logService', 'logTypes',
+    function($scope, $location, $anchorScroll, $timeout, logService, logTypes) {
         var self = this;
         self.$onInit = function() {
             self.messages = [];
@@ -45,8 +45,14 @@ game.controller('bloqhead.controllers.log', [
 
         self.receiveMessages = function(event, messages) {
             self.messages = messages;
-            if (!self.pauseScroll)
-                $anchorScroll('scrollBottom');
+            if (!self.pauseScroll) {
+                self.scrolling = true;
+                $timeout(function() {
+                    $anchorScroll('scrollBottom');
+                    self.scrolling = false;
+                }, 10, false);
+            }
+
         };
     }
 ]);

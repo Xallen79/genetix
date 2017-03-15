@@ -4,7 +4,7 @@
             [<span ng-bind="item.timestamp|date:'MM/dd HH:mm:ss'"></span>]&nbsp;
             <span ng-bind="item.message"></span>
         </li>
-        <li>
+        <li ng-show="$ctrl.scrolling">
             <a id="scrollBottom"></a>
         </li>
     </ul>
