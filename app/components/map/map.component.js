@@ -98,17 +98,6 @@ game.controller('bloqhead.controllers.map', [
                     self.setHexSize(self.hexsize / 1.1);
                 }
 
-                /*
-                var new_w = canvasWidth();
-                var new_h = canvasHeight();
-                var tran_x = new_w - old_w;
-                var tran_y = new_h - old_h;
-
-                var p = new hexMap.Point(event.offsetX, event.offsetY);
-
-                console.log(tran_x, tran_y);
-                self.moveCanvasBy(tran_x, tran_y);
-                */
                 return false;
             }, false);
 
@@ -118,15 +107,24 @@ game.controller('bloqhead.controllers.map', [
             });
             document.addEventListener('mouseup', function(event) {
                 self.dragging = false;
+                $timeout(function() {
+                    self.stopClick = false;
+                });
             });
             document.addEventListener('mousemove', function(event) {
                 if (self.dragging === true) {
                     self.moveCanvasBy(event.movementX, event.movementY);
+                    if (event.movementX !== 0 || event.movementY !== 0)
+                        self.stopClick = true;
                 }
             });
 
 
             canvas.addEventListener('click', function(event) {
+
+                if (self.stopClick)
+                    return false;
+
                 var p = new hexMap.Point(event.offsetX, event.offsetY);
                 var hex = self.map.GetHexAt(p);
 
@@ -192,15 +190,21 @@ game.controller('bloqhead.controllers.map', [
             if (typeof canvas === 'undefined')
                 return;
 
-            var w = canvasWidth();
-            var h = canvasHeight();
+            var old_w = parseInt(canvas.style.width);
+            var old_h = parseInt(canvas.style.height);
+            var new_w = canvasWidth();
+            var new_h = canvasHeight();
 
-            canvas.style.width = canvas.style.width = w + 'px';
-            canvas.style.height = canvas.style.height = h + 'px';
+            canvas.style.width = canvas.style.width = new_w + 'px';
+            canvas.style.height = canvas.style.height = new_h + 'px';
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
             self.needsResize = false;
-            self.map = new hexMap.Grid(w, h);
+            self.map = new hexMap.Grid(new_w, new_h);
+
+            var tran_x = (0 - (new_w - old_w)) / 2;
+            var tran_y = (0 - (new_h - old_h)) / 2;
+            self.moveCanvasBy(tran_x, tran_y);
 
             if (angular.isDefined(self.mapState.selectedHexID)) {
                 self.map.GetHexById(self.mapState.selectedHexID).selected = true;
