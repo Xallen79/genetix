@@ -53,9 +53,30 @@ game.controller('bloqhead.controllers.map', [
                 // (this will get called during the same cycle, but ensures the map objects are updated first)
                 mapService.SubscribeMapUpdateEvent($scope, function(event, state) {
                     self.mapState = state;
+                    if (!self.mapState.initialized) {
+                        self.initializeMap();
+                    }
+
                     draw();
                 });
             });
+        };
+
+        self.initializeMap = function() {
+
+            self.mapsize_h = 10; // the number of vertical hexes in the left column
+            self.mapsize_w = 15; // the number of hexagons across the top
+            self.hexsize = 50; // the height of a hex in pixels
+            self.needsResize = true; // set to true to resize the canvas in the draw routine
+            self.dragging = false;
+            self.setHexSize(self.hexsize);
+            // after a reset we need to clear out any selected hexes
+            if (!angular.isDefined(self.mapState.selectedHexID)) {
+                var selectedHexes = $filter('filter')(self.map.Hexes, { selected: true });
+                for (var sh = 0; sh < selectedHexes.length; sh++) {
+                    selectedHexes[sh].selected = false;
+                }
+            }
         };
 
         self.addMouseEvents = function() {
@@ -157,15 +178,6 @@ game.controller('bloqhead.controllers.map', [
 
             if (self.needsResize)
                 resizeCanvas();
-
-            // after a reset we need to clear out any selected hexes
-            //if (!angular.isDefined(self.mapState.selectedHexID)) {
-            //    var selectedHexes = $filter('filter')(self.map.Hexes, { selected: true });
-            //    for (var sh = 0; sh < selectedHexes.length; sh++) {
-            //        selectedHexes[sh].selected = false;
-            //    }
-            //
-            //}
 
             context.save();
             clear();

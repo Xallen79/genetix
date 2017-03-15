@@ -12,6 +12,8 @@ game.service('mapService', [
         self.init = function(loadState) {
             state = loadState || state || {};
 
+            if (!angular.isDefined(state.initialized))
+                state.initialized = false;
             if (!angular.isDefined(loadState.currentHiveID))
                 state.currentHiveID = hiveService.hives[0].id;
             if (!angular.isDefined(loadState.selectedHexID))
@@ -20,6 +22,8 @@ game.service('mapService', [
             hiveService.SubscribePopulationUpdateEvent($rootScope, self.handleHiveUpdate);
             gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
             self.sendMapUpdateEvent();
+
+            state.initialized = true;
 
         };
         self.getState = function() {

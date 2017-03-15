@@ -50,7 +50,7 @@ game.controller('bloqhead.controllers.log', [
                 $timeout(function() {
                     $anchorScroll('scrollBottom');
                     self.scrolling = false;
-                }, 10, false);
+                }, 0, false);
             }
 
         };
