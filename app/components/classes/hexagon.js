@@ -89,7 +89,7 @@ game.factory('hexMap', function() {
             ctx.fillStyle = "#EDC867";
 
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(this.Points[0].X, this.Points[0].Y);
         for (var i = 1; i < this.Points.length; i++) {
@@ -97,9 +97,19 @@ game.factory('hexMap', function() {
             ctx.lineTo(p.X, p.Y);
         }
         ctx.closePath();
+        ctx.fill();
+
+        // inside stroke
+        /*
+        ctx.save();
+        ctx.clip();
+        ctx.lineWidth *= 2;
+        ctx.stroke();
+        ctx.restore();
+        */
 
         ctx.stroke();
-        ctx.fill();
+
 
 
         if (this.id) {
@@ -230,7 +240,7 @@ game.factory('hexMap', function() {
         SIDE: 50.0,
         ORIENTATION: HT.Hexagon.Orientation.Normal,
         DRAWSTATS: false
-    }; //hexagons will have 25 unit sides for now
+    };
 
     /**
      * A Grid is the model of the playfield containing hexes
