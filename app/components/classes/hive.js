@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', '$q', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService', 'hexMap',
-    function($filter, $q, Queen, Drone, Worker, Egg, Larva, logService, hexMap) {
+    '$filter', '$q', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService',
+    function($filter, $q, Queen, Drone, Worker, Egg, Larva, logService) {
 
         /* constructor */
         var Hive = function(state) {
