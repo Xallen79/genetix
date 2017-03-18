@@ -25,7 +25,7 @@ game.service('hiveService', [
                     "initialSize": 2,
                     "maxSize": 5,
                     "beeMutationChance": 0.0025,
-                    "pos": "Q13"
+                    "pos": "I9"
                 }));
             }
 

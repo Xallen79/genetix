@@ -2,19 +2,20 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 
-game.factory('Grid', ['Hexagon', function(Hexagon) {
+game.factory('Grid', ['Hexagon', 'Point', function(Hexagon, Point) {
 
-    /**
-     * A Grid is the model of the playfield containing hexes
-     * @constructor
-     */
-    var Grid = function( /*int*/ width, /*int*/ height, config) {
 
+    var Grid = function(config) {
         this.config = config || {};
+        this.config.MAPWIDTH = this.config.MAPWIDTH || 8;
+        this.config.MAPHEIGHT = this.config.MAPHEIGHT || 5;
         this.config.HEIGHT = this.config.HEIGHT || 91.14378277661477;
         this.config.WIDTH = this.config.WIDTH || 91.14378277661477;
         this.config.SIDE = this.config.SIDE || 50.0;
         this.config.MARGIN = this.config.MARGIN || 5;
+        this.config.STROKEWIDTH = this.config.STROKEWIDTH || 3;
+        this.config.SHOW_HEX_ID = this.config.SHOW_HEX_ID || false;
+        this.config.SHOW_HEX_XY = this.config.SHOW_HEX_XY || false;
 
 
         this.Hexes = [];
@@ -23,7 +24,7 @@ game.factory('Grid', ['Hexagon', function(Hexagon) {
 
         var row = 0;
         var y = 0.0;
-        while (row <= height) {
+        while (row <= (this.config.MAPHEIGHT - 1) * 2) {
             var col = 0;
 
             var offset = 0.0;
@@ -33,7 +34,7 @@ game.factory('Grid', ['Hexagon', function(Hexagon) {
             }
 
             var x = offset;
-            while (col <= width) {
+            while (col <= (this.config.MAPWIDTH - 1) * 2) {
                 var hexId = this.GetHexId(row, col);
                 //var h = new Hexagon(hexId, x, y, this.config);
                 var h = new Hexagon(hexId, col, row, this.config);
@@ -63,68 +64,8 @@ game.factory('Grid', ['Hexagon', function(Hexagon) {
                 h2.PathCoOrdY = coOrd2++;
             }
         }
-    };
-
-    /**
-     * Updates configuration and relocates hexes
-     * @this {Grid}
-     * @param {int} height the size in pixels of each hex
-     */
-    Grid.prototype.SetHexSizeByHeight = function(height) {
-        height = height || 30;
-        width = height * (2 / (Math.sqrt(3)));
-
-        var y = height / 2.0;
-
-        //solve quadratic
-        var a = -3.0;
-        var b = (-2.0 * width);
-        var c = (Math.pow(width, 2)) + (Math.pow(height, 2));
-        var z = (-b - Math.sqrt(Math.pow(b, 2) - (4.0 * a * c))) / (2.0 * a);
-        var x = (width - z) / 2.0;
-
-        this.config.WIDTH = width;
-        this.config.HEIGHT = height;
-        this.config.SIDE = z;
-
-        for (var h in this.Hexes) {
-            this.Hexes[h].Relocate(this.config);
-        }
-    };
-
-    /**
-     * Updates configuration and relocates hexes
-     * @this {Grid}
-     * @param {int} length the length of the side
-     * @param {double} ratio the ratio between the the height and width of the hex, omit for perfect hexagon
-     */
-    Grid.prototype.SetHexSizeBySide = function(length, ratio) {
-        length = length || 18;
-        ratio = ratio || (2 / (Math.sqrt(3)));
-        var z = length;
-        var r = ratio;
-
-        //solve quadratic
-        var r2 = Math.pow(r, 2);
-        var a = (1 + r2) / r2;
-        var b = z / r2;
-        var c = ((1 - 4.0 * r2) / (4.0 * r2)) * (Math.pow(z, 2));
-
-        var x = (-b + Math.sqrt(Math.pow(b, 2) - (4.0 * a * c))) / (2.0 * a);
-        var y = ((2.0 * x) + z) / (2.0 * r);
-
-        var width = ((2.0 * x) + z);
-        var height = (2.0 * y);
-
-        this.config.WIDTH = width;
-        this.config.HEIGHT = height;
-        this.config.SIDE = z;
-
-        for (var h in this.Hexes) {
-            this.Hexes[h].Relocate(this.config);
-        }
-    };
-
+        return this;
+    }
 
     Grid.Static = { Letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' };
 
@@ -138,6 +79,14 @@ game.factory('Grid', ['Hexagon', function(Hexagon) {
 
         return Grid.Static.Letters[letterIndex] + letters + (col + 1);
     };
+
+
+    Grid.prototype.Relocate = function() {
+        for (var h in this.Hexes) {
+            this.Hexes[h].Relocate(this.config);
+        }
+    };
+
 
     /**
      * Returns a hex at a given point

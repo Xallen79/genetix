@@ -14,12 +14,11 @@ game.controller('bloqhead.controllers.map', [
         var hexsize_min = 20;
         var hexsize_max = 120;
 
-        self.mapsize_h = 10; // the number of vertical hexes in the left column
-        self.mapsize_w = 15; // the number of hexagons across the top
+        self.mapService = mapService;
+
         self.hexsize = 50; // the height of a hex in pixels
         self.needsResize = true; // set to true to resize the canvas in the draw routine        
-        self.mapState = {};
-
+        //self.mapState = {};
 
         self.$onInit = function() {};
 
@@ -33,7 +32,7 @@ game.controller('bloqhead.controllers.map', [
                 context = canvas.getContext('2d');
 
                 // set initial size
-                //self.setHexSize(self.hexsize);
+                self.setHexSize(self.hexsize);
 
                 // add mouse events
                 canvas.parentElement.addEventListener('mousewheel', self.mousewheel, false);
@@ -81,18 +80,12 @@ game.controller('bloqhead.controllers.map', [
         */
 
         self.mousewheel = function(event) {
-            // only allow changing if we are not pending a resize already
-            if (self.needsResize)
-                return false;
-
-            var old_w = canvasWidth();
-            var old_h = canvasHeight();
 
             if (event.wheelDeltaY > 0 && self.hexsize < hexsize_max) {
-                self.setHexSize(self.hexsize * 1.1);
+                self.zoomIn();
             }
             if (event.wheelDeltaY < 0 && self.hexsize > hexsize_min) {
-                self.setHexSize(self.hexsize / 1.1);
+                self.zoomOut();
             }
 
             return false;
@@ -107,7 +100,6 @@ game.controller('bloqhead.controllers.map', [
             });
         };
         self.click = function(event) {
-
             if (!self.stopClick)
                 mapService.mapClicked(event.offsetX, event.offsetY);
 
@@ -118,6 +110,14 @@ game.controller('bloqhead.controllers.map', [
             if (event.movementX !== 0 || event.movementY !== 0)
                 self.stopClick = true;
         };
+
+        self.zoomIn = function() {
+            self.setHexSize(self.hexsize * 1.1);
+        };
+        self.zoomOut = function() {
+            self.setHexSize(self.hexsize / 1.1);
+        };
+
 
         self.moveCanvas = function(x, y) {
             canvas.style.left = x + 'px';
@@ -132,13 +132,8 @@ game.controller('bloqhead.controllers.map', [
 
 
         self.setHexSize = function(size) {
-
-            console.log('mapService', mapService);
-            console.log('getState', mapService.getState());
-            console.log('map', mapService.getState().map);
-
             self.hexsize = size;
-            mapService.getState().map.SetHexSizeByHeight(size);
+            self.canvasSize = mapService.setHexSizeByHeight(size);
             self.needsResize = true;
         };
 
@@ -148,53 +143,26 @@ game.controller('bloqhead.controllers.map', [
                 return;
 
             if (self.needsResize) {
-                resizeCanvas();
+                self.needsResize = false;
+                resizeCanvas(self.canvasSize);
             }
 
             mapService.drawMap(context);
         }
 
-        function resizeCanvas() {
-            if (typeof canvas === 'undefined')
-                return;
+        function resizeCanvas(canvasSize) {
 
             var old_w = parseInt(canvas.style.width);
             var old_h = parseInt(canvas.style.height);
-            var new_w = canvasWidth();
-            var new_h = canvasHeight();
 
-            canvas.style.width = canvas.style.width = new_w + 'px';
-            canvas.style.height = canvas.style.height = new_h + 'px';
+            canvas.style.width = canvasSize.X + 'px';
+            canvas.style.height = canvasSize.Y + 'px';
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            self.needsResize = false;
-            //self.map = new hexMap.Grid(new_w, new_h);
 
-            var tran_x = (0 - (new_w - old_w)) / 2;
-            var tran_y = (0 - (new_h - old_h)) / 2;
+            var tran_x = (0 - (canvasSize.X - old_w)) / 2;
+            var tran_y = (0 - (canvasSize.Y - old_h)) / 2;
             self.moveCanvasBy(tran_x, tran_y);
-
-            if (angular.isDefined(self.mapState.selectedHexID)) {
-                self.map.GetHexById(self.mapState.selectedHexID).selected = true;
-            }
-
         }
-
-        function canvasWidth(s) {
-            s = s || self.hexsize;
-            s = s * (2 / (Math.sqrt(3)));
-            var hexwidth = s * 0.75;
-            return (self.mapsize_w * hexwidth + (s * 0.25)) + 4;
-        }
-
-        function canvasHeight(s) {
-            s = s || self.hexsize;
-            return (s * self.mapsize_h) + 4;
-        }
-
-
-
-
-
     }
 ]);

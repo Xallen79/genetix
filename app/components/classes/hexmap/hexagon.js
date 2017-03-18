@@ -17,6 +17,8 @@ game.factory('Hexagon', ['Point', function(Point) {
             SIDE: 50.0
         };
 
+
+        this.config = config;
         this.id = id;
         this.col = col;
         this.row = row;
@@ -29,10 +31,17 @@ game.factory('Hexagon', ['Point', function(Point) {
      */
     Hexagon.prototype.Relocate = function(config) {
 
+        this.config = config;
+
         var x = ((this.col) * (config.WIDTH + config.SIDE / 2)) - ((this.col * config.WIDTH) / 2);
         var y = this.row * (config.HEIGHT / 2);
         var x1 = (config.WIDTH - config.SIDE) / 2;
         var y1 = (config.HEIGHT / 2);
+
+        if (config.MARGIN) {
+            x += config.MARGIN;
+            y += config.MARGIN;
+        }
 
         this.Points = []; //Polygon Base
         this.Points.push(new Point(x1 + x, y));
@@ -61,7 +70,7 @@ game.factory('Hexagon', ['Point', function(Point) {
             ctx.fillStyle = "#EDC867";
 
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = this.config.STROKEWIDTH;
         ctx.beginPath();
         ctx.moveTo(this.Points[0].X, this.Points[0].Y);
         for (var i = 1; i < this.Points.length; i++) {
@@ -84,14 +93,17 @@ game.factory('Hexagon', ['Point', function(Point) {
 
 
 
-        if (this.id) {
+        if (this.id && (this.config.SHOW_HEX_ID || this.config.SHOW_HEX_XY)) {
             //draw text for debugging
             ctx.fillStyle = "black";
             ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = 'middle';
             //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
-            ctx.fillText(this.row + ',' + this.col, this.MidPoint.X, this.MidPoint.Y);
+            var msg = '';
+            if (this.config.SHOW_HEX_ID) msg += this.id + ' ';
+            if (this.config.SHOW_HEX_XY) msg += this.row + ',' + this.col;
+            ctx.fillText(msg, this.MidPoint.X, this.MidPoint.Y);
         }
         /*
         if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {

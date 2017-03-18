@@ -6,19 +6,19 @@
             </div>
             <div class="col-xs-7">
                 <div class=" pull-right">
-                    Zoom:
+                    <span>Show Hex ID <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_ID" /></span>
+                    <span>Show Hex XY <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_XY" /></span>
+                    <span>Zoom:</span>
                     <div class="btn-group" role="group">
-                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 20}" ng-click="$ctrl.setHexSize(20)">Sm</div>
-                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 50}" ng-click="$ctrl.setHexSize(50)">Md</div>
-                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 80}" ng-click="$ctrl.setHexSize(80)">Lg</div>
-                        <div class="btn btn-xs btn-info" ng-class="{active: $ctrl.hexsize == 120}" ng-click="$ctrl.setHexSize(120)">XL</div>
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.zoomOut()">-</div>
+                        <div class="btn btn-xs btn-info" ng-click="$ctrl.zoomIn()">+</div>
                     </div>
                 </div>
             </div>
         </div>
     </bloqhead-player-box-title>
     <div class="row map-container" style="overflow: hidden; background-color: #87F75C; position: relative;">
-        <canvas id="map" style="position:absolute;top:0px;left:0px; border: 1px solid black;"></canvas>
+        <canvas id="map" style="position:absolute;top:0px;left:0px;"></canvas>
     </div>
 
 </bloqhead-player-box>
