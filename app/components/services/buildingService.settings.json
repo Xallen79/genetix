@@ -1,149 +1,16 @@
 {
     "constants": {
         "defaultBuildings": {
-            "BUNGALOW": {
-                "name": "Breeding Bungalow",
-                "description": "A private bungalow for %(size)d where the magic happens. Due to the magic nature of this building, it cannot be built directly.",
-                "use": "breeding",
+            "HONEYCOMB": {
+                "name": "Honeycomb",
+                "description": "Used for everything.",
+                "use": "everything",
                 "size": 2,
                 "baseCost": [],
                 "purchased": 0,
                 "gifted": 1,
                 "unlocked": true,
                 "multiplier": 1
-            },
-            "NURSERY": {
-                "name": "Nursery",
-                "description": "A place for newborns. Maximum newborns %(size)d.",
-                "use": "newborn",
-                "size": 1,
-                "baseCost": [],
-                "purchased": 0,
-                "gifted": 1,
-                "unlocked": true,
-                "multiplier": 1
-            },
-            "SODHOUSE": {
-                "name": "Sod House",
-                "description": "Provides minimal shelter for %(size)d things.",
-                "use": "housing",
-                "size": 5,
-                "baseCost": [{
-                    "resource": "DIRT",
-                    "amount": 500,
-                    "costMultiplier": 2.5
-                }, {
-                    "resource": "WOOD",
-                    "amount": 250,
-                    "costMultiplier": 2.5
-                }, {
-                    "resource": "WATER",
-                    "amount": 125,
-                    "costMultiplier": 2.5
-                }],
-                "purchased": 0,
-                "gifted": 1,
-                "unlocked": true,
-                "multiplier": 1
-            },
-            "DIRTPILE": {
-                "name": "Dirt Pile",
-                "description": "Where else would you store dirt? Holds %(size)d.",
-                "use": "storage",
-                "stores": "DIRT",
-                "size": 100,
-                "baseCost": [{
-                    "resource": "DIRT",
-                    "amount": 50,
-                    "costMultiplier": 1.25
-                }],
-                "purchased": 0,
-                "gifted": 1,
-                "unlocked": true,
-                "multiplier": 1
-            },
-            "WOODSHED": {
-                "name": "Woodshed",
-                "description": "Holds %(size)d wood",
-                "use": "storage",
-                "stores": "WOOD",
-                "size": 100,
-                "baseCost": [{
-                    "resource": "WOOD",
-                    "amount": 50,
-                    "costMultiplier": 1.10
-                }, {
-                    "resource": "DIRT",
-                    "amount": 25,
-                    "costMultiplier": 1.10
-                }],
-                "purchased": 0,
-                "gifted": 0,
-                "unlocked": false,
-                "multiplier": 1
-            },
-            "WATERHOLE": {
-                "name": "Water Hole",
-                "description": "A dirty place to hold water. Stores %(size)d.",
-                "use": "storage",
-                "stores": "WATER",
-                "size": 100,
-                "baseCost": [{
-                    "resource": "WOOD",
-                    "amount": 50,
-                    "costMultiplier": 1.10
-                }, {
-                    "resource": "DIRT",
-                    "amount": 50,
-                    "costMultiplier": 1.05
-                }],
-                "purchased": 0,
-                "gifted": 0,
-                "unlocked": false,
-                "multiplier": 1
-            },
-            "WELL": {
-                "name": "Well",
-                "description": "Used for water production.",
-                "use": "production",
-                "produces": "WATER",
-                "size": 5,
-                "baseCost": [{
-                    "resource": "BRICKS",
-                    "amount": 100,
-                    "costMultiplier": 1.05
-                }],
-                "purchased": 0,
-                "gifted": 0,
-                "unlocked": false,
-                "multiplier": 1
-            },
-            "LIBRARY": {
-                "name": "Library",
-                "description": "A place for researchers, produces science.",
-                "use": "production",
-                "size": 0,
-                "baseCost": [{
-                    "resource": "DIRT",
-                    "amount": 5000,
-                    "costMultiplier": 100
-                }, {
-                    "resource": "WOOD",
-                    "amount": 2500,
-                    "costMultiplier": 100
-
-                }, {
-                    "resource": "WATER",
-                    "amount": 1500,
-                    "costMultiplier": 100
-                }],
-                "purchased": 0,
-                "gifted": 0,
-                "unlocked": false,
-                "multiplier": 1.0,
-                "stores": "",
-                "produces": "SCIENCE",
-                "maxcount": 1
             }
         }
     }

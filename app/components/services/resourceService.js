@@ -17,17 +17,19 @@ game.service('resourceService', [
 
             // this will turn them all on for testing purposes
             var overrideAllOn = false;
+
+
             //[0] owned, [1] max, [2] enabled, [3] multiplier
             var defaultLimits = {
-                DIRT: [0, 0, true || overrideAllOn, 1.00],
-                BRICKS: [0, 0, false || overrideAllOn, 1.00],
-                WATER: [0, 0, false || overrideAllOn, 1.00],
-                WOOD: [0, 0, false || overrideAllOn, 1.00],
-                GOLD: [0, 0, false || overrideAllOn, 1.00],
-                HAPPINESS: [0, -1, true || overrideAllOn, 1.00],
-                SCIENCE: [0, -1, false || overrideAllOn, 1.00],
-                STEEL: [0, 0, false || overrideAllOn, 1.00],
-                EVOCOIN: [0, -1, false || overrideAllOn, 1.00]
+                NECTAR: [0, 0, true || overrideAllOn, 1.00],
+                POLLEN: [0, 0, true || overrideAllOn, 1.00],
+                WATER: [0, 0, true || overrideAllOn, 1.00],
+                FOOD: [0, 0, true || overrideAllOn, 1.00],
+                HONEY: [0, 0, true || overrideAllOn, 1.00],
+                ROYAL_JELLY: [0, 0, true || overrideAllOn, 1.00],
+                WAX: [0, 0, true || overrideAllOn, 1.00],
+                DEADBEES: [0, 0, true || overrideAllOn, 1.00],
+                DEFENSE: [0, -1, true || overrideAllOn, 1.00]
             };
 
             for (var resourceType in resourceTypes) {
@@ -53,11 +55,15 @@ game.service('resourceService', [
 
         self.getWorkerIcon = function(res) {
             var ret = {};
-            ret['fa-truck'] = (res === 'DIRT');
-            ret['fa-tint'] = (res === 'WATER');
-            ret['fa-tree'] = (res === 'WOOD');
-            ret['fa-flask'] = (res === 'SCIENCE');
-            ret['icon-happy'] = (res === 'HAPPINESS');
+            ret['fa-tint'] = (res === 'NECTAR');
+            ret['icon-water'] = (res === 'WATER');
+            ret['icon-tombstone'] = (res === 'DEADBEES');
+            ret['icon-pollen'] = (res === 'POLLEN');
+            ret['icon-honeypot'] = (res === 'HONEY');
+            ret['icon-tools'] = (res === 'WAX');
+            ret['fa-apple'] = (res === 'FOOD');
+            ret['icon-jar'] = (res === 'ROYAL_JELLY');
+            ret['icon-shield'] = (res === 'DEFENSE');
             return ret;
         };
 

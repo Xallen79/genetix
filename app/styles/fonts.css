@@ -84,3 +84,7 @@
 .icon-tombstone:before {
     content: "\e90c";
 }
+
+.icon-jar:before {
+    content: "\e90d";
+}

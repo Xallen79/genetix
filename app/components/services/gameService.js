@@ -159,7 +159,7 @@ game.service('gameService', [
             self.msSinceSave += ms;
 
             // testing
-            var d = resourceService.getResource('DIRT');
+            //var d = resourceService.getResource('DIRT');
             // if (d >= 25)
             //     resourceService.changeResource("DIRT", -d);
             // else

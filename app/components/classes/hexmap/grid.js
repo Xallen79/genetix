@@ -65,7 +65,7 @@ game.factory('Grid', ['Hexagon', 'Point', function(Hexagon, Point) {
             }
         }
         return this;
-    }
+    };
 
     Grid.Static = { Letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' };
 

@@ -1,64 +1,60 @@
 {
     "constants": {
         "resourceTypes": {
-            "HAPPINESS": {
-                "rid": "HAPPINESS",
-                "name": "Happiness",
-                "desc": "Good things happen to those that are happy...",
-                "attr": "CHR",
-                "jids": ["IDLE"]
+            "NECTAR": {
+                "rid": "NECTAR",
+                "name": "Nectar",
+                "desc": "Used for creating honey.",
+                "jids": ["FORAGER_NECTAR"]
             },
-            "DIRT": {
-                "rid": "DIRT",
-                "name": "Dirt",
-                "desc": "Used in construction and mining.",
-                "attr": "STR",
-                "jids": ["DIRT_GATHER"]
-            },
-            "WOOD": {
-                "rid": "WOOD",
-                "name": "Wood",
-                "desc": "Used in construction and mining.",
-                "attr": "END",
-                "jids": ["WOOD_GATHER"]
+            "POLLEN": {
+                "rid": "POLLEN",
+                "name": "Pollen",
+                "desc": "Used for food creation.",
+                "jids": ["FORAGER_POLLEN"]
             },
             "WATER": {
                 "rid": "WATER",
                 "name": "Water",
-                "desc": "Used in construction, mining and population expansion.",
-                "attr": "LCK",
-                "jids": ["WATER_GATHER"]
+                "desc": "Used for food creation and breeding.",
+                "jids": ["FORAGER_WATER"]
             },
-            "SCIENCE": {
-                "rid": "SCIENCE",
-                "name": "Science",
-                "desc": "Used in genetic modification and advanced construction.",
-                "attr": "INT",
-                "jids": ["RESEARCHER"]
+            "FOOD": {
+                "rid": "FOOD",
+                "name": "Food",
+                "desc": "Nurishment for the hive.",
+                "jids": ["PRODUCER_FOOD"],
+                "sources": ["HONEY", "POLLEN", "WATER"]
             },
-            "BRICKS": {
-                "rid": "BRICKS",
-                "name": "Bricks",
-                "desc": "Used in construction and smelting.",
-                "attr": "STR"
+            "HONEY": {
+                "rid": "HONEY",
+                "name": "Honey",
+                "desc": "Used for making royal jelly and food and in building.",
+                "jids": ["PRODUCER_HONEY"]
             },
-            "STEEL": {
-                "rid": "STEEL",
-                "name": "Steel",
-                "desc": "Used in advanced construction.",
-                "attr": "STR"
+            "ROYAL_JELLY": {
+                "rid": "ROYAL_JELLY",
+                "name": "Royal Jelly",
+                "desc": "Used for breeding new queens.",
+                "jids": ["NURSE"]
             },
-            "GOLD": {
-                "rid": "GOLD",
-                "name": "Gold",
-                "desc": "Used for purchasing gene research technologies.",
-                "attr": "INT"
+            "WAX": {
+                "rid": "WAX",
+                "name": "Wax",
+                "desc": "Used in honeycomb construction.",
+                "jids": ["BUILDER"]
             },
-            "EVOCOIN": {
-                "rid": "EVOCOIN",
-                "name": "Evo-Coins",
-                "desc": "A rare commodity indeed. Used to discover traits.",
-                "attr": "LCK"
+            "DEADBEES": {
+                "rid": "DEADBEES",
+                "name": "Dead bees",
+                "desc": "Dead bees that take up space, convert them to food.",
+                "jids": ["UNDERTAKER"]
+            },
+            "DEFENSE": {
+                "rid": "DEFENSE",
+                "name": "Defense",
+                "desc": "Hive defensive ability.",
+                "jids": "GUARD"
             }
         }
     }
