@@ -1,3 +1,5 @@
+
+/* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
 game.filter('hasTrait', function() {

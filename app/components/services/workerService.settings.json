@@ -1,84 +1,67 @@
 {
     "constants": {
         "jobTypes": {
+            "IDLE": {
+                "jid": "IDLE"
+            },
             "FORAGER": {
                 "jid": "FORAGER",
                 "name": "Forager",
                 "description": "Collects nectar, pollen, or water",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 0,
-                "actions": {
-                    "collect": ["NECTAR", "POLLEN", "WATER"]
+                "abilities": {
+                    "NECTAR": [{
+                        "storage": "STR_N",
+                        "collect": "SPD_C"
+                    }],
+                    "POLLEN": [{
+                        "storage": "STR_P",
+                        "collect": "SPD_C"
+                    }],
+                    "WATER": [{
+                        "storage": "STR_P",
+                        "collect": "SPD_C"
+                    }]
                 }
             },
             "NURSE": {
                 "jid": "NURSE",
                 "name": "Nurse Bee",
                 "description": "Cares for eggs and produces royal jelly from honey and pollen",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-                    "produce": ["ROYAL_JELLY"]
+                "abilities": {
+                    "ROYAL_JELLY": {
+                        "produce": "PRD_J"
+                    }
                 }
             },
             "PRODUCER_FOOD": {
                 "jid": "PRODUCER_FOOD",
                 "name": "Food producer",
                 "description": "Converts stored honey, pollen, or water into usable food",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-                    "produce": ["FOOD"]
+                "abilities": {
+                    "FOOD": {
+                        "produce": "PRD_F"
+                    }
                 }
             },
             "PRODUCER_HONEY": {
                 "jid": "PRODUCER_HONEY",
                 "name": "Honey producer",
-                "description": "Converts stored nectar into honey",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-                    "produce": ["HONEY"]
-                }
+                "description": "Converts stored nectar into honey"
             },
             "BUILDER": {
                 "jid": "BUILDER",
                 "name": "Wax producer",
-                "description": "Builds honeycomb and converts stored food into wax",
-                "resource": "WAX",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-                    "build": ["HONEYCOMB"],
-                    "produce": ["WAX"]
-                }
+                "description": "Builds honeycomb and converts stored food into wax"
             },
             "UNDERTAKER": {
                 "jid": "UNDERTAKER",
                 "name": "Undertaker bee",
-                "description": "Converts dead bees and rejected eggs into food",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-                    "produce": ["FOOD"]
-                }
+                "description": "Converts dead bees and rejected eggs into food"
             },
             "GUARD": {
                 "jid": "GUARD",
                 "name": "Guard bee",
-                "description": "Protects the hive which reduces the mortality rate",
-                "baseWorkerMs": 4000,
-                "baseAmount": 1,
-                "unlocked": 1,
-                "actions": {
-
-                }
+                "description": "Protects the hive which reduces the mortality rate"
             }
 
         }

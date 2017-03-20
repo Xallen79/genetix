@@ -1,3 +1,4 @@
+/* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqheadMap', {
@@ -10,7 +11,7 @@ game.controller('bloqhead.controllers.map', [
     '$scope', '$rootScope', '$timeout', '$filter', 'mapService',
     function($scope, $rootScope, $timeout, $filter, mapService) {
         var self = this;
-        var canvas, context, map;
+        var canvas, context;
         var hexsize_min = 20;
         var hexsize_max = 120;
 

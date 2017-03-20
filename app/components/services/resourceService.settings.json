@@ -5,19 +5,19 @@
                 "rid": "NECTAR",
                 "name": "Nectar",
                 "desc": "Used for creating honey.",
-                "jids": ["FORAGER_NECTAR"]
+                "jids": ["FORAGER"]
             },
             "POLLEN": {
                 "rid": "POLLEN",
                 "name": "Pollen",
                 "desc": "Used for food creation.",
-                "jids": ["FORAGER_POLLEN"]
+                "jids": ["FORAGER"]
             },
             "WATER": {
                 "rid": "WATER",
                 "name": "Water",
                 "desc": "Used for food creation and breeding.",
-                "jids": ["FORAGER_WATER"]
+                "jids": ["FORAGER"]
             },
             "FOOD": {
                 "rid": "FOOD",

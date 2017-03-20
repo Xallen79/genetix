@@ -1,3 +1,4 @@
+/* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('TraitInspector', ['$filter', 'traitDefinitions', 'beeAbilities', function($filter, traitDefinitions, beeAbilities) {
