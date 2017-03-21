@@ -44,6 +44,18 @@
                     { "DEF": { "percent": 10 } }
                 ],
                 "icon": "icon-shield text-success"
+            },
+            {
+                "name": "Fly 10% Faster",
+                "desc": "Little stinger, faster flier.",
+                "genes": [
+                    { "chromosome": 2, "gene": 0, "value": 0 }
+                ],
+                "requiredTraits": ["Little stinger"],
+                "mods": [
+                    { "SPD_F": { "percent": 10 } }
+                ],
+                "icon": "fa-bolt text-success"
             }
         ],
         "beeAbilities": {
@@ -55,7 +67,7 @@
             "DEF": {
                 "name": "Defense",
                 "desc": "Ability to defend the hive.",
-                "baseValue": 0
+                "baseValue": 1
             },
             "STR_P": {
                 "name": "Pollen Storage",

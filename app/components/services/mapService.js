@@ -26,6 +26,7 @@ game.service('mapService', [
             gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
 
             self.sendMapInitializedEvent();
+            self.sendHiveChangeEvent();
 
             state.initialized = true;
 
@@ -86,6 +87,7 @@ game.service('mapService', [
             var hive = self.getHiveByPosition(hex.id);
             if (hive && hive.id != self.map.config.currentHiveID) {
                 self.map.config.currentHiveID = hive.id;
+                self.sendHiveChangeEvent();
             }
         };
         self.mapMoved = function(x, y) {
@@ -107,7 +109,15 @@ game.service('mapService', [
             self.sendMapUpdateEvent();
         };
         self.sendMapUpdateEvent = function() {
-            $rootScope.$emit('mapUpdateEvent', self.getCurrentHive());
+            $rootScope.$emit('mapUpdateEvent');
+        };
+        self.SubscribeHiveChangeEvent = function(scope, callback) {
+            var handler = $rootScope.$on('hiveChangeEvent', callback.bind(this));
+            scope.$on('$destroy', handler);
+            self.sendHiveChangeEvent();
+        };
+        self.sendHiveChangeEvent = function() {
+            $rootScope.$emit('hiveChangeEvent', { currentHive: self.getCurrentHive() });
         };
 
         self.handleGameLoop = function(event, elapsedMs) {

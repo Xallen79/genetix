@@ -26,7 +26,7 @@ game.controller('bloqhead.controllers.mainGame', [
         self.$onInit = function() {
             self.maxPopulation = 0;
 
-            mapService.SubscribeMapUpdateEvent($scope, self.updateMap);
+            mapService.SubscribeHiveChangeEvent($scope, self.updateHive);
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
         };
 
@@ -54,12 +54,8 @@ game.controller('bloqhead.controllers.mainGame', [
             self.hive.processFate(unitid, fate);
         };
 
-        self.updateMap = function(event, hive) {
-            self.hive = hive;
-            //if (self.currentHiveID !== mapState.currentHiveID) {
-            //    self.currentHiveID = mapState.currentHiveID;
-            //    self.hive = hiveService.getHive(self.currentHiveID);
-            //}
+        self.updateHive = function(event, data) {
+            self.hive = data.currentHive;
         };
 
     }
