@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$filter', '$q', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService',
-    function($filter, $q, Queen, Drone, Worker, Egg, Larva, logService) {
+    '$rootScope', '$filter', '$q', 'Queen', 'Drone', 'Worker', 'Egg', 'Larva', 'logService',
+    function($rootScope, $filter, $q, Queen, Drone, Worker, Egg, Larva, logService) {
 
         /* constructor */
         var Hive = function(state) {
@@ -254,6 +254,92 @@ game.factory('Hive', [
             }
             logService.logBreedMessage(msg);
         };
+
+        // these came from the hiveService
+        Hive.prototype.setNurseryLimit = function(newLimit) {
+            this.newbornLimit = newLimit;
+            //self.sendPopulationUpdateEvent();
+        };
+
+
+        Hive.prototype.getObjectPositions = function() {
+
+        };
+
+        Hive.prototype.setUnitJob = function(id, jid, jobName) {
+            // var unit = self.hive.getById(id);        
+            // unit.jid = jid;
+            // unit.onStrike = false;
+            // var f = jobName.charAt(0).toLowerCase();
+            // var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
+            // var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
+            // self.logService.logWorkMessage(msg);
+            // self.sendPopulationUpdateEvent();
+        };
+
+        Hive.prototype.setPopulationLimit = function(newLimit) {
+            this.maxSize = newLimit;
+            //self.sendPopulationUpdateEvent();
+        };
+        Hive.prototype.processFate = function(unitid, fate) {
+            if (fate === 'DRONE' || fate === 'LARVA' || fate === 'CONSUME_EGG')
+                this.processEggFate(unitid, fate);
+            else
+                this.processLarvaFate(unitid, fate);
+            //self.sendPopulationUpdateEvent();
+        };
+        Hive.prototype.handleGameLoop = function(event, ms) {
+            if (ms === 0)
+                return;
+
+            if (event.name !== 'gameLoopEvent') {
+                console.error('Hive.handleGameLoop - Invalid event: ' + event);
+                return;
+            }
+
+            if (this.canLayEggs()) {
+                var eggLayMs = this.getHeadQueen().getAbility('PRD_E').value;
+                this.msSinceEgg += ms;
+                while (this.msSinceEgg >= eggLayMs) {
+                    this.msSinceEgg -= eggLayMs;
+                    var eggName = this.layEgg();
+                    if (eggName !== null) {
+                        logService.logBreedMessage($filter('fmt')("New egg laid in Hive#%1d! (%2s)", this.id, eggName));
+                    }
+                }
+            }
+        };
+
+
+        Hive.prototype.sendPopulationUpdateEvent = function() {
+            /*
+            var data = [];
+            for (var h = 0; h < self.hives.length; h++) {
+                var hive = self.hives[h];
+                data.push({
+                    id: hive.id,
+                    pos: hive.pos,
+                    queens: hive.queens,
+                    drones: hive.drones,
+                    workers: hive.workers,
+                    eggs: hive.eggs,
+                    larva: hive.larva
+                });
+            }
+            */
+            $rootScope.$emit('hiveUpdateEvent', this);
+        };
+
+        Hive.prototype.SubscribePopulationUpdateEvent = function(scope, callback) {
+            var handler = $rootScope.$on('hiveUpdateEvent', callback.bind(this));
+            scope.$on('$destroy', handler);
+            this.sendPopulationUpdateEvent();
+        };
+
+
+
+
+
         return Hive;
     }
 ]);

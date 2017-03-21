@@ -6,9 +6,6 @@
             "gameLoopServiceState": {
                 "stepTimeMs": 50
             },
-            "hiveServiceState": {
-                "msSinceEgg": 0
-            },
             "achievementServiceState": null,
             "resourceServiceState": {
                 "resources": {}

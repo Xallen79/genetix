@@ -256,8 +256,8 @@ game.component('bloqheadTraitSelector', {
 });
 
 game.controller('bloqhead.controllers.traitSelector', [
-    'hiveService', 'traitDefinitions', 'bloqheadGetGeneProgressStyle',
-    function(hiveService, traitDefinitions, bloqheadGetGeneProgressStyle) {
+    'traitDefinitions', 'bloqheadGetGeneProgressStyle',
+    function(traitDefinitions, bloqheadGetGeneProgressStyle) {
         var self = this;
         self.trait = null;
 

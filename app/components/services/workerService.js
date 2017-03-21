@@ -2,8 +2,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('workerService', [
-    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'hiveService', 'achievementService', 'gameLoopService', 'logService',
-    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, hiveService, achievementService, gameLoopService, logService) {
+    '$rootScope', '$filter', 'jobTypes', 'resourceTypes', 'resourceService', 'achievementService', 'gameLoopService', 'logService',
+    function($rootScope, $filter, jobTypes, resourceTypes, resourceService, achievementService, gameLoopService, logService) {
         var self = this;
         var initialized = false;
         var state;
@@ -13,10 +13,10 @@ game.service('workerService', [
             state = loadState || state || {};
             if (!initialized) {
                 gameLoopService.SubscribeGameLoopEvent($rootScope, handleLoop);
-                hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
+                //hiveService.SubscribePopulationUpdateEvent($rootScope, self.handlePopulationUpdate);
                 initialized = true;
             } else {
-                self.handlePopulationUpdate(null, hiveService.hives);
+                //self.handlePopulationUpdate(null, hiveService.hives);
             }
             for (var res in resourceTypes) {
                 resourceStats[res] = {
@@ -50,7 +50,7 @@ game.service('workerService', [
                     unitid: unitid,
                     stepsSinceWork: 0
                 });
-                hiveService.setUnitJob(unitid, jid, jobTypes[jid].name);
+                //hiveService.setUnitJob(unitid, jid, jobTypes[jid].name);
                 self.getWorkersSnapshot();
             }
         };
@@ -88,12 +88,14 @@ game.service('workerService', [
         };
 
         self.handlePopulationUpdate = function(event, data) {
-            for (var m = 0; m < data[0].workers.length; m++) {
-                var unit = data[0].workers[m];
-                if (unit.jid) {
+            if (data.length > 0) {
+                for (var m = 0; m < data[0].workers.length; m++) {
+                    var unit = data[0].workers[m];
+                    if (unit.jid) {
 
-                    self.addWorker(unit.jid, unit.id);
+                        self.addWorker(unit.jid, unit.id);
 
+                    }
                 }
             }
             self.getWorkersSnapshot();

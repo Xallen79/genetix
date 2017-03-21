@@ -1,38 +1,59 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('mapService', [
-    '$rootScope', '$filter', 'hiveService', 'gameLoopService', 'logService', 'Grid', 'Point',
-    function($rootScope, $filter, hiveService, gameLoopService, logService, Grid, Point) {
+    '$rootScope', '$filter', 'gameLoopService', 'logService', 'Grid', 'Point', 'Hive',
+    function($rootScope, $filter, gameLoopService, logService, Grid, Point, Hive) {
         var self = this;
         var state;
 
         self.init = function(loadState) {
             state = loadState || state || {};
 
-            if (!angular.isDefined(state.initialized))
-                state.initialized = false;
-            if (!angular.isDefined(state.currentHiveID))
-                state.currentHiveID = hiveService.hives[0].id;
-            if (!angular.isDefined(state.selectedHexID))
-                state.selectedHexID = undefined;
+            self.hives = [];
+
             if (!angular.isDefined(state.mapconfig)) {
-                self.map = self.generateInitialMap();
+                self.generateInitialMap();
                 state.mapconfig = self.map.config;
             } else {
                 self.map = new Grid(state.mapconfig);
+                for (var h = 0; h < state.hiveStates.length; h++) {
+                    var hive = new Hive(state.hiveStates[h]);
+                    hive.SubscribePopulationUpdateEvent($rootScope, self.handleHiveUpdate);
+                    self.hives.push(hive);
+                }
             }
 
-            hiveService.SubscribePopulationUpdateEvent($rootScope, self.handleHiveUpdate);
+
             gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
 
-            self.sendMapUpdateEvent();
+            self.sendMapInitializedEvent();
 
             state.initialized = true;
 
         };
         self.getState = function() {
+            state.mapconfig = self.map.config;
+
+            // hives
+            state.hiveStates = [];
+            for (var h = 0; h < self.hives.length; h++) {
+                state.hiveStates.push(self.hives[h].getState());
+            }
+
+            // resource nodes
+            // TODO
+
+
             return state;
         };
+
+
+        self.getHiveByPosition = function(pos) {
+            return $filter('filter')(self.hives, { pos: pos })[0];
+        };
+
+
+        // methods called by the component
         self.mapClicked = function(x, y) {
 
 
@@ -43,7 +64,7 @@ game.service('mapService', [
 
             // handle clicking on a hex
             var hex = self.map.GetHexAt(p);
-            var oldhex = self.map.GetHexById(state.selectedHexID);
+            var oldhex = self.map.GetHexById(self.map.config.selectedHexID);
 
             if (hex === null || typeof hex === 'undefined')
                 return;
@@ -56,43 +77,58 @@ game.service('mapService', [
                 }
             }
             hex.selected = true;
-            state.selectedHexID = hex.id;
+            self.map.config.selectedHexID = hex.id;
 
             // check if this hex has a hive, if so, select it
-            var hive = $filter('filter')(this.hives, { pos: hex.id })[0];
-            if (hive && hive.id != state.currentHiveID) {
-                state.currentHiveID = hive.id;
+            var hive = self.getHiveByPosition(hex.id);
+            if (hive && hive.id != self.map.config.currentHiveID) {
+                self.map.config.currentHiveID = hive.id;
             }
         };
+        self.mapMoved = function(x, y) {
+            self.map.config.canvasLocation = new Point(x, y);
+        };
 
-
-
+        // map events
+        self.SubscribeMapInitializedEvent = function(scope, callback) {
+            var handler = $rootScope.$on('mapInitializedEvent', callback.bind(this));
+            scope.$on('$destroy', handler);
+            self.sendMapInitializedEvent();
+        };
+        self.sendMapInitializedEvent = function() {
+            $rootScope.$emit('mapInitializedEvent', self.map.config);
+        };
         self.SubscribeMapUpdateEvent = function(scope, callback) {
             var handler = $rootScope.$on('mapUpdateEvent', callback.bind(this));
             scope.$on('$destroy', handler);
             self.sendMapUpdateEvent();
         };
         self.sendMapUpdateEvent = function() {
-            var s = state;
-            s.hives = [];
-            for (var h = 0; h < self.hives.length; h++) {
-                var hive = self.hives[h];
-                s.hives.push({
-                    id: hive.id,
-                    pos: hive.pos
-                });
-            }
-            $rootScope.$emit('mapUpdateEvent', s);
+            /*
+             var s = state;
+             s.hives = [];
+             for (var h = 0; h < self.hives.length; h++) {
+                 var hive = self.hives[h];
+                 s.hives.push({
+                     id: hive.id,
+                     pos: hive.pos
+                 });
+             }
+             */
+            $rootScope.$emit('mapUpdateEvent');
         };
+
         self.handleGameLoop = function(event, elapsedMs) {
             if (elapsedMs !== 0) { // do animations here
             }
             self.sendMapUpdateEvent(); //always send update so map will be rendered;
         };
-        self.handleHiveUpdate = function(event, data) {
-            self.hives = data;
+
+        self.handleHiveUpdate = function(event, hive) {
+            //self.hives = data;
             self.sendMapUpdateEvent();
         };
+
 
         self.drawMap = function(context) {
             clear(context);
@@ -100,13 +136,27 @@ game.service('mapService', [
             drawHives(context);
         };
 
+        self.addHive = function(position) {
+            var id = self.hives.length + 1;
+            self.hives.push(new Hive({
+                "id": id,
+                "initialSize": 2,
+                "maxSize": 5,
+                "beeMutationChance": 0.0025,
+                "pos": position
+            }));
+            //self.sendPopulationUpdateEvent();
+        };
 
         // map generating
         self.generateInitialMap = function() {
-            return new Grid({
-                MAPWIDTH: 6,
-                MAPHEIGHT: 8
+            self.map = new Grid({
+                MAPWIDTH: 7,
+                MAPHEIGHT: 7
             });
+            self.setHexSizeByHeight(50);
+            self.map.config.canvasLocation = new Point(0, 0);
+            self.addHive("G7");
         };
 
         /**
@@ -115,24 +165,26 @@ game.service('mapService', [
          */
         self.setHexSizeByHeight = function(height) {
             height = height || 30;
-            width = height * (2 / (Math.sqrt(3)));
 
-            var y = height / 2.0;
+            var width = height * (2 / (Math.sqrt(3)));
 
             //solve quadratic
             var a = -3.0;
             var b = (-2.0 * width);
             var c = (Math.pow(width, 2)) + (Math.pow(height, 2));
             var z = (-b - Math.sqrt(Math.pow(b, 2) - (4.0 * a * c))) / (2.0 * a);
-            var x = (width - z) / 2.0;
 
             self.map.config.WIDTH = width;
             self.map.config.HEIGHT = height;
             self.map.config.SIDE = z;
             self.map.Relocate();
+            self.map.config.canvasSize = calcCanvasSize();
 
-            // retrun the height and width of the map, including MARGIN
-            return calcCanvasSize();
+            // update state
+            state.mapconfig = self.map.config;
+
+            // return the new config
+            return self.map.config;
 
         };
 
@@ -163,9 +215,13 @@ game.service('mapService', [
             self.map.config.HEIGHT = height;
             self.map.config.SIDE = z;
             self.map.Relocate();
+            self.map.config.canvasSize = calcCanvasSize();
 
-            // retrun the height and width of the map, including MARGIN
-            return calcCanvasSize();
+            // update state
+            state.mapconfig = self.map.config;
+
+            // return the new config
+            return self.map.config;
         };
 
         function calcCanvasSize() {
@@ -188,11 +244,11 @@ game.service('mapService', [
         }
 
         function drawHives(context) {
-            for (var i = 0; i < state.hives.length; i++) {
-                var hive = state.hives[i];
+            for (var i = 0; i < self.hives.length; i++) {
+                var hive = self.hives[i];
                 var hex = self.map.GetHexById(hive.pos);
                 var id = 'H' + hive.id;
-                context.fillStyle = hive.id === state.currentHiveID ? 'yellow' : 'grey';
+                context.fillStyle = hive.id === self.map.config.currentHiveID ? 'yellow' : 'grey';
                 context.beginPath();
                 context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, 2 * Math.PI);
                 context.closePath();

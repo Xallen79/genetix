@@ -20,13 +20,13 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', '$filter', 'hiveService', 'achievementService', 'resourceService', 'workerService', 'mapService',
-    function($scope, $filter, hiveService, achievementService, resourceService, workerService, mapService) {
+    '$scope', '$filter', 'achievementService', 'resourceService', 'workerService', 'mapService',
+    function($scope, $filter, achievementService, resourceService, workerService, mapService) {
         var self = this;
         self.$onInit = function() {
             self.maxPopulation = 0;
 
-            hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
+            //hiveService.SubscribePopulationUpdateEvent($scope, self.updatePopulation);
             mapService.SubscribeMapUpdateEvent($scope, self.updateMap);
             achievementService.SubscribeNewRewardEvent($scope, self.rewardEarned);
         };
@@ -40,7 +40,7 @@ game.controller('bloqhead.controllers.mainGame', [
             workerService.addWorker(jobType, unitid);
         };
 
-
+        /*
         self.updatePopulation = function(event, data) {
             if (!self.currentHiveID) {
                 self.hive = data[0];
@@ -48,16 +48,18 @@ game.controller('bloqhead.controllers.mainGame', [
             } else {
                 self.hive = $filter('filter')(data, { id: self.currentHiveID })[0];
             }
+            
         };
+        */
         self.decideFate = function(unitid, fate) {
-            hiveService.processFate(unitid, fate, self.currentHiveID);
+            //hiveService.processFate(unitid, fate, self.currentHiveID);
         };
 
         self.updateMap = function(event, mapState) {
-            if (self.currentHiveID !== mapState.currentHiveID) {
-                self.currentHiveID = mapState.currentHiveID;
-                self.hive = hiveService.getHive(self.currentHiveID);
-            }
+            //if (self.currentHiveID !== mapState.currentHiveID) {
+            //    self.currentHiveID = mapState.currentHiveID;
+            //    self.hive = hiveService.getHive(self.currentHiveID);
+            //}
         };
 
     }
