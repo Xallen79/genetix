@@ -35,7 +35,6 @@ game.factory('Bee', [
             this.genome = new Genome(config.genomeState || this.genomeState || { mutationChance: this.beeMutationChance });
             this.genomeState = this.genome.getState();
             this.dead = config.dead || this.dead || false;
-            //this.redGreenImage = getRedGreenImage(this.genes, this.genesUnlocked, this.beeGeneCap);
 
             this.traits = this.traitInspector.getTraits(this.genome);
             this.abilities = this.traitInspector.getAbilities(this.traits);
@@ -75,23 +74,8 @@ game.factory('Bee', [
             console.log(this.name + " died.");
             this.dead = true;
         };
-        /*
-        Bee.prototype.getRandomName = function() {
-            if (!this.genes || this.genes.length === 0) {
-                return 'Unknown Gender';
-            }
-
-            var firstName = (this.hasTrait('Male')) ? nameList1[randomIntFromInterval(0, nameList1.length - 1)] : nameList2[randomIntFromInterval(0, nameList2.length - 1)];
-            var lastName = nameList3[randomIntFromInterval(0, nameList3.length - 1)] + nameList4[randomIntFromInterval(0, nameList4.length - 1)] + nameList5[randomIntFromInterval(0, nameList5.length - 1)];
-            return firstName + lastName;
-        };
-        */
 
         /* private members */
-        var geneticOptions = {
-            crossoverrate: 0.5
-        };
-
         var zeroEarnings = {};
         for (var key in resourceTypes) {
             zeroEarnings[key] = {
@@ -100,111 +84,9 @@ game.factory('Bee', [
             };
         }
 
-
-
-        /*
-
-        // male first names
-        var nameList1 = ['Diggy ', 'Dean ', 'Duke ', 'Doyle ', 'Dirk ', 'Dag ', 'Dimitri ', 'Dru '];
-        // female first names
-        var nameList2 = ['Daggy ', 'Daisy ', 'Dinah ', 'Dharma ', 'Dee ', 'Daphne ', 'Dixie ', 'Darcy '];
-        // last name prefixes (empty strings and dupes are for controlling the odds)
-        var nameList3 = ['', '', '', '', '', 'Van ', 'Von ', 'O\'', 'Mc', 'Mc'];
-        // last names
-        var nameList4 = ['Doog', 'Dibb', 'Dabb', 'Dig', 'Dang', 'Dugg'];
-        // last name suffixes (empty strings and dupes are for controlling the odds)
-        var nameList5 = ['', '', '', 'ler', 'ler', 'er', 'er', 'er', 'wuerst', 'erwuerst', 'erton', 'erton', 'ski'];
-
-
-
-
-
-
-
         /* private functions */
 
-        function gcd(a, b) {
-            return !b ? a : gcd(b, a % b);
-        }
-
-        function lcm(a, b) {
-            return (a * b) / gcd(a, b);
-        }
-
-        function getRedGreenImage(genes, genesUnlocked, beeGeneCap) {
-            if (genes.length === 0) return;
-            var unlocked = {
-                "STR": [],
-                "INT": [],
-                "END": [],
-                "CHR": [],
-                "LCK": []
-            };
-            var genesToUse = [];
-            // sort the unlocked genes into arrays.
-            for (var u = 0; u < genesUnlocked.length; u++) {
-                var attr = geneDefinitions[genesUnlocked[u]].attr;
-                unlocked[attr].push(genes[genesUnlocked[u]]);
-            }
-            // get the least common multiple for that lengths of each array to determine the number of pixels necessary
-            // this assumes each attribute has at least 1 gene unlocked.
-            var arr = [unlocked.STR.length, unlocked.INT.length, unlocked.END.length, unlocked.CHR.length, unlocked.LCK.length];
-            var multiple = Math.min(unlocked.STR.length, unlocked.INT.length, unlocked.END.length, unlocked.CHR.length, unlocked.LCK.length);
-            arr.forEach(function(n) {
-                multiple = lcm(multiple, n);
-            });
-            while (multiple < 5) { multiple *= 2; }
-            for (var key in unlocked) {
-                var geneSize = multiple / unlocked[key].length;
-                for (var g = 0; g < unlocked[key].length; g++) {
-                    for (var s = 0; s < geneSize; s++) {
-                        genesToUse.push(unlocked[key][g]);
-                    }
-                }
-            }
-            return generateBitmapDataURL(addRows(convertRedGreenMap(genesToUse, beeGeneCap), genesToUse.length), 1);
-        }
-
-
-        function convertRedGreenMap(genes, beeGeneCap) {
-            var result = [];
-            var minColorRatio = 1 + beeGeneCap / 50.0;
-            var colorRatio = 205.0 / beeGeneCap;
-            for (var i = 0; i < genes.length; i++) {
-                var r = genes[i][0];
-                var g = genes[i][1];
-                var bright = Math.abs(r - g) * colorRatio;
-                if (r > g) {
-                    r = bright;
-                    r *= minColorRatio;
-                    g = 0;
-                } else {
-                    r = 0;
-                    g = bright;
-                    g *= minColorRatio;
-                }
-                //if (r > 0) r += minColor;
-                //if (g > 0) g += minColor;
-                if (r > 255) r = 255;
-                if (g > 255) g = 255;
-
-                result.push([r, g, 0]);
-            }
-            return result;
-        }
-
-        function addRows(genes, cols) {
-            var result = [];
-            for (var j = 0; j < (genes.length / cols); j++) {
-                var row = [];
-                for (var i = 0; i < cols; i++) {
-                    row.push(genes[i + (j * cols)]);
-                }
-                result.push(row);
-            }
-            return result;
-        }
-
+        /* Bee types */
         var Queen = function(config) {
             this.config = config;
             this.beetype = "queen";

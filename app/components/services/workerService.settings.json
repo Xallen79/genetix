@@ -2,25 +2,34 @@
     "constants": {
         "jobTypes": {
             "IDLE": {
-                "jid": "IDLE"
+                "jid": "IDLE",
+                "name": "Idler"
             },
             "FORAGER": {
                 "jid": "FORAGER",
                 "name": "Forager",
                 "description": "Collects nectar, pollen, or water",
                 "abilities": {
-                    "NECTAR": [{
-                        "storage": "STR_N",
-                        "collect": "SPD_C"
-                    }],
-                    "POLLEN": [{
-                        "storage": "STR_P",
-                        "collect": "SPD_C"
-                    }],
-                    "WATER": [{
-                        "storage": "STR_P",
-                        "collect": "SPD_C"
-                    }]
+                    "collect": [{
+                            "rid": "NECTAR",
+                            "storage": "STR_N",
+                            "gatherspeed": "SPD_C",
+                            "travelspeed": "SPC_F"
+                        },
+                        {
+                            "rid": "POLLEN",
+                            "storage": "STR_P",
+                            "gatherspeed": "SPD_C",
+                            "travelspeed": "SPC_F"
+                        },
+                        {
+                            "rid": "WATER",
+                            "storage": "STR_P",
+                            "gatherspeed": "SPD_C",
+                            "travelspeed": "SPC_F"
+                        }
+                    ]
+
                 }
             },
             "NURSE": {
@@ -28,40 +37,76 @@
                 "name": "Nurse Bee",
                 "description": "Cares for eggs and produces royal jelly from honey and pollen",
                 "abilities": {
-                    "ROYAL_JELLY": {
-                        "produce": "PRD_J"
-                    }
+                    "produce": [{
+                        "rid": "ROYAL_JELLY",
+                        "rate": "PRD_J",
+                        "cost": ["COST_J_H", "COST_J_P"],
+                        "yield": "YLD_J"
+                    }]
                 }
             },
             "PRODUCER_FOOD": {
                 "jid": "PRODUCER_FOOD",
                 "name": "Food producer",
-                "description": "Converts stored honey, pollen, or water into usable food",
+                "description": "Converts stored honey, pollen, and water into usable food",
                 "abilities": {
-                    "FOOD": {
-                        "produce": "PRD_F"
-                    }
+                    "produce": [{
+                        "rid": "FOOD",
+                        "rate": "PRD_F",
+                        "cost": ["COST_F_H", "COST_F_P", "COST_F_W"],
+                        "yield": "YLD_F"
+                    }]
                 }
             },
             "PRODUCER_HONEY": {
                 "jid": "PRODUCER_HONEY",
                 "name": "Honey producer",
-                "description": "Converts stored nectar into honey"
+                "description": "Converts stored nectar into honey",
+                "abilities": {
+                    "produce": [{
+                        "rid": "HONEY",
+                        "rate": "PRD_H",
+                        "cost": ["COST_H_N"],
+                        "yield": "YLD_H"
+                    }]
+                }
             },
             "BUILDER": {
                 "jid": "BUILDER",
-                "name": "Wax producer",
-                "description": "Builds honeycomb and converts stored food into wax"
+                "name": "Builder",
+                "description": "Converts stored food into wax",
+                "abilities": {
+                    "produce": [{
+                        "rid": "WAX",
+                        "rate": "PRD_W",
+                        "cost": ["COST_W_F"],
+                        "yield": "YLD_W"
+                    }]
+                }
             },
             "UNDERTAKER": {
                 "jid": "UNDERTAKER",
                 "name": "Undertaker bee",
-                "description": "Converts dead bees and rejected eggs into food"
+                "description": "Converts dead bees and rejected eggs into food",
+                "abilities": {
+                    "produce": [{
+                        "rid": "FOOD",
+                        "rate": "PRD_F",
+                        "cost": "COST_F_DB",
+                        "yield": "YLD_F"
+                    }]
+                }
             },
             "GUARD": {
                 "jid": "GUARD",
                 "name": "Guard bee",
-                "description": "Protects the hive which reduces the mortality rate"
+                "description": "Protects the hive which reduces the mortality rate",
+                "abilities": {
+                    "protect": [{
+                        "rid": "DEFENSE",
+                        "amount": "DEF"
+                    }]
+                }
             }
 
         }

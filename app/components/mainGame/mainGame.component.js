@@ -35,8 +35,8 @@ game.controller('bloqhead.controllers.mainGame', [
             console.log(reward);
         };
 
-        self.assign = function(unitid, jobType) {
-            workerService.addWorker(jobType, unitid);
+        self.assign = function(unitid, jid) {
+            self.hive.setUnitJob(unitid, jid);
         };
 
         /*

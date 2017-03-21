@@ -49,11 +49,11 @@ game.service('mapService', [
 
 
         self.getHiveByPosition = function(pos) {
-            return $filter('filter')(self.hives, { pos: pos })[0];
+            return $filter('filter')(self.hives, { pos: pos }, true)[0];
         };
 
         self.getCurrentHive = function() {
-            return $filter('filter')(self.hives, { id: self.map.config.currentHiveID })[0];
+            return $filter('filter')(self.hives, { id: self.map.config.currentHiveID }, true)[0];
         };
 
 

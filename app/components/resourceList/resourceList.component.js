@@ -1,8 +1,12 @@
+/* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqheadResourceList', {
     templateUrl: 'components/resourceList/resourceList.html',
-    controller: 'bloqhead.controllers.resourceList'
+    controller: 'bloqhead.controllers.resourceList',
+    bindings: {
+        assign: "&"
+    }
 });
 
 
@@ -26,11 +30,6 @@ game.controller('bloqhead.controllers.resourceList', [
             resourceService.SubscribeResourceEnabledEvent($scope, self.resourceEnabled);
             self.resources = resourceService.getResourcesSnapshot();
             self.workers = [];
-            workerService.SubscribeWorkersChangedEvent($scope, self.updateWorkers);
-        };
-
-        self.updateWorkers = function(event, workers) {
-            self.workers = workers;
         };
 
         self.getUnlockedResources = function() {
@@ -62,8 +61,8 @@ game.controller('bloqhead.controllers.resourceList', [
 
         self.dropped = function(dragId, dropId, relativePos, resourceKey) {
             var jobType = resourceTypes[resourceKey].jids[0];
-            var unitid = angular.element(document.getElementById(dragId)).data('breederid');
-            workerService.addWorker(jobType, unitid);
+            var unitid = angular.element(document.getElementById(dragId)).data('beeid');
+            self.assign({ $id: unitid, $jid: jobType });
         };
 
         self.resourceChanged = function(event, resourceType, amount) {

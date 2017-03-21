@@ -23,8 +23,7 @@
                 "rid": "FOOD",
                 "name": "Food",
                 "desc": "Nurishment for the hive.",
-                "jids": ["PRODUCER_FOOD"],
-                "sources": ["HONEY", "POLLEN", "WATER"]
+                "jids": ["PRODUCER_FOOD"]
             },
             "HONEY": {
                 "rid": "HONEY",
@@ -54,7 +53,7 @@
                 "rid": "DEFENSE",
                 "name": "Defense",
                 "desc": "Hive defensive ability.",
-                "jids": "GUARD"
+                "jids": ["GUARD"]
             }
         }
     }

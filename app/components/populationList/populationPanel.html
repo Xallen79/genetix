@@ -1,7 +1,7 @@
 <div class="population-panel">
     <table>
         <tr ng-repeat="bee in $ctrl.population | applyPopulationFilter: $ctrl.filter | orderBy: $ctrl.orderBy" class="population-list animate-repeat">
-            <td>
+            <td lvl-draggable="true" data-beeid="{{bee.id}}">
                 <span ng-bind="bee.name"></span>&nbsp;<i class="fa {{trait.icon}}" ng-repeat="trait in bee.traits" uib-tooltip-template="'traitTooltip.html'" tooltip-class="trait-tooltip"></i>
             </td>
         </tr>

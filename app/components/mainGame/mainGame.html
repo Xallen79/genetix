@@ -6,7 +6,7 @@
                     <i class="fa fa-th"></i> Resources
                 </bloqhead-player-box-title>
                 <div class="row">
-                    <bloqhead-resource-list></bloqhead-resource-list>
+                    <bloqhead-resource-list assign="$ctrl.assign($id, $jid)"></bloqhead-resource-list>
                 </div>
             </bloqhead-player-box>
         </div>
@@ -40,7 +40,7 @@
             <bloqhead-map></bloqhead-map>
         </div>
         <div class="col-xs-4 fullH">
-            <bloqhead-population-list hive="$ctrl.hive" max-population="$ctrl.maxPopulation" assign="$ctrl.assign($id, $type)"></bloqhead-population-list>
+            <bloqhead-population-list hive="$ctrl.hive" max-population="$ctrl.maxPopulation"></bloqhead-population-list>
         </div>
 
     </div>

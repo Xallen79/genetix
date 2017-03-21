@@ -59,50 +59,33 @@
             }
         ],
         "beeAbilities": {
-            "RNG": {
-                "name": "Range",
-                "desc": "Number of cells a bee can fly before having to return to the hive.",
-                "baseValue": 5
-            },
             "DEF": {
                 "name": "Defense",
                 "desc": "Ability to defend the hive.",
                 "baseValue": 1
             },
+            "RNG": {
+                "name": "Range",
+                "desc": "Number of cells a bee can fly before having to return to the hive.",
+                "baseValue": 5
+            },
             "STR_P": {
                 "name": "Pollen Storage",
                 "desc": "The amount of pollen a bee can hold.",
-                "baseValue": 10
+                "baseValue": 10,
+                "rid": "POLLEN"
             },
             "STR_N": {
                 "name": "Nectar Storage",
                 "desc": "The amount of nectar a bee can hold.",
-                "baseValue": 10
+                "baseValue": 10,
+                "rid": "NECTAR"
             },
             "STR_W": {
                 "name": "Water Storage",
                 "desc": "The amount of water a bee can hold.",
-                "baseValue": 10
-            },
-            "PRD_E": {
-                "name": "Egg Production",
-                "desc": "The rate at which a bee can produce eggs.",
-                "baseValue": 30000
-            },
-            "PRD_H": {
-                "name": "Honey Production",
-                "desc": "The rate at which a bee can produce honey.",
-                "baseValue": 30000
-            },
-            "PRD_W": {
-                "name": "Wax Production",
-                "desc": "The rate at which a bee can produce wax.",
-                "baseValue": 30000
-            },
-            "PRD_J": {
-                "name": "Royal Jelly Production",
-                "desc": "The rate at which a bee can produce royal jelly.",
-                "baseValue": 30000
+                "baseValue": 10,
+                "rid": "WATER"
             },
             "SPD_F": {
                 "name": "Flight Speed",
@@ -114,10 +97,119 @@
                 "desc": "The rate at which a bee can collect 1 resource from a node.",
                 "baseValue": 1000
             },
+
+            "PRD_H": {
+                "name": "%(resource)s Production Rate",
+                "desc": "The rate at which a bee can produce %(resource)s.",
+                "baseValue": 30000,
+                "rid": "HONEY"
+            },
+            "YLD_H": {
+                "name": "%(resource) Production Yield",
+                "desc": "The amount of %(resource)s a bee can produce.",
+                "baseValue": 1,
+                "rid": "HONEY"
+            },
+            "COST_H_N": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 1,
+                "rid": "HONEY",
+                "c_rid": "NECTAR"
+            },
+
+            "PRD_W": {
+                "name": "%(resource)s Production Rate",
+                "desc": "The rate at which a bee can produce %(resource)s.",
+                "baseValue": 30000,
+                "rid": "WAX"
+            },
+            "YLD_W": {
+                "name": "%(resource) Production Yield",
+                "desc": "The amount of %(resource)s a bee can produce.",
+                "baseValue": 1,
+                "rid": "WAX"
+            },
+            "COST_W_F": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 10,
+                "rid": "WAX",
+                "c_rid": "FOOD"
+            },
+
+            "PRD_J": {
+                "name": "%(resource)s Production Rate",
+                "desc": "The rate at which a bee can produce %(resource)s.",
+                "baseValue": 30000,
+                "rid": "ROYAL_JELLY"
+            },
+            "YLD_J": {
+                "name": "%(resource) Production Yield",
+                "desc": "The amount of %(resource)s a bee can produce.",
+                "baseValue": 1,
+                "rid": "ROYAL_JELLY"
+            },
+            "COST_J_H": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 10,
+                "rid": "ROYAL_JELLY",
+                "c_rid": "HONEY"
+            },
+            "COST_J_P": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 10,
+                "rid": "ROYAL_JELLY",
+                "c_rid": "POLLEN"
+            },
+
             "PRD_F": {
-                "name": "Food Production",
-                "desc": "The rate at which a bee can convert honey, dead bees, water, and nectar to food",
-                "baseValue": 10000
+                "name": "%(resource)s Production Rate",
+                "desc": "The rate at which a bee can produce %(resource)s.",
+                "baseValue": 10000,
+                "rid": "FOOD"
+            },
+            "YLD_F": {
+                "name": "%(resource) Production Yield",
+                "desc": "The amount of %(resource)s a bee can produce.",
+                "baseValue": 1,
+                "rid": "FOOD"
+            },
+            "COST_F_P": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 1,
+                "rid": "FOOD",
+                "c_rid": "POLLEN"
+            },
+            "COST_F_H": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 1,
+                "rid": "FOOD",
+                "c_rid": "HONEY"
+            },
+            "COST_F_W": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 1,
+                "rid": "FOOD",
+                "c_rid": "WATER"
+            },
+            "COST_F_DB": {
+                "name": "%(resource)s Production Cost (%(cost)s)",
+                "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
+                "baseValue": 5,
+                "rid": "FOOD",
+                "c_rid": "DEADBEES"
+            },
+
+            "PRD_E": {
+                "name": "Egg Production",
+                "desc": "The rate at which a bee can produce eggs.",
+                "baseValue": 30000
             }
         }
     }

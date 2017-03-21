@@ -109,7 +109,6 @@ game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
     bindings: {
-        assign: '&',
         hive: '<',
         maxPopulation: '='
     }

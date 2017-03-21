@@ -2,8 +2,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$rootScope', '$filter', '$q', 'Bee', 'logService',
-    function($rootScope, $filter, $q, Bee, logService) {
+    '$rootScope', '$filter', '$q', 'Bee', 'logService', 'jobTypes',
+    function($rootScope, $filter, $q, Bee, logService, jobTypes) {
 
         /* constructor */
         var Hive = function(state) {
@@ -142,14 +142,9 @@ game.factory('Hive', [
                     console.error("Invalid type: " + type);
                     return null;
             }
-            return $filter('filter')(list, { id: id })[0];
+            return $filter('filter')(list, { id: id }, true)[0];
         };
 
-        Hive.prototype.getByGeneration = function(generation) {
-            // return this.members.filter(function(unit) {
-            //     return unit.generation === generation;
-            // });
-        };
         Hive.prototype.getHeadQueen = function() {
             if (this.queens.length)
                 return this.queens[0]; //assuming first queen is the egg producer...
@@ -256,39 +251,28 @@ game.factory('Hive', [
             logService.logBreedMessage(msg);
         };
 
-        // these came from the hiveService
-        Hive.prototype.setNurseryLimit = function(newLimit) {
-            this.newbornLimit = newLimit;
-            //self.sendPopulationUpdateEvent();
-        };
-
-
-        Hive.prototype.getObjectPositions = function() {
-
-        };
-
-        Hive.prototype.setUnitJob = function(id, jid, jobName) {
-            // var unit = self.hive.getById(id);        
-            // unit.jid = jid;
-            // unit.onStrike = false;
-            // var f = jobName.charAt(0).toLowerCase();
-            // var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
-            // var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
-            // self.logService.logWorkMessage(msg);
-            // self.sendPopulationUpdateEvent();
+        Hive.prototype.setUnitJob = function(id, jid) {
+            var unit = this.getById(id, "WORKER");
+            if (unit) {
+                unit.jid = jid;
+                var jobName = jobTypes[jid].name;
+                var f = jobName.charAt(0).toLowerCase();
+                var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
+                var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
+                logService.logWorkMessage(msg);
+            }
         };
 
         Hive.prototype.setPopulationLimit = function(newLimit) {
             this.maxSize = newLimit;
-            //self.sendPopulationUpdateEvent();
         };
         Hive.prototype.processFate = function(unitid, fate) {
             if (fate === 'DRONE' || fate === 'LARVA' || fate === 'CONSUME_EGG')
                 this.processEggFate(unitid, fate);
             else
                 this.processLarvaFate(unitid, fate);
-            //self.sendPopulationUpdateEvent();
         };
+
         Hive.prototype.handleGameLoop = function(event, ms) {
             if (ms === 0)
                 return;
