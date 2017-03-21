@@ -310,36 +310,6 @@ game.factory('Hive', [
             }
         };
 
-
-        Hive.prototype.sendPopulationUpdateEvent = function() {
-            /*
-            var data = [];
-            for (var h = 0; h < self.hives.length; h++) {
-                var hive = self.hives[h];
-                data.push({
-                    id: hive.id,
-                    pos: hive.pos,
-                    queens: hive.queens,
-                    drones: hive.drones,
-                    workers: hive.workers,
-                    eggs: hive.eggs,
-                    larva: hive.larva
-                });
-            }
-            */
-            $rootScope.$emit('hiveUpdateEvent', this);
-        };
-
-        Hive.prototype.SubscribePopulationUpdateEvent = function(scope, callback) {
-            var handler = $rootScope.$on('hiveUpdateEvent', callback.bind(this));
-            scope.$on('$destroy', handler);
-            this.sendPopulationUpdateEvent();
-        };
-
-
-
-
-
         return Hive;
     }
 ]);

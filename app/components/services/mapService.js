@@ -18,7 +18,6 @@ game.service('mapService', [
                 self.map = new Grid(state.mapconfig);
                 for (var h = 0; h < state.hiveStates.length; h++) {
                     var hive = new Hive(state.hiveStates[h]);
-                    hive.SubscribePopulationUpdateEvent($rootScope, self.handleHiveUpdate);
                     self.hives.push(hive);
                 }
             }
@@ -50,6 +49,10 @@ game.service('mapService', [
 
         self.getHiveByPosition = function(pos) {
             return $filter('filter')(self.hives, { pos: pos })[0];
+        };
+
+        self.getCurrentHive = function() {
+            return $filter('filter')(self.hives, { id: self.map.config.currentHiveID })[0];
         };
 
 
@@ -104,31 +107,17 @@ game.service('mapService', [
             self.sendMapUpdateEvent();
         };
         self.sendMapUpdateEvent = function() {
-            /*
-             var s = state;
-             s.hives = [];
-             for (var h = 0; h < self.hives.length; h++) {
-                 var hive = self.hives[h];
-                 s.hives.push({
-                     id: hive.id,
-                     pos: hive.pos
-                 });
-             }
-             */
-            $rootScope.$emit('mapUpdateEvent');
+            $rootScope.$emit('mapUpdateEvent', self.getCurrentHive());
         };
 
         self.handleGameLoop = function(event, elapsedMs) {
             if (elapsedMs !== 0) { // do animations here
+                for (var h = 0; h < self.hives.length; h++) {
+                    self.hives[h].handleGameLoop(event, elapsedMs);
+                }
             }
             self.sendMapUpdateEvent(); //always send update so map will be rendered;
         };
-
-        self.handleHiveUpdate = function(event, hive) {
-            //self.hives = data;
-            self.sendMapUpdateEvent();
-        };
-
 
         self.drawMap = function(context) {
             clear(context);
@@ -157,6 +146,8 @@ game.service('mapService', [
             self.setHexSizeByHeight(50);
             self.map.config.canvasLocation = new Point(0, 0);
             self.addHive("G7");
+            self.addHive("J10");
+            self.map.config.currentHiveID = self.hives[0].id;
         };
 
         /**

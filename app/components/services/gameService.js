@@ -79,49 +79,71 @@ game.service('gameService', [
             }
         };
         self.startGame = function() {
-            logService.init(self.gameState.clearLog);
-
-            resourceService.init(
-                angular.merge({},
-                    defaultState.resourceServiceState,
-                    self.gameState.resourceServiceState
-                )
-            );
-
-            achievementService.init(
-                angular.merge({},
-                    defaultState.achievementServiceState,
-                    self.gameState.achievementServiceState
-                )
-            );
-
-            buildingService.init(
-                angular.merge({},
-                    defaultState.buildingServiceState,
-                    self.gameState.buildingServiceState
-                )
-            );
-            workerService.init(
-                angular.merge({},
-                    defaultState.workerServiceState,
-                    self.gameState.workerServiceState
-                )
-            );
-
-            mapService.init(
-                angular.merge({},
-                    defaultState.mapServiceState,
-                    self.gameState.mapServiceState
-                )
-            );
-
-            gameLoopService.init(
-                angular.merge({},
-                    defaultState.gameLoopServiceState,
-                    self.gameState.gameLoopServiceState
-                )
-            );
-
+            try {
+                logService.init(self.gameState.clearLog);
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                resourceService.init(
+                    angular.merge({},
+                        defaultState.resourceServiceState,
+                        self.gameState.resourceServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                achievementService.init(
+                    angular.merge({},
+                        defaultState.achievementServiceState,
+                        self.gameState.achievementServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                buildingService.init(
+                    angular.merge({},
+                        defaultState.buildingServiceState,
+                        self.gameState.buildingServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                workerService.init(
+                    angular.merge({},
+                        defaultState.workerServiceState,
+                        self.gameState.workerServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                mapService.init(
+                    angular.merge({},
+                        defaultState.mapServiceState,
+                        self.gameState.mapServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                gameLoopService.init(
+                    angular.merge({},
+                        defaultState.gameLoopServiceState,
+                        self.gameState.gameLoopServiceState
+                    )
+                );
+            } catch (err) {
+                console.error(err);
+            }
 
 
         };
