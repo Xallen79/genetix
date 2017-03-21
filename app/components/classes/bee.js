@@ -1,4 +1,3 @@
-
 /* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
@@ -15,9 +14,6 @@ game.filter('hasTrait', function() {
 game.factory('Bee', [
     '$filter', 'TraitInspector', 'Genome', 'jobTypes', 'resourceTypes',
     function($filter, TraitInspector, Genome, jobTypes, resourceTypes) {
-
-
-
         /* constructor */
         var Bee = function(config) {
             this.traitInspector = new TraitInspector();
@@ -209,14 +205,6 @@ game.factory('Bee', [
             return result;
         }
 
-        return Bee;
-    }
-]);
-
-
-game.factory('Queen', [
-    'Bee', 'Egg', 'Larva',
-    function(Bee, Egg, Larva) {
         var Queen = function(config) {
             this.config = config;
             this.beetype = "queen";
@@ -288,14 +276,6 @@ game.factory('Queen', [
             return child;
         };
 
-        return Queen;
-    }
-
-]);
-
-game.factory('Worker', [
-    'Bee',
-    function(Bee) {
         var Worker = function(config) {
             this.beetype = "worker";
             Bee.call(this, config);
@@ -313,13 +293,6 @@ game.factory('Worker', [
             return state;
         };
 
-        return Worker;
-    }
-]);
-
-game.factory('Drone', [
-    'Bee',
-    function(Bee) {
         var Drone = function(config) {
             this.beetype = "drone";
             Bee.call(this, config);
@@ -334,13 +307,7 @@ game.factory('Drone', [
 
             return state;
         };
-        return Drone;
-    }
-]);
 
-game.factory('Egg', [
-    'Bee',
-    function(Bee) {
         var Egg = function(config) {
             this.beetype = "egg";
             Bee.call(this, config);
@@ -356,14 +323,6 @@ game.factory('Egg', [
             return state;
         };
 
-
-        return Egg;
-    }
-]);
-
-game.factory('Larva', [
-    'Bee',
-    function(Bee) {
         var Larva = function(config) {
             this.beetype = "larva";
             Bee.call(this, config);
@@ -380,6 +339,12 @@ game.factory('Larva', [
         };
 
 
-        return Larva;
+        return {
+            Queen: Queen,
+            Drone: Drone,
+            Worker: Worker,
+            Egg: Egg,
+            Larva: Larva
+        };
     }
 ]);
