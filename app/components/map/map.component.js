@@ -8,12 +8,23 @@ game.component('bloqheadMap', {
 });
 
 game.controller('bloqhead.controllers.map', [
-    '$scope', '$rootScope', '$timeout', '$filter', 'mapService',
-    function($scope, $rootScope, $timeout, $filter, mapService) {
+    '$scope', '$rootScope', '$timeout', '$filter', '$q', 'mapService',
+    function($scope, $rootScope, $timeout, $filter, $q, mapService) {
         var self = this;
         var canvas, context;
         var hexsize_min = 20;
         var hexsize_max = 160;
+        var imageList = [
+            'bee.svg',
+            'bee-2.svg',
+            'egg.svg',
+            'honeypot.svg',
+            'larva.svg',
+            'nectar.svg',
+            'nectar2.svg',
+            'pollen.svg',
+            'tombstone.svg'
+        ];
 
         self.mapService = mapService;
         self.needsResize = true; // set to true to resize the canvas in the draw routine        
@@ -21,24 +32,78 @@ game.controller('bloqhead.controllers.map', [
         self.$onInit = function() {};
         self.$postLink = function() {
 
-            $timeout(function() {
-                // create canvas
-                canvas = document.getElementById('map');
+            self.loadImages(imageList).then(
+                function(images) {
+                    self.images = images;
+                    self.setupCanvas();
+                    $('.map-container').append(images['bee.svg']);
+                },
+                function(err) {
+                    console.error(err);
+                },
+                function(percent) {
+                    console.log(percent);
+                }
+            );
 
-                // create context
-                context = canvas.getContext('2d');
-
-                // add mouse events
-                canvas.parentElement.addEventListener('mousewheel', self.mousewheel, false);
-                canvas.parentElement.addEventListener('mousedown', self.mousedown, false);
-                document.addEventListener('mouseup', self.mouseup, false);
-                canvas.addEventListener('click', self.click, false);
-
-                mapService.SubscribeMapInitializedEvent($scope, initializeMap);
-                mapService.SubscribeMapUpdateEvent($scope, draw);
-
-            }, 100);
         };
+
+        self.setupCanvas = function() {
+            // create canvas
+            canvas = document.getElementById('map');
+
+            // create context
+            context = canvas.getContext('2d');
+
+            // add mouse events
+            canvas.parentElement.addEventListener('mousewheel', self.mousewheel, false);
+            canvas.parentElement.addEventListener('mousedown', self.mousedown, false);
+            document.addEventListener('mouseup', self.mouseup, false);
+            canvas.addEventListener('click', self.click, false);
+
+            mapService.SubscribeMapInitializedEvent($scope, initializeMap);
+            mapService.SubscribeMapUpdateEvent($scope, draw);
+        };
+
+        self.loadImages = function(imageNames) {
+
+            var deferred = $q.defer();
+            var promises = [];
+            var loadCount = 0;
+
+            angular.forEach(imageNames, function(imageName) {
+                var d = $q.defer();
+                // some closure
+                (function() {
+                    var img = $(new Image(100, 100)).on('load', function() {
+                        loadCount++;
+                        deferred.notify(Math.ceil(loadCount / imageNames.length * 100));
+                        d.resolve({
+                            name: imageName,
+                            image: img
+                        });
+                    }).prop('src', 'images/map/' + imageName);
+                })();
+                promises.push(d.promise);
+            });
+
+            $q.all(promises).then(
+                function(data) {
+                    var response = {};
+                    for (var i = 0; i < data.length; i++) {
+                        response[data[i].name] = data[i].image;
+                    }
+                    deferred.resolve(response);
+                },
+                function(err) {
+                    deferred.reject(err);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+
 
         // mouse events
         self.mousewheel = function(event) {
