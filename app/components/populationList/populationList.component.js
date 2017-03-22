@@ -1,3 +1,4 @@
+/* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
 game.filter('applyPopulationFilter', function() {
@@ -13,11 +14,9 @@ game.filter('applyPopulationFilter', function() {
 
         var input = [];
         if (filter && filter.type) {
-            input = hive[filter.type];
+            input = hive.getByType(filter.type);
         } else {
-            input = input.concat(hive.queens);
-            input = input.concat(hive.workers);
-            input = input.concat(hive.drones);
+            input = input.concat(hive.bees);
         }
 
         for (var i = 0; i < input.length; i++) {
@@ -109,8 +108,7 @@ game.component('bloqheadPopulationList', {
     templateUrl: 'components/populationList/populationList.html',
     controller: 'bloqhead.controllers.populationList',
     bindings: {
-        hive: '<',
-        maxPopulation: '='
+        hive: '<'
     }
 });
 

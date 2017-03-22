@@ -12,9 +12,6 @@
             },
             "buildingServiceState": {
                 "buildings": {}
-            },
-            "workerServiceState": {
-                "workers": []
             }
 
         },

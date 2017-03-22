@@ -1,4 +1,5 @@
 /* global angular */
+/* global randomIntFromInterval */
 var game = angular.module('bloqhead.genetixApp');
 
 game.filter('hasTrait', function() {
@@ -29,6 +30,7 @@ game.factory('Bee', [
             this.droneParentId = config.droneParentId || this.droneParentId || null;
             this.generation = config.generation || this.generation || 0;
             this.jid = config.currentJob || config.jid || this.jid || 'IDLE';
+            this.msSinceWork = config.msSinceWork || this.msSinceWork || 0;
             this.onStrike = config.onStrike || this.onStrike || false;
             this.earnings = config.earnings || this.earnings || angular.copy(zeroEarnings);
             this.beeMutationChance = config.beeMutationChance || this.beeMutationChance || 0.005;
@@ -50,6 +52,7 @@ game.factory('Bee', [
                 droneParentId: this.droneParentId,
                 generation: this.generation,
                 jid: this.jid,
+                msSinceWork: this.msSinceWork,
                 onStrike: this.onStrike,
                 earnings: this.earnings,
                 beeMutationChance: this.beeMutationChance,
@@ -74,7 +77,16 @@ game.factory('Bee', [
             console.log(this.name + " died.");
             this.dead = true;
         };
-
+        Bee.prototype.mature = function(type) {
+            console.error(this.beetype + ' cannot mature. type: ' + type);
+        };
+        Bee.prototype.hatch = function(type) {
+            console.error(this.beetype + ' cannot hatch. type: ' + type);
+        };
+        Bee.prototype.doWork = function(ms, hive) {
+            // every bee consumes food before working?
+            return null;
+        };
         /* private members */
         var zeroEarnings = {};
         for (var key in resourceTypes) {
@@ -84,12 +96,19 @@ game.factory('Bee', [
             };
         }
 
+        var types = {
+            QUEEN: 'queen',
+            DRONE: 'drone',
+            WORKER: 'worker',
+            EGG: 'egg',
+            LARVA: 'larva'
+        };
         /* private functions */
 
         /* Bee types */
         var Queen = function(config) {
             this.config = config;
-            this.beetype = "queen";
+            this.beetype = types.QUEEN;
             this.minDrones = 10;
             Bee.call(this, config);
         };
@@ -110,7 +129,7 @@ game.factory('Bee', [
         };
 
         Queen.prototype.mate = function(drone) {
-            if (drone.beetype !== "drone") {
+            if (drone.beetype !== types.DRONE) {
                 console.log("Queen cannot mate with: " + drone.beetype);
                 return;
             }
@@ -118,9 +137,9 @@ game.factory('Bee', [
             this.droneIds.push(drone.id);
             drone.die();
         };
-        Queen.prototype.canLayEggs = function() {
+        Queen.prototype.canLayEggs = function(hive) {
             var ready = this.droneGenomeStates.length >= this.minDrones;
-
+            ready &= hive.getNurseryCount() < hive.getNurseryLimit();
             return ready;
 
         };
@@ -138,6 +157,22 @@ game.factory('Bee', [
             });
             egg.update();
             return egg;
+        };
+
+        Queen.prototype.doWork = function(ms, hive) {
+            if (this.jid !== jobTypes.IDLE.jid) {
+                Bee.prototype.doWork.apply(this, [ms, hive]);
+                //var jobType = jobTypes[this.jid];
+                var eggRate = this.getAbility("PRD_E").value; //TODO actions and abilities should be derived from jobType
+                this.msSinceWork += ms;
+                while (this.msSinceWork >= eggRate) {
+                    if (this.canLayEggs(hive)) {
+                        var egg = this.layEgg(hive.getNextId());
+                        hive.bees.push(egg);
+                    }
+                    this.msSinceWork -= eggRate;
+                }
+            }
         };
 
         Queen.prototype.fertilizeEgg = function(egg, newId) {
@@ -159,7 +194,7 @@ game.factory('Bee', [
         };
 
         var Worker = function(config) {
-            this.beetype = "worker";
+            this.beetype = types.WORKER;
             Bee.call(this, config);
         };
         Worker.prototype = Object.create(Bee.prototype);
@@ -176,7 +211,7 @@ game.factory('Bee', [
         };
 
         var Drone = function(config) {
-            this.beetype = "drone";
+            this.beetype = types.DRONE;
             Bee.call(this, config);
         };
         Drone.prototype = Object.create(Bee.prototype);
@@ -191,7 +226,7 @@ game.factory('Bee', [
         };
 
         var Egg = function(config) {
-            this.beetype = "egg";
+            this.beetype = types.EGG;
             Bee.call(this, config);
         };
         Egg.prototype = Object.create(Bee.prototype);
@@ -205,8 +240,20 @@ game.factory('Bee', [
             return state;
         };
 
+        Egg.prototype.hatch = function(type) {
+            if (type === types.DRONE) {
+                return new Drone({
+                    id: this.id,
+                    genomeState: this.genome.getState(),
+                    generation: this.generation,
+                    jid: jobTypes.IDLE.jid,
+                    beeMutationChance: this.beeMutationChance
+                });
+            }
+        };
+
         var Larva = function(config) {
-            this.beetype = "larva";
+            this.beetype = types.LARVA;
             Bee.call(this, config);
         };
         Larva.prototype = Object.create(Bee.prototype);
@@ -221,12 +268,33 @@ game.factory('Bee', [
         };
 
 
+        Larva.prototype.mature = function(type) {
+            if (type === types.WORKER) {
+                return new Worker({
+                    id: this.id,
+                    genomeState: this.genome.getState(),
+                    generation: this.generation,
+                    jid: jobTypes.IDLE.jid,
+                    beeMutationChance: this.beeMutationChance
+                });
+            } else if (type === types.QUEEN) {
+                return new Queen({
+                    id: this.id,
+                    genomeState: this.genome.getState(),
+                    generation: this.generation,
+                    jid: jobTypes.IDLE.jid,
+                    beeMutationChance: this.beeMutationChance
+                });
+            }
+        };
+
         return {
             Queen: Queen,
             Drone: Drone,
             Worker: Worker,
             Egg: Egg,
-            Larva: Larva
+            Larva: Larva,
+            Types: types
         };
     }
 ]);

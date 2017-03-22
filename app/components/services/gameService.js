@@ -1,3 +1,4 @@
+/* exported randomIntFromInterval */
 var game = angular.module('bloqhead.genetixApp');
 
 function randomIntFromInterval(min, max) {
@@ -61,9 +62,9 @@ game.service('gameLoopService', ['$window', '$rootScope', 'gameStates', 'logServ
 
 game.service('gameService', [
     '$rootScope', 'gameSaveKey', 'defaultState', 'logService', 'gameLoopService', 'achievementService',
-    'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'workerService', 'mapService',
+    'resourceService', 'buildingService', 'LZString', 'traitDefinitions', 'mapService',
     function($rootScope, gameSaveKey, defaultState, logService, gameLoopService, achievementService,
-        resourceService, buildingService, LZString, traitDefinitions, workerService, mapService) {
+        resourceService, buildingService, LZString, traitDefinitions, mapService) {
         var self = this;
         var initialized = false;
         self.init = function(state) {
@@ -115,16 +116,6 @@ game.service('gameService', [
                 console.error(err);
             }
             try {
-                workerService.init(
-                    angular.merge({},
-                        defaultState.workerServiceState,
-                        self.gameState.workerServiceState
-                    )
-                );
-            } catch (err) {
-                console.error(err);
-            }
-            try {
                 mapService.init(
                     angular.merge({},
                         defaultState.mapServiceState,
@@ -158,7 +149,6 @@ game.service('gameService', [
             saveState.achievementServiceState = angular.copy(achievementService.getState());
             saveState.buildingServiceState = angular.copy(buildingService.getState());
             saveState.gameLoopServiceState = angular.copy(gameLoopService.getState());
-            saveState.workerServiceState = angular.copy(workerService.getState());
             saveState.mapServiceState = angular.copy(mapService.getState());
             var save = LZString.compressToBase64(angular.toJson(angular.copy(saveState)));
             localStorage.setItem(gameSaveKey, save);

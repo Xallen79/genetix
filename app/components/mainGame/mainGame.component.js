@@ -20,8 +20,8 @@ game.component('bloqhead.components.mainGame', {
 
 
 game.controller('bloqhead.controllers.mainGame', [
-    '$scope', '$filter', 'achievementService', 'resourceService', 'workerService', 'mapService',
-    function($scope, $filter, achievementService, resourceService, workerService, mapService) {
+    '$scope', '$filter', 'achievementService', 'resourceService', 'mapService',
+    function($scope, $filter, achievementService, resourceService, mapService) {
         var self = this;
         self.$onInit = function() {
             self.maxPopulation = 0;

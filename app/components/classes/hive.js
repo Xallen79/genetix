@@ -22,48 +22,41 @@ game.factory('Hive', [
             this.nextId = state.nextId || this.nextId || 0;
             this.msSinceEgg = state.msSinceEgg || this.msSinceEgg || 0;
 
-            this.queens = this.queens || [];
+            this.bees = this.bees || [];
             if (state.queenStates) {
-                this.queens = [];
                 for (var q = 0; q < state.queenStates.length; q++) {
-                    this.queens.push(new Bee.Queen(state.queenStates[q]));
+                    this.bees.push(new Bee.Queen(state.queenStates[q]));
                 }
             }
-            if (this.queens.length === 0) {
+            if (this.getByType(Bee.Types.QUEEN).length === 0) {
                 this.createInitialQueen(true);
             }
 
-            this.drones = this.drones || [];
             if (state.droneStates) {
-                this.drones = [];
                 for (var d = 0; d < state.droneStates.length; d++) {
-                    this.drones.push(new Bee.Drone(state.droneStates[d]));
+                    this.bees.push(new Bee.Drone(state.droneStates[d]));
                 }
             }
-            this.workers = this.workers || [];
             if (state.workerStates) {
-                this.workers = [];
                 for (var w = 0; w < state.workerStates.length; w++) {
-                    this.workers.push(new Bee.Worker(state.workerStates[w]));
+                    this.bees.push(new Bee.Worker(state.workerStates[w]));
                 }
             }
-            this.eggs = this.eggs || [];
             if (state.eggStates) {
-                this.eggs = [];
                 for (var e = 0; e < state.eggStates.length; e++) {
-                    this.eggs.push(new Bee.Egg(state.eggStates[e]));
+                    this.bees.push(new Bee.Egg(state.eggStates[e]));
                 }
             }
-            this.larva = this.larva || [];
             if (state.larvaStates) {
                 this.larva = [];
                 for (var l = 0; l < state.larvaStates.length; l++) {
-                    this.larva.push(new Bee.Larva(state.larvaStates[l]));
+                    this.bees.push(new Bee.Larva(state.larvaStates[l]));
                 }
             }
         };
 
         Hive.prototype.getState = function() {
+            var self = this;
             var state = {
                 id: this.id,
                 currentGeneration: this.currentGeneration,
@@ -79,20 +72,25 @@ game.factory('Hive', [
                 msSinceEgg: this.msSinceEgg,
                 pos: this.pos
             };
-            for (var q = 0; q < this.queens.length; q++) {
-                state.queenStates.push(this.queens[q].getState());
+            var queens = self.getByType(Bee.Types.QUEEN);
+            var drones = self.getByType(Bee.Types.DRONE);
+            var workers = self.getByType(Bee.Types.WORKER);
+            var eggs = self.getByType(Bee.Types.EGG);
+            var larva = self.getByType(Bee.Types.LARVA);
+            for (var q = 0; q < queens.length; q++) {
+                state.queenStates.push(queens[q].getState());
             }
-            for (var d = 0; d < this.drones.length; d++) {
-                state.droneStates.push(this.drones[d].getState());
+            for (var d = 0; d < drones.length; d++) {
+                state.droneStates.push(drones[d].getState());
             }
-            for (var w = 0; w < this.workers.length; w++) {
-                state.workerStates.push(this.workers[w].getState());
+            for (var w = 0; w < workers.length; w++) {
+                state.workerStates.push(workers[w].getState());
             }
-            for (var e = 0; e < this.eggs.length; e++) {
-                state.eggStates.push(this.eggs[e].getState());
+            for (var e = 0; e < eggs.length; e++) {
+                state.eggStates.push(eggs[e].getState());
             }
-            for (var l = 0; l < this.larva.length; l++) {
-                state.larvaStates.push(this.larva[l].getState());
+            for (var l = 0; l < larva.length; l++) {
+                state.larvaStates.push(larva[l].getState());
             }
             return state;
         };
@@ -104,7 +102,8 @@ game.factory('Hive', [
                 id: this.getNextId(),
                 generation: 0,
                 dominant: true, // 
-                beeMutationChance: this.beeMutationChance
+                beeMutationChance: this.beeMutationChance,
+                jid: 'BREEDER'
             });
             if (inseminate) {
                 for (var d = 0; d < 10; d++) {
@@ -117,64 +116,36 @@ game.factory('Hive', [
                 }
             }
             queen.update();
-            this.queens.push(queen);
+            this.bees.push(queen);
         };
 
-        Hive.prototype.getById = function(id, type) {
-            var list = [];
-            switch (type) {
-                case 'EGG':
-                    list = this.eggs;
-                    break;
-                case 'LARVA':
-                    list = this.larva;
-                    break;
-                case 'DRONE':
-                    list = this.drones;
-                    break;
-                case 'WORKER':
-                    list = this.workers;
-                    break;
-                case 'QUEEN':
-                    list = this.queens;
-                    break;
-                default:
-                    console.error("Invalid type: " + type);
-                    return null;
-            }
-            return $filter('filter')(list, { id: id }, true)[0];
+        Hive.prototype.getByType = function(type) {
+            return $filter('filter')(this.bees, { beetype: type }, true);
         };
 
+        Hive.prototype.getById = function(id) {
+            return $filter('filter')(this.bees, { id: id }, true)[0];
+        };
+        Hive.prototype.getNurseryCount = function() {
+            return this.getByType(Bee.Types.EGG).length + this.getByType(Bee.Types.LARVA).length;
+        };
+        Hive.prototype.getNurseryLimit = function() {
+            return 5; //TODO remove hardcode.
+        };
+        Hive.prototype.getPopulationCount = function() {
+            return this.bees.length - this.getNurseryCount();
+        };
+        Hive.prototype.getPopulationLimit = function() {
+            return 20; //TODO remove hardcode.
+        };
         Hive.prototype.getHeadQueen = function() {
-            if (this.queens.length)
-                return this.queens[0]; //assuming first queen is the egg producer...
-
-            return null;
+            return $filter('filter')(this.getByType(Bee.Types.QUEEN), { jid: 'BREEDER' })[0];
         };
 
-        Hive.prototype.canLayEggs = function() {
-            //tired of browser locking up due to too many eggs
-            return this.queens.length && this.getHeadQueen().canLayEggs() && this.eggs.length < 5;
-        };
-
-        Hive.prototype.layEgg = function() {
-            //var d = $q.defer();
-            var newName = null;
-            if (this.canLayEggs()) {
-                var queen = this.getHeadQueen();
-                var egg = queen.layEgg(this.getNextId());
-                this.eggs.push(egg);
-                newName = egg.name;
-            }
-            return newName;
-            //d.resolve(newName);
-
-            //return d.promise;
-        };
         Hive.prototype.processEggFate = function(id, fate) {
             var index;
-            var egg = this.eggs.filter(function(unit, i) {
-                if (unit.id === id) {
+            var egg = this.bees.filter(function(unit, i) {
+                if (unit.id === id && unit.beetype === Bee.Types.EGG) {
                     index = i;
                     return true;
                 }
@@ -182,26 +153,23 @@ game.factory('Hive', [
             var msg = "";
             switch (fate) {
                 case "DRONE":
-                    var drone = new Bee.Drone({
-                        id: egg.id,
-                        genomeState: egg.genome.getState(),
-                        generation: egg.generation,
-                        jid: 'DRONE',
-                        beeMutationChance: egg.beeMutationChance
-                    });
-                    this.drones.push(drone);
-                    this.eggs.splice(index, 1);
+                    var drone = egg.hatch(Bee.Types.DRONE);
+                    this.bees[index] = drone;
                     msg = $filter('fmt')('New drone in Hive#%(id)d! (%(newname)s)', { id: this.id, newname: drone.name });
                     break;
                 case "LARVA":
-                    var larva = this.getHeadQueen().fertilizeEgg(egg, egg.id);
-                    this.larva.push(larva);
-                    this.eggs.splice(index, 1);
-                    msg = $filter('fmt')('New larva in Hive#%(id)d! (%(newname)s)', { id: this.id, newname: larva.name });
+                    var queen = this.getHeadQueen();
+                    if (!queen) {
+                        msg = $filter('fmt')('Cannot fertilize egg. There is no queen assigned to breeding duties.');
+                    } else {
+                        var larva = queen.fertilizeEgg(egg, egg.id);
+                        this.bees[index] = larva;
+                        msg = $filter('fmt')('New larva in Hive#%(id)d! (%(newname)s)', { id: this.id, newname: larva.name });
+                    }
                     break;
                 case "CONSUME_EGG":
                     msg = $filter('fmt')("%(name)s has been turned into food for Hive#%(id)d", { name: egg.name, id: this.id });
-                    this.eggs.splice(index, 1);
+                    this.bees.splice(index, 1);
                     break;
                 default:
                     msg = $filter('fmt')('Invalid %(fate)s', { fate: fate });
@@ -212,7 +180,7 @@ game.factory('Hive', [
         };
         Hive.prototype.processLarvaFate = function(id, fate) {
             var index;
-            var newborn = this.larva.filter(function(unit, i) {
+            var newborn = this.bees.filter(function(unit, i) {
                 if (unit.id === id) {
                     index = i;
                     return true;
@@ -221,27 +189,18 @@ game.factory('Hive', [
             var msg = "";
             switch (fate) {
                 case "WORKER":
-                    var worker = new Bee.Worker({
-                        id: newborn.id,
-                        genomeState: newborn.genome.getState(),
-                        generation: newborn.generation,
-                        jid: "IDLE",
-                        beeMutationChance: newborn.beeMutationChance
-                    });
-                    this.workers.push(worker);
-                    this.larva.splice(index, 1);
+                    var worker = newborn.mature(Bee.Types.WORKER);
+                    this.bees[index] = worker;
                     msg = $filter('fmt')("New worker in Hive#%(id)d! (%(name)s)", { name: newborn.name, id: this.id });
                     break;
                 case "QUEEN":
-                    newborn.beetype = 'queen';
-                    newborn.update();
-                    this.queens.push(newborn);
-                    this.larva.splice(index, 1);
+                    var queen = newborn.mature(Bee.Types.QUEEN);
+                    this.bees[index] = queen;
                     msg = $filter('fmt')("New queen in Hive#%(id)d! (%(name)s)", { name: newborn.name, id: this.id });
                     break;
                 case "CONSUME_LARVA":
-                    msg = $filter('fmt')("%(name)s has been turned into food for Hive#%(id)d", { name: newborn.name, id: this.id });
-                    this.larva.splice(index, 1);
+                    msg = $filter('fmt')("%(name)s will be turned into food for Hive#%(id)d", { name: newborn.name, id: this.id });
+                    newborn.die();
                     break;
                 default:
                     msg = msg = $filter('fmt')("Invalid %(fate)s", { fate: fate });
@@ -274,6 +233,7 @@ game.factory('Hive', [
         };
 
         Hive.prototype.handleGameLoop = function(event, ms) {
+            var self = this;
             if (ms === 0)
                 return;
 
@@ -282,17 +242,22 @@ game.factory('Hive', [
                 return;
             }
 
-            if (this.canLayEggs()) {
-                var eggLayMs = this.getHeadQueen().getAbility('PRD_E').value;
-                this.msSinceEgg += ms;
-                while (this.msSinceEgg >= eggLayMs) {
-                    this.msSinceEgg -= eggLayMs;
-                    var eggName = this.layEgg();
-                    if (eggName !== null) {
-                        logService.logBreedMessage($filter('fmt')("New egg laid in Hive#%1d! (%2s)", this.id, eggName));
-                    }
-                }
+            for (var b = 0; b < self.bees.length; b++) {
+                self.bees[b].doWork(ms, this);
+                //if (egg) self.eggs.push(egg);
             }
+
+            // if (this.canLayEggs()) {
+            //     var eggLayMs = this.getHeadQueen().getAbility('PRD_E').value;
+            //     this.msSinceEgg += ms;
+            //     while (this.msSinceEgg >= eggLayMs) {
+            //         this.msSinceEgg -= eggLayMs;
+            //         var eggName = this.layEgg();
+            //         if (eggName !== null) {
+            //             logService.logBreedMessage($filter('fmt')("New egg laid in Hive#%1d! (%2s)", this.id, eggName));
+            //         }
+            //     }
+            // }
         };
 
         return Hive;

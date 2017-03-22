@@ -13,8 +13,8 @@ game.component('bloqheadResourceList', {
 
 
 game.controller('bloqhead.controllers.resourceList', [
-    '$scope', 'resourceService', 'resourceTypes', 'workerService', 'jobTypes',
-    function($scope, resourceService, resourceTypes, workerService, jobTypes) {
+    '$scope', 'resourceService', 'resourceTypes', 'jobTypes',
+    function($scope, resourceService, resourceTypes, jobTypes) {
         var self = this;
         self.resourceTypes = resourceTypes;
         self.jobTypes = jobTypes;

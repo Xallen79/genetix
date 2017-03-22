@@ -5,6 +5,16 @@
                 "jid": "IDLE",
                 "name": "Idler"
             },
+            "BREEDER": {
+                "jid": "BREEDER",
+                "name": "Breeding Queen",
+                "description": "Head Queen, performs the task of laying eggs and fertlizing them.",
+                "abilities": {
+                    "spawn": [{
+                        "rate": "PRD_E"
+                    }]
+                }
+            },
             "FORAGER": {
                 "jid": "FORAGER",
                 "name": "Forager",
