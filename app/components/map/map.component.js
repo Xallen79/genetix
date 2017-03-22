@@ -26,6 +26,8 @@ game.controller('bloqhead.controllers.map', [
             'tombstone.svg'
         ];
 
+
+        self.loadPercent = 0;
         self.mapService = mapService;
         self.needsResize = true; // set to true to resize the canvas in the draw routine        
 
@@ -36,19 +38,19 @@ game.controller('bloqhead.controllers.map', [
                 function(images) {
                     self.images = images;
                     self.setupCanvas();
-                    $('.map-container').append(images['bee.svg']);
                 },
                 function(err) {
                     console.error(err);
                 },
                 function(percent) {
-                    console.log(percent);
+                    self.loadPercent = percent;
                 }
             );
 
         };
 
         self.setupCanvas = function() {
+
             // create canvas
             canvas = document.getElementById('map');
 
@@ -61,8 +63,12 @@ game.controller('bloqhead.controllers.map', [
             document.addEventListener('mouseup', self.mouseup, false);
             canvas.addEventListener('click', self.click, false);
 
+            // add mapService event hooks
             mapService.SubscribeMapInitializedEvent($scope, initializeMap);
             mapService.SubscribeMapUpdateEvent($scope, draw);
+
+            // redraw the map after its been shown
+            self.setHexSize(self.mapconfig.HEIGHT);
         };
 
         self.loadImages = function(imageNames) {
@@ -142,6 +148,12 @@ game.controller('bloqhead.controllers.map', [
             if (self.mapconfig.HEIGHT > hexsize_min)
                 self.setHexSize(self.mapconfig.HEIGHT / 1.1);
         };
+        self.resetZoom = function() {
+            // this should probably be coded to center the map
+            self.setHexSize(50);
+            self.moveCanvas(0, 0);
+            self.dontTranslate = true;
+        };
 
 
         self.moveCanvas = function(x, y) {
@@ -206,9 +218,12 @@ game.controller('bloqhead.controllers.map', [
             var tran_x = parseInt((0 - (self.mapconfig.canvasSize.X - old_w)) / 2);
             var tran_y = parseInt((0 - (self.mapconfig.canvasSize.Y - old_h)) / 2);
 
-            // move the map if we need to translate it
-            if (tran_x !== 0 || tran_y !== 0)
-                self.moveCanvasBy(tran_x, tran_y);
+            if (!self.dontTranslate) {
+                // move the map if we need to translate it
+                if (tran_x !== 0 || tran_y !== 0)
+                    self.moveCanvasBy(tran_x, tran_y);
+            }
+            self.dontTranslate = false;
         }
     }
 ]);

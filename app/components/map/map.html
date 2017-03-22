@@ -4,21 +4,19 @@
             <div class="col-xs-5">
                 <i class="fa fa-map"></i> Map
             </div>
-            <div class="col-xs-7">
-                <div class=" pull-right">
-                    <span>ID <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_ID" /></span>
-                    <span>XY <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_XY" /></span>
-                    <span>Zoom:</span>
-                    <div class="btn-group" role="group">
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.zoomOut()">-</div>
-                        <div class="btn btn-xs btn-info" ng-click="$ctrl.zoomIn()">+</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </bloqhead-player-box-title>
-    <div class="row map-container" style="overflow: hidden; background-color: #87F75C; position: relative;">
-        <canvas id="map" style="position:absolute;top:0px;left:0px;"></canvas>
+    <div class="row map-container" style="overflow: hidden;  position: relative;">
+        <span ng-hide="$ctrl.loadPercent == 100" ng-bind="('Loading: ' + $ctrl.loadPercent + '%')" />
+        <div ng-show="$ctrl.loadPercent == 100" class="pull-left">
+            <span>ID <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_ID" /></span>
+            <span>XY <input type="checkbox" ng-model="$ctrl.mapService.getState().mapconfig.SHOW_HEX_XY" /></span>
+        </div>
+        <div ng-show="$ctrl.loadPercent == 100" class="btn-group pull-right" style="z-index: 100;" role="group">
+            <div class="btn btn-sm btn-info" ng-click="$ctrl.resetZoom()"><i class="fa fa-arrows-alt" /></div>
+            <div class="btn btn-sm btn-info" ng-click="$ctrl.zoomOut()"><i class="fa fa-minus" /></div>
+            <div class="btn btn-sm btn-info" ng-click="$ctrl.zoomIn()"><i class="fa fa-plus" /></div>
+        </div>
+        <canvas ng-show="$ctrl.loadPercent == 100" id="map" style="position:absolute;top:0px;left:0px;"></canvas>
     </div>
-
 </bloqhead-player-box>
