@@ -49,6 +49,19 @@ game.controller('bloqhead.controllers.map', [
 
         };
 
+        self.onDragStart = function(dragId) {
+            var unitid = angular.element(document.getElementById(dragId)).data('beeid');
+            mapService.setRangeGraph(unitid);
+
+        };
+        self.onDragStop = function() {
+            mapService.setRangeGraph(null);
+        };
+        self.dropped = function(dragId, dropId, relativePos) {
+            var unitid = angular.element(document.getElementById(dragId)).data('beeid');
+            mapService.mapClicked(relativePos.x, relativePos.y); // TODO change this to handle a bee getting dropped.
+        };
+
         self.setupCanvas = function() {
 
             // create canvas

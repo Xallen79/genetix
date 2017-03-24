@@ -17,6 +17,6 @@
             <div class="btn btn-sm btn-info" ng-click="$ctrl.zoomOut()"><i class="fa fa-minus" /></div>
             <div class="btn btn-sm btn-info" ng-click="$ctrl.zoomIn()"><i class="fa fa-plus" /></div>
         </div>
-        <canvas ng-show="$ctrl.loadPercent == 100" id="map" style="position:absolute;top:0px;left:0px;"></canvas>
+        <canvas ng-show="$ctrl.loadPercent == 100" id="map" style="position:absolute;top:0px;left:0px;" lvl-drop-target="true" on-drag-start="$ctrl.onDragStart(dragId)" on-drag-stop="$ctrl.onDragStop()" on-drop="$ctrl.dropped(dragId, dropId, relativePos)"></canvas>
     </div>
 </bloqhead-player-box>

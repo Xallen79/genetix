@@ -67,7 +67,7 @@
             "RNG": {
                 "name": "Range",
                 "desc": "Number of cells a bee can fly before having to return to the hive.",
-                "baseValue": 5
+                "baseValue": 2
             },
             "STR_P": {
                 "name": "Pollen Storage",

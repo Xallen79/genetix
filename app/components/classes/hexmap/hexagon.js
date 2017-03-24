@@ -23,6 +23,7 @@ game.factory('Hexagon', ['Point', function(Point) {
         this.col = col;
         this.row = row;
         this.selected = false;
+        this.inRange = false;
         this.Relocate(c);
     };
 
@@ -66,6 +67,8 @@ game.factory('Hexagon', ['Point', function(Point) {
 
         if (this.selected)
             ctx.fillStyle = "#7283BA";
+        else if (this.inRange)
+            ctx.fillStyle = "tomato";
         else
             ctx.fillStyle = "#EDC867";
 

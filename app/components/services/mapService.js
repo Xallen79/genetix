@@ -93,6 +93,22 @@ game.service('mapService', [
         self.mapMoved = function(x, y) {
             self.map.config.canvasLocation = new Point(x, y);
         };
+        self.setRangeGraph = function(beeid) {
+            if (beeid) {
+                var hive = self.getCurrentHive();
+                var bee = hive.getById(beeid);
+                var range = bee.getAbility('RNG').value;
+                self.range = {
+                    center: hive.pos,
+                    dist: range
+                };
+            } else {
+                self.range = null;
+                for (var h = 0; h < self.map.Hexes.length; h++) {
+                    self.map.Hexes[h].inRange = false;
+                }
+            }
+        };
 
         // map events
         self.SubscribeMapInitializedEvent = function(scope, callback) {
@@ -133,6 +149,7 @@ game.service('mapService', [
             clear(context);
             drawHexes(context);
             drawHives(context);
+            drawRange(context);
         };
 
         self.addHive = function(position) {
@@ -264,6 +281,16 @@ game.service('mapService', [
                 context.textBaseline = 'middle';
                 //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
                 context.fillText(id, hex.MidPoint.X, hex.MidPoint.Y);
+            }
+        }
+
+        function drawRange(context) {
+            if (self.range) {
+                var center = self.map.GetHexById(self.range.center);
+                for (var h = 0; h < self.map.Hexes.length; h++) {
+                    var target = self.map.Hexes[h];
+                    target.inRange = self.map.GetHexDistance(center, target) <= self.range.dist;
+                }
             }
         }
 
