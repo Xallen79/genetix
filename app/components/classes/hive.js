@@ -350,7 +350,7 @@ game.factory('Hive', [
                 if (buildingTypes.hasOwnProperty(buildingType)) {
                     var b = self.buildings[buildingType];
                     if (typeof b == 'undefined') {
-                        b = buildingTypes[buildingType];
+                        b = angular.copy(buildingTypes[buildingType]);
                         self.buildings[buildingType] = b;
                     }
                     if (b.rid) {
