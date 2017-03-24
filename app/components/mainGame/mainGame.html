@@ -25,10 +25,10 @@
                     <i class="icon-foot"></i> Nursery [{{$ctrl.hive.getNurseryCount()}} / {{$ctrl.hive.getNurseryLimit()}}]
                 </bloqhead-player-box-title>
                 <div class="row breeder-container">
-                    <div ng-repeat="child in $ctrl.hive.getByType('egg')" class="col-xs-12 col-lg-12 animate-repeat">
+                    <div ng-repeat="child in $ctrl.hive.getBeesByType('egg')" class="col-xs-12 col-lg-12 animate-repeat">
                         <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-bee>
                     </div>
-                    <div ng-repeat="child in $ctrl.hive.getByType('larva')" class="col-xs-12 col-lg-12 animate-repeat">
+                    <div ng-repeat="child in $ctrl.hive.getBeesByType('larva')" class="col-xs-12 col-lg-12 animate-repeat">
                         <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-bee>
                     </div>
                 </div>

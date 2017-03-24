@@ -16,11 +16,8 @@ game.factory('Hive', [
             this.pos = state.pos || this.pos || 'A1';
             this.currentGeneration = state.currentGeneration || this.currentGeneration || 0;
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
-            this.maxSize = state.maxSize || this.maxSize || 10;
             this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
-            this.initialSize = state.initialSize || this.initialSize || 2;
             this.nextId = state.nextId || this.nextId || 0;
-            this.msSinceEgg = state.msSinceEgg || this.msSinceEgg || 0;
 
             this.bees = this.bees || [];
             if (state.queenStates) {
@@ -28,7 +25,7 @@ game.factory('Hive', [
                     this.bees.push(new Bee.Queen(state.queenStates[q]));
                 }
             }
-            if (this.getByType(Bee.Types.QUEEN).length === 0) {
+            if (this.getBeesByType(Bee.Types.QUEEN).length === 0) {
                 this.createInitialQueen(true);
             }
 
@@ -60,9 +57,7 @@ game.factory('Hive', [
             var state = {
                 id: this.id,
                 currentGeneration: this.currentGeneration,
-                maxSize: this.maxSize,
                 beeMutationChance: this.beeMutationChance,
-                initialSize: this.initialSize,
                 nextId: this.nextId,
                 queenStates: [],
                 droneStates: [],
@@ -72,11 +67,11 @@ game.factory('Hive', [
                 msSinceEgg: this.msSinceEgg,
                 pos: this.pos
             };
-            var queens = self.getByType(Bee.Types.QUEEN);
-            var drones = self.getByType(Bee.Types.DRONE);
-            var workers = self.getByType(Bee.Types.WORKER);
-            var eggs = self.getByType(Bee.Types.EGG);
-            var larva = self.getByType(Bee.Types.LARVA);
+            var queens = self.getBeesByType(Bee.Types.QUEEN);
+            var drones = self.getBeesByType(Bee.Types.DRONE);
+            var workers = self.getBeesByType(Bee.Types.WORKER);
+            var eggs = self.getBeesByType(Bee.Types.EGG);
+            var larva = self.getBeesByType(Bee.Types.LARVA);
             for (var q = 0; q < queens.length; q++) {
                 state.queenStates.push(queens[q].getState());
             }
@@ -95,7 +90,7 @@ game.factory('Hive', [
             return state;
         };
         Hive.prototype.getNextId = function() {
-            return ++this.nextId;
+            return $filter('fmt')('%d-H%d', ++this.nextId, this.id);
         };
         Hive.prototype.createInitialQueen = function(inseminate) {
             var queen = new Bee.Queen({
@@ -119,15 +114,15 @@ game.factory('Hive', [
             this.bees.push(queen);
         };
 
-        Hive.prototype.getByType = function(type) {
+        Hive.prototype.getBeesByType = function(type) {
             return $filter('filter')(this.bees, { beetype: type }, true);
         };
 
-        Hive.prototype.getById = function(id) {
+        Hive.prototype.getBeeById = function(id) {
             return $filter('filter')(this.bees, { id: id }, true)[0];
         };
         Hive.prototype.getNurseryCount = function() {
-            return this.getByType(Bee.Types.EGG).length + this.getByType(Bee.Types.LARVA).length;
+            return this.getBeesByType(Bee.Types.EGG).length + this.getBeesByType(Bee.Types.LARVA).length;
         };
         Hive.prototype.getNurseryLimit = function() {
             return 5; //TODO remove hardcode.
@@ -139,7 +134,7 @@ game.factory('Hive', [
             return 20; //TODO remove hardcode.
         };
         Hive.prototype.getHeadQueen = function() {
-            return $filter('filter')(this.getByType(Bee.Types.QUEEN), { jid: 'BREEDER' })[0];
+            return $filter('filter')(this.getBeesByType(Bee.Types.QUEEN), { jid: 'BREEDER' })[0];
         };
 
         Hive.prototype.processEggFate = function(id, fate) {
@@ -211,7 +206,7 @@ game.factory('Hive', [
         };
 
         Hive.prototype.setUnitJob = function(id, jid) {
-            var unit = this.getById(id, "WORKER");
+            var unit = this.getBeeById(id, "WORKER");
             if (unit) {
                 unit.jid = jid;
                 var jobName = jobTypes[jid].name;
@@ -223,7 +218,7 @@ game.factory('Hive', [
         };
 
         Hive.prototype.setPopulationLimit = function(newLimit) {
-            this.maxSize = newLimit;
+
         };
         Hive.prototype.processFate = function(unitid, fate) {
             if (fate === 'DRONE' || fate === 'LARVA' || fate === 'CONSUME_EGG')

@@ -14,7 +14,7 @@ game.filter('applyPopulationFilter', function() {
 
         var input = [];
         if (filter && filter.type) {
-            input = hive.getByType(filter.type);
+            input = hive.getBeesByType(filter.type);
         } else {
             input = input.concat(hive.bees);
         }

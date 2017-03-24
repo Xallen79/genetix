@@ -53,9 +53,15 @@ game.service('mapService', [
         };
 
         self.getCurrentHive = function() {
-            return $filter('filter')(self.hives, { id: self.map.config.currentHiveID }, true)[0];
+            return self.getHiveById(self.map.config.currentHiveID);
+        };
+        self.getHiveById = function(hiveid) {
+            return $filter('filter')(self.hives, { id: hiveid }, true)[0];
         };
 
+        self.getBeeById = function(beeid) {
+            return self.getHiveById(beeid.substring(beeid.indexOf('H') + 1)).getBeeById(beeid);
+        };
 
         // methods called by the component
         self.mapClicked = function(x, y) {
@@ -96,7 +102,7 @@ game.service('mapService', [
         self.setRangeGraph = function(beeid) {
             if (beeid) {
                 var hive = self.getCurrentHive();
-                var bee = hive.getById(beeid);
+                var bee = hive.getBeeById(beeid);
                 var range = bee.getAbility('RNG').value;
                 self.range = {
                     center: hive.pos,
