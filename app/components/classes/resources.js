@@ -22,6 +22,7 @@ game.factory('MapResource', [
             this.nectar = config.nectar || this.nectar || 0;
             this.water = config.water || this.water || 0;
             this.bees = this.bees || [];
+            this.beeIsHarvesting = this.beeIsHarvesting || config.beeIsHarvesting || false;
             this.name = this.resourcetype + "#" + this.id;
         };
         MapResource.prototype.getState = function() {
@@ -50,23 +51,28 @@ game.factory('MapResource', [
 
         // occurs when a bee first lands on a resource
         MapResource.prototype.QueueHarvest = function(bee) {
-            // make sure bee can harvest any of these resources, if not, log message and move on to next destination.
-            // this should already be prevented in the UI, but just in case...
-
-            // make sure bee has available storage, if not, log message and return to hive.
-
             // add the bee to the collection queue
             this.bees.push(bee);
         };
 
         // this is called by the mapService in the gameloop
         MapResource.prototype.ProcessElapsedTime = function(ms) {
-            this.cooldownRemaining -= ms;
-            if (this.cooldownRemaining <= 0) {
-                this.cooldownRemaining = this.cooldown;
+            // decrement cooldown if its above 0
+            if (this.cooldownRemaining > 0) {
+                this.cooldownRemaining -= ms;
+            }
+            // if the cooldown has elapsed and there is a bee waiting and no bees are currently harvesting
+            if (this.cooldownRemaining < 0 && this.bees.length > 0 && this.beeIsHarvesting === false) {
+                this.beeIsHarvesting = true;
                 var bee = this.bees.shift();
                 bee.Harvest(this);
             }
+        };
+
+        // occurs after a bee is done harvesting (duh)
+        MapResource.prototype.DoneHarvesting = function() {
+            this.cooldownRemaining = this.cooldown;
+            this.beeIsHarvesting = false;
         };
 
     }
