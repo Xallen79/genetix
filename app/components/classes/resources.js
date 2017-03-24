@@ -2,8 +2,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('MapResource', [
-    '$filter', 'resourceTypes', 'gameLoopService',
-    function($filter, resourceTypes, gameLoopService) {
+    '$filter',
+    function($filter) {
         /* constructor */
         var MapResource = function(config) {
             this.update(config);
@@ -21,8 +21,10 @@ game.factory('MapResource', [
             this.pollen = config.pollen || this.pollen || 0;
             this.nectar = config.nectar || this.nectar || 0;
             this.water = config.water || this.water || 0;
+            this.harvestMultiplier = config.harvestMultiplier || this.harvestMultiplier || 1.0;
+            this.beeIsHarvesting = config.beeIsHarvesting || this.beeIsHarvesting || false;
+
             this.bees = this.bees || [];
-            this.beeIsHarvesting = this.beeIsHarvesting || config.beeIsHarvesting || false;
             this.name = this.resourcetype + "#" + this.id;
         };
         MapResource.prototype.getState = function() {

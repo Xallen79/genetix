@@ -106,6 +106,11 @@ game.factory('Bee', [
         /* private functions */
 
         /* Bee types */
+
+        //
+        // Queen
+        //
+
         var Queen = function(config) {
             this.config = config;
             this.beetype = types.QUEEN;
@@ -193,6 +198,11 @@ game.factory('Bee', [
             return child;
         };
 
+        //
+        // Worker
+        // 
+
+
         var Worker = function(config) {
             this.beetype = types.WORKER;
             Bee.call(this, config);
@@ -210,6 +220,12 @@ game.factory('Bee', [
             return state;
         };
 
+
+        //
+        // DRONE
+        //
+
+
         var Drone = function(config) {
             this.beetype = types.DRONE;
             Bee.call(this, config);
@@ -224,6 +240,10 @@ game.factory('Bee', [
 
             return state;
         };
+
+        //
+        // Egg
+        // 
 
         var Egg = function(config) {
             this.beetype = types.EGG;
@@ -251,6 +271,10 @@ game.factory('Bee', [
                 });
             }
         };
+
+        //
+        // Larva
+        //
 
         var Larva = function(config) {
             this.beetype = types.LARVA;
