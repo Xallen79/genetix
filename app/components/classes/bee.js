@@ -168,7 +168,7 @@ game.factory('Bee', [
             if (this.jid !== jobTypes.IDLE.jid) {
                 Bee.prototype.doWork.apply(this, [ms, hive]);
                 //var jobType = jobTypes[this.jid];
-                var eggRate = this.getAbility("PRD_E").value; //TODO actions and abilities should be derived from jobType
+                var eggRate = this.getAbility("PRD_EGG").value; //TODO actions and abilities should be derived from jobType
                 this.msSinceWork += ms;
                 while (this.msSinceWork >= eggRate) {
                     if (this.canLayEggs(hive)) {

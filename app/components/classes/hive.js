@@ -2,9 +2,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.factory('Hive', [
-    '$rootScope', '$filter', '$q', 'Bee', 'logService', 'jobTypes',
-    function($rootScope, $filter, $q, Bee, logService, jobTypes) {
-
+    '$rootScope', '$filter', '$q', 'Bee', 'logService', 'jobTypes', 'resourceTypes', 'buildingTypes',
+    function($rootScope, $filter, $q, Bee, logService, jobTypes, resourceTypes, buildingTypes) {
         /* constructor */
         var Hive = function(state) {
             this.update(state);
@@ -18,40 +17,10 @@ game.factory('Hive', [
             this.newbornLimit = state.newbornLimit || this.newbornLimit || 0;
             this.beeMutationChance = state.beeMutationChance || this.beeMutationChance || 0.005;
             this.nextId = state.nextId || this.nextId || 0;
-
-            this.bees = this.bees || [];
-            if (state.queenStates) {
-                for (var q = 0; q < state.queenStates.length; q++) {
-                    this.bees.push(new Bee.Queen(state.queenStates[q]));
-                }
-            }
-            if (this.getBeesByType(Bee.Types.QUEEN).length === 0) {
-                this.createInitialQueen(true);
-            }
-
-            if (state.droneStates) {
-                for (var d = 0; d < state.droneStates.length; d++) {
-                    this.bees.push(new Bee.Drone(state.droneStates[d]));
-                }
-            }
-            if (state.workerStates) {
-                for (var w = 0; w < state.workerStates.length; w++) {
-                    this.bees.push(new Bee.Worker(state.workerStates[w]));
-                }
-            }
-            if (state.eggStates) {
-                for (var e = 0; e < state.eggStates.length; e++) {
-                    this.bees.push(new Bee.Egg(state.eggStates[e]));
-                }
-            }
-            if (state.larvaStates) {
-                this.larva = [];
-                for (var l = 0; l < state.larvaStates.length; l++) {
-                    this.bees.push(new Bee.Larva(state.larvaStates[l]));
-                }
-            }
+            this.updateResources(state);
+            this.updateBees(state);
+            this.updateBuildings(state);
         };
-
         Hive.prototype.getState = function() {
             var self = this;
             var state = {
@@ -64,7 +33,8 @@ game.factory('Hive', [
                 workerStates: [],
                 eggStates: [],
                 larvaStates: [],
-                msSinceEgg: this.msSinceEgg,
+                resources: this.resources,
+                buildings: this.buildings,
                 pos: this.pos
             };
             var queens = self.getBeesByType(Bee.Types.QUEEN);
@@ -89,30 +59,6 @@ game.factory('Hive', [
             }
             return state;
         };
-        Hive.prototype.getNextId = function() {
-            return $filter('fmt')('%d-H%d', ++this.nextId, this.id);
-        };
-        Hive.prototype.createInitialQueen = function(inseminate) {
-            var queen = new Bee.Queen({
-                id: this.getNextId(),
-                generation: 0,
-                dominant: true, // 
-                beeMutationChance: this.beeMutationChance,
-                jid: 'BREEDER'
-            });
-            if (inseminate) {
-                for (var d = 0; d < 10; d++) {
-                    var drone = new Bee.Drone({
-                        id: this.getNextId(),
-                        generation: 0,
-                        beeMutationChance: this.beeMutationChance
-                    });
-                    queen.mate(drone);
-                }
-            }
-            queen.update();
-            this.bees.push(queen);
-        };
 
         Hive.prototype.getBeesByType = function(type) {
             return $filter('filter')(this.bees, { beetype: type }, true);
@@ -125,13 +71,13 @@ game.factory('Hive', [
             return this.getBeesByType(Bee.Types.EGG).length + this.getBeesByType(Bee.Types.LARVA).length;
         };
         Hive.prototype.getNurseryLimit = function() {
-            return 5; //TODO remove hardcode.
+            return this.nurseryLimit; //TODO remove hardcode.
         };
         Hive.prototype.getPopulationCount = function() {
             return this.bees.length - this.getNurseryCount();
         };
         Hive.prototype.getPopulationLimit = function() {
-            return 20; //TODO remove hardcode.
+            return this.populationLimit; //TODO remove hardcode.
         };
         Hive.prototype.getHeadQueen = function() {
             return $filter('filter')(this.getBeesByType(Bee.Types.QUEEN), { jid: 'BREEDER' })[0];
@@ -173,6 +119,7 @@ game.factory('Hive', [
             }
             logService.logBreedMessage(msg);
         };
+
         Hive.prototype.processLarvaFate = function(id, fate) {
             var index;
             var newborn = this.bees.filter(function(unit, i) {
@@ -217,14 +164,66 @@ game.factory('Hive', [
             }
         };
 
-        Hive.prototype.setPopulationLimit = function(newLimit) {
-
-        };
         Hive.prototype.processFate = function(unitid, fate) {
             if (fate === 'DRONE' || fate === 'LARVA' || fate === 'CONSUME_EGG')
                 this.processEggFate(unitid, fate);
             else
                 this.processLarvaFate(unitid, fate);
+        };
+
+        Hive.prototype.build = function(building, gifted) {
+            var self = this;
+            var built = true;
+            var spent = [];
+            if (gifted) {
+                building.gifted++;
+            } else {
+                for (var c = 0; c < building.nextCost.length; c++) {
+                    built = self.changeResource(building.nextCost[c].rid, -1 * building.nextCost[c].amount) !== -1;
+                    if (!built) break;
+
+                    spent.push(building.nextCost);
+                }
+            }
+            // make sure the building was built, if not refund anything that was spent.
+            if (built) {
+                if (!gifted) building.purchased++;
+                self.updateSize(building);
+
+            } else {
+                // refund
+                for (var s = 0; s < spent.length; s++) {
+                    self.changeResource(spent[s].rid, spent[s].amount);
+                }
+            }
+
+            return built;
+        };
+
+        Hive.prototype.changeResource = function(rid, amount) {
+            var self = this;
+            var r = self.resources[rid];
+            if (r[2] === false && r[1] !== -1) {
+                console.error(rid + " is not enabled, cannot increase amount.");
+                return;
+            }
+
+            r[0] += amount;
+            var actualAmount = amount;
+            if (r[1] != -1 && r[0] > r[1]) {
+                actualAmount = amount - (r[0] - r[1]);
+                r[0] = r[1];
+            }
+            // if this puts us negative, we cannot deduct the amount, reset and return -1 to indicate failure.
+            if (r[0] < 0) {
+                r[0] -= amount;
+                return -1;
+            }
+
+            // if (actualAmount > 0)
+            //     achievementService.updateProgress('A_' + rid + '_E', actualAmount); // earning achievement
+            self.updateBuildings();
+            return r[0];
         };
 
         Hive.prototype.handleGameLoop = function(event, ms) {
@@ -241,19 +240,170 @@ game.factory('Hive', [
                 self.bees[b].doWork(ms, this);
                 //if (egg) self.eggs.push(egg);
             }
-
-            // if (this.canLayEggs()) {
-            //     var eggLayMs = this.getHeadQueen().getAbility('PRD_E').value;
-            //     this.msSinceEgg += ms;
-            //     while (this.msSinceEgg >= eggLayMs) {
-            //         this.msSinceEgg -= eggLayMs;
-            //         var eggName = this.layEgg();
-            //         if (eggName !== null) {
-            //             logService.logBreedMessage($filter('fmt')("New egg laid in Hive#%1d! (%2s)", this.id, eggName));
-            //         }
-            //     }
-            // }
         };
+
+        Hive.prototype.getNextId = function() {
+            return $filter('fmt')('%d-H%d', ++this.nextId, this.id);
+        };
+
+
+        // Privatish functions
+
+        /* Bees related */
+        Hive.prototype.updateBees = function(state) {
+            var self = this;
+            state = state || {};
+            self.bees = self.bees || [];
+            if (state.queenStates) {
+                for (var q = 0; q < state.queenStates.length; q++) {
+                    self.bees.push(new Bee.Queen(state.queenStates[q]));
+                }
+            }
+            if (self.getBeesByType(Bee.Types.QUEEN).length === 0) {
+                self.createInitialQueen(true);
+            }
+
+            if (state.droneStates) {
+                for (var d = 0; d < state.droneStates.length; d++) {
+                    self.bees.push(new Bee.Drone(state.droneStates[d]));
+                }
+            }
+            if (state.workerStates) {
+                for (var w = 0; w < state.workerStates.length; w++) {
+                    self.bees.push(new Bee.Worker(state.workerStates[w]));
+                }
+            }
+            if (state.eggStates) {
+                for (var e = 0; e < state.eggStates.length; e++) {
+                    self.bees.push(new Bee.Egg(state.eggStates[e]));
+                }
+            }
+            if (state.larvaStates) {
+                self.larva = [];
+                for (var l = 0; l < state.larvaStates.length; l++) {
+                    self.bees.push(new Bee.Larva(state.larvaStates[l]));
+                }
+            }
+        };
+
+        Hive.prototype.createInitialQueen = function(inseminate) {
+            var self = this;
+            var queen = new Bee.Queen({
+                id: self.getNextId(),
+                generation: 0,
+                dominant: true, // 
+                beeMutationChance: this.beeMutationChance,
+                jid: 'BREEDER'
+            });
+            if (inseminate) {
+                for (var d = 0; d < 10; d++) {
+                    var drone = new Bee.Drone({
+                        id: self.getNextId(),
+                        generation: 0,
+                        beeMutationChance: this.beeMutationChance
+                    });
+                    queen.mate(drone);
+                }
+            }
+            queen.update();
+            self.bees.push(queen);
+        };
+
+        /* Resource related */
+        Hive.prototype.updateResources = function(state) {
+            var self = this;
+            state = state || {};
+            self.resources = state.resources || self.resources || {};
+            var overrideAllOn = false;
+            //[0] owned, [1] max, [2] enabled
+            var defaultResources = {
+                NECTAR: [75, 0, true || overrideAllOn],
+                POLLEN: [75, 0, true || overrideAllOn],
+                WATER: [75, 0, true || overrideAllOn],
+                FOOD: [75, 0, true || overrideAllOn],
+                HONEY: [75, 0, true || overrideAllOn],
+                ROYAL_JELLY: [75, 0, true || overrideAllOn],
+                WAX: [75, 0, true || overrideAllOn],
+                DEADBEES: [0, -1, true || overrideAllOn],
+                DEFENSE: [0, -1, true || overrideAllOn]
+            };
+            for (var resourceType in resourceTypes) {
+                if (resourceTypes.hasOwnProperty(resourceType)) {
+                    var r = self.resources[resourceType];
+                    if (typeof r == 'undefined') {
+                        // if there is no default, instead of failing we are just going to add it with a max of 911 so that we are aware of the problem
+                        r = defaultResources[resourceType] || [0, 911, overrideAllOn, 1];
+                        self.resources[resourceType] = r;
+                    }
+                }
+            }
+        };
+
+
+
+        /* Building related */
+        Hive.prototype.updateBuildings = function(state) {
+            var self = this;
+            state = state || {};
+            self.buildings = state.buildings || self.buildings || {};
+            for (var buildingType in buildingTypes) {
+                if (buildingTypes.hasOwnProperty(buildingType)) {
+                    var b = self.buildings[buildingType];
+                    if (typeof b == 'undefined') {
+                        b = buildingTypes[buildingType];
+                        self.buildings[buildingType] = b;
+                    }
+                    if (b.rid) {
+                        b.name = $filter('fmt')(b.name, { resource: resourceTypes[b.rid].name });
+                        b.description = $filter('fmt')(b.description, { resource: resourceTypes[b.rid].name });
+                    }
+                    self.setCanBuild(b);
+                    self.updateSize(b);
+                }
+            }
+
+        };
+
+        Hive.prototype.setNextCost = function(building) {
+            building.nextCost = [];
+            for (var i = 0; i < building.cost.length; i++) {
+                var cost = building.cost[i];
+                var nextAmount = Math.ceil(cost.base * Math.pow(1 + (cost.percent / 100), (building.purchased)));
+                building.nextCost.push({ rid: cost.rid, resourceName: resourceTypes[cost.rid].name, amount: nextAmount });
+            }
+        };
+
+        Hive.prototype.setCanBuild = function(building) {
+            var self = this;
+            if (!angular.isDefined(building.nextCost)) {
+                self.setNextCost(building);
+            }
+            var nextCost = building.nextCost;
+            for (var c = 0; c < nextCost.length; c++) {
+                var r = self.resources[nextCost[c].rid];
+                if (!angular.isDefined(r) || r[0] < nextCost[c].amount) {
+                    building.canBuild = false;
+                    return false;
+                }
+            }
+            building.canBuild = true;
+            return true;
+        };
+
+        Hive.prototype.getSize = function(building) {
+            return Math.floor(building.size.base * Math.pow(1 + (building.size.percent / 100), (building.gifted + building.purchased - 1)));
+        };
+
+        Hive.prototype.updateSize = function(building) {
+            var self = this;
+            if (building.use === 'storage')
+                self.resources[building.rid][1] = self.getSize(building);
+            else if (building.use === 'housing')
+                self.populationLimit = self.getSize(building);
+            else if (building.use === 'nursery')
+                self.nurseryLimit = self.getSize(building);
+        };
+
 
         return Hive;
     }

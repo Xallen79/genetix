@@ -1,5 +1,5 @@
 <div class="resource-list col-xs-12">
-    <div class="row" ng-repeat="(key, value) in $ctrl.resources" ng-if="value[2] === true" data-attr="{{$ctrl.resourceTypes[key].attr}}" lvl-drop-target="true" on-drop="$ctrl.dropped(dragId, dropId, relativePos, key)">
+    <div class="row" ng-repeat="(key, value) in $ctrl.hive.resources" ng-if="value[2] === true" data-attr="{{$ctrl.resourceTypes[key].attr}}" lvl-drop-target="true" on-drop="$ctrl.dropped(dragId, dropId, relativePos, key)">
         <div class="col-xs-12 col-sm-3">
             <h5 uib-tooltip="{{$ctrl.resourceTypes[key].desc}}">{{$ctrl.resourceTypes[key].name}}</h5>
         </div>

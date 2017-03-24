@@ -14,14 +14,13 @@ game.component("bloqheadBee", {
 });
 
 game.controller("bloqheader.controllers.bee", [
-    "$uibModal", "jobTypes", "bloqheadGetGeneProgressStyle", 'resourceTypes', 'resourceService',
-    function($uibModal, jobTypes, bloqheadGetGeneProgressStyle, resourceTypes, resourceService) {
+    "$uibModal", "jobTypes", "bloqheadGetGeneProgressStyle", 'resourceTypes',
+    function($uibModal, jobTypes, bloqheadGetGeneProgressStyle, resourceTypes) {
         var self = this;
         self.$onInit = function() {
             self.display = self.display || 'TILE';
             self.jobTypes = jobTypes;
             self.resourceTypes = resourceTypes;
-            self.resourceService = resourceService;
         };
         self.canFertilize = function() {
             // for (var key in self.unit.societyValue) {

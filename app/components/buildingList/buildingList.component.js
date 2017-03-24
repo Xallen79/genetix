@@ -2,25 +2,25 @@ var game = angular.module('bloqhead.genetixApp');
 
 game.component('bloqheadBuildingList', {
     templateUrl: 'components/buildingList/buildingList.html',
-    controller: 'bloqhead.controllers.buildingList'
+    controller: 'bloqhead.controllers.buildingList',
+    bindings: {
+        hive: '='
+    }
 });
 
 
 game.controller('bloqhead.controllers.buildingList', [
-    '$scope', 'buildingService', 'resourceService', 'resourceTypes',
-    function($scope, buildingService, resourceService, resourceTypes) {
+    '$scope', 'resourceTypes',
+    function($scope, resourceTypes) {
         var self = this;
         self.$onInit = function() {
-            self.buildings = []; //buildingService.getBuildingSnapshot();
+            self.buildings = self.hive.buildings;
             self.resourceTypes = resourceTypes;
-            self.resourceService = resourceService;
-            buildingService.SubscribeBuildingsChangedEvent($scope, self.updateBuildings);
+
         };
-        self.updateBuildings = function(event, buildings) {
-            self.buildings = buildings;
-        };
-        self.build = function(type) {
-            buildingService.build(type);
+
+        self.build = function(building) {
+            self.hive.build(building);
         };
 
     }

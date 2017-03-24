@@ -119,6 +119,17 @@ h5 {
     }
 }
 
+.scalable-list-button-big {
+    float: left;
+    width: 45%;
+    margin: .1vh .1vw .1vh .1vw;
+    button {
+        font-size: .8vw;
+        width: 100%;
+        margin: 0;
+    }
+}
+
 .tab-list-button {
     float: left;
     width: 10vw;

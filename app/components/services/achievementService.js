@@ -3,8 +3,8 @@ var game = angular.module('bloqhead.genetixApp');
 
 
 game.service('achievementService', [
-    '$rootScope', '$filter', 'achievementSetup', 'logService', 'resourceTypes', 'defaultBuildings',
-    function($rootScope, $filter, achievementSetup, logService, resourceTypes, defaultBuildings) {
+    '$rootScope', '$filter', 'achievementSetup', 'logService', 'resourceTypes', 'buildingTypes',
+    function($rootScope, $filter, achievementSetup, logService, resourceTypes, buildingTypes) {
         var self = this;
 
 
@@ -174,7 +174,7 @@ game.service('achievementService', [
                     params.amt = arr[2] || 0;
                     break;
                 case 'P_B_':
-                    params.buildingType = defaultBuildings[arr[1]].name;
+                    params.buildingType = buildingTypes[arr[1]].name;
                     params.amt = arr[2] || 0;
                     params.plural = params.amt > 1 ? "s" : "";
                     break;

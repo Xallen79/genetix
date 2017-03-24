@@ -41,7 +41,8 @@
         <p style="white-space:nowrap">
             <span>Requires: </span>
             <span ng-repeat="cost in unit.societyValue">
-                <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
+                <i class="fa" ng-class="$ctrl.resourceTypes[cost.rid].icon" ></i>
+                <!--data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"-->
                 <span ng-bind="cost.amount"></span>&nbsp;
             </span>
         </p>

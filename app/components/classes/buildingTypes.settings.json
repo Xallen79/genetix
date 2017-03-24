@@ -1,0 +1,177 @@
+{
+    "constants": {
+        "buildingTypes": {
+            "DORMITORY": {
+                "name": "Dormitory",
+                "description": "Where the adult bees live.",
+                "use": "housing",
+                "size": {
+                    "base": 20,
+                    "percent": 15
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "NURSERY": {
+                "name": "Nursery",
+                "description": "Where the eggs and larva live.",
+                "use": "nursery",
+                "size": {
+                    "base": 5,
+                    "percent": 12.5
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_NECTAR": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "NECTAR",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_POLLEN": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "POLLEN",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_WATER": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "WATER",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_FOOD": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "FOOD",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_HONEY": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "HONEY",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_JELLY": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "ROYAL_JELLY",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            },
+            "STORAGE_WAX": {
+                "name": "%(resource)s Storage",
+                "description": "Stores %(resource)s.",
+                "use": "storage",
+                "rid": "WAX",
+                "size": {
+                    "base": 75,
+                    "percent": 100
+                },
+                "cost": [{
+                    "rid": "WAX",
+                    "base": 50,
+                    "percent": 125
+                }],
+                "purchased": 0,
+                "gifted": 1,
+                "unlocked": true,
+                "multiplier": 1
+            }
+
+
+        }
+    }
+}

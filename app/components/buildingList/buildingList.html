@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-xs-12">
-        <div class="scalable-list-button" ng-repeat="building in $ctrl.buildings" ng-if="building.costToBuild.length > 0" tooltip-placement="bottom" uib-tooltip-template="'resourceTooltip.html'" tooltip-class="building-tooltip">
-            <button type="button" ng-bind="(building.name + ' (' + building.owned + ')')" ng-disabled=" !building.canBuild " class="btn btn-xs btn-primary" ng-click="$ctrl.build(building.type)"></button>
+        <div class="scalable-list-button-big" ng-repeat="building in $ctrl.hive.buildings" ng-if="building.nextCost.length > 0" tooltip-placement="bottom" uib-tooltip-template="'resourceTooltip.html'" tooltip-class="building-tooltip">
+            <button type="button" ng-bind="(building.name + ' (' + (building.gifted + building.purchased) + ')')" ng-disabled="!building.canBuild" class="btn btn-xs btn-primary" ng-click="$ctrl.build(building)"></button>
         </div>
     </div>
 </div>
@@ -10,9 +10,11 @@
         <h5>{{building.description}}</h5>
         <p style="white-space:nowrap">
             <span>Requires: </span>
-            <span ng-repeat="cost in building.costToBuild">
-                <i class="fa" ng-class="$ctrl.resourceService.getWorkerIcon(cost.resourceType)" data-attr="{{$ctrl.resourceTypes[cost.resourceType].attr}}"></i>
+            <span ng-repeat="cost in building.nextCost">
+                <i class="fa" ng-class="$ctrl.resourceTypes[cost.rid].icon"></i>
+                <!--data-attr="{{$ctrl.resourceTypes[cost.rid].attr}}"-->
                 <span ng-bind="cost.amount"></span>&nbsp;
+            <!--<span ng-bind="cost.resource"></span>-->
             </span>
         </p>
         <!--

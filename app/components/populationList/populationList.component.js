@@ -113,8 +113,8 @@ game.component('bloqheadPopulationList', {
 });
 
 game.controller('bloqhead.controllers.populationList', [
-    '$uibModal', 'resourceService', 'resourceTypes', 'jobTypes',
-    function($uibModal, resourceService, resourceTypes, jobTypes) {
+    '$uibModal', 'resourceTypes', 'jobTypes',
+    function($uibModal, resourceTypes, jobTypes) {
         var self = this;
         self.jobTypes = jobTypes;
         self.criteria = [];
@@ -201,8 +201,8 @@ game.component('bloqheadPopulationPanel', {
 });
 
 game.controller('bloqhead.controllers.populationPanel', [
-    '$timeout', 'bloqheadGetGeneProgressStyle', 'resourceTypes', 'resourceService',
-    function($timeout, bloqheadGetGeneProgressStyle, resourceTypes, resourceService) {
+    '$timeout', 'bloqheadGetGeneProgressStyle', 'resourceTypes',
+    function($timeout, bloqheadGetGeneProgressStyle, resourceTypes) {
         var self = this;
         self.resourceTypes = resourceTypes;
         self.$onInit = function() {
@@ -220,7 +220,7 @@ game.controller('bloqhead.controllers.populationPanel', [
         self.getWorkerIcon = function(strike, res) {
 
             var ret = [];
-            ret.push(resourceService.getWorkerIcon(res));
+            ret.push(resourceTypes[res].icon);
             if (strike) ret.push('onstrike');
 
             return ret;
