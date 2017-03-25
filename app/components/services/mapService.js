@@ -112,14 +112,18 @@ game.service('mapService', [
                 var hive = self.getCurrentHive();
                 var bee = hive.getBeeById(beeid);
                 var range = bee.getAbility('RNG').value;
-                self.range = {
-                    center: hive.pos,
-                    dist: range
-                };
+
+                var center = self.map.GetHexById(hive.pos);
+                for (var h = 0; h < self.map.Hexes.length; h++) {
+                    var target = self.map.Hexes[h];
+                    target.inRange = self.map.GetHexDistance(center, target) <= range;
+                }
+
+
             } else {
                 self.range = null;
-                for (var h = 0; h < self.map.Hexes.length; h++) {
-                    self.map.Hexes[h].inRange = false;
+                for (var h2 = 0; h2 < self.map.Hexes.length; h2++) {
+                    self.map.Hexes[h2].inRange = false;
                 }
             }
         };
@@ -164,7 +168,6 @@ game.service('mapService', [
             drawHexes(context);
             drawHives(context);
             drawResources(context);
-            drawRange(context);
         };
 
         self.addHive = function(position) {
@@ -197,7 +200,7 @@ game.service('mapService', [
                 "water": 10000
             });
             self.mapResources.push(mr);
-            hex.mapResources = mr;
+            hex.mapResource = mr;
             return mr;
         };
 
@@ -225,7 +228,7 @@ game.service('mapService', [
                 "pollen": (2 * level)
             });
             self.mapResources.push(mr);
-            hex.mapResources = mr;
+            hex.mapResource = mr;
             return mr;
         };
 
@@ -377,16 +380,6 @@ game.service('mapService', [
                 context.textBaseline = 'middle';
                 //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
                 context.fillText(id, hex.MidPoint.X, hex.MidPoint.Y);
-            }
-        }
-
-        function drawRange(context) {
-            if (self.range) {
-                var center = self.map.GetHexById(self.range.center);
-                for (var h = 0; h < self.map.Hexes.length; h++) {
-                    var target = self.map.Hexes[h];
-                    target.inRange = self.map.GetHexDistance(center, target) <= self.range.dist;
-                }
             }
         }
 
