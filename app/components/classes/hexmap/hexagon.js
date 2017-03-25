@@ -68,7 +68,7 @@ game.factory('Hexagon', ['Point', function(Point) {
         if (this.selected)
             ctx.fillStyle = "#7283BA";
         else if (this.inRange)
-            ctx.fillStyle = "tomato";
+            ctx.fillStyle = "tomato"; // love this color
         else
             ctx.fillStyle = "#EDC867";
 
@@ -91,7 +91,6 @@ game.factory('Hexagon', ['Point', function(Point) {
         ctx.stroke();
         ctx.restore();
         */
-
         ctx.stroke();
 
 

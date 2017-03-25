@@ -94,6 +94,7 @@ game.factory('Grid', ['Hexagon', 'Point', function(Hexagon, Point) {
      * @return {Hexagon}
      */
     Grid.prototype.GetHexAt = function( /*Point*/ p) {
+
         //find the hex that contains this point
         for (var h in this.Hexes) {
             if (this.Hexes[h].Contains(p)) {

@@ -12,9 +12,10 @@ game.factory('MapResource', [
         MapResource.prototype.update = function(config) {
             if (typeof(config) == 'undefined') config = {};
             this.id = config.id || this.id || 0;
+            this.level = config.level || this.level || 1;
             this.pos = config.pos || this.pos || 'A1';
             this.dt = config.dt || this.dt || new Date().getTime();
-            this.hexcolor = config.hexcolor || this.hexcolor || 'green';
+            this.color = config.color || this.color || 'green';
             this.image = config.image || this.image || 'bee.svg'; // this default is temporary
             this.cooldown = config.cooldown || this.cooldown || 5000; // in milliseconds
             this.cooldownRemaining = config.cooldownRemaining || this.cooldownRemaining || 0; // in milliseconds
@@ -23,22 +24,27 @@ game.factory('MapResource', [
             this.water = config.water || this.water || 0;
             this.harvestMultiplier = config.harvestMultiplier || this.harvestMultiplier || 1.0;
             this.beeIsHarvesting = config.beeIsHarvesting || this.beeIsHarvesting || false;
+            this.resourceName = config.resourceName || this.resourceName || '??';
 
             this.bees = this.bees || [];
-            this.name = this.resourcetype + "#" + this.id;
+            this.name = this.resourceName + " #" + this.id;
         };
         MapResource.prototype.getState = function() {
             var state = {
                 id: this.id,
+                level: this.level,
                 pos: this.pos,
                 dt: this.dt,
-                hexcolor: this.hexcolor,
+                color: this.color,
                 image: this.image,
                 cooldown: this.cooldown,
+                cooldownRemaining: this.cooldownRemaining,
                 pollen: this.pollen,
                 nectar: this.nectar,
                 water: this.water,
-                name: this.name,
+                harvestMultiplier: this.harvestMultiplier,
+                beeIsHarvesting: this.beeIsHarvesting,
+                resourceName: this.resourceName,
                 bees: []
             };
 
@@ -76,6 +82,8 @@ game.factory('MapResource', [
             this.cooldownRemaining = this.cooldown;
             this.beeIsHarvesting = false;
         };
+
+        return MapResource;
 
     }
 ]);

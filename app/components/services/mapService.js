@@ -1,8 +1,8 @@
 var game = angular.module('bloqhead.genetixApp');
 
 game.service('mapService', [
-    '$rootScope', '$filter', 'gameLoopService', 'logService', 'Grid', 'Point', 'Hive',
-    function($rootScope, $filter, gameLoopService, logService, Grid, Point, Hive) {
+    '$rootScope', '$filter', 'gameLoopService', 'logService', 'Grid', 'Point', 'Hive', 'MapResource',
+    function($rootScope, $filter, gameLoopService, logService, Grid, Point, Hive, MapResource) {
         var self = this;
         var state;
 
@@ -10,6 +10,7 @@ game.service('mapService', [
             state = loadState || state || {};
 
             self.hives = [];
+            self.mapResources = [];
 
             if (!angular.isDefined(state.mapconfig)) {
                 self.generateInitialMap();
@@ -19,6 +20,11 @@ game.service('mapService', [
                 for (var h = 0; h < state.hiveStates.length; h++) {
                     var hive = new Hive(state.hiveStates[h]);
                     self.hives.push(hive);
+                }
+                for (var r = 0; r < state.mapResourcesStates.length; r++) {
+                    var node = new MapResource(state.mapResourcesStates[r]);
+                    self.mapResources.push(node);
+                    self.map.GetHexById(node.pos).mapResource = node;
                 }
             }
 
@@ -41,8 +47,10 @@ game.service('mapService', [
             }
 
             // resource nodes
-            // TODO
-
+            state.mapResourcesStates = [];
+            for (var r = 0; r < self.mapResources.length; r++) {
+                state.mapResourcesStates.push(self.mapResources[r].getState());
+            }
 
             return state;
         };
@@ -155,20 +163,72 @@ game.service('mapService', [
             clear(context);
             drawHexes(context);
             drawHives(context);
+            drawResources(context);
             drawRange(context);
         };
 
         self.addHive = function(position) {
             var id = self.hives.length + 1;
-            self.hives.push(new Hive({
+            var hive = new Hive({
                 "id": id,
                 "initialSize": 2,
                 "maxSize": 5,
                 "beeMutationChance": 0.0025,
                 "pos": position
-            }));
+            });
+            self.hives.push(hive);
+            return hive;
             //self.sendPopulationUpdateEvent();
         };
+        self.addWaterNode = function(position) {
+
+            var hex = self.map.GetHexById(position);
+            if (typeof hex.mapResources != 'undefined') {
+                return null;
+            }
+
+            var id = self.mapResources.length + 1;
+            var mr = new MapResource({
+                "id": id,
+                "resourceName": 'Water',
+                "pos": position,
+                "color": '#04328C',
+                "cooldown": 0,
+                "water": 10000
+            });
+            self.mapResources.push(mr);
+            hex.mapResources = mr;
+            return mr;
+        };
+
+        self.addCloverNode = function(position, level) {
+
+            level = parseFloat(level) || 1;
+            if (level === 0)
+                level = 1;
+
+            var hex = self.map.GetHexById(position);
+            if (typeof hex.mapResources != 'undefined') {
+                return null;
+            }
+
+            var id = self.mapResources.length + 1;
+            var mr = new MapResource({
+                "id": id,
+                "level": level,
+                "resourceName": 'Clover',
+                "pos": position,
+                "color": '#2C4001',
+                "cooldown": 5000,
+                "harvestMultiplier": (1.0 / level),
+                "nectar": (3 * level),
+                "pollen": (2 * level)
+            });
+            self.mapResources.push(mr);
+            hex.mapResources = mr;
+            return mr;
+        };
+
 
         // map generating
         self.generateInitialMap = function() {
@@ -178,8 +238,22 @@ game.service('mapService', [
             });
             self.setHexSizeByHeight(50);
             self.map.config.canvasLocation = new Point(0, 0);
-            self.addHive("G7");
-            self.addHive("J10");
+            // add hives
+            self.addHive("G5");
+            self.addHive("G9");
+            // add water resources
+            self.addWaterNode("D6");
+            self.addWaterNode("J10");
+            self.addWaterNode("E3");
+            // add clover resources
+            self.addCloverNode("I7", 1);
+            self.addCloverNode("H6", 1);
+            self.addCloverNode("G11", 1);
+            self.addCloverNode("D4", 1);
+            self.addCloverNode("B2", 2);
+            self.addCloverNode("G13", 2);
+            self.addCloverNode("A7", 3);
+            self.addCloverNode("E7", 3);
             self.map.config.currentHiveID = self.hives[0].id;
         };
 
@@ -264,6 +338,22 @@ game.service('mapService', [
         function drawHexes(context) {
             for (var h in self.map.Hexes) {
                 self.map.Hexes[h].draw(context);
+            }
+        }
+
+        function drawResources(context) {
+            for (var i = 0; i < self.mapResources.length; i++) {
+                var node = self.mapResources[i];
+                var hex = self.map.GetHexById(node.pos);
+
+                context.fillStyle = node.color;
+                context.beginPath();
+                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, 2 * Math.PI);
+                context.closePath();
+                context.fill();
+                context.lineWidth = 2;
+                context.strokeStyle = 'black';
+                context.stroke();
             }
         }
 
