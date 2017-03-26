@@ -180,7 +180,7 @@ game.factory('Hive', [
                 building.gifted++;
             } else {
                 for (var c = 0; c < building.nextCost.length; c++) {
-                    built = self.changeResource(building.nextCost[c].rid, -1 * building.nextCost[c].amount) !== -1;
+                    built = self.changeResource(building.nextCost[c].rid, -1 * building.nextCost[c].amount) >= 0;
                     if (!built) break;
 
                     spent.push(building.nextCost[c]);

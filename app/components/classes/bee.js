@@ -170,13 +170,13 @@ game.factory('Bee', [
                     var success = false;
                     for (var c = 0; c < step.produce.cost.length; c++) {
                         var ca = this.getAbility(step.produce.cost[c]);
-                        success = (hive.changeResource(ca.c_rid, -1 * ca.value) !== -1);
+                        success = (hive.changeResource(ca.c_rid, -1 * ca.value) >= 0);
                         if (success) {
-                            spent.push({ rid: ca.rid, amount: ca.value });
+                            spent.push({ rid: ca.c_rid, amount: ca.value });
                         } else break;
                     }
                     if (success) {
-                        success = hive.changeResource(ya.rid, ya.value) !== -2;
+                        success = hive.changeResource(ya.rid, ya.value) >= 0;
                     }
                     // we either didn't have enough resources, or we couldn't make the 
                     // resource, refund anything that was spent
@@ -262,19 +262,21 @@ game.factory('Bee', [
                 var deposited = false;
                 var rid = resourceTypes.NECTAR.rid;
                 if (this.baskets[rid] > 0) {
-                    hive.changeResource(rid, 1);
-                    this.baskets[rid]--;
-                    deposited = true;
+                    if (hive.changeResource(rid, 1) >= 0) {
+                        this.baskets[rid]--;
+                        deposited = true;
+                    }
                 }
                 rid = resourceTypes.POLLEN.rid;
                 if (this.baskets[rid] > 0) {
-                    hive.changeResource(rid, 1);
-                    this.baskets[rid]--;
-                    deposited = true;
+                    if (hive.changeResource(rid, 1) >= 0) {
+                        this.baskets[rid]--;
+                        deposited = true;
+                    }
                 }
                 rid = resourceTypes.WATER.rid;
                 if (this.baskets[rid] > 0) {
-                    if (hive.changeResource(rid, 1) !== -1) {
+                    if (hive.changeResource(rid, 1) >= 0) {
                         this.baskets[rid]--;
                         deposited = true;
                     }
