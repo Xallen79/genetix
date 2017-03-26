@@ -180,8 +180,8 @@ game.service('mapService', [
         self.drawMap = function(context) {
             clear(context);
             drawHexes(context);
-            drawHives(context);
             drawResources(context);
+            drawHives(context);
         };
 
         self.addHive = function(position) {
@@ -394,9 +394,32 @@ game.service('mapService', [
                 context.textBaseline = 'middle';
                 //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
                 context.fillText(id, hex.MidPoint.X, hex.MidPoint.Y);
+                drawBees(context, hive);
             }
         }
 
+        function drawBees(context, hive) {
+            for (var b = 0; b < hive.bees.length; b++) {
+                var bee = hive.bees[b];
+                if (bee.isMoving) {
+                    var hexStart = self.map.GetHexById(bee.tripStart);
+                    var hexEnd = self.map.GetHexById(bee.tripEnd);
+                    var percentComplete = bee.tripElaspedTime / bee.tripTotalTime;
+                    if (isNaN(percentComplete)) percentComplete = 1;
+                    var coordX = hexStart.MidPoint.X + ((hexEnd.MidPoint.X - hexStart.MidPoint.X) * percentComplete);
+                    var coordY = hexStart.MidPoint.Y + ((hexEnd.MidPoint.Y - hexStart.MidPoint.Y) * percentComplete);
+
+                    context.fillStyle = 'yellow';
+                    context.beginPath();
+                    context.arc(coordX, coordY, self.map.config.HEIGHT * 0.15, 0, 2 * Math.PI);
+                    context.closePath();
+                    context.fill();
+                    context.lineWidth = 1;
+                    context.strokeStyle = 'black';
+                    context.stroke();
+                }
+            }
+        }
 
 
 

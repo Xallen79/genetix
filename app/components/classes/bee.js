@@ -127,7 +127,7 @@ game.factory('Bee', [
             // new job init
             this.jid = jid;
             this.msSinceWork = 0;
-            this.jobStepIndex = 0;
+            this.jobStepIndex = -1; //start by returning home.
             this.nodes = [];
             this.nodeIndex = 0;
         };
@@ -196,6 +196,7 @@ game.factory('Bee', [
             // this.pos -> Where I am
             // this.getAbility(step.travel.rate).value ms it takes to travese 1 cell
             if (this.tripStart !== this.pos) {
+                this.isMoving = true;
                 var rate = this.getAbility(step.travel.rate).value;
                 this.tripStart = this.pos;
                 this.tripElaspedTime = 0;
@@ -204,8 +205,10 @@ game.factory('Bee', [
             }
             this.tripElaspedTime += ms;
             if (this.tripElaspedTime >= this.tripTotalTime) {
+                this.isMoving = false;
                 this.jobStepIndex++;
                 this.msSinceWork = 0;
+                this.tripStart = null;
                 this.pos = this.nodes[this.nodeIndex].id;
                 this.nodes[this.nodeIndex].mapResource.QueueHarvest(this);
             }
@@ -296,12 +299,15 @@ game.factory('Bee', [
                 this.tripElaspedTime = 0;
                 this.tripEnd = hive.pos;
                 this.tripTotalTime = map.GetHexDistance(map.GetHexById(this.tripEnd), map.GetHexById(this.tripStart)) * rate;
+                this.isMoving = true;
             }
             this.tripElaspedTime += ms;
             if (this.tripElaspedTime >= this.tripTotalTime) {
+                this.isMoving = false;
                 var jobType = jobTypes[this.jid];
                 this.jobStepIndex = 0;
                 this.msSinceWork = 0;
+                this.tripStart = null;
                 this.pos = this.tripEnd;
                 logService.logWorkMessage(this.name + ' returned home.');
                 var jobStepIndex = this.jobStepIndex;
@@ -319,7 +325,7 @@ game.factory('Bee', [
         Bee.prototype.doWork = function(ms, hive, map) {
             var jobType = jobTypes[this.jid];
             if (this.jobStepIndex === -1) {
-                this.goHome(ms, hive);
+                this.goHome(ms, hive, map);
                 return;
             }
 
