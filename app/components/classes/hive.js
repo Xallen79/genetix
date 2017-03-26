@@ -153,14 +153,15 @@ game.factory('Hive', [
         };
 
         Hive.prototype.setUnitJob = function(id, jid) {
-            var unit = this.getBeeById(id, "WORKER");
-            if (unit) {
-                unit.jid = jid;
-                var jobName = jobTypes[jid].name;
-                var f = jobName.charAt(0).toLowerCase();
-                var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
-                var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: unit.name, article: article, job: jobName });
-                logService.logWorkMessage(msg);
+            var bee = this.getBeeById(id, "WORKER");
+            if (bee) {
+                if (bee.setJob(jid)) {
+                    var jobName = jobTypes[jid].name;
+                    var f = jobName.charAt(0).toLowerCase();
+                    var article = (f === 'a' || f === 'e' || f === 'i' || f === 'o' || f === 'u') ? 'an' : 'a';
+                    var msg = $filter('fmt')('%(name)s is now %(article)s %(job)s', { name: bee.name, article: article, job: jobName });
+                    logService.logWorkMessage(msg);
+                }
             }
         };
 
@@ -219,14 +220,16 @@ game.factory('Hive', [
                 r[0] -= amount;
                 return -1;
             }
-
+            // we didn't actually add anything, return -2
+            if (actualAmount === 0)
+                return -2;
             // if (actualAmount > 0)
             //     achievementService.updateProgress('A_' + rid + '_E', actualAmount); // earning achievement
             self.updateBuildings();
             return r[0];
         };
 
-        Hive.prototype.handleGameLoop = function(event, ms) {
+        Hive.prototype.handleGameLoop = function(event, ms, map) {
             var self = this;
             if (ms === 0)
                 return;
@@ -237,8 +240,7 @@ game.factory('Hive', [
             }
 
             for (var b = 0; b < self.bees.length; b++) {
-                self.bees[b].doWork(ms, this);
-                //if (egg) self.eggs.push(egg);
+                self.bees[b].doWork(ms, this, map);
             }
         };
 
@@ -293,14 +295,16 @@ game.factory('Hive', [
                 generation: 0,
                 dominant: true, // 
                 beeMutationChance: this.beeMutationChance,
-                jid: 'BREEDER'
+                jid: 'BREEDER',
+                pos: this.pos
             });
             if (inseminate) {
                 for (var d = 0; d < 10; d++) {
                     var drone = new Bee.Drone({
                         id: self.getNextId(),
                         generation: 0,
-                        beeMutationChance: this.beeMutationChance
+                        beeMutationChance: this.beeMutationChance,
+                        pos: this.pos
                     });
                     queen.mate(drone);
                 }
@@ -317,13 +321,13 @@ game.factory('Hive', [
             var overrideAllOn = false;
             //[0] owned, [1] max, [2] enabled
             var defaultResources = {
-                NECTAR: [75, 0, true || overrideAllOn],
-                POLLEN: [75, 0, true || overrideAllOn],
-                WATER: [75, 0, true || overrideAllOn],
-                FOOD: [75, 0, true || overrideAllOn],
-                HONEY: [75, 0, true || overrideAllOn],
-                ROYAL_JELLY: [75, 0, true || overrideAllOn],
-                WAX: [75, 0, true || overrideAllOn],
+                NECTAR: [10, 0, true || overrideAllOn],
+                POLLEN: [10, 0, true || overrideAllOn],
+                WATER: [10, 0, true || overrideAllOn],
+                FOOD: [10, 0, true || overrideAllOn],
+                HONEY: [10, 0, true || overrideAllOn],
+                ROYAL_JELLY: [0, 0, true || overrideAllOn],
+                WAX: [50, 0, true || overrideAllOn],
                 DEADBEES: [0, -1, true || overrideAllOn],
                 DEFENSE: [0, -1, true || overrideAllOn]
             };

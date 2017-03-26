@@ -53,7 +53,7 @@
                 ],
                 "requiredTraits": ["Little stinger"],
                 "mods": [
-                    { "SPD_F": { "percent": 10 } }
+                    { "SPD_FLY": { "percent": -10 } }
                 ],
                 "icon": "fa-bolt text-success"
             }
@@ -62,7 +62,8 @@
             "DEF": {
                 "name": "Defense",
                 "desc": "Ability to defend the hive.",
-                "baseValue": 1
+                "baseValue": 1,
+                "rid": "DEFENSE"
             },
             "RNG": {
                 "name": "Range",
@@ -87,15 +88,20 @@
                 "baseValue": 10,
                 "rid": "WATER"
             },
-            "SPD_F": {
+            "SPD_FLY": {
                 "name": "Flight Speed",
                 "desc": "The rate at which a bee can traverse 1 cell.",
                 "baseValue": 4000
             },
-            "SPD_C": {
+            "SPD_CLT": {
                 "name": "Collection Speed",
                 "desc": "The rate at which a bee can collect 1 resource from a node.",
                 "baseValue": 1000
+            },
+            "SPD_DEP": {
+                "name": "Deposit Speed",
+                "desc": "The rate at which a bee can deposits 1 resource from its resource baskets.",
+                "baseValue": 250
             },
 
             "PRD_HONEY": {
@@ -133,7 +139,7 @@
             "COST_WAX_FOOD": {
                 "name": "%(resource)s Production Cost (%(cost)s)",
                 "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
-                "baseValue": 10,
+                "baseValue": 2,
                 "rid": "WAX",
                 "c_rid": "FOOD"
             },

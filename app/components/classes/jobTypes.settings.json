@@ -3,120 +3,119 @@
         "jobTypes": {
             "IDLE": {
                 "jid": "IDLE",
-                "name": "Idler"
+                "name": "Idler",
+                "steps": [],
+                "beetypes": ["queen", "drone", "worker", "larva", "egg"]
             },
             "BREEDER": {
                 "jid": "BREEDER",
                 "name": "Breeding Queen",
                 "description": "Head Queen, performs the task of laying eggs and fertlizing them.",
-                "abilities": {
-                    "spawn": [{
+                "steps": [{
+                    "spawn": {
                         "rate": "PRD_EGG"
-                    }]
-                }
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "FORAGER": {
                 "jid": "FORAGER",
                 "name": "Forager",
                 "description": "Collects nectar, pollen, or water",
-                "abilities": {
-                    "collect": [{
-                            "rid": "NECTAR",
-                            "storage": "STR_NECTAR",
-                            "gatherspeed": "SPD_C",
-                            "travelspeed": "SPC_F"
-                        },
-                        {
-                            "rid": "POLLEN",
-                            "storage": "STR_POLLEN",
-                            "gatherspeed": "SPD_C",
-                            "travelspeed": "SPC_F"
-                        },
-                        {
-                            "rid": "WATER",
-                            "storage": "STR_WATER",
-                            "gatherspeed": "SPD_C",
-                            "travelspeed": "SPC_F"
+                "steps": [{
+                        "travel": {
+                            "rate": "SPD_FLY"
                         }
-                    ]
-
-                }
+                    },
+                    {
+                        "collect": {
+                            "rate": "SPD_CLT",
+                            "storage": "STR_%(rid)s"
+                        }
+                    },
+                    {
+                        "deposit": {
+                            "rate": "SPD_DEP"
+                        }
+                    }
+                ],
+                "beetypes": ["worker"]
             },
             "NURSE": {
                 "jid": "NURSE",
                 "name": "Nurse Bee",
                 "description": "Cares for eggs and produces royal jelly from honey and pollen",
-                "abilities": {
-                    "produce": [{
-                        "rid": "ROYAL_JELLY",
+                "steps": [{
+                    "produce": {
                         "rate": "PRD_JELLY",
-                        "cost": ["COST_JELLY_HONEY", "COST_JELLY_POLLEN"],
-                        "yield": "YLD_JELLY"
-                    }]
-                }
+                        "yield": "YLD_JELLY",
+                        "cost": ["COST_JELLY_HONEY", "COST_JELLY_POLLEN"]
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "PRODUCER_FOOD": {
                 "jid": "PRODUCER_FOOD",
                 "name": "Food producer",
                 "description": "Converts stored honey, pollen, and water into usable food",
-                "abilities": {
-                    "produce": [{
-                        "rid": "FOOD",
+                "steps": [{
+                    "produce": {
                         "rate": "PRD_FOOD",
                         "cost": ["COST_FOOD_HONEY", "COST_FOOD_POLLEN", "COST_FOOD_WATER"],
-                        "yield": "YLD_F"
-                    }]
-                }
+                        "yield": "YLD_FOOD"
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "PRODUCER_HONEY": {
                 "jid": "PRODUCER_HONEY",
                 "name": "Honey producer",
                 "description": "Converts stored nectar into honey",
-                "abilities": {
-                    "produce": [{
-                        "rid": "HONEY",
+                "steps": [{
+                    "produce": {
                         "rate": "PRD_HONEY",
                         "cost": ["COST_HONEY_NECTAR"],
                         "yield": "YLD_HONEY"
-                    }]
-                }
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "BUILDER": {
                 "jid": "BUILDER",
                 "name": "Builder",
                 "description": "Converts stored food into wax",
-                "abilities": {
-                    "produce": [{
-                        "rid": "WAX",
+                "steps": [{
+                    "produce": {
                         "rate": "PRD_WAX",
                         "cost": ["COST_WAX_FOOD"],
                         "yield": "YLD_WAX"
-                    }]
-                }
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "UNDERTAKER": {
                 "jid": "UNDERTAKER",
                 "name": "Undertaker bee",
                 "description": "Converts dead bees and rejected eggs into food",
-                "abilities": {
-                    "produce": [{
-                        "rid": "FOOD",
+                "steps": [{
+                    "produce": {
                         "rate": "PRD_FOOD",
-                        "cost": "COST_FOOD_DEADBEES",
+                        "cost": ["COST_FOOD_DEADBEES"],
                         "yield": "YLD_FOOD"
-                    }]
-                }
+                    }
+                }],
+                "beetypes": ["worker"]
             },
             "GUARD": {
                 "jid": "GUARD",
                 "name": "Guard bee",
                 "description": "Protects the hive which reduces the mortality rate",
-                "abilities": {
-                    "protect": [{
-                        "rid": "DEFENSE",
+                "steps": [{
+                    "protect": {
                         "amount": "DEF"
-                    }]
-                }
+                    }
+                }],
+                "beetypes": ["worker", "drone"]
             }
 
         }

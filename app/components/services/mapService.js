@@ -19,15 +19,24 @@ game.service('mapService', [
                 self.map = new Grid(state.mapconfig);
                 for (var h = 0; h < state.hiveStates.length; h++) {
                     var hive = new Hive(state.hiveStates[h]);
+                    for (var b = 0; b < hive.bees.length; b++) {
+                        var bee = hive.bees[b];
+                        for (var n = 0; n < bee.nodeIds.length; n++) {
+                            bee.nodes.push(self.map.GetHexById(bee.nodeIds[n]));
+                        }
+                    }
                     self.hives.push(hive);
                 }
                 for (var r = 0; r < state.mapResourcesStates.length; r++) {
                     var node = new MapResource(state.mapResourcesStates[r]);
                     self.mapResources.push(node);
                     self.map.GetHexById(node.pos).mapResource = node;
+                    for (var i = 0; state.mapResourcesStates[r].beeids.length; i++) {
+                        var nodeBee = self.getBeeById(state.mapResourcesStates[r].beeids[i]);
+                        node.bees.push(nodeBee);
+                    }
                 }
             }
-
 
             gameLoopService.SubscribeGameLoopEvent($rootScope, self.handleGameLoop);
 
@@ -68,7 +77,7 @@ game.service('mapService', [
         };
 
         self.getBeeById = function(beeid) {
-            return self.getHiveById(beeid.substring(beeid.indexOf('H') + 1)).getBeeById(beeid);
+            return self.getHiveById(parseInt(beeid.substring(beeid.indexOf('H') + 1))).getBeeById(beeid);
         };
 
         // methods called by the component
@@ -156,8 +165,11 @@ game.service('mapService', [
 
         self.handleGameLoop = function(event, elapsedMs) {
             if (elapsedMs !== 0) { // do animations here
+                for (var r = 0; r < self.mapResources.length; r++) {
+                    self.mapResources[r].ProcessElapsedTime(elapsedMs);
+                }
                 for (var h = 0; h < self.hives.length; h++) {
-                    self.hives[h].handleGameLoop(event, elapsedMs);
+                    self.hives[h].handleGameLoop(event, elapsedMs, self.map);
                 }
             }
             self.sendMapUpdateEvent(); //always send update so map will be rendered;

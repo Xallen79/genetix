@@ -61,17 +61,10 @@ game.controller('bloqhead.controllers.map', [
             var unitid = angular.element(document.getElementById(dragId)).data('beeid');
             var hex = mapService.map.GetHexAt({ X: relativePos.x, Y: relativePos.y });
 
-            console.log(hex);
-
-            if (hex.inRange === false)
-                return;
-
-            if (typeof hex.mapResource != 'undefined') {
-                console.log(hex.mapResource);
+            if (hex && hex.inRange && typeof hex.mapResource != 'undefined') {
+                mapService.getBeeById(unitid).addNode(hex);
             }
 
-
-            //mapService.mapClicked(relativePos.x, relativePos.y); // TODO change this to handle a bee getting dropped.
         };
 
         self.setupCanvas = function() {
