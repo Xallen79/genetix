@@ -22,13 +22,13 @@
             <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('LARVA')" ng-disabled="!$ctrl.canFertilize()">Fertilize</button>
         </div>
         <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='egg'">
-            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('DRONE')">Make Drone</button>
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('DRONE')" ng-disabled="!$ctrl.canBreed">Make Drone</button>
         </div>
         <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='larva'">
-            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('QUEEN')">Make Queen</button>
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('QUEEN')" ng-disabled="!$ctrl.canBreed">Make Queen</button>
         </div>
         <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip" ng-if="$ctrl.unit.beetype==='larva'">
-            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORKER')">Make Worker</button>
+            <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('WORKER')" ng-disabled="!$ctrl.canBreed">Make Worker</button>
         </div>
         <div class="scalable-list-button" uib-tooltip-template="'costTooltip.html'" tooltip-class="building-tooltip">
             <button class="btn btn-xs btn-primary" ng-click="$ctrl.assignMe('CONSUME')">Consume</button>

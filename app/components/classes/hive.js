@@ -183,13 +183,12 @@ game.factory('Hive', [
                     built = self.changeResource(building.nextCost[c].rid, -1 * building.nextCost[c].amount) !== -1;
                     if (!built) break;
 
-                    spent.push(building.nextCost);
+                    spent.push(building.nextCost[c]);
                 }
             }
             // make sure the building was built, if not refund anything that was spent.
             if (built) {
                 if (!gifted) building.purchased++;
-                self.updateSize(building);
 
             } else {
                 // refund
@@ -197,7 +196,7 @@ game.factory('Hive', [
                     self.changeResource(spent[s].rid, spent[s].amount);
                 }
             }
-
+            self.updateBuildings();
             return built;
         };
 
@@ -321,13 +320,13 @@ game.factory('Hive', [
             var overrideAllOn = false;
             //[0] owned, [1] max, [2] enabled
             var defaultResources = {
-                NECTAR: [10, 0, true || overrideAllOn],
-                POLLEN: [10, 0, true || overrideAllOn],
-                WATER: [10, 0, true || overrideAllOn],
-                FOOD: [10, 0, true || overrideAllOn],
-                HONEY: [10, 0, true || overrideAllOn],
+                NECTAR: [0, 0, true || overrideAllOn],
+                POLLEN: [0, 0, true || overrideAllOn],
+                WATER: [0, 0, true || overrideAllOn],
+                FOOD: [0, 0, true || overrideAllOn],
+                HONEY: [0, 0, true || overrideAllOn],
                 ROYAL_JELLY: [0, 0, true || overrideAllOn],
-                WAX: [50, 0, true || overrideAllOn],
+                WAX: [0, 0, true || overrideAllOn],
                 DEADBEES: [0, -1, true || overrideAllOn],
                 DEFENSE: [0, -1, true || overrideAllOn]
             };
@@ -379,9 +378,7 @@ game.factory('Hive', [
 
         Hive.prototype.setCanBuild = function(building) {
             var self = this;
-            if (!angular.isDefined(building.nextCost)) {
-                self.setNextCost(building);
-            }
+            self.setNextCost(building);
             var nextCost = building.nextCost;
             for (var c = 0; c < nextCost.length; c++) {
                 var r = self.resources[nextCost[c].rid];

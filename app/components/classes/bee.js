@@ -111,7 +111,7 @@ game.factory('Bee', [
         };
         Bee.prototype.storageFull = function() {
             return this.storageAmount('NECTAR') + this.storageAmount('POLLEN') + this.storageAmount('WATER') === 0;
-        }
+        };
         Bee.prototype.setJob = function(jid) {
             // already doing this job
             if (this.jid === jid) return;

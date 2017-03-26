@@ -101,25 +101,25 @@
             "SPD_DEP": {
                 "name": "Deposit Speed",
                 "desc": "The rate at which a bee can deposits 1 resource from its resource baskets.",
-                "baseValue": 250
+                "baseValue": 1500
             },
 
             "PRD_HONEY": {
                 "name": "%(resource)s Production Rate",
                 "desc": "The rate at which a bee can produce %(resource)s.",
-                "baseValue": 30000,
+                "baseValue": 10000,
                 "rid": "HONEY"
             },
             "YLD_HONEY": {
                 "name": "%(resource) Production Yield",
                 "desc": "The amount of %(resource)s a bee can produce.",
-                "baseValue": 1,
+                "baseValue": 4,
                 "rid": "HONEY"
             },
             "COST_HONEY_NECTAR": {
                 "name": "%(resource)s Production Cost (%(cost)s)",
                 "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
-                "baseValue": 1,
+                "baseValue": 2,
                 "rid": "HONEY",
                 "c_rid": "NECTAR"
             },
@@ -186,7 +186,7 @@
             "COST_FOOD_POLLEN": {
                 "name": "%(resource)s Production Cost (%(cost)s)",
                 "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
-                "baseValue": 1,
+                "baseValue": 2,
                 "rid": "FOOD",
                 "c_rid": "POLLEN"
             },
@@ -200,7 +200,7 @@
             "COST_FOOD_WATER": {
                 "name": "%(resource)s Production Cost (%(cost)s)",
                 "desc": "The amount of %(cost)s a bee needs to produce %(resource)s.",
-                "baseValue": 1,
+                "baseValue": 2,
                 "rid": "FOOD",
                 "c_rid": "WATER"
             },

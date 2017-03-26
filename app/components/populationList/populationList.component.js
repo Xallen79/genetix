@@ -1,7 +1,7 @@
 /* global angular */
 var game = angular.module('bloqhead.genetixApp');
 
-game.filter('applyPopulationFilter', function() {
+game.filter('applyPopulationFilter', ['Bee', function(Bee) {
     return function(hive, filter) {
         if (hive === null || typeof hive === 'undefined')
             return [];
@@ -16,7 +16,9 @@ game.filter('applyPopulationFilter', function() {
         if (filter && filter.type) {
             input = hive.getBeesByType(filter.type);
         } else {
-            input = input.concat(hive.bees);
+            input = input.concat(hive.getBeesByType(Bee.Types.QUEEN));
+            input = input.concat(hive.getBeesByType(Bee.Types.DRONE));
+            input = input.concat(hive.getBeesByType(Bee.Types.WORKER));
         }
 
         for (var i = 0; i < input.length; i++) {
@@ -46,7 +48,7 @@ game.filter('applyPopulationFilter', function() {
 
         return matches;
     };
-});
+}]);
 
 game.service("bloqheadGetGeneProgressStyle", [function() {
     function map(OldValue, OldMin, OldMax, NewMin, NewMax) {

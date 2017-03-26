@@ -164,13 +164,15 @@ game.service('mapService', [
         };
 
         self.handleGameLoop = function(event, elapsedMs) {
-            if (elapsedMs !== 0) { // do animations here
+            // Due to the interactions between flowers and bees, we cannot process time in bulk.
+            while (elapsedMs >= gameLoopService.stepTimeMs) {
                 for (var r = 0; r < self.mapResources.length; r++) {
-                    self.mapResources[r].ProcessElapsedTime(elapsedMs);
+                    self.mapResources[r].ProcessElapsedTime(gameLoopService.stepTimeMs);
                 }
                 for (var h = 0; h < self.hives.length; h++) {
-                    self.hives[h].handleGameLoop(event, elapsedMs, self.map);
+                    self.hives[h].handleGameLoop(event, gameLoopService.stepTimeMs, self.map);
                 }
+                elapsedMs -= gameLoopService.stepTimeMs;
             }
             self.sendMapUpdateEvent(); //always send update so map will be rendered;
         };

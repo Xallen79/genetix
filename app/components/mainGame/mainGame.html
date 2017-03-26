@@ -26,10 +26,10 @@
                 </bloqhead-player-box-title>
                 <div class="row breeder-container">
                     <div ng-repeat="child in $ctrl.hive.getBeesByType('egg')" class="col-xs-12 col-lg-12 animate-repeat">
-                        <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-bee>
+                        <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)" can-breed="$ctrl.hive.getPopulationCount()<$ctrl.hive.getPopulationLimit()"></bloqhead-bee>
                     </div>
                     <div ng-repeat="child in $ctrl.hive.getBeesByType('larva')" class="col-xs-12 col-lg-12 animate-repeat">
-                        <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)"></bloqhead-bee>
+                        <bloqhead-bee mode="NURSE" unit="child" assign="$ctrl.decideFate($id, $type)" can-breed="$ctrl.hive.getPopulationCount()<$ctrl.hive.getPopulationLimit()"></bloqhead-bee>
                     </div>
                 </div>
             </bloqhead-player-box>
