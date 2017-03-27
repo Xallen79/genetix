@@ -78,6 +78,7 @@ game.factory('MapResource', [
                 this.beeIsHarvesting = true;
                 var bee = this.bees.shift();
                 bee.waitingAtResource = false;
+                bee.harvesting = true;
             }
         };
 

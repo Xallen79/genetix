@@ -125,11 +125,24 @@ game.factory('Bee', [
             }
 
             // new job init
+            if (this.harvesting) {
+                this.nodes[this.nodeIndex].mapResource.DoneHarvesting();
+                this.harvesting = false;
+            }
             this.jid = jid;
             this.msSinceWork = 0;
             this.jobStepIndex = -1; //start by returning home.
             this.nodes = [];
+            this.nodeIds = [];
             this.nodeIndex = 0;
+            this.trip = null;
+            this.tripStart = null;
+            this.tripEnd = null;
+            this.tripTotalTime = null;
+            this.tripElaspedTime = null;
+            this.isMoving = false;
+
+
         };
 
         Bee.prototype.addNode = function(hexagon) {
@@ -192,9 +205,7 @@ game.factory('Bee', [
             }
         };
         Bee.prototype.doTravel = function(ms, hive, step, map) {
-            // this.nodes[this.nodeIndex].id -> Where I'm going.
-            // this.pos -> Where I am
-            // this.getAbility(step.travel.rate).value ms it takes to travese 1 cell
+
             if (this.tripStart !== this.pos) {
                 this.isMoving = true;
                 var rate = this.getAbility(step.travel.rate).value;
@@ -240,6 +251,7 @@ game.factory('Bee', [
                 }
                 if (!collected) {
                     logService.logWorkMessage(this.name + " done harvesting.");
+                    this.harvesting = false;
                     this.nodes[this.nodeIndex].mapResource.DoneHarvesting();
                     this.msSinceWork -= rate;
                     if (this.nodeIndex + 1 === this.nodes.length) {

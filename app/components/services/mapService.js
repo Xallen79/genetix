@@ -411,12 +411,19 @@ game.service('mapService', [
 
                     context.fillStyle = 'yellow';
                     context.beginPath();
-                    context.arc(coordX, coordY, self.map.config.HEIGHT * 0.15, 0, 2 * Math.PI);
+                    context.arc(coordX, coordY, self.map.config.HEIGHT * 0.2, 0, 2 * Math.PI);
                     context.closePath();
                     context.fill();
                     context.lineWidth = 1;
                     context.strokeStyle = 'black';
                     context.stroke();
+
+                    context.fillStyle = 'black';
+                    context.font = "bolder 6pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
+                    context.textAlign = "center";
+                    context.textBaseline = 'middle';
+                    //var textWidth = ctx.measureText(this.Planet.BoundingHex.id);
+                    context.fillText(bee.id, coordX, coordY);
                 }
             }
         }
