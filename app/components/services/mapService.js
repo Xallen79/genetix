@@ -5,6 +5,8 @@ game.service('mapService', [
     function($rootScope, $filter, gameLoopService, logService, Grid, Point, Hive, MapResource) {
         var self = this;
         var state;
+        var Q_PI = Math.PI / 4;
+        var TWO_PI = Math.PI * 2;
 
         self.init = function(loadState) {
             state = loadState || state || {};
@@ -365,7 +367,7 @@ game.service('mapService', [
 
                 context.fillStyle = node.color;
                 context.beginPath();
-                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, 2 * Math.PI);
+                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, TWO_PI);
                 context.closePath();
                 context.fill();
                 context.lineWidth = 2;
@@ -381,7 +383,7 @@ game.service('mapService', [
                 var id = 'H' + hive.id;
                 context.fillStyle = hive.id === self.map.config.currentHiveID ? 'yellow' : 'grey';
                 context.beginPath();
-                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, 2 * Math.PI);
+                context.arc(hex.MidPoint.X, hex.MidPoint.Y, self.map.config.HEIGHT * 0.3, 0, TWO_PI);
                 context.closePath();
                 context.fill();
                 context.lineWidth = 2;
@@ -406,12 +408,15 @@ game.service('mapService', [
                     var hexEnd = self.map.GetHexById(bee.tripEnd);
                     var percentComplete = bee.tripElaspedTime / bee.tripTotalTime;
                     if (isNaN(percentComplete)) percentComplete = 1;
-                    var coordX = hexStart.MidPoint.X + ((hexEnd.MidPoint.X - hexStart.MidPoint.X) * percentComplete);
-                    var coordY = hexStart.MidPoint.Y + ((hexEnd.MidPoint.Y - hexStart.MidPoint.Y) * percentComplete);
+                    var deltaX = hexEnd.MidPoint.X - hexStart.MidPoint.X;
+                    var deltaY = hexEnd.MidPoint.Y - hexStart.MidPoint.Y;
+                    var rads = Math.atan2(deltaY, deltaX);
+                    var coordX = hexStart.MidPoint.X + ((deltaX) * percentComplete);
+                    var coordY = hexStart.MidPoint.Y + ((deltaY) * percentComplete);
 
                     context.fillStyle = 'yellow';
                     context.beginPath();
-                    context.arc(coordX, coordY, self.map.config.HEIGHT * 0.2, 0, 2 * Math.PI);
+                    context.arc(coordX, coordY, self.map.config.HEIGHT * 0.2, rads - Q_PI, rads + Q_PI, true);
                     context.closePath();
                     context.fill();
                     context.lineWidth = 1;
